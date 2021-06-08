@@ -562,15 +562,9 @@ class Components extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30, width }}
         >
-          {this.renderButtons()}
-          {this.renderText()}
-          {this.renderInputs()}
-          {this.renderSwitches()}
-          {this.renderTableCell()}
-          {this.renderNavigation()}
-          {this.renderSocial()}
+         
           {this.renderCards()}
-          {this.renderAlbums()}
+        
         </ScrollView>
       </Block>
     );

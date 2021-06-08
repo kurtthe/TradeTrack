@@ -9,8 +9,9 @@ import { Icon } from "../components";
 import { nowTheme } from "../constants";
 
 // screens
-import Home from '../screens/Home';
-import Pro from '../screens/Pro';
+import Home from '../screens/THome';
+import Login from '../screens/TLogin';
+import SignUp from '../screens/TSignUp';
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import Components from '../screens/Components';
@@ -577,12 +578,14 @@ export default function OnboardingStack(props) {
     <Stack.Navigator mode="card" headerMode="none">
       <Stack.Screen
         name="Onboarding"
-        component={Pro}
+        component={Login}
         option={{
           headerTransparent: true
         }}
       />
       <Stack.Screen name="App" component={AppStack} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 }
