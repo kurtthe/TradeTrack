@@ -56,10 +56,11 @@ ArInput.propTypes = {
 
 const styles = StyleSheet.create({
   input: {
-    borderRadius: 30,
+    borderRadius: 7,
     borderColor: nowTheme.COLORS.BORDER,
     height: 44,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',
+    fontFamily: 'montserrat-regular',
   },
   success: {
     borderColor: nowTheme.COLORS.INPUT_SUCCESS

@@ -23,11 +23,7 @@ class Register extends React.Component {
     return (
       <DismissKeyboard>
         <Block flex middle>
-          <ImageBackground
-            source={Images.RegisterBackground}
-            style={styles.imageBackgroundContainer}
-            imageStyle={styles.imageBackground}
-          >
+         
             <Block flex middle>
               <Block style={styles.registerContainer}>
                 <Block flex space="evenly">
@@ -180,7 +176,7 @@ class Register extends React.Component {
                 </Block>
               </Block>
             </Block>
-          </ImageBackground>
+        
         </Block>
       </DismissKeyboard>
     );
