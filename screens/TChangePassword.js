@@ -24,7 +24,7 @@ const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
-class Login extends React.Component {
+class ChangePassword extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -61,15 +61,28 @@ class Login extends React.Component {
                       color="#2E2F33"
                       size={20}
                     >
-                      Welcome Back,{"\n"}
-                      Please sign in with your account
+                     Changes Password
                     </Text>
                   </Block>
+                  <Block middle top flex={0.2}  width={width * 0.9} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                            
+
+                            Please fill in a maximum of 8-16 characters with numbers
+                          </Text>
+                        </Block>
                 </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent', marginTop:15}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
+                    
                       <Block>
                       <Block flex={0.2} style={{marginTop:10, }} >
                           <Text
@@ -79,34 +92,14 @@ class Login extends React.Component {
                             muted
                             size={15}
                           >
-                          Email
+                          New Password
                           </Text>
                         </Block>
                         <Block width={width * 0.9}>
                         <Input
-                            right
-                            placeholder="Enter your email here"
-                            iconContent={<Block />}
-                            shadowless
-                            keyboardType={"email-address"}
-                          />
-                        </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
-                          Password
-                          </Text>
-                        </Block>
-                        <Block width={width * 0.9} >
-                        <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
-                          placeholder="Enter your correct password"
+                          placeholder="⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛"
                           secureTextEntry={this.state.hidePass ? true : false}
                         />
                          <MaterialIcons
@@ -119,11 +112,33 @@ class Login extends React.Component {
                              }
                            />
                         </Block>
-                        <Block middle right>
-                        <ForgotButton
-                          onPress={() => navigation.navigate("ForgotPassword")}
-                        
-                        >Forgot Password?</ForgotButton>
+                        <Block flex={0.2} style={{marginTop:30}} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                          Confirm Password
+                          </Text>
+                        </Block>
+                        <Block width={width * 0.9} >
+                        <Input
+                          secureTextEntry={true}
+                          iconContent={<Block />}
+                          placeholder="⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛"
+                          secureTextEntry={this.state.hidePass ? true : false}
+                        />
+                         <MaterialIcons
+                             style={styles.icon}
+                             name={this.state.hidePass ? "visibility" : "visibility-off"}
+                             size={20}
+                             color={nowTheme.COLORS.ICON}
+                             onPress={() =>
+                               this.setState({ hidePass: !this.state.hidePass })
+                             }
+                           />
                         </Block>
                       </Block>
                       <Block center>
@@ -131,15 +146,15 @@ class Login extends React.Component {
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("App")}
+                          onPress={() => navigation.navigate("PasswordBeenChange")}
                           
                         >
-                         Login
+                         Changes Password
                         </Button>
                       </Block>
 
                             <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
+                            <SimpleButton onPress={() => navigation.navigate("Help")}>  <Text   style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
                         </Block>
                         <Block style={{top:20}} row middle space="between">
                           
@@ -147,10 +162,10 @@ class Login extends React.Component {
                           color={'#444857'}
                           size={15}
                           >
-                          Don't have an account yet? 
+                         Already remember your password?
                           </Text>
-                        <SimpleButton 	  onPress={() => navigation.navigate("SignUp")}
-                  > Learn how to open</SimpleButton>
+                        <SimpleButton 	  onPress={() => navigation.navigate("Login")}
+                  > Login</SimpleButton>
                         </Block>
                         </Block>
                   
@@ -220,4 +235,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default ChangePassword;

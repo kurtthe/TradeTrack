@@ -12,6 +12,11 @@ import { nowTheme } from "../constants";
 import Home from '../screens/THome';
 import Login from '../screens/TLogin';
 import SignUp from '../screens/TSignUp';
+import Help from '../screens/THelp';
+import ForgotPassword from '../screens/TForgotPassword';
+import ChangePassword from '../screens/TChangePassword';
+
+import PasswordBeenChange from '../screens/TPasswordBeenChange';
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import Components from '../screens/Components';
@@ -91,11 +96,11 @@ function ComponentsStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
-        name="Components"
+        name="Products"
         component={Components}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Components" navigation={navigation} scene={scene} />
+            <Header title="Products" navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
@@ -210,11 +215,11 @@ function ArticlesStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
-        name="Articles"
+        name="Cart"
         component={Articles}
         options={{
           header: ({ navigation, scene }) => (
-            <Header title="Articles" navigation={navigation} scene={scene} />
+            <Header title="Cart" navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
@@ -332,7 +337,7 @@ function AccountStack(props) {
       <Stack.Screen name="Account" component={Register} options={{
         header: ({ navigation, scene }) => (
           <Header 
-            title="Create Account"
+            title="Manages Job"
             transparent
             iconColor={'#333'}
             navigation={navigation}
@@ -586,6 +591,10 @@ export default function OnboardingStack(props) {
       <Stack.Screen name="App" component={AppStack} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      <Stack.Screen name="PasswordBeenChange" component={PasswordBeenChange} />
+      <Stack.Screen name="Help" component={Help} />
     </Stack.Navigator>
   );
 }

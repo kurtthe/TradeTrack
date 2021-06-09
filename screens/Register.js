@@ -20,6 +20,7 @@ const DismissKeyboard = ({ children }) => (
 
 class Register extends React.Component {
   render() {
+    const { navigation } = this.props;
     return (
       <DismissKeyboard>
         <Block flex middle>
@@ -41,132 +42,15 @@ class Register extends React.Component {
                       </Text>
                     </Block>
 
-                    <Block flex={0.5} row middle space="between" style={{ marginBottom: 18 }}>
-                      <GaButton
-                        round
-                        onlyIcon
-                        shadowless
-                        icon="twitter"
-                        iconFamily="Font-Awesome"
-                        iconColor={theme.COLORS.WHITE}
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        color={nowTheme.COLORS.TWITTER}
-                        style={[styles.social, styles.shadow]}
-                      />
-
-                      <GaButton
-                        round
-                        onlyIcon
-                        shadowless
-                        icon="dribbble"
-                        iconFamily="Font-Awesome"
-                        iconColor={theme.COLORS.WHITE}
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        color={nowTheme.COLORS.DRIBBBLE}
-                        style={[styles.social, styles.shadow]}
-                      />
-                      <GaButton
-                        round
-                        onlyIcon
-                        shadowless
-                        icon="facebook"
-                        iconFamily="Font-Awesome"
-                        iconColor={theme.COLORS.WHITE}
-                        iconSize={theme.SIZES.BASE * 1.625}
-                        color={nowTheme.COLORS.FACEBOOK}
-                        style={[styles.social, styles.shadow]}
-                      />
-                    </Block>
-                  </Block>
-                  <Block flex={0.1} middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-regular',
-                        textAlign: 'center'
-                      }}
-                      muted
-                      size={16}
-                    >
-                      or be classical
-                    </Text>
-                  </Block>
-                  <Block flex={1} middle space="between">
-                    <Block center flex={0.9}>
-                      <Block flex space="between">
-                        <Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                            <Input
-                              placeholder="First Name"
-                              style={styles.inputs}
-                              iconContent={
-                                <Icon
-                                  size={16}
-                                  color="#ADB5BD"
-                                  name="profile-circle"
-                                  family="NowExtra"
-                                  style={styles.inputIcons}
-                                />
-                              }
-                            />
-                          </Block>
-                          <Block width={width * 0.8} style={{ marginBottom: 5 }}>
-                            <Input
-                              placeholder="Last Name"
-                              style={styles.inputs}
-                              iconContent={
-                                <Icon
-                                  size={16}
-                                  color="#ADB5BD"
-                                  name="caps-small2x"
-                                  family="NowExtra"
-                                  style={styles.inputIcons}
-                                />
-                              }
-                            />
-                          </Block>
-                          <Block width={width * 0.8}>
-                            <Input
-                              placeholder="Email"
-                              style={styles.inputs}
-                              iconContent={
-                                <Icon
-                                  size={16}
-                                  color="#ADB5BD"
-                                  name="email-852x"
-                                  family="NowExtra"
-                                  style={styles.inputIcons}
-                                />
-                              }
-                            />
-                          </Block>
-                          <Block
-                            style={{ marginVertical: theme.SIZES.BASE, marginLeft: 15}}
-                            row
-                            width={width * 0.75}
-                          >
-                            <Checkbox
-                              checkboxStyle={{
-                                borderWidth: 1,
-                                borderRadius: 2,
-                                borderColor: '#E3E3E3'
-                              }}
-                              color={nowTheme.COLORS.PRIMARY}
-                              labelStyle={{
-                                color: nowTheme.COLORS.HEADER,
-                                fontFamily: 'montserrat-regular'
-                              }}
-                              label="I agree to the terms and conditions."
-                            />
-                          </Block>
-                        </Block>
+                    
                         <Block center>
-                          <Button color="primary" round style={styles.createButton}>
+                          <Button color="info" round style={styles.createButton} onPress={() => navigation.navigate("Login")} >
                             <Text
                               style={{ fontFamily: 'montserrat-bold' }}
                               size={14}
                               color={nowTheme.COLORS.WHITE}
                             >
-                              Get Started
+                              Logout
                             </Text>
                           </Button>
                         </Block>
@@ -174,8 +58,8 @@ class Register extends React.Component {
                     </Block>
                   </Block>
                 </Block>
-              </Block>
-            </Block>
+            
+           
         
         </Block>
       </DismissKeyboard>
