@@ -24,7 +24,7 @@ const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
-class Login extends React.Component {
+class ForgotPassword extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -52,7 +52,7 @@ class Login extends React.Component {
                   <Block flex={0.5} top middle >
                   <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
                   </Block>
-                  <Block flex={0.5} top middle>
+                  <Block flex={0.3} top middle>
                     <Text
                       style={{
                         fontFamily: 'montserrat-bold',
@@ -61,17 +61,27 @@ class Login extends React.Component {
                       color="#2E2F33"
                       size={20}
                     >
-                      Welcome Back,{"\n"}
-                      Please sign in with your account
+                   Forgot your current Password?
                     </Text>
                   </Block>
                 </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={1.2}  space="between"  style={{backgroundColor:'transparent'}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                      <Block flex={0.29} style={{marginTop:10,  }} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                         Enter the form to send you an email{"\n"}for changes the password
+                          </Text>
+                        </Block>
+                      <Block flex={0.13} style={{marginTop:10, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
@@ -91,55 +101,24 @@ class Login extends React.Component {
                             keyboardType={"email-address"}
                           />
                         </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
-                          Password
-                          </Text>
-                        </Block>
-                        <Block width={width * 0.9} >
-                        <Input
-                          secureTextEntry={true}
-                          iconContent={<Block />}
-                          placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
-                        />
-                         <MaterialIcons
-                             style={styles.icon}
-                             name={this.state.hidePass ? "visibility" : "visibility-off"}
-                             size={20}
-                             color={nowTheme.COLORS.ICON}
-                             onPress={() =>
-                               this.setState({ hidePass: !this.state.hidePass })
-                             }
-                           />
-                        </Block>
-                        <Block middle right>
-                        <ForgotButton
-                          onPress={() => navigation.navigate("ForgotPassword")}
-                        
-                        >Forgot Password?</ForgotButton>
-                        </Block>
+                      
+                     
+                   
                       </Block>
-                      <Block center>
+                      <Block center style={{ marginTop:80,}}>
                         <Button
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("App")}
+                          onPress={() => navigation.navigate("ChangePassword")}
                           
                         >
-                         Login
+                       Send Email
                         </Button>
                       </Block>
 
                             <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
+                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
                         </Block>
                         <Block style={{top:20}} row middle space="between">
                           
@@ -147,10 +126,10 @@ class Login extends React.Component {
                           color={'#444857'}
                           size={15}
                           >
-                          Don't have an account yet? 
+                          Already remember your password?
                           </Text>
-                        <SimpleButton 	  onPress={() => navigation.navigate("SignUp")}
-                  > Learn how to open</SimpleButton>
+                        <SimpleButton 	  onPress={() => navigation.navigate("Login")}
+                  > Login</SimpleButton>
                         </Block>
                         </Block>
                   
@@ -220,4 +199,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default ForgotPassword;

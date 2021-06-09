@@ -7,24 +7,25 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
-  Platform
+  Platform,
+  Linking
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
 import { Button, Icon, Input,  } from '../components';
-import ForgotButton from '../components/ForgotButton'
+
 import SimpleButton from '../components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { MaterialIcons } from "@expo/vector-icons";
+
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
-class Login extends React.Component {
+class Help extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -33,7 +34,16 @@ class Login extends React.Component {
 			password: "",
 			hidePass: true,
 		};
-	}
+    }
+    
+    dialCall = (number) => {
+        let phoneNumber = '';
+        if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
+        else {phoneNumber = `telprompt:${number}`; }
+        Linking.openURL(phoneNumber);
+     };
+
+
   render() {
     const { navigation } = this.props;
 
@@ -61,17 +71,43 @@ class Login extends React.Component {
                       color="#2E2F33"
                       size={20}
                     >
-                      Welcome Back,{"\n"}
-                      Please sign in with your account
+                     Help Support
                     </Text>
                   </Block>
                 </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={1.5}  space="between"  style={{backgroundColor:'transparent'}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
-                      <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                      <Block >
+                      <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                            
+
+                            This app is only for Burbend Trade Costumers.
+                          </Text>
+                        </Block>
+
+                        <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                             
+
+                                If you need help to get access to your trade account or open one, Please contact us on:
+                          </Text>
+                        </Block>
+                     <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
@@ -82,16 +118,19 @@ class Login extends React.Component {
                           Email
                           </Text>
                         </Block>
-                        <Block width={width * 0.9}>
-                        <Input
-                            right
-                            placeholder="Enter your email here"
-                            iconContent={<Block />}
-                            shadowless
-                            keyboardType={"email-address"}
-                          />
+                        <Block width={width * 0.9} style={{marginLeft:10 }}  >
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:help@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
+      title="help@burdens.com.au" >
+                        <Text
+                          color={'#444857'}
+                          size={18}
+                          style={{textDecorationLine: 'underline',}}
+                          >
+                          help@burdens.com.au
+                          </Text>
+                          </TouchableWithoutFeedback>
                         </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
+                        <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
@@ -99,59 +138,36 @@ class Login extends React.Component {
                             muted
                             size={15}
                           >
-                          Password
+                          Phone number
                           </Text>
                         </Block>
-                        <Block width={width * 0.9} >
-                        <Input
-                          secureTextEntry={true}
-                          iconContent={<Block />}
-                          placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
-                        />
-                         <MaterialIcons
-                             style={styles.icon}
-                             name={this.state.hidePass ? "visibility" : "visibility-off"}
-                             size={20}
-                             color={nowTheme.COLORS.ICON}
-                             onPress={() =>
-                               this.setState({ hidePass: !this.state.hidePass })
-                             }
-                           />
+                        <Block style={{marginLeft:10 }} width={width * 0.9} >
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('0399993333')}}>
+                        <Text
+                          color={'#444857'}
+                          size={18}
+                          style={{textDecorationLine: 'underline',}}
+                          >
+                         03 9999 3333
+                          </Text>
+                       </TouchableWithoutFeedback>
                         </Block>
-                        <Block middle right>
-                        <ForgotButton
-                          onPress={() => navigation.navigate("ForgotPassword")}
-                        
-                        >Forgot Password?</ForgotButton>
-                        </Block>
+                    
                       </Block>
                       <Block center>
                         <Button
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("App")}
+                          onPress={() => navigation.navigate("Login")}
                           
                         >
-                         Login
+                          Back
                         </Button>
                       </Block>
 
-                            <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
-                        </Block>
-                        <Block style={{top:20}} row middle space="between">
-                          
-                          <Text
-                          color={'#444857'}
-                          size={15}
-                          >
-                          Don't have an account yet? 
-                          </Text>
-                        <SimpleButton 	  onPress={() => navigation.navigate("SignUp")}
-                  > Learn how to open</SimpleButton>
-                        </Block>
+                           
+                      
                         </Block>
                   
                   </Block>
@@ -220,4 +236,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default Help;

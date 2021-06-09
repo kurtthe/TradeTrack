@@ -486,45 +486,8 @@ class Components extends React.Component {
       <Block flex style={styles.group}>
 
         <Articles />
-        <Block flex card center shadow style={styles.category}>
-          <ImageBackground
-            source={Images.Products['path']}
-            style={[
-              styles.imageBlock,
-              { width: width - theme.SIZES.BASE * 2, height: 252 }
-            ]}
-            imageStyle={{
-              width: width - theme.SIZES.BASE * 2,
-              height: 252
-            }}
-          >
-            <Block style={styles.categoryTitle}>
-              <Text size={18} bold color={theme.COLORS.WHITE}>
-                View article
-              </Text>
-            </Block>
-          </ImageBackground>
-        </Block>
-        <Block flex={3}>
-            <ScrollView
-              horizontal={true}
-              // style={styles.contentContainer}
-              pagingEnabled={true}
-              decelerationRate={0}
-              scrollEventThrottle={16}
-              snapToAlignment="center"
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              // snapToInterval={cardWidth + nowTheme.SIZES.BASE * 0.375}
-              contentContainerStyle={{
-                width: width * 2
-              }}
-            >
-              {cards.map((item, index) => {
-            return <Card key={index} item={item} full titleStyle={styles.productTitle} imageStyle={ { height: 300, width: '100%', resizeMode: 'contain' } }/>
-          })}
-            </ScrollView>
-          </Block>
+    
+        
       </Block>
 
     );

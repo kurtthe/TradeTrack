@@ -71,7 +71,6 @@ class SignUp extends React.Component {
                       color="#2E2F33"
                       size={20}
                     >
-                   {"\n"}
                       Want to access the Burdens portal? You'll need to open a Burdens Trade account to get in.
                     </Text>
                   </Block>
@@ -152,7 +151,7 @@ class SignUp extends React.Component {
                       </Block>
 
                             <Block middle >
-                            <SimpleButton>  <Text style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
+                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text  style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
                         </Block>
                       
                         </Block>

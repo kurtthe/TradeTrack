@@ -7,24 +7,25 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
-  Platform
+  Platform,
+  Linking
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
 import { Button, Icon, Input,  } from '../components';
-import ForgotButton from '../components/ForgotButton'
+
 import SimpleButton from '../components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { MaterialIcons } from "@expo/vector-icons";
+
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 
-class Login extends React.Component {
+class PasswordBeenChange extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -33,7 +34,16 @@ class Login extends React.Component {
 			password: "",
 			hidePass: true,
 		};
-	}
+    }
+    
+    dialCall = (number) => {
+        let phoneNumber = '';
+        if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
+        else {phoneNumber = `telprompt:${number}`; }
+        Linking.openURL(phoneNumber);
+     };
+
+
   render() {
     const { navigation } = this.props;
 
@@ -49,21 +59,11 @@ class Login extends React.Component {
                 <Block flex={0.4}  style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5} top middle >
+                  <Block flex={0.5}  middle >
                   <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
                   </Block>
-                  <Block flex={0.5} top middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-bold',
-                        textAlign: 'left'
-                      }}
-                      color="#2E2F33"
-                      size={20}
-                    >
-                      Welcome Back,{"\n"}
-                      Please sign in with your account
-                    </Text>
+                  <Block flex={0.5}  middle>
+                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/check-badge.png')}/>
                   </Block>
                 </Block>
               
@@ -71,6 +71,17 @@ class Login extends React.Component {
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
+                      <Block flex={0.2} style={{marginTop:10, }} mide >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                      
+                          </Text>
+                        </Block>
                       <Block flex={0.2} style={{marginTop:10, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
@@ -79,17 +90,23 @@ class Login extends React.Component {
                             muted
                             size={15}
                           >
-                          Email
+                      
                           </Text>
                         </Block>
-                        <Block width={width * 0.9}>
-                        <Input
-                            right
-                            placeholder="Enter your email here"
-                            iconContent={<Block />}
-                            shadowless
-                            keyboardType={"email-address"}
-                          />
+                        <Block middle width={width * 0.9}>
+                        <TouchableWithoutFeedback activeOpacity={0.6} >
+                        <Text
+                          style={{
+                            fontFamily: 'montserrat-bold',
+                           
+                          }}
+                           color="#2E2F33"
+                           size={20}
+                         // style={{textDecorationLine: 'underline',}}
+                          >
+                       Your Password has been Change
+                          </Text>
+                          </TouchableWithoutFeedback>
                         </Block>
                         <Block flex={0.2} style={{marginTop:30}} >
                           <Text
@@ -99,59 +116,28 @@ class Login extends React.Component {
                             muted
                             size={15}
                           >
-                          Password
+                             Please login again to enter Burdens Portals. Have a nice day!
                           </Text>
                         </Block>
-                        <Block width={width * 0.9} >
-                        <Input
-                          secureTextEntry={true}
-                          iconContent={<Block />}
-                          placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
-                        />
-                         <MaterialIcons
-                             style={styles.icon}
-                             name={this.state.hidePass ? "visibility" : "visibility-off"}
-                             size={20}
-                             color={nowTheme.COLORS.ICON}
-                             onPress={() =>
-                               this.setState({ hidePass: !this.state.hidePass })
-                             }
-                           />
-                        </Block>
-                        <Block middle right>
-                        <ForgotButton
-                          onPress={() => navigation.navigate("ForgotPassword")}
-                        
-                        >Forgot Password?</ForgotButton>
-                        </Block>
+                      
+                    
                       </Block>
                       <Block center>
                         <Button
-                          color="info"
-                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                          color="warning"
+                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("App")}
+                          onPress={() => navigation.navigate("Login")}
                           
                         >
-                         Login
+                        Login
                         </Button>
                       </Block>
 
                             <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
+                            <SimpleButton  onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
                         </Block>
-                        <Block style={{top:20}} row middle space="between">
-                          
-                          <Text
-                          color={'#444857'}
-                          size={15}
-                          >
-                          Don't have an account yet? 
-                          </Text>
-                        <SimpleButton 	  onPress={() => navigation.navigate("SignUp")}
-                  > Learn how to open</SimpleButton>
-                        </Block>
+                      
                         </Block>
                   
                   </Block>
@@ -220,4 +206,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Login;
+export default PasswordBeenChange;
+
+
+
