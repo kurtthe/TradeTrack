@@ -13,10 +13,10 @@ class Articles extends React.Component {
       <Text size={16} style={styles.title}>
         Cards
       </Text>
-        <Card item={articles[0]} horizontal />
+        {/* <Card item={articles[0]} horizontal />
        
         <Card item={articles[3]} horizontal />
-        <Card item={articles[4]} full />
+        <Card item={articles[4]} full /> */}
       </Block>
     );
   };

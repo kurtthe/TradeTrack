@@ -15,8 +15,10 @@ import SignUp from '../screens/TSignUp';
 import Help from '../screens/THelp';
 import ForgotPassword from '../screens/TForgotPassword';
 import ChangePassword from '../screens/TChangePassword';
-
 import PasswordBeenChange from '../screens/TPasswordBeenChange';
+import Products from '../screens/TProduts';
+
+
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import Components from '../screens/Components';
@@ -92,12 +94,12 @@ function NotificationsStack(props) {
   );
 }
 
-function ComponentsStack(props) {
+function ProductsStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
         name="Products"
-        component={Components}
+        component={Products}
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Products" navigation={navigation} scene={scene} />
@@ -528,7 +530,7 @@ function AppStack(props) {
           />
           <MainTab.Screen
             name="Products"
-            component={ComponentsStack}
+            component={ProductsStack}
             options={{
               tabBarLabel: 'Products',
               tabBarIcon: ({ color, size }) => (

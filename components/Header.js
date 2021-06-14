@@ -1,12 +1,15 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard, Image, View } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
 import nowTheme from '../constants/Theme';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { MaterialIcons } from "@expo/vector-icons";
+
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -17,23 +20,23 @@ const BellButton = ({ isWhite, style, navigation }) => (
     style={[styles.button, style]}
   
   >
-    {/* <Icon
+    <Icon
       family="NowExtra"
       size={16}
       name="bulb"
       color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
     />
-    <Block middle style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]} /> */}
+    <Block middle style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]} />
   </TouchableOpacity>
 );
 
 const BasketButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]} >
+  <TouchableOpacity style={[styles.button, style], {zIndex:300}} onPress={() => {Keyboard.dismiss(); navigation.navigate('Search');}} >
     <Icon
       family="NowExtra"
-      size={16}
+      size={30}
       name="zoom-bold2x"
-      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
+      color={'#828489'}
     />
   </TouchableOpacity>
 );
@@ -42,25 +45,33 @@ const BasketButton = ({ isWhite, style, navigation }) => (
 
 class Header extends React.Component {
   handleLeftPress = () => {
+   
     const { back, navigation } = this.props;
     return back ? navigation.goBack() : navigation.goBack();
+    
   };
+
+  
+  
   renderRight = () => {
     const { white, title, navigation } = this.props;
+    
     // const { routeName } = navigation.state;
-
+      
     if (title === 'Title') {
       return [
         <BellButton key="chat-title" navigation={navigation} isWhite={white} />,
         <BasketButton key="basket-title" navigation={navigation} isWhite={white} />
       ];
     }
-
+ 
     switch (title) {
       case 'Home':
         return [
-          <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+         // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
+         <View style={{top:10}}>
+          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+          </View>
         ];
       case 'Deals':
         return [
@@ -87,14 +98,14 @@ class Header extends React.Component {
           <BellButton key="chat-profile" navigation={navigation} />,
           <BasketButton key="basket-deals" navigation={navigation} />
         ];
-      case 'Product':
+      case 'Products':
         return [
-          <BellButton key="chat-profile" navigation={navigation} isWhite={white} />,
+        
           <BasketButton key="basket-product" navigation={navigation} isWhite={white} />
         ];
       case 'Search':
         return [
-          <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
+       
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
         ];
       case 'Settings':
@@ -116,6 +127,38 @@ class Header extends React.Component {
         break;
     }
   };
+
+
+  renderHome = () => {
+    const { title, back, white, iconColor } = this.props;
+    
+    return (
+      <> 
+        {title =="Home" ? (
+          <View   style={styles.headerView}>
+
+            <View style={{position:'absolute', top:50, left: 10}}>
+              <MaterialIcons
+                name="receipt-long" color={'#828489'} size={45}
+                />
+            </View>
+
+             
+          <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+          </View> 
+        )
+         : (<Icon
+            name={back ? 'minimal-left2x' : 'minimal-left2x' }
+            family="NowExtra"
+            size={16}
+            onPress={this.handleLeftPress}
+            color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
+       /> ) }
+      </>
+    );
+  };
+
+
   renderSearch = () => {
     const { navigation } = this.props;
     return (
@@ -132,11 +175,14 @@ class Header extends React.Component {
       />
     );
   };
+
+
   renderOptions = () => {
     const { navigation, optionLeft, optionRight } = this.props;
 
     return (
       <Block row style={styles.options}>
+        
         <Button
           shadowless
           style={[styles.tab, styles.divider]}
@@ -191,11 +237,10 @@ class Header extends React.Component {
     const { search, options, tabs } = this.props;
     if (search || tabs || options) {
       return (
-        <Block center>
+        <Block center style={{marginTop:30}}>
           {/* {search ? this.renderSearch() : null}
           {options ? this.renderOptions() : null} */}
-          
-          {tabs ? this.renderTabs() : null}
+          {tabs ? this.renderTabs() : null} 
         </Block>
       );
     }
@@ -225,20 +270,12 @@ class Header extends React.Component {
     return (
       <Block style={headerStyles}>
         <NavBar
-          title={title}
+          title={title == 'Home' ? '':title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
-          rightStyle={{ alignItems: 'center' }}
-          left={
-            <Icon
-              name={back ? 'minimal-left2x' : 'minimal-left2x' }
-              family="NowExtra"
-              size={16}
-              onPress={this.handleLeftPress}
-              color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
-            />
-          }
+          rightStyle={{ alignItems: 'center',  }}
+          left={ this.renderHome() }
           leftStyle={{ paddingVertical: 12, flex: 0.2 }}
           titleStyle={[
             styles.title,
@@ -262,7 +299,8 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'montserrat-regular'
+    fontFamily: 'montserrat-regular',
+    left:wp('31%')
   },
   navbar: {
     paddingVertical: 0,
@@ -334,6 +372,23 @@ const styles = StyleSheet.create({
     borderRadius: theme.SIZES.BASE * 1.75,
     justifyContent: 'center'
   },
+
+  introImageStyle: {
+    
+    
+    width: 140,
+    height: 140,
+    resizeMode: 'contain',
+  
+    
+  },
+
+  headerView: {
+    width:wp('95%'),
+    flexDirection:'row',
+    marginTop:15,
+    justifyContent: 'center'
+  }
 });
 
 export default withNavigation(Header);
