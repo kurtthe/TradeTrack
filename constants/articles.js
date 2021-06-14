@@ -46,5 +46,35 @@ export default [
     description:
       'The smooth woven-wool is water resistant to ensure you stay pristine after a long-haul flight.',
     horizontal: true
+  },
+  {
+    title: 'Bathroom',
+    image: 'https://live.staticflickr.com/65535/51246905303_e82952d938_w.jpg',
+    description:
+      'Bathroom',
+      cta: 'View article'
+    
+  },
+  {
+    title: 'Kitchen',
+    image: 'https://live.staticflickr.com/65535/51245990602_552827f933_w.jpg',
+    description:
+      'Kitchen',
+      cta: 'View article'
+  },
+  {
+    title: 'Laundry',
+    image: 'https://live.staticflickr.com/65535/51246905258_2ccef461c7_w.jpg',
+    description:
+      'Bathroom',
+      cta: 'View article'
+    
+  },
+  {
+    title: 'New Catalog',
+    image: 'https://live.staticflickr.com/65535/51245986877_0974569587_w.jpg',
+    description:
+      'Kitchen',
+      cta: 'View article'
   }
 ];

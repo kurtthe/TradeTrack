@@ -184,7 +184,7 @@ class Home extends React.Component {
           <Block center>
             <Button
               color="info"
-              textStyle={{ fontFamily: 'montserrat-regular', fontSize: 12 }}
+              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
               style={styles.button}
             >
               Find our Store

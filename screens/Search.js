@@ -17,9 +17,9 @@ import { articles, categories, nowTheme } from "../constants/";
 import { Icon, Card, Input } from "../components/";
 
 const suggestions = [
-  { id: "DJs", title: "Jackets", image: categories["DJs"] },
-  { id: "artists", title: "Handbag", image: categories["artists"] },
-  { id: "accessory", title: "Style", image: categories["accessory"] },
+  { id: "DJs", title: "Showers", image: categories["DJs"] },
+  { id: "artists", title: "Toilets", image: categories["artists"] },
+  { id: "accessory", title: "Basins", image: categories["accessory"] },
 ];
 
 export default class Search extends React.Component {
