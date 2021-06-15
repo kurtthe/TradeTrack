@@ -1,7 +1,7 @@
 {
-  "name": "now-ui-pro-react-native",
-  "version": "1.4.0",
-  "description": "Now UI PRO React Native, based on Now UI Design System. Coded by Creative Tim",
+  "name": "burdens",
+  "version": "0.0.1",
+  "description": "UI PROYECT React Native, based on Figma Design . Coded by Jeff",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -10,10 +10,7 @@
     "eject": "expo eject",
     "lint": "eslint *.js **/*.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/creativetimofficial/now-ui-pro-react-native.git"
-  },
+
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.5.1",
@@ -47,27 +44,7 @@
     "eslint-plugin-react": "^7.16.0",
     "jshint": "^2.10.3"
   },
-  "keywords": [
-    "now react native",
-    "now design system",
-    "now app react native",
-    "now iOS",
-    "react native iOS",
-    "creative tim",
-    "now Android",
-    "react native ui kit",
-    "react native expo",
-    "freebie",
-    "react native now design",
-    "react native galio",
-    "galio now pro",
-    "galio react native free app",
-    "now expo react native",
-    "react native ui template"
-  ],
-  "author": "Creative Tim <hello@creative-tim.com> (https://www.creative-tim.com/)",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/ct-now-ui-pro-react-native/issues"
-  },
-  "homepage": "https://demos.creative-tim.com/now-ui-pro-react-native"
+  
+  "author": "",
+  "homepage": ""
 }
