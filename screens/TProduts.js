@@ -35,34 +35,25 @@ class Components extends React.Component {
   }
 
   renderCards = () => {
-   
-    
-
     return (
       <Block flex style={styles.group}>
-         <Block flex row>
-         <Card item={articles[7]} style={{ marginRight: theme.SIZES.BASE }} />
-        <Card item={articles[8]} />
-        
-      
+        <Block flex row>
+          <Card productCard item={articles[7]} style={{ marginRight: theme.SIZES.BASE }} />
+          <Card productCard item={articles[8]} />
+        </Block>
+        <Block flex row>
+          <Card productCard item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
+          <Card productCard item={articles[10]} />
+        </Block>
       </Block>
-      <Block flex row>
-         <Card item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
-        <Card item={articles[10]} />
-      
-      </Block>
-        
-      </Block>
-
     );
   };
-
 
   renderSwitches = () => {
     return (
       <Block flex style={styles.group, { backgroundColor:theme.COLORS.WHITE,borderRadius:8}}>
         <Text size={16} style={styles.title}>
-        Client friendly mode
+          Client friendly mode
         </Text>
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
@@ -71,18 +62,14 @@ class Components extends React.Component {
               size={14}
               color={'#848893'}
             >
-             enable this to hide "My price"
+              enable this to hide "My price"
             </Text>
-            <Switch
-              
-            />
+            <Switch/>
           </Block>
-          
         </Block>
       </Block>
     );
   };
-
 
   render() {
     return (
@@ -91,11 +78,10 @@ class Components extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30, width }}
         >
-         
           {this.renderCards()}
-          <Block style={{padding:15, }}>{this.renderSwitches()}</Block>
-          
-        
+          <Block style={{padding:15}}> 
+            {this.renderSwitches()} 
+          </Block>
         </ScrollView>
       </Block>
     );
@@ -118,7 +104,6 @@ const styles = StyleSheet.create({
   },
   group: {
     padding: 14,
-   
   },
   shadow: {
     shadowColor: 'black',
