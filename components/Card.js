@@ -1,10 +1,11 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '../constants';
+const { width } = Dimensions.get("screen");
 
 class Card extends React.Component {
   render() {
@@ -17,7 +18,8 @@ class Card extends React.Component {
       ctaColor,
       imageStyle,
       ctaRight,
-      titleStyle
+      titleStyle,
+      productCard
     } = this.props;
 
     const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
@@ -29,25 +31,50 @@ class Card extends React.Component {
       styles.shadow
     ];
 
+    const title = () => {
+      return productCard ?
+        <ImageBackground 
+          source={{
+            uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
+          }}
+          style={[
+            styles.imageBlock,
+            { width: '100%', height: '100%' }
+          ]}
+          imageStyle={{
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          <Text
+            style={titleStyles}
+            size={14}
+            color={'white'}
+          >
+            {item.title}
+          </Text>
+        </ImageBackground>
+      :
+        <Text
+            style={{ fontFamily: 'montserrat-regular' }}
+            size={14}
+            style={titleStyles}
+            color={nowTheme.COLORS.SECONDARY}
+          >
+            {item.title}
+        </Text>
+    }
+
     return (
       <Block row={horizontal} card flex style={cardContainer}>
-        <TouchableWithoutFeedback>
-          <Block flex style={imgContainer}>
-            <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
-          </Block>
+        <TouchableWithoutFeedback style={imgContainer}>
+          <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback >
           <Block flex space="between" style={styles.cardDescription}>
             <Block flex>
-              <Text
-                style={{ fontFamily: 'montserrat-regular' }}
-                size={14}
-                style={titleStyles}
-                color={nowTheme.COLORS.SECONDARY}
-              >
-                {item.title}
-              </Text>
-              {item.subtitle ? (
+              {title()}
+              {item.subtitle && 
                 <Block flex center>
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
@@ -57,8 +84,8 @@ class Card extends React.Component {
                     {item.subtitle}
                   </Text>
                 </Block>
-              ) : null}
-              {item.description ? (
+              }
+              {item.description && 
                 <Block flex center>
                   <Text
                     style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
@@ -68,8 +95,8 @@ class Card extends React.Component {
                     {item.description}
                   </Text>
                 </Block>
-              ) : null}
-              {item.body ? (
+              }
+              {item.body &&
                 <Block flex left>
                   <Text
                     style={{ fontFamily: 'montserrat-regular' }}
@@ -79,8 +106,8 @@ class Card extends React.Component {
                     {item.body}
                   </Text>
                 </Block>
-              ) : null}
-              {item.price ? (
+              }
+              {item.price &&
                 <Block flex left>
                   <Text
                     style={styles.itemPrice}
@@ -88,9 +115,9 @@ class Card extends React.Component {
                     {item.price}
                   </Text>
                 </Block>
-              ) : null}
+              }
             </Block>
-            {item.cta ? (
+            {item.cta &&
               <Block right={ctaRight ? false : true}>
                 <Text
                   style={styles.articleButton}
@@ -102,7 +129,7 @@ class Card extends React.Component {
                   {item.cta}
                 </Text>
               </Block>
-            ) : null}
+            }
           </Block>
         </TouchableWithoutFeedback>
       </Block>
@@ -118,7 +145,8 @@ Card.propTypes = {
   imageStyle: PropTypes.any,
   ctaRight: PropTypes.bool,
   titleStyle: PropTypes.any,
-  textBodyStyle: PropTypes.any
+  textBodyStyle: PropTypes.any,
+  productCard: PropTypes.bool
 };
 
 const styles = StyleSheet.create({
@@ -130,6 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   cardTitle: {
+    fontFamily: 'montserrat-bold',
     paddingHorizontal: 9,
     paddingTop: 7,
     paddingBottom: 15
