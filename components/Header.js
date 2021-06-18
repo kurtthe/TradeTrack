@@ -18,7 +18,6 @@ const iPhoneX = () =>
 const BellButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={[styles.button, style]}
-  
   >
     <Icon
       family="NowExtra"
@@ -45,17 +44,12 @@ const BasketButton = ({ isWhite, style, navigation }) => (
 
 class Header extends React.Component {
   handleLeftPress = () => {
-   
     const { back, navigation } = this.props;
     return back ? navigation.goBack() : navigation.goBack();
-    
   };
 
-  
-  
   renderRight = () => {
     const { white, title, navigation } = this.props;
-    
     // const { routeName } = navigation.state;
       
     if (title === 'Title') {
@@ -64,13 +58,12 @@ class Header extends React.Component {
         <BasketButton key="basket-title" navigation={navigation} isWhite={white} />
       ];
     }
- 
     switch (title) {
       case 'Home':
         return [
          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-         <View style={{top:10}}>
-          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+          <View style={{top:10}}>
+            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
       case 'Deals':
@@ -100,12 +93,10 @@ class Header extends React.Component {
         ];
       case 'Products':
         return [
-        
           <BasketButton key="basket-product" navigation={navigation} isWhite={white} />
         ];
       case 'Search':
         return [
-       
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
         ];
       case 'Settings':
@@ -136,28 +127,26 @@ class Header extends React.Component {
       <> 
         {title =="Home" ? (
           <View   style={styles.headerView}>
-
             <View style={{position:'absolute', top:50, left: 10}}>
               <MaterialIcons
                 name="receipt-long" color={'#828489'} size={45}
                 />
             </View>
-
-             
-          <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+            <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
           </View> 
         )
-         : (<Icon
+        : (
+          <Icon
             name={back ? 'minimal-left2x' : 'minimal-left2x' }
             family="NowExtra"
             size={16}
             onPress={this.handleLeftPress}
             color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
-       /> ) }
+          /> 
+        )}
       </>
     );
   };
-
 
   renderSearch = () => {
     const { navigation } = this.props;
@@ -182,7 +171,6 @@ class Header extends React.Component {
 
     return (
       <Block row style={styles.options}>
-        
         <Button
           shadowless
           style={[styles.tab, styles.divider]}
@@ -224,11 +212,11 @@ class Header extends React.Component {
     const defaultTab = tabs && tabs[0] && tabs[0].id;
 
     if (!tabs) return null;
-
     return (
       <Tabs
         data={tabs || []}
         initialIndex={tabIndex || defaultTab}
+        key={tabIndex}
         onChange={id => navigation.setParams({ tabId: id })}
       />
     );
@@ -372,17 +360,11 @@ const styles = StyleSheet.create({
     borderRadius: theme.SIZES.BASE * 1.75,
     justifyContent: 'center'
   },
-
   introImageStyle: {
-    
-    
     width: 140,
     height: 140,
     resizeMode: 'contain',
-  
-    
   },
-
   headerView: {
     width:wp('95%'),
     flexDirection:'row',

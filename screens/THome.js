@@ -14,185 +14,160 @@ const { width } = Dimensions.get("screen");
 class Home extends React.Component {
   renderArticles = () => {
     return (
-      <View>
-            <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.articles}
-      >
-      <Block flex card center shadow style={styles.category}>
-      <ImageBackground
-        source={{
-          uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
-        }}
-
-       // source={require('../assets/imgs/Frame_main.png')}
-        style={[
-          styles.imageBlock,
-          { width: width - theme.SIZES.BASE * 0.1, height: 162 }
-        ]}
-        imageStyle={{
-          width: width - theme.SIZES.BASE * 0.1,
-          height: 162
-        }}
-      >
-        <Block style={styles.categoryTitle}>
-        <Text color={nowTheme.COLORS.TIME} style={{ fontFamily: 'montserrat-bold', paddingLeft:6 }} size={14}>Current Balance</Text>
-                 
-        <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE , paddingLeft:6, paddingRight:6}}>
-          
-          <Text size={28} bold color={theme.COLORS.WHITE}>
-            $12,500.15
-          </Text>
-        <View style={{backgroundColor:'#4D76C8', padding:5, borderRadius:7}}>
-        <MaterialIcons
-                name="request-quote" color={theme.COLORS.WHITE} size={32}
-                        />
-        </View>
-         
-          </Block>
-
-          <Block row middle space="between" style={styles.bottomView}>
-          
-          <Text size={14} bold color={theme.COLORS.WHITE}>
-          Overdue Balance
-          </Text>
-
-           <Text size={14} bold color={theme.COLORS.WHITE}>
-           $1,500.00
-          </Text>
-          </Block>
-
-
-        </Block>
-
-        
-      </ImageBackground>
-    </Block>
-  
-            <Block style={styles.cardHeader}>
-            <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
-                <Text
-                  size={18}
-                  style={{ fontFamily: "montserrat-regular" }}
-                  color={nowTheme.COLORS.BLACK}
-                >
-                 Invoices
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.articles}
+        >
+          <Block flex card center shadow style={styles.category}>
+            <ImageBackground
+              source={{
+                uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
+              }}
+            // source={require('../assets/imgs/Frame_main.png')}
+              style={[
+                styles.imageBlock,
+                { width: width - theme.SIZES.BASE * 0.1, height: 162 }
+              ]}
+              imageStyle={{
+                width: width - theme.SIZES.BASE * 0.1,
+                height: 162
+              }}
+            >
+            <Block style={styles.categoryTitle}>
+              <Text color={nowTheme.COLORS.TIME} style={{ fontFamily: 'montserrat-bold', paddingLeft:6 }} size={14}>Current Balance</Text>
+              <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE , paddingLeft:6, paddingRight:6}}>
+                <Text size={28} bold color={theme.COLORS.WHITE}>
+                  $12,500.15
                 </Text>
-                <Text
-                  size={15}
-                  style={{ fontFamily: "montserrat-regular", right:15 }}
-                  color={nowTheme.COLORS.HEADER}
-                >
-                 See all
-                </Text>
-                </Block>
+                <View style={{backgroundColor:'#4D76C8', padding:5, borderRadius:7}}>
+                  <MaterialIcons name="request-quote" color={theme.COLORS.WHITE} size={32} />
+                </View>
               </Block>
-              
-            <Block style={styles.card}>
-            
-              <Block>
-                <Notification
-                  
-                    system
-                    title="Invoice"
-                    reference="REF 20792769"
-                    time="05/03/2021"
-                    body="LOT 97 - 105 CHELTENHAM...BEAU"
-                    done="Invoiced"
-                    price="1.200"
-                    iconName="email-852x"
-                    iconFamily="NowExtra"
-                    color={nowTheme.COLORS.TIME}
-                    style={{ marginBottom: 5,  }}
-                  />
-               <Notification
-                  
-                  system
-                  title="Invoice"
-                  reference="REF 20792769"
-                  time="05/03/2021"
-                  body="LOT 97 - 105 CHELTENHAM...BEAU"
-                  done="Invoiced"
-                  price="1.200"
-                  iconName="email-852x"
-                  iconFamily="NowExtra"
-                  color={nowTheme.COLORS.TIME}
-                  style={{ marginBottom: 5,  }}
-                />
-                <Notification
-                  
-                  system
-                  title="Invoice"
-                  reference="REF 20792769"
-                  time="05/03/2021"
-                  body="LOT 97 - 105 CHELTENHAM...BEAU"
-                  done="Invoiced"
-                  price="1.200"
-                  iconName="email-852x"
-                  iconFamily="NowExtra"
-                  color={nowTheme.COLORS.TIME}
-                  style={{ marginBottom: 5,  }}
-                />
-                <Notification
-                  
-                  system
-                  title="Invoice"
-                  reference="REF 20792769"
-                  time="05/03/2021"
-                  body="LOT 97 - 105 CHELTENHAM...BEAU"
-                  done="Invoiced"
-                  price="1.200"
-                  iconName="email-852x"
-                  iconFamily="NowExtra"
-                  color={nowTheme.COLORS.TIME}
-                  style={{ marginBottom: 5,  }}
-                />
+              <Block row middle space="between" style={styles.bottomView}>
+                <Text size={14} bold color={theme.COLORS.WHITE}> Overdue Balance </Text>
+                <Text size={14} bold color={theme.COLORS.WHITE}> $1,500.00 </Text>
               </Block>
             </Block>
-            <Block style={styles.cardHeader}>
+            </ImageBackground>
+          </Block>
+          <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
-                <Text
-                  size={18}
-                  style={{ fontFamily: "montserrat-regular" }}
-                  color={nowTheme.COLORS.BLACK}
-                >
-                 Burden News
-                </Text>
-                <Text
-                  size={15}
-                  style={{ fontFamily: "montserrat-regular", right:15 }}
-                  color={nowTheme.COLORS.HEADER}
-                >
-                 See all
-                </Text>
-                </Block>
-              </Block>
+              <Text
+                size={18}
+                style={{ fontFamily: "montserrat-regular" }}
+                color={nowTheme.COLORS.BLACK}
+              >
+                Invoices
+              </Text>
+              <Text
+                size={15}
+                style={{ fontFamily: "montserrat-regular", right:15 }}
+                color={nowTheme.COLORS.HEADER}
+              >
+                See all
+              </Text>
+            </Block>
+          </Block>
+          <Block style={styles.card}>
+            <Block>
+              <Notification
+                system
+                title="Invoice"
+                reference="REF 20792769"
+                time="05/03/2021"
+                body="LOT 97 - 105 CHELTENHAM...BEAU"
+                done="Invoiced"
+                price="1.200"
+                iconName="email-852x"
+                iconFamily="NowExtra"
+                color={nowTheme.COLORS.TIME}
+                style={{ marginBottom: 5,  }}
+              />
+              <Notification
+                system
+                title="Invoice"
+                reference="REF 20792769"
+                time="05/03/2021"
+                body="LOT 97 - 105 CHELTENHAM...BEAU"
+                done="Invoiced"
+                price="1.200"
+                iconName="email-852x"
+                iconFamily="NowExtra"
+                color={nowTheme.COLORS.TIME}
+                style={{ marginBottom: 5,  }}
+              />
+              <Notification
+                system
+                title="Invoice"
+                reference="REF 20792769"
+                time="05/03/2021"
+                body="LOT 97 - 105 CHELTENHAM...BEAU"
+                done="Invoiced"
+                price="1.200"
+                iconName="email-852x"
+                iconFamily="NowExtra"
+                color={nowTheme.COLORS.TIME}
+                style={{ marginBottom: 5,  }}
+              />
+              <Notification
+                system
+                title="Invoice"
+                reference="REF 20792769"
+                time="05/03/2021"
+                body="LOT 97 - 105 CHELTENHAM...BEAU"
+                done="Invoiced"
+                price="1.200"
+                iconName="email-852x"
+                iconFamily="NowExtra"
+                color={nowTheme.COLORS.TIME}
+                style={{ marginBottom: 5,  }}
+              />
+            </Block>
+          </Block>
+          <Block style={styles.cardHeader}>
+            <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
+              <Text
+                size={18}
+                style={{ fontFamily: "montserrat-regular" }}
+                color={nowTheme.COLORS.BLACK}
+              >
+              Burden News
+              </Text>
+              <Text
+                size={15}
+                style={{ fontFamily: "montserrat-regular", right:15 }}
+                color={nowTheme.COLORS.HEADER}
+              >
+              See all
+              </Text>
+            </Block>
+          </Block>
         <Block flex>
-        <ScrollView  horizontal={true} >
-          <Block flex row>
-            <Card
-              item={articles[1]}
-              style={{ width:300, marginRight: theme.SIZES.BASE }}
-            ctaColor={'#B6584E'}
-            />
-            <Card item={articles[2]}
-             style={{ width:300, marginRight: theme.SIZES.BASE }}
-             ctaColor={'#B6584E'}
-            />
-          </Block>
+          <ScrollView  horizontal={true} >
+            <Block flex row>
+              <Card
+                item={articles[1]}
+                style={{ width:300, marginRight: theme.SIZES.BASE }}
+                ctaColor={'#B6584E'}
+              />
+              <Card 
+                item={articles[2]}
+                style={{ width:300, marginRight: theme.SIZES.BASE }}
+                ctaColor={'#B6584E'}
+              />
+            </Block>
           </ScrollView>
-          <Block center>
-            <Button
-              color="info"
-              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-              style={styles.button}
-            >
-              Find our Store
-            </Button>
-          </Block>
+            <Block center>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.button}
+              >
+                Find our Store
+              </Button>
+            </Block>
         </Block>
       </ScrollView>
-      </View>
     );
   };
 
@@ -215,7 +190,6 @@ const styles = StyleSheet.create({
     paddingVertical: theme.SIZES.BASE,
     paddingHorizontal: 2,
     fontFamily: 'montserrat-regular',
-
   },
   button: {
     marginBottom: theme.SIZES.BASE,
@@ -240,10 +214,8 @@ const styles = StyleSheet.create({
   imageBlock: {
     overflow: 'hidden',
     borderRadius: 1,
-  
-    
   },
-  bottomView:{
+  bottomView: {
     padding:10,  position:'absolute', bottom:0, width:width, 
     backgroundColor: 'rgba(75, 106, 170, 0.5)',
   },
@@ -257,7 +229,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.SIZES.BASE,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
-   
   },
 });
 
