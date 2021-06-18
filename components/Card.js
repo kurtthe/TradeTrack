@@ -37,14 +37,7 @@ class Card extends React.Component {
           source={{
             uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
           }}
-          style={[
-            styles.imageBlock,
-            { width: '100%', height: '100%' }
-          ]}
-          imageStyle={{
-            width: '100%',
-            height: '100%'
-          }}
+          style={styles.imageBlock}
         >
           <Text
             style={titleStyles}
@@ -71,7 +64,7 @@ class Card extends React.Component {
           <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback >
-          <Block flex space="between" style={styles.cardDescription}>
+          <Block flex space="between" style={!productCard && styles.cardDescription}>
             <Block flex>
               {title()}
               {item.subtitle && 
@@ -85,7 +78,7 @@ class Card extends React.Component {
                   </Text>
                 </Block>
               }
-              {item.description && 
+              {item.description && !productCard && 
                 <Block flex center>
                   <Text
                     style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
@@ -117,7 +110,7 @@ class Card extends React.Component {
                 </Block>
               }
             </Block>
-            {item.cta &&
+            {item.cta && !productCard &&
               <Block right={ctaRight ? false : true}>
                 <Text
                   style={styles.articleButton}
@@ -161,7 +154,7 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-bold',
     paddingHorizontal: 9,
     paddingTop: 7,
-    paddingBottom: 15
+    paddingBottom: 10
   },
   cardDescription: {
     padding: theme.SIZES.BASE / 2
@@ -206,6 +199,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 9,
     color: nowTheme.COLORS.PRIMARY
+  },
+  imageBlock: {
+    width: '100%',
+    height: '100%'
   }
 });
 
