@@ -38,12 +38,17 @@ class Components extends React.Component {
     return (
       <Block flex style={styles.group}>
         <Block flex row>
-          <Card productCard item={articles[7]} style={{ marginRight: theme.SIZES.BASE }} />
-          <Card productCard item={articles[8]} />
+          <Card 
+            categoryCard 
+            onPress={() => this.props.navigation.navigate('Category', {title: articles[7].title})} 
+            item={articles[7]} 
+            style={{ marginRight: theme.SIZES.BASE }} 
+          />
+          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[8]} />
         </Block>
         <Block flex row>
-          <Card productCard item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
-          <Card productCard item={articles[10]} />
+          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
+          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[10]} />
         </Block>
       </Block>
     );

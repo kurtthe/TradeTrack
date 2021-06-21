@@ -2,105 +2,79 @@ import React from "react";
 import {
   Image,
   StyleSheet,
-  ScrollView,
   Dimensions,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  View, 
+  FlatList
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
-import { Card } from "../components/";
-import categories from "../constants/categories";
+import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
 
-const { width } = Dimensions.get("window");
-const cardWidth = width - theme.SIZES.BASE * 2;
+const { width, height } = Dimensions.get("window");
+const cardWidth = width / 2 *0.87;
+const cardHeight = height * 0.45;
 
 export default class Category extends React.Component {
-  renderSuggestions = () => {
-    const { navigation, route } = this.props;
-    // const { params } = navigation && navigation.state;
-    // const category = categories[params.id];
-    // const suggestions = category && category.suggestions;
-    const category = categories[route.params?.id];
-    const suggestions = category && category.suggestions;
 
-    if (!suggestions) return null;
-
+  renderCard = ({ item }) => {
     return (
-      <React.Fragment>
-        <Card item={suggestions[0]} style={{ marginRight: nowTheme.SIZES.BASE }} />
-        <Card item={suggestions[1]} />
-      </React.Fragment>
-    );
-  };
-
-  renderCard = (item) => {
-    return (
-      <TouchableWithoutFeedback
-        key={`Card-${item.title}`}
-      >
-        <Block flex style={styles.Card}>
+      <Block key={`Card-${item.title}`} height={cardHeight} style={styles.Card}>
+        <TouchableWithoutFeedback>
           <Image
-            resizeMode="cover"
+            resizeMode="contain"
             style={styles.image}
-            source={{ uri: item.image }}
+            source={item.image}
           />
-          <Block center style={{ paddingHorizontal: nowTheme.SIZES.BASE }}>
-            <Text
-              center
-              style={styles.price}
-            >
-              $377
+        </TouchableWithoutFeedback>
+        <Block flex space='between' style={{paddingTop: 10, paddingBottom: 15}}>
+          <Block row >
+            <Text color={nowTheme.COLORS.LIGHTGRAY}>
+              SKU:
             </Text>
-            <Text style={{ fontFamily: 'montserrat-regular' }} center size={34} color={nowTheme.COLORS.TEXT}>
-              {item.title}
-            </Text>
-            <Text
-              center
-              size={16}
-              color={nowTheme.COLORS.MUTED}
-              style={styles.description}
-            >
-              {item.description}
+            <Text color={nowTheme.COLORS.INFO}>
+              {` ${item.sku}`}
             </Text>
           </Block>
+          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5 }} size={15} >
+            {item.title}
+          </Text>
+          <Block row style={{width: '100%'}}>
+            <Block flex>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> Price: </Text>
+              <Text style={styles.price}> {item.price} </Text>
+            </Block>
+            <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+            <Block flex >
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                My Price: 
+              </Text>
+              <Text style={styles.price}> {item.myPrice} </Text>
+            </Block>
+          </Block>
         </Block>
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback style={{margin: 10}} >
+          <Block middle style={styles.addButton}>
+            <Text style={{color: nowTheme.COLORS.INFO, fontFamily:'montserrat-bold', fontSize: 20}}>Add</Text>
+          </Block>
+        </TouchableWithoutFeedback>
+      </Block>
     );
   };
 
   render() {
     const { navigation, route } = this.props;
-    // const { params } = navigation && navigation.state;
-    // const category = categories[params.id];
-    const category = categories[route.params?.id];
+    const category = categories;
     return (
-      <Block flex>
-        <ScrollView
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-        >
-          <Block flex={3}>
-            <ScrollView
-              horizontal={true}
-              pagingEnabled={true}
-              decelerationRate={0}
-              scrollEventThrottle={16}
-              snapToAlignment="center"
-              showsHorizontalScrollIndicator={false}
-              snapToInterval={cardWidth + nowTheme.SIZES.BASE * 0.375}
-              contentContainerStyle={{ paddingRight: nowTheme.SIZES.BASE }}
-            >
-              {category &&
-                category.images.map((item, index) =>
-                  this.renderCard(item, index)
-                )}
-            </ScrollView>
-          </Block>
-          <Block flex row style={{ marginHorizontal: nowTheme.SIZES.BASE }}>
-            {this.renderSuggestions()}
-          </Block>
-        </ScrollView>
+      <Block color={nowTheme.COLORS.BACKGROUND}>
+        <FlatList
+          style={{margin: -5}}
+          numColumns={2}
+          data={category.products}
+          renderItem={(item) => this.renderCard(item)}
+          keyExtractor={item => item.id}
+        />
       </Block>
     );
   }
@@ -108,46 +82,33 @@ export default class Category extends React.Component {
 
 const styles = StyleSheet.create({
   Card: {
-    width: cardWidth - nowTheme.SIZES.BASE * 2,
+    backgroundColor: 'white',
+    width: cardWidth,
     marginHorizontal: nowTheme.SIZES.BASE,
     marginTop: nowTheme.SIZES.BASE * 2,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
-    shadowOpacity: 0.2
+    shadowOpacity: 0.2,
+    padding: 10
   },
   image: {
-    width: cardWidth - nowTheme.SIZES.BASE,
-    height: cardWidth - nowTheme.SIZES.BASE,
+    width: cardWidth*0.90,
+    height: cardHeight*0.45
   },
-  imageVertical: {
-    overflow: "hidden"
+  priceGrayText: {
+    paddingLeft: 2,
+    fontSize: 13
   },
   price: {
-    fontFamily: 'montserrat-regular',
-    fontSize: 16,
-    paddingTop: nowTheme.SIZES.BASE * 2,
-    paddingBottom: nowTheme.SIZES.BASE / 2,
-    color: nowTheme.COLORS.PRIMARY
+    fontFamily: 'montserrat-bold',
+    fontSize: 15,
+    color: nowTheme.COLORS.ORANGE
   },
-  description: {
-    fontFamily: 'montserrat-regular',
-    paddingTop: nowTheme.SIZES.BASE,
-    paddingBottom: nowTheme.SIZES.BASE * 2
-  },
-  suggestion: {
-    backgroundColor: nowTheme.COLORS.WHITE,
-    marginBottom: nowTheme.SIZES.BASE,
-    borderWidth: 0,
-    marginLeft: nowTheme.SIZES.BASE / 2,
-    marginRight: nowTheme.SIZES.BASE / 2
-  },
-  suggestionTitle: {
-    flex: 1,
-    flexWrap: "wrap",
-    paddingBottom: 6
-  },
-  suggestionDescription: {
-    padding: nowTheme.SIZES.BASE / 2
+  addButton: {
+    width: '100%',
+    height: 40,
+    backgroundColor: 'rgba(14, 58, 144, 0.1)',
+    borderRadius: 5
   }
 });

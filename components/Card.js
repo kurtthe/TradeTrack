@@ -1,7 +1,7 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '../constants';
@@ -19,7 +19,8 @@ class Card extends React.Component {
       imageStyle,
       ctaRight,
       titleStyle,
-      productCard
+      categoryCard,
+      onPress
     } = this.props;
 
     const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
@@ -32,7 +33,7 @@ class Card extends React.Component {
     ];
 
     const title = () => {
-      return productCard ?
+      return categoryCard ?
         <ImageBackground 
           source={{
             uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
@@ -59,73 +60,75 @@ class Card extends React.Component {
     }
 
     return (
-      <Block row={horizontal} card flex style={cardContainer}>
-        <TouchableWithoutFeedback style={imgContainer}>
-          <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback >
-          <Block flex space="between" style={!productCard && styles.cardDescription}>
-            <Block flex>
-              {title()}
-              {item.subtitle && 
-                <Block flex center>
+      <TouchableWithoutFeedback onPress={() => categoryCard && onPress()}>
+        <Block row={horizontal} card flex style={cardContainer}>
+          <>
+            <View style={imgContainer}>
+              <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
+            </View>
+            <Block flex space="between" style={!categoryCard && styles.cardDescription}>
+              <Block flex>
+                {title()}
+                {item.subtitle && 
+                  <Block flex center>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular' }}
+                      size={32}
+                      color={nowTheme.COLORS.BLACK}
+                    >
+                      {item.subtitle}
+                    </Text>
+                  </Block>
+                }
+                {item.description && !categoryCard && 
+                  <Block flex center>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
+                      size={14}
+                      color={"#858C9C"}
+                    >
+                      {item.description}
+                    </Text>
+                  </Block>
+                }
+                {item.body &&
+                  <Block flex left>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular' }}
+                      size={12}
+                      color={nowTheme.COLORS.TEXT}
+                    >
+                      {item.body}
+                    </Text>
+                  </Block>
+                }
+                {item.price &&
+                  <Block flex left>
+                    <Text
+                      style={styles.itemPrice}
+                    >
+                      {item.price}
+                    </Text>
+                  </Block>
+                }
+              </Block>
+              {item.cta && !categoryCard &&
+                <Block right={ctaRight ? false : true}>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={32}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    {item.subtitle}
-                  </Text>
-                </Block>
-              }
-              {item.description && !productCard && 
-                <Block flex center>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
-                    size={14}
-                    color={"#858C9C"}
-                  >
-                    {item.description}
-                  </Text>
-                </Block>
-              }
-              {item.body &&
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
+                    style={styles.articleButton}
                     size={12}
-                    color={nowTheme.COLORS.TEXT}
+                    muted={!ctaColor}
+                    color={ctaColor || nowTheme.COLORS.ACTIVE}
+                    bold
                   >
-                    {item.body}
-                  </Text>
-                </Block>
-              }
-              {item.price &&
-                <Block flex left>
-                  <Text
-                    style={styles.itemPrice}
-                  >
-                    {item.price}
+                    {item.cta}
                   </Text>
                 </Block>
               }
             </Block>
-            {item.cta && !productCard &&
-              <Block right={ctaRight ? false : true}>
-                <Text
-                  style={styles.articleButton}
-                  size={12}
-                  muted={!ctaColor}
-                  color={ctaColor || nowTheme.COLORS.ACTIVE}
-                  bold
-                >
-                  {item.cta}
-                </Text>
-              </Block>
-            }
-          </Block>
-        </TouchableWithoutFeedback>
-      </Block>
+          </>
+        </Block>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -139,7 +142,8 @@ Card.propTypes = {
   ctaRight: PropTypes.bool,
   titleStyle: PropTypes.any,
   textBodyStyle: PropTypes.any,
-  productCard: PropTypes.bool
+  categoryCard: PropTypes.bool,
+  onPress: PropTypes.any
 };
 
 const styles = StyleSheet.create({
@@ -163,9 +167,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     elevation: 1,
     overflow: 'hidden'
-  },
-  image: {
-    // borderRadius: 3,
   },
   horizontalImage: {
     height: 122,
