@@ -5,16 +5,18 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   View, 
-  FlatList
+  FlatList,
+  ScrollView
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
+import { Card, Button } from "../components";
 
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
-const cardHeight = height * 0.45;
+const cardHeight = height * 0.50;
 
 export default class Category extends React.Component {
 
@@ -28,7 +30,7 @@ export default class Category extends React.Component {
             source={item.image}
           />
         </TouchableWithoutFeedback>
-        <Block flex space='between' style={{paddingTop: 10, paddingBottom: 15}}>
+        <Block flex space='between' style={{ paddingBottom: 15}}>
           <Block row >
             <Text color={nowTheme.COLORS.LIGHTGRAY}>
               SKU:
@@ -54,11 +56,19 @@ export default class Category extends React.Component {
             </Block>
           </Block>
         </Block>
-        <TouchableWithoutFeedback style={{margin: 10}} >
-          <Block middle style={styles.addButton}>
-            <Text style={{color: nowTheme.COLORS.INFO, fontFamily:'montserrat-bold', fontSize: 20}}>Add</Text>
-          </Block>
-        </TouchableWithoutFeedback>
+        <Block center>
+          <Button
+            color="warning"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
+            style={styles.buttonAdd}
+            //onPress={() => navigation.navigate("Login")}
+                            
+            >
+            Add
+            </Button>
+          </Block>               
+
+        
       </Block>
     );
   };
@@ -66,16 +76,37 @@ export default class Category extends React.Component {
   render() {
     const { navigation, route } = this.props;
     const category = categories;
+  
     return (
-      <Block color={nowTheme.COLORS.BACKGROUND}>
-        <FlatList
-          style={{margin: -5}}
-          numColumns={2}
-          data={category.products}
-          renderItem={(item) => this.renderCard(item)}
-          keyExtractor={item => item.id}
-        />
+      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
+                <FlatList
+                  style={{margin: -5,}}
+                  numColumns={2}
+                  data={category.Laundry}
+                  renderItem={(item) => this.renderCard(item)}
+                  keyExtractor={item => item.id}
+                />
+    
+      
+                 <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
+                        <Button
+                          color="info"
+                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                          style={styles.button}
+                         // onPress={() => navigation.navigate("App")}
+                          
+                        >
+                         Load more...
+                        </Button>
+                      </Block>
+                       
+        </ScrollView>
       </Block>
+        
     );
   }
 }
@@ -90,7 +121,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
-    padding: 10
+    padding: 10,
+    borderRadius:5,
+    marginBottom:10
   },
   image: {
     width: cardWidth*0.90,
@@ -102,7 +135,9 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'montserrat-bold',
-    fontSize: 15,
+    fontSize:  14,
+    //fontSize:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').width < 670) ? hp('10%') : hp('40%')) :  (Dimensions.get('window').width < 870) ? hp('29%') : hp('40%'),
+
     color: nowTheme.COLORS.ORANGE
   },
   addButton: {
@@ -110,5 +145,16 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'rgba(14, 58, 144, 0.1)',
     borderRadius: 5
-  }
+  },
+  button: {
+    marginBottom: theme.SIZES.BASE,
+    width: width - theme.SIZES.BASE * 1,
+    
+  },
+
+  buttonAdd: {
+   
+    width: width - 240,
+    
+  },
 });
