@@ -16,7 +16,7 @@ import { nowTheme } from "../constants";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
-const cardHeight = height * 0.50;
+const cardHeight = height * 0.51;
 
 export default class Category extends React.Component {
 
