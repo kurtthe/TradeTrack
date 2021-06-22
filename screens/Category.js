@@ -10,8 +10,7 @@ import {
 } from "react-native";
 
 import { Card, Button } from "../components";
-import ArButton from '../components/Button';
-import { Block, Text, theme, Button } from "galio-framework";
+import { Block, Text, theme } from "galio-framework";
 import ArButton from '../components/Button';
 
 
