@@ -1,10 +1,11 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '../constants';
+const { width } = Dimensions.get("screen");
 
 class Card extends React.Component {
   render() {
@@ -17,7 +18,9 @@ class Card extends React.Component {
       ctaColor,
       imageStyle,
       ctaRight,
-      titleStyle
+      titleStyle,
+      categoryCard,
+      onPress
     } = this.props;
 
     const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
@@ -29,83 +32,103 @@ class Card extends React.Component {
       styles.shadow
     ];
 
+    const title = () => {
+      return categoryCard ?
+        <ImageBackground 
+          source={{
+            uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
+          }}
+          style={styles.imageBlock}
+        >
+          <Text
+            style={titleStyles}
+            size={14}
+            color={'white'}
+          >
+            {item.title}
+          </Text>
+        </ImageBackground>
+      :
+        <Text
+            style={{ fontFamily: 'montserrat-regular' }}
+            size={14}
+            style={titleStyles}
+            color={nowTheme.COLORS.SECONDARY}
+          >
+            {item.title}
+        </Text>
+    }
+
     return (
-      <Block row={horizontal} card flex style={cardContainer}>
-        <TouchableWithoutFeedback>
-          <Block flex style={imgContainer}>
-            <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
-          </Block>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback >
-          <Block flex space="between" style={styles.cardDescription}>
-            <Block flex>
-              <Text
-                style={{ fontFamily: 'montserrat-regular' }}
-                size={14}
-                style={titleStyles}
-                color={nowTheme.COLORS.SECONDARY}
-              >
-                {item.title}
-              </Text>
-              {item.subtitle ? (
-                <Block flex center>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={32}
-                    color={nowTheme.COLORS.BLACK}
-                  >
-                    {item.subtitle}
-                  </Text>
-                </Block>
-              ) : null}
-              {item.description ? (
-                <Block flex center>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
-                    size={14}
-                    color={"#858C9C"}
-                  >
-                    {item.description}
-                  </Text>
-                </Block>
-              ) : null}
-              {item.body ? (
-                <Block flex left>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={12}
-                    color={nowTheme.COLORS.TEXT}
-                  >
-                    {item.body}
-                  </Text>
-                </Block>
-              ) : null}
-              {item.price ? (
-                <Block flex left>
-                  <Text
-                    style={styles.itemPrice}
-                  >
-                    {item.price}
-                  </Text>
-                </Block>
-              ) : null}
-            </Block>
-            {item.cta ? (
-              <Block right={ctaRight ? false : true}>
-                <Text
-                  style={styles.articleButton}
-                  size={12}
-                  muted={!ctaColor}
-                  color={ctaColor || nowTheme.COLORS.ACTIVE}
-                  bold
-                >
-                  {item.cta}
-                </Text>
+      <TouchableWithoutFeedback onPress={() => categoryCard && onPress()}>
+        <Block row={horizontal} card flex style={cardContainer}>
+          <>
+            <View style={imgContainer}>
+              <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
+            </View>
+            <Block flex space="between" style={!categoryCard && styles.cardDescription}>
+              <Block flex>
+                {title()}
+                {item.subtitle && 
+                  <Block flex center>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular' }}
+                      size={32}
+                      color={nowTheme.COLORS.BLACK}
+                    >
+                      {item.subtitle}
+                    </Text>
+                  </Block>
+                }
+                {item.description && !categoryCard && 
+                  <Block flex center>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
+                      size={14}
+                      color={"#858C9C"}
+                    >
+                      {item.description}
+                    </Text>
+                  </Block>
+                }
+                {item.body &&
+                  <Block flex left>
+                    <Text
+                      style={{ fontFamily: 'montserrat-regular' }}
+                      size={12}
+                      color={nowTheme.COLORS.TEXT}
+                    >
+                      {item.body}
+                    </Text>
+                  </Block>
+                }
+                {item.price &&
+                  <Block flex left>
+                    <Text
+                      style={styles.itemPrice}
+                    >
+                      {item.price}
+                    </Text>
+                  </Block>
+                }
               </Block>
-            ) : null}
-          </Block>
-        </TouchableWithoutFeedback>
-      </Block>
+              {item.cta && !categoryCard &&
+                <Block right={ctaRight ? false : true}>
+                  <Text
+                    style={styles.articleButton}
+                    size={12}
+                    muted={!ctaColor}
+                    color={ctaColor || nowTheme.COLORS.ACTIVE}
+                    bold
+                  >
+                    {item.cta}
+                  </Text>
+                </Block>
+              }
+            </Block>
+          </>
+        </Block>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -118,7 +141,9 @@ Card.propTypes = {
   imageStyle: PropTypes.any,
   ctaRight: PropTypes.bool,
   titleStyle: PropTypes.any,
-  textBodyStyle: PropTypes.any
+  textBodyStyle: PropTypes.any,
+  categoryCard: PropTypes.bool,
+  onPress: PropTypes.any
 };
 
 const styles = StyleSheet.create({
@@ -130,9 +155,10 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   cardTitle: {
+    fontFamily: 'montserrat-bold',
     paddingHorizontal: 9,
     paddingTop: 7,
-    paddingBottom: 15
+    paddingBottom: 10
   },
   cardDescription: {
     padding: theme.SIZES.BASE / 2
@@ -141,9 +167,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     elevation: 1,
     overflow: 'hidden'
-  },
-  image: {
-    // borderRadius: 3,
   },
   horizontalImage: {
     height: 122,
@@ -177,6 +200,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingHorizontal: 9,
     color: nowTheme.COLORS.PRIMARY
+  },
+  imageBlock: {
+    width: '100%',
+    height: '100%'
   }
 });
 
