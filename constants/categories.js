@@ -233,36 +233,30 @@ export default {
   artists: {
     images: [
       {
-        title: "Painting Studio",
-        description:
-          "You need a creative space ready for your art? We got that covered.",
-        image:
-          "https://images.unsplash.com/photo-1501084817091-a4f3d1d19e07?fit=crop&w=2700&q=80"
+        title: 'Kaya Basin/Bath Wall Mixer 160mm Outlet Matte Black Plate',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51248639374_cf74051e60_w.jpg',
       },
       {
-        title: "Art Gallery",
-        description:
-          "Don't forget to visit one of the coolest art galleries in town.",
-        image:
-          "https://images.unsplash.com/photo-1500628550463-c8881a54d4d4?fit=crop&w=2698&q=80"
+        title: 'Dolce Shower Column Set',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51248079928_77a45e8d31_w.jpg',
       },
       {
-        title: "Video Services",
-        description:
-          "Some of the best music video services someone could have for the lowest prices.",
-        image:
-          "https://images.unsplash.com/photo-1496680392913-a0417ec1a0ad?fit=crop&w=2700&q=80"
-      }
+        title: 'Parisi Forty Five 330 Side Storage Unit (Gw) Left Hand Ff-330Ssl-Gw',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51247883371_649e6e6d5c_w.jpg',
+      },
     ],
     suggestions: [
       {
-        title: "Music studio for real...",
+        title: "Lillian Basin Set 1/4 Turn Ceramic Disk",
         price: 1800,
         image:
           "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2700&q=80"
       },
       {
-        title: "Music equipment to borrow...",
+        title: "Di Lusso 60cm Th601Ss Telescopic (Slide Out) Rangehood Stainless",
         price: 300,
         image:
           "https://images.unsplash.com/photo-1477233534935-f5e6fe7c1159?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2700&q=80"
@@ -311,29 +305,29 @@ export default {
   DJs: {
     images: [
       {
-        title: 'Tech-House Party',
-        description: 'Get ready for an awesome party in the backyard of one of the greatest Tech-House DJs in the world.',
-        image: 'https://images.unsplash.com/photo-1542851041-0a2a651561a3?fit=crop&w=2706&q=80',
+        title: 'Kaya Basin/Bath Wall Mixer 160mm Outlet Matte Black Plate',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51248639374_cf74051e60_w.jpg',
       },
       {
-        title: 'Dubstep Party',
-        description: 'We\'re sure you\'re going to enjoy this party full of fast drums and crazy rhythms.',
-        image: 'https://images.unsplash.com/photo-1530521877972-491c628bbb31?fit=crop&w=2614&q=80',
+        title: 'Dolce Shower Column Set',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51248079928_77a45e8d31_w.jpg',
       },
       {
-        title: 'Hip-Hop Party',
-        description: 'Fat 808s, hype music and a whole different Urban vibe. These Hip-Hop DJs are going to spin the best songs you\'ve ever listened to.',
-        image: 'https://images.unsplash.com/photo-1544616326-a041e9e3b348?fit=crop&w=3889&q=80',
+        title: 'Parisi Forty Five 330 Side Storage Unit (Gw) Left Hand Ff-330Ssl-Gw',
+        description: '*Refer to manufacturer for full Warranty Details',
+        image: 'https://live.staticflickr.com/65535/51247883371_649e6e6d5c_w.jpg',
       },
     ],
     suggestions: [
       {
-        title: 'Ableton Push 2',
+        title: 'Lillian Bath Set 1/4 Turn Ceramic Disk',
         price: 500,
         image: 'https://images.unsplash.com/photo-1523297313810-5c8718fee854?fit=crop&w=2700&q=80',
       },
       {
-        title: 'Pocket Operator Office',
+        title: 'Geberit SIGMA 8 Inwall Cistern - Back to Wall',
         price: 89,
         image: 'https://images.unsplash.com/photo-1553010214-b15a4029d601?fit=crop&w=2900&q=80',
       },
