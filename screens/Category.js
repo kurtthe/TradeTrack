@@ -7,10 +7,12 @@ import {
   View, 
   FlatList
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
+import { Block, Text, theme, Button } from "galio-framework";
+import ArButton from '../components/Button';
 
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
+import FilterButton from "../components/FilterButton";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -68,6 +70,18 @@ export default class Category extends React.Component {
     const category = categories;
     return (
       <Block color={nowTheme.COLORS.BACKGROUND}>
+        <Block row style={{ padding: 5}}>
+          <FilterButton
+            text={'Filters'}
+            icon={require('../assets/nuk-icons/png/2x/filter.png')}
+          />
+          <FilterButton
+            text={'Category'}
+          />
+          <FilterButton
+            text={'Sub Category'}
+          />
+        </Block>
         <FlatList
           style={{margin: -5}}
           numColumns={2}
