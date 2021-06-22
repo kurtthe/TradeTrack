@@ -54,9 +54,14 @@ ArButton.propTypes = {
 
 const styles = StyleSheet.create({
   smallButton: {
-    width: 75,
+    width: 'auto',
     height: 28,
-    
+  },
+  shadow: {
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    shadowOpacity: 0.2,
   }
 });
 

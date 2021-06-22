@@ -8,11 +8,16 @@ import {
   FlatList,
   ScrollView
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
+
 import { Card, Button } from "../components";
+import ArButton from '../components/Button';
+import { Block, Text, theme, Button } from "galio-framework";
+import ArButton from '../components/Button';
+
 
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
+import FilterButton from "../components/FilterButton";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -78,7 +83,21 @@ export default class Category extends React.Component {
     const category = categories;
   
     return (
+
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+         <Block row style={{ padding: 5}}>
+          <FilterButton
+            text={'Filters'}
+            icon={require('../assets/nuk-icons/png/2x/filter.png')}
+          />
+          <FilterButton
+            text={'Category'}
+          />
+          <FilterButton
+            text={'Sub Category'}
+          />
+        </Block>
+        
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 30 }}
@@ -105,6 +124,7 @@ export default class Category extends React.Component {
                       </Block>
                        
         </ScrollView>
+
       </Block>
         
     );
