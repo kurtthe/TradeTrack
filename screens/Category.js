@@ -11,10 +11,8 @@ import {
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
 
-import { Card, Button } from "../components";
+import { Button } from "../components";
 import { Block, Text, theme } from "galio-framework";
-import ArButton from '../components/Button';
-
 
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
@@ -79,7 +77,6 @@ const radioButtonsData = [
 
 export default class Category extends React.Component {
 
-  
   state = {
     radioButtons: radioButtonsData
   };
@@ -132,10 +129,9 @@ export default class Category extends React.Component {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
             style={styles.buttonAdd}
             //onPress={() => navigation.navigate("Login")}
-                            
-            >
+          >
             Add
-            </Button>
+          </Button>
         </Block>               
       </Block>
     );
@@ -143,7 +139,7 @@ export default class Category extends React.Component {
 
   render() {
     const { navigation, route } = this.props;
-    const category = categories;
+    const category = categories[route.params.headerTitle];
   
     return (
       <>
@@ -171,29 +167,28 @@ export default class Category extends React.Component {
             text={'Sub Category'}
           />
         </Block>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 30 }}
-      >
-        <FlatList
-          style={{margin: -5,}}
-          numColumns={2}
-          data={category.Laundry}
-          renderItem={(item) => this.renderCard(item)}
-          keyExtractor={item => item.id}
-        />
-        <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
-          <Button
-            color="info"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-            style={styles.button}
-            // onPress={() => navigation.navigate("App")}
-          >
-            Load more...
-          </Button>
-        </Block>
-      </ScrollView>
-      
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 30 }}
+        >
+          <FlatList
+            style={{margin: -5,}}
+            numColumns={2}
+            data={category}
+            renderItem={(item) => this.renderCard(item)}
+            keyExtractor={item => item.id}
+          />
+          <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
+            <Button
+              color="info"
+              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+              style={styles.button}
+              // onPress={() => navigation.navigate("App")}
+            >
+              Load more...
+            </Button>
+          </Block>
+        </ScrollView>
       </Block>
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
         <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
@@ -235,7 +230,6 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-bold',
     fontSize:  14,
     //fontSize:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').width < 670) ? hp('10%') : hp('40%')) :  (Dimensions.get('window').width < 870) ? hp('29%') : hp('40%'),
-
     color: nowTheme.COLORS.ORANGE
   },
   addButton: {
@@ -247,12 +241,8 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 1,
-    
   },
-
   buttonAdd: {
-   
     width: width - 240,
-    
   },
 });
