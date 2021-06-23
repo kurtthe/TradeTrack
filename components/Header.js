@@ -33,7 +33,7 @@ const BasketButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={[styles.button, style], {zIndex:300}} onPress={() => {Keyboard.dismiss(); navigation.navigate('Search');}} >
     <Icon
       family="NowExtra"
-      size={30}
+      size={20}
       name="zoom-bold2x"
       color={'#828489'}
     />
@@ -73,13 +73,13 @@ class Header extends React.Component {
         ];
       case 'Categories':
         return [
-          <BellButton key="chat-categories" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-categories" navigation={navigation} isWhite={white} />
+          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         ];
       case 'Category':
         return [
-          <BellButton key="chat-deals" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />
+          <View style={{top:0}}>
+            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+          </View>
         ];
       case 'Profile':
         return [
@@ -93,7 +93,9 @@ class Header extends React.Component {
         ];
       case 'Products':
         return [
-          <BasketButton key="basket-product" navigation={navigation} isWhite={white} />
+          <View style={{top:10}}>
+          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+        </View>
         ];
       case 'Search':
         return [
@@ -127,22 +129,26 @@ class Header extends React.Component {
       <> 
         {title =="Home" ? (
           <View   style={styles.headerView}>
-            <View style={{position:'absolute', top:50, left: 10}}>
-              <MaterialIcons
-                name="receipt-long" color={'#828489'} size={45}
-                />
-            </View>
+          
+
+            <TouchableOpacity style={{position:'absolute', top:50, left: 30}} >
+              
+                  <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} /> 
+            
+          </TouchableOpacity>
             <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
           </View> 
         )
         : (
+          <View style={{paddingTop:20, position:'absolute'}}>
           <Icon
             name={back ? 'minimal-left2x' : 'minimal-left2x' }
             family="NowExtra"
-            size={16}
+            size={18}
             onPress={this.handleLeftPress}
             color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
           /> 
+          </View>
         )}
       </>
     );
@@ -225,7 +231,7 @@ class Header extends React.Component {
     const { search, options, tabs } = this.props;
     if (search || tabs || options) {
       return (
-        <Block center style={{marginTop:30}}>
+        <Block center >
           {/* {search ? this.renderSearch() : null}
           {options ? this.renderOptions() : null} */}
           {tabs ? this.renderTabs() : null} 
@@ -250,13 +256,14 @@ class Header extends React.Component {
     const noShadow = ['Search', 'Categories', 'Deals', 'Pro', 'Profile'].includes(title);
     const headerStyles = [
       !noShadow ? styles.shadow : null,
-      transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null
+      transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
+      
     ];
 
     const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor } ];
 
     return (
-      <Block style={headerStyles}>
+      <Block style={headerStyles, {height:theme.SIZES.BASE * 6.5}}>
         <NavBar
           title={title == 'Home' ? '':title}
           style={navbarStyles}
@@ -264,7 +271,7 @@ class Header extends React.Component {
           right={this.renderRight()}
           rightStyle={{ alignItems: 'center',  }}
           left={ this.renderHome() }
-          leftStyle={{ paddingVertical: 12, flex: 0.2 }}
+          leftStyle={{ paddingVertical: 25, flex: 1.7 }}
           titleStyle={[
             styles.title,
             { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
@@ -287,8 +294,9 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'montserrat-regular',
-    left:wp('31%')
+    fontFamily: 'montserrat-bold',
+    //left:wp('31%'),
+    top:10
   },
   navbar: {
     paddingVertical: 0,
@@ -361,16 +369,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   introImageStyle: {
-    width: 140,
-    height: 140,
+    width: 120,
+    height: 120,
     resizeMode: 'contain',
   },
   headerView: {
     width:wp('95%'),
     flexDirection:'row',
     marginTop:15,
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+   
+  },
+  image: {
+    
+    width: 27.5,
+    height: 27.5,
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: 'contain'
+  },
 });
 
 export default withNavigation(Header);

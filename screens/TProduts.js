@@ -40,15 +40,18 @@ class Components extends React.Component {
         <Block flex row>
           <Card 
             categoryCard 
-            onPress={() => this.props.navigation.navigate('Category', {title: articles[7].title})} 
+            onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[7].title})} 
             item={articles[7]} 
             style={{ marginRight: theme.SIZES.BASE }} 
           />
-          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[8]} />
+          <Card categoryCard 
+          onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[8].title})} 
+          item={articles[8]} 
+          />
         </Block>
         <Block flex row>
-          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
-          <Card categoryCard onPress={() => this.props.navigation.navigate('Category')} item={articles[10]} />
+          <Card categoryCard onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
+          <Card categoryCard onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} item={articles[10]} />
         </Block>
       </Block>
     );
@@ -78,7 +81,7 @@ class Components extends React.Component {
 
   render() {
     return (
-      <Block flex center backgroundColor={'#e5e5e5'}>
+      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30, width }}
