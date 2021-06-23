@@ -213,12 +213,12 @@ function SettingsStack(props) {
   );
 }
 
-function ArticlesStack(props) {
+function CartStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
         name="Cart"
-        component={Articles}
+        component={Cart}
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Cart" navigation={navigation} scene={scene} />
@@ -472,12 +472,12 @@ function HomeStack(props) {
         }}
       />
       <Stack.Screen
-        name="Cart"
+        name="Cart2"
         component={Cart}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Shopping Cart"
+              title="Cart List"
               back
               navigation={navigation}
               scene={scene}
@@ -537,9 +537,9 @@ function AppStack(props) {
           />
           <MainTab.Screen
             name="Cart"
-            component={ArticlesStack}
+            component={CartStack}
             options={{
-              tabBarLabel: 'Cart',
+              tabBarLabel: 'Cart List',
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="cart" color={color} size={size} />
               ),
