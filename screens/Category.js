@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import {
   Image,
   StyleSheet,
@@ -8,6 +8,8 @@ import {
   FlatList,
   ScrollView
 } from "react-native";
+import ActionSheet from "react-native-actions-sheet";
+import RadioGroup from 'react-native-radio-buttons-group';
 
 import { Card, Button } from "../components";
 import { Block, Text, theme } from "galio-framework";
@@ -21,8 +23,72 @@ import FilterButton from "../components/FilterButton";
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
 const cardHeight = height * 0.51;
+const actionSheetRef = createRef();
+
+const radioButtonsData = [
+  {
+    id: '1',
+    label: 'Bathroom Products',
+    value: 'Bathroom Products',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '2',
+    label: 'Bathroom Furniture',
+    value: 'Bathroom Furniture',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '3',
+    label: 'Showers',
+    value: 'Showers',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '4',
+    label: 'Bathroom Tapware',
+    value: 'Bathroom Tapware',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '5',
+    label: "Baths & Spa's",
+    value: "Baths & Spa's",
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '6',
+    label: "Toilets",
+    value: "Toilets",
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '7',
+    label: "Basins",
+    value: "Basins",
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+]
 
 export default class Category extends React.Component {
+
+  
+  state = {
+    radioButtons: radioButtonsData
+  };
+
+  onPressRadioButton(radioButtonsArray) {
+    this.setState({
+      radioButtons: radioButtonsArray
+    })
+  }
 
   renderCard = ({ item }) => {
     return (
@@ -70,9 +136,7 @@ export default class Category extends React.Component {
             >
             Add
             </Button>
-          </Block>               
-
-        
+        </Block>               
       </Block>
     );
   };
@@ -82,50 +146,65 @@ export default class Category extends React.Component {
     const category = categories;
   
     return (
-
-      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
-         <Block row style={{ padding: 5}}>
+      <>
+      <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND}>
+        <Block row style={{ height: 50, alignItems: 'center'}}>
+          <Text style={{marginLeft: 15}}>
+            {`Product > `}
+          </Text>
+          <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
+            Bathroom Products
+          </Text>
+        </Block>
+        <Block row style={{ padding: 5}}>
           <FilterButton
             text={'Filters'}
             icon={require('../assets/nuk-icons/png/2x/filter.png')}
           />
           <FilterButton
             text={'Category'}
+            onPress={() => {
+              actionSheetRef.current?.setModalVisible();
+            }}
           />
           <FilterButton
             text={'Sub Category'}
           />
         </Block>
-        
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 30 }}
       >
-                <FlatList
-                  style={{margin: -5,}}
-                  numColumns={2}
-                  data={category.Laundry}
-                  renderItem={(item) => this.renderCard(item)}
-                  keyExtractor={item => item.id}
-                />
-    
+        <FlatList
+          style={{margin: -5,}}
+          numColumns={2}
+          data={category.Laundry}
+          renderItem={(item) => this.renderCard(item)}
+          keyExtractor={item => item.id}
+        />
+        <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
+          <Button
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+            // onPress={() => navigation.navigate("App")}
+          >
+            Load more...
+          </Button>
+        </Block>
+      </ScrollView>
       
-                 <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
-                        <Button
-                          color="info"
-                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                          style={styles.button}
-                         // onPress={() => navigation.navigate("App")}
-                          
-                        >
-                         Load more...
-                        </Button>
-                      </Block>
-                       
-        </ScrollView>
-
       </Block>
-        
+      <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
+        <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
+          <RadioGroup 
+            radioButtons={this.state.radioButtons}
+            color={nowTheme.COLORS.INFO} 
+            //onPress={() => this.onPressRadioButton()} 
+          />
+        </Block>
+      </ActionSheet>
+    </>
     );
   }
 }
