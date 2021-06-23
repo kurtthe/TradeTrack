@@ -110,7 +110,7 @@ export default class Product extends React.Component {
     return (
       <Block flex style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
-          <Block row flex style={{backgroundColor: 'rgba(102, 102, 102, 0.1)', height: 50, alignItems: 'center'}}>
+          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 50, alignItems: 'center'}}>
             <Text style={{marginLeft: 15}}>
               {`Bathroom Furnitures > `}
             </Text>

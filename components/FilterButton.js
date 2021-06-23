@@ -7,13 +7,14 @@ import nowTheme from '../constants/Theme';
 
 class FilterButton extends React.Component {
     render() {
-        const { color, text, icon, style, ...props } = this.props;
+        const { color, text, icon, style, onPress, ...props } = this.props;
 
         return (
             <ArButton
                 small
                 color={'white'}
                 style={{flexDirection: 'row', justifyContent: 'space-evenly', padding: 5, paddingHorizontal: 10}}
+                onPress={onPress}
             >
                 {icon && 
                 <Image
