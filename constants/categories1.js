@@ -6,7 +6,14 @@ export default {
         image: require('../assets/imgs/Bathroom/Frame11.png'),
         price: '$375.00',
         myPrice: '$200.00',
-        sku: 'FIE228106B'
+        sku: 'FIE228106B',
+        type: 'TAPWARE',
+        description: [
+            'Basin/Bath Wall Mixer',
+            '160mm Outlet',
+            'Soft Square Matte Black Plate',
+            'Up to 15 Year Warranty'
+        ]
     },
     {
         id: 2,
@@ -106,7 +113,14 @@ export default {
             image: require('../assets/imgs/Laundry/Frame1.png'),
             price: '$375.00',
             myPrice: '$200.00',
-            sku: 'FIE228106B'
+            sku: 'FIE228106B',
+            type: 'TAPWARE',
+            description: [
+                'Basin/Bath Wall Mixer',
+                '160mm Outlet',
+                'Soft Square Matte Black Plate',
+                'Up to 15 Year Warranty'
+            ]
         },
         {
             id: 2,

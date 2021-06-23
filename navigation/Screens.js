@@ -226,23 +226,7 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-            <Stack.Screen
-        name="Product"
-        component={Product}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title=""
-              back
-              black
-              transparent
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          headerTransparent: true
-        }}
-      />
+      
       <Stack.Screen
         name="Gallery"
         component={Gallery}
@@ -401,6 +385,18 @@ function HomeStack(props) {
         }}
       />
       <Stack.Screen
+        name="Product"
+        component={Product}
+        options={{
+          header: ({ navigation, scene }) => {
+            const { params } = scene.descriptor;
+            const title = (params && params.headerTitle) || "Product";
+            return (<Header title={title} back navigation={navigation} scene={scene} />);
+          },
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      <Stack.Screen
         name="Fashion"
         component={Fashion}
         options={{
@@ -416,7 +412,7 @@ function HomeStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Product"
         component={Product}
         options={{
@@ -432,7 +428,7 @@ function HomeStack(props) {
           ),
           headerTransparent: true
         }}
-      />
+      /> */}
       <Stack.Screen
         name="Gallery"
         component={Gallery}

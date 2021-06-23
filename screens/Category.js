@@ -27,7 +27,7 @@ export default class Category extends React.Component {
   renderCard = ({ item }) => {
     return (
       <Block key={`Card-${item.title}`} height={cardHeight} style={styles.Card}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
           <Image
             resizeMode="contain"
             style={styles.image}
