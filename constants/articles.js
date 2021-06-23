@@ -66,7 +66,7 @@ export default [
     title: 'Laundry',
     image: 'https://live.staticflickr.com/65535/51246905258_2ccef461c7_w.jpg',
     description:
-      'Bathroom',
+      'Laundry',
       cta: 'View article'
     
   },
@@ -74,7 +74,7 @@ export default [
     title: 'New Catalog',
     image: 'https://live.staticflickr.com/65535/51245986877_0974569587_w.jpg',
     description:
-      'Kitchen',
+      'New Catalog',
       cta: 'View article'
   }
 ];

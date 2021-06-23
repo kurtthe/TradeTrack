@@ -7,7 +7,8 @@ import {
   TouchableWithoutFeedback,
   Image,
   Animated,
-  Platform
+  Platform,
+  View
 } from "react-native";
 
 import { Block, Text, Button, theme } from "galio-framework";
@@ -15,6 +16,7 @@ import { Icon } from "../components";
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { iPhoneX, HeaderHeight } from "../constants/utils";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get("window");
 
@@ -50,14 +52,14 @@ export default class Product extends React.Component {
         {productImages.map((image, index) => (
           <TouchableWithoutFeedback
             key={`product-image-${index}`}
-            onPress={() =>
-              navigation.navigate("Gallery", { images: productImages, index })
-            }
+            // onPress={() =>
+            //    navigation.navigate("Gallery", { images: productImages, index })
+            // }
           >
             <Image
-              resizeMode="cover"
-              source={{ uri: image }}
-              style={{ width, height: iPhoneX ? width + 32 : width }}
+              resizeMode="contain"
+              source={image}
+              style={{ width: width*0.9, height: width *0.8 }}
             />
           </TouchableWithoutFeedback>
         ))}
@@ -85,55 +87,21 @@ export default class Product extends React.Component {
             extrapolate: "clamp"
           });
 
-          const width = position.interpolate({
-            inputRange: [i - 1, i, i + 1],
-            outputRange: [40, 40, 40],
-            extrapolate: "clamp"
-          });
-
           return (
-            <Animated.View key={i} style={[styles.dots, { opacity, width }]} />
+            <Animated.View key={i} style={[styles.dots, { opacity }]} />
           );
         })}
       </Block>
     );
   };
 
-  renderSize = label => {
-    const active = this.state.selectedSize === label;
-
+  renderDescription = (product) => {
     return (
-      <TouchableHighlight
-        style={styles.sizeButton}
-        underlayColor={nowTheme.COLORS.PRIMARY}
-        onPress={() => this.setState({ selectedSize: label })}
-      >
-        <Text style={{ fontFamily: 'montserrat-regular' }} color={active ? nowTheme.COLORS.WHITE : nowTheme.COLORS.TEXT}>{label}</Text>
-      </TouchableHighlight>
-    );
-  };
-
-  renderChatButton = () => {
-    const { navigation } = this.props;
-    return (
-      <Block style={styles.chatContainer}>
-        <Button
-          opacity={0.9}
-          style={styles.chat}
-
-          onPress={() => navigation.navigate("Chat")}
-        >
-          <Icon
-            size={17}
-            family="NowExtra"
-            name="chat-round2x"
-            color="white"
-          />
-        </Button>
-      </Block>
-    );
-  };
-
+      product.description.map((d) => {
+        return <Text style={{paddingBottom: 5}}>- {d}</Text>
+      })
+    )
+  }
   render() {
     const { selectedSize } = this.state;
     const { navigation, route } = this.props;
@@ -142,127 +110,109 @@ export default class Product extends React.Component {
 
     return (
       <Block flex style={styles.product}>
-        <Block flex style={{ position: "relative" }}>
-          {this.renderGallery()}
-          <Block center style={styles.dotsContainer}>
-            {this.renderProgress()}
+        <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
+          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 50, alignItems: 'center'}}>
+            <Text style={{marginLeft: 15}}>
+              {`Bathroom Furnitures > `}
+            </Text>
+            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
+              {product.title}
+            </Text>
           </Block>
-        </Block>
-        <Block flex style={styles.options}>
-          {this.renderChatButton()}
-          <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
+          <Block flex>
+            {this.renderGallery()}
+            <Block center style={styles.dotsContainer}>
+              {this.renderProgress()}
+            </Block>
+          </Block>
+          <Block flex style={styles.options}>
             <Block
               style={{
                 paddingHorizontal: theme.SIZES.BASE,
                 paddingTop: theme.SIZES.BASE * 2
               }}
             >
-              <Text size={28} style={{ paddingBottom: 24, fontFamily: 'montserrat-regular', fontWeight: '500' }} color={nowTheme.COLORS.TEXT}>
+              <Text size={24} style={{ paddingBottom: 24, fontWeight: '500' }} >
                 {product.title}
               </Text>
-              <Block row space="between">
-                <Block row>
-                  <Image
-                    source={Images.ProfilePicture }
-                    style={styles.avatar}
-                  />
-                  <Block style={{ marginTop: 2 }}>
-                    <Text style={{ fontFamily: 'montserrat-bold' }} size={14} color={nowTheme.COLORS.TEXT}>Jessica Jones</Text>
-                    <Text style={{ fontFamily: 'montserrat-regular' }} size={14} color={nowTheme.COLORS.TEXT} style={{ fontWeight: '100' }}>
-                      Pro Seller
-                    </Text>
-                  </Block>
+              <Block row style={{width: '100%'}}>
+                <Block flex>
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price: </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.price} </Text>
                 </Block>
-                <Text style={{ fontFamily: 'montserrat-regular', fontWeight: '500' }} size={18} color={nowTheme.COLORS.TEXT}>
-                  $377
+                <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+                <Block flex right >
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                    My Price: 
+                  </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.myPrice} </Text>
+                </Block>
+              </Block>
+            </Block>
+
+
+            <Block style={{ padding: theme.SIZES.BASE }}>
+              <Text style={{paddingBottom: 15}} size={16} >Details Product</Text>
+              <Block row style={{paddingBottom: 15}}>
+                <Block flex>
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU: </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.sku} </Text>
+                </Block>
+                <Block flex >
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                    Type: 
+                  </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.type} </Text>
+                </Block>
+              </Block>
+              <Block flex>
+                <Image style={styles.image_temp}
+                  source={require('../assets/imgs/catalog-details.png')}
+                />
+              </Block>
+              <Block>
+                <Text style={{paddingVertical: 20}} size={16}>
+                  Description
+                </Text>
+                {this.renderDescription(product)}
+                <Text center color={nowTheme.COLORS.ORANGE} style={{paddingTop: 10}}>
+                  *Refer to manufacturer for full Warranty Details
                 </Text>
               </Block>
             </Block>
-            <Block style={{ padding: theme.SIZES.BASE }}>
-              <Text style={{ fontFamily: 'montserrat-regular',  fontWeight: '400' }} size={16} color={nowTheme.COLORS.TEXT}>Size</Text>
-              <Block card style={{ marginTop: 16 }}>
-                <Block row>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      styles.roundTopLeft,
-                      selectedSize === "XS" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("XS")}
-                  </Block>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      selectedSize === "S" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("S")}
-                  </Block>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      styles.roundTopRight,
-                      selectedSize === "M" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("M")}
-                  </Block>
-                </Block>
-                <Block row>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      styles.roundBottomLeft,
-                      selectedSize === "L" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("L")}
-                  </Block>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      { borderBottomWidth: 0 },
-                      selectedSize === "XL" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("XL")}
-                  </Block>
-                  <Block
-                    flex
-                    middle
-                    style={[
-                      styles.size,
-                      styles.roundBottomRight,
-                      selectedSize === "2XL" ? styles.active : null
-                    ]}
-                  >
-                    {this.renderSize("2XL")}
-                  </Block>
-                </Block>
-              </Block>
-              <Button
-                shadowless
-                style={styles.addToCart}
-                color={nowTheme.COLORS.PRIMARY}
-                onPress={() => navigation.navigate("Cart")}
-
-              >
-                <Text style={{ fontFamily: 'montserrat-regular', fontSize: 12 }} color={nowTheme.COLORS.WHITE}>ADD TO CART</Text>
-              </Button>
-            </Block>
+          </Block>
           </ScrollView>
-        </Block>
+          <Block row center style={{position: 'relative'}}>
+            <Button
+              shadowless
+              style={styles.quantityButtons}
+              color={'rgba(102, 102, 102, 0.1)'}
+            >
+              <Text style={styles.quantityTexts}>
+                -
+              </Text>
+            </Button>
+            <Text style={{marginHorizontal: 10}}>
+              1
+            </Text>
+            <Button 
+              shadowless 
+              style={styles.quantityButtons}
+              color={nowTheme.COLORS.ORANGE}
+            >
+              <Text color={'white'} style={styles.quantityTexts}>
+                +
+              </Text>
+            </Button>
+            <Button
+              shadowless
+              style={styles.addToCart}
+              color={nowTheme.COLORS.INFO}
+             // onPress={() => navigation.navigate("Cart")}
+            >
+              <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
+            </Button>
+          </Block>
       </Block>
     );
   }
@@ -270,97 +220,54 @@ export default class Product extends React.Component {
 
 const styles = StyleSheet.create({
   product: {
-    marginTop: Platform.OS === "android" ? -HeaderHeight : 0
+    //marginTop: Platform.OS === "android" ? -HeaderHeight : 0
+    marginTop: 0
+  },
+  priceGrayText: {
+    paddingLeft: 2,
+    fontSize: 13
   },
   options: {
     position: "relative",
     marginHorizontal: theme.SIZES.BASE,
     marginTop: -theme.SIZES.BASE * 2,
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 8,
-    shadowOpacity: 0.2
+    backgroundColor: theme.COLORS.WHITE
   },
   galleryImage: {
     width: width,
     height: "auto"
   },
   dots: {
-    height: theme.SIZES.BASE / 6,
-    margin: theme.SIZES.BASE / 4,
-    backgroundColor: theme.COLORS.WHITE
+    borderRadius: 20,
+    height: 7,
+    width: 7,
+    margin: 5,
+    backgroundColor: 'black'
   },
   dotsContainer: {
     position: "absolute",
     bottom: theme.SIZES.BASE,
     left: 0,
     right: 0,
-    bottom: height / 10
+    bottom: height / 28
   },
-  addToCart: {
-    width: width - theme.SIZES.BASE * 4,
-    marginTop: theme.SIZES.BASE * 2,
-  },
-  avatar: {
-    height: 40,
+  quantityButtons: {
     width: 40,
-    borderRadius: 20,
-    marginBottom: theme.SIZES.BASE,
-    marginRight: 8
+    height: 40
   },
-  chat: {
-    width: 56,
-    height: 56,
-    padding: 20,
-    borderRadius: 28,
-    shadowColor: "rgba(0, 0, 0, 0.2)",
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    shadowOpacity: 1
+  quantityTexts: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },  
+  addToCart: {
+    width: width * 0.5,
   },
-  chatContainer: {
-    top: -32,
-    right: theme.SIZES.BASE,
-    zIndex: 2,
-    position: "absolute"
+
+  image_temp: {
+    
+    width: wp('85%') ,
+    height: hp('10%') ,
+    resizeMode: 'contain',
+    
   },
-  size: {
-    height: theme.SIZES.BASE * 3,
-    width: (width - theme.SIZES.BASE * 2) / 3,
-    borderBottomWidth: 0.5,
-    borderBottomColor: nowTheme.COLORS.BORDER_COLOR,
-    overflow: "hidden"
-  },
-  sizeButton: {
-    height: theme.SIZES.BASE * 3,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  active: {
-    backgroundColor: nowTheme.COLORS.PRIMARY
-  },
-  roundTopLeft: {
-    borderTopLeftRadius: 4,
-    borderRightColor: nowTheme.COLORS.BORDER_COLOR,
-    borderRightWidth: 0.5
-  },
-  roundBottomLeft: {
-    borderBottomLeftRadius: 4,
-    borderRightColor: nowTheme.COLORS.BORDER_COLOR,
-    borderRightWidth: 0.5,
-    borderBottomWidth: 0
-  },
-  roundTopRight: {
-    borderTopRightRadius: 4,
-    borderLeftColor: nowTheme.COLORS.BORDER_COLOR,
-    borderLeftWidth: 0.5
-  },
-  roundBottomRight: {
-    borderBottomRightRadius: 4,
-    borderLeftColor: nowTheme.COLORS.BORDER_COLOR,
-    borderLeftWidth: 0.5,
-    borderBottomWidth: 0
-  }
 });
