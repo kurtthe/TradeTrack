@@ -4,12 +4,15 @@ import {
   Dimensions,
   Image,
   FlatList,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
-import { Card, Select, Button } from "../components/";
+import { Block, Text, theme ,  Button} from "galio-framework";
+import { Card, Select } from "../components/";
 import { nowTheme } from "../constants/";
 import { cart } from "../constants";
+import FilterButton from "../components/FilterButton";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("screen");
 
@@ -56,7 +59,7 @@ export default class Cart extends React.Component {
         <Block card shadow style={styles.product}>
           <Block flex row>
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("Product", { product: item })}
+             //  onPress={() => navigation.navigate("Product", { product: item })}
             >
               <Block style={styles.imageHorizontal}>
                 <Image
@@ -68,30 +71,30 @@ export default class Cart extends React.Component {
               </Block>
             </TouchableWithoutFeedback>
             <Block flex style={styles.productDescription}>
+
+            <Block row >
+            <Text color={nowTheme.COLORS.LIGHTGRAY}>
+              SKU:
+            </Text>
+            <Text color={nowTheme.COLORS.INFO}>
+            FIE228106B
+            </Text>
+          </Block>
+
+           
               <TouchableWithoutFeedback
-                onPress={() =>
-                  navigation.navigate("Product", { product: item })
-                }
+                //onPress={() =>  navigation.navigate("Product", { product: item }) }
               >
                 <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
                   {item.title}
                 </Text>
               </TouchableWithoutFeedback>
               <Block flex row space="between">
+               
                 <Block bottom>
                   <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={theme.SIZES.BASE * 0.75}
-                    color={nowTheme.COLORS[item.stock ? "SUCCESS" : "ERROR"]}
-                  >
-                    {item.stock ? "In Stock" : "Out of Stock"}
-                  </Text>
-                </Block>
-                <Block bottom>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={theme.SIZES.BASE * 0.75}
-                    color={nowTheme.COLORS.ACTIVE}
+                    style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                    color={nowTheme.COLORS.ORANGE} size={20}
                   >
                     ${item.price * item.qty}
                   </Text>
@@ -99,35 +102,36 @@ export default class Cart extends React.Component {
               </Block>
             </Block>
           </Block>
-          <Block flex row space="between" style={styles.options}>
-            <Block style={{marginTop: 8}}>
-              <Select
-                defaultIndex={1}
-                disabled={!item.stock}
-                options={[1, 2, 3, 4, 5]}
-                onSelect={(index, value) => this.handleQuantity(item.id, value)}
-              />
+          <Block flex right style={styles.options}>
+            <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+                </TouchableOpacity>
+           
+          </Block>
+          <Block flex right style={styles.options}>
+           <Block row >
+          <Button
+              shadowless
+              style={styles.quantityButtons}
+              color={'rgba(102, 102, 102, 0.1)'}
+            >
+              <Text style={styles.quantityTexts}>
+                -
+              </Text>
+            </Button>
+            <Text style={{marginHorizontal: 10, top:12}}>
+              1
+            </Text>
+            <Button 
+              shadowless 
+              style={styles.quantityButtons}
+              color={nowTheme.COLORS.INFO}
+            >
+              <Text color={'white'} style={styles.quantityTexts}>
+                +
+              </Text>
+            </Button>
             </Block>
-            <Button
-              center
-              shadowless
-              color="default"
-              textStyle={styles.optionsButtonText}
-              style={styles.optionsButton}
-              onPress={() => this.handleDelete(item.id)}
-            >
-              DELETE
-            </Button>
-            <Button
-              center
-              shadowless
-              color="default"
-              textStyle={styles.optionsButtonText}
-              style={styles.optionsButton}
-              onPress={() => console.log("save for later")}
-            >
-              SAVE FOR LATER
-            </Button>
           </Block>
         </Block>
       </Block>
@@ -161,22 +165,7 @@ export default class Cart extends React.Component {
     );
   };
 
-  renderHorizontalProducts = () => {
-    return (
-      <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
-        <Text style={styles.similarTitle} color={nowTheme.COLORS.HEADER}>
-          Customers who shopped for items in your cart also shopped for:
-        </Text>
-        <FlatList
-          data={cart.suggestions}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => `${index}-${item.title}`}
-          renderItem={this.renderHorizontalProduct}
-        />
-      </Block>
-    );
-  };
+
 
   renderHeader = () => {
     const { navigation } = this.props;
@@ -188,7 +177,22 @@ export default class Cart extends React.Component {
 
     return (
       <Block flex style={styles.header}>
-        <Block style={{ marginBottom: theme.SIZES.BASE }}>
+        
+        <Block row >
+          <FilterButton
+            text={'Bathroom'}
+          />
+          <FilterButton
+            text={'Kitcehn'}
+           
+          />
+          <FilterButton
+            text={'Laundry'}
+           
+          />
+        </Block>
+
+        <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.TEXT}>
             Cart subtotal ({productsQty} items):{" "}
             <Text style={{ fontFamily: 'montserrat-regular', fontWeight: '500' }} color={nowTheme.COLORS.ERROR}>
@@ -196,40 +200,12 @@ export default class Cart extends React.Component {
             </Text>
           </Text>
         </Block>
-        <Block center>
-          <Button
-            flex
-            center
-            style={styles.checkout}
-            color="active"
-            onPress={() => navigation.navigate("Account")}
-          >
-            PROCEED TO CHECKOUT
-          </Button>
-        </Block>
+
       </Block>
     );
   };
 
-  renderFooter = () => {
-    const { navigation } = this.props;
-    return (
-      <Block flex style={styles.footer}>
-        {this.renderHorizontalProducts()}
-        <Block center style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: theme.SIZES.BASE }}>
-          <Button
-            flex
-            center
-            style={styles.checkout}
-            color="active"
-            onPress={() => navigation.navigate("Account")}
-          >
-            PROCEED TO CHECKOUT
-          </Button>
-        </Block>
-      </Block>
-    );
-  };
+
 
   renderEmpty() {
     return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
@@ -262,7 +238,7 @@ export default class Cart extends React.Component {
           keyExtractor={(item, index) => `${index}-${item.title}`}
           ListEmptyComponent={this.renderEmpty()}
           ListHeaderComponent={this.renderHeader()}
-          ListFooterComponent={this.renderFooter()}
+      
         />
       </Block>
     );
@@ -275,7 +251,6 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingVertical: theme.SIZES.BASE,
-    marginTop: theme.SIZES.BASE * 2,
     marginHorizontal: theme.SIZES.BASE
   },
   footer: {
@@ -312,10 +287,11 @@ const styles = StyleSheet.create({
   productTitle: {
     fontFamily: 'montserrat-regular',
     flex: 1,
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    marginTop:10
   },
   productDescription: {
-    padding: theme.SIZES.BASE / 2
+    padding: theme.SIZES.BASE / 2,
   },
   imageHorizontal: {
     width: nowTheme.SIZES.BASE * 5,
@@ -384,5 +360,13 @@ const styles = StyleSheet.create({
     },
     shadowRadius: theme.SIZES.BASE / 4,
     shadowOpacity: 1
-  }
+  },
+  quantityButtons: {
+    width: 25,
+    height: 25
+  },
+  quantityTexts: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },  
 });
