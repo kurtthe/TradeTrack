@@ -16,6 +16,7 @@ import { Icon } from "../components";
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { iPhoneX, HeaderHeight } from "../constants/utils";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get("window");
 
@@ -165,7 +166,7 @@ export default class Product extends React.Component {
                 </Block>
               </Block>
               <Block flex>
-                <Image
+                <Image style={styles.image_temp}
                   source={require('../assets/imgs/catalog-details.png')}
                 />
               </Block>
@@ -181,7 +182,7 @@ export default class Product extends React.Component {
             </Block>
           </Block>
           </ScrollView>
-          <Block row center style={{ justifyContent: 'space-even', position: 'relative'}}>
+          <Block row center style={{position: 'relative'}}>
             <Button
               shadowless
               style={styles.quantityButtons}
@@ -207,7 +208,7 @@ export default class Product extends React.Component {
               shadowless
               style={styles.addToCart}
               color={nowTheme.COLORS.INFO}
-              onPress={() => navigation.navigate("Cart")}
+             // onPress={() => navigation.navigate("Cart")}
             >
               <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
             </Button>
@@ -219,7 +220,8 @@ export default class Product extends React.Component {
 
 const styles = StyleSheet.create({
   product: {
-    marginTop: Platform.OS === "android" ? -HeaderHeight : 0
+    //marginTop: Platform.OS === "android" ? -HeaderHeight : 0
+    marginTop: 0
   },
   priceGrayText: {
     paddingLeft: 2,
@@ -259,5 +261,13 @@ const styles = StyleSheet.create({
   },  
   addToCart: {
     width: width * 0.5,
-  }
+  },
+
+  image_temp: {
+    
+    width: wp('85%') ,
+    height: hp('10%') ,
+    resizeMode: 'contain',
+    
+  },
 });
