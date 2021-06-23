@@ -22,6 +22,7 @@ const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
 const cardHeight = height * 0.51;
 const actionSheetRef = createRef();
+const actionSheetRef2 = createRef();
 
 const radioButtonsData = [
   {
@@ -75,15 +76,53 @@ const radioButtonsData = [
   },
 ]
 
+const radioButtonsData2 = [
+  {
+    id: '1',
+    label: 'All Sub Categories',
+    value: 'All Sub Categories',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '2',
+    label: 'Bathroom Cabinets',
+    value: 'Bathroom Cabinets',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '3',
+    label: 'Bathroom Vanities',
+    value: 'Bathroom Vanities',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+  {
+    id: '4',
+    label: 'Mirrors & Shaving ',
+    value: 'Cabinets',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: {fontWeight: 'bold'}
+  },
+]
+
 export default class Category extends React.Component {
 
   state = {
-    radioButtons: radioButtonsData
+    radioButtons: radioButtonsData,
+    radioButtons2:radioButtonsData2
   };
 
   onPressRadioButton(radioButtonsArray) {
     this.setState({
       radioButtons: radioButtonsArray
+    })
+  }
+
+  onPressRadioButton2(radioButtonsArray2) {
+    this.setState({
+      radioButtons2: radioButtonsArray2
     })
   }
 
@@ -165,6 +204,9 @@ export default class Category extends React.Component {
           />
           <FilterButton
             text={'Sub Category'}
+            onPress={() => {
+              actionSheetRef2.current?.setModalVisible();
+            }}
           />
         </Block>
         <ScrollView
@@ -194,6 +236,15 @@ export default class Category extends React.Component {
         <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
           <RadioGroup 
             radioButtons={this.state.radioButtons}
+            color={nowTheme.COLORS.INFO} 
+            //onPress={() => this.onPressRadioButton()} 
+          />
+        </Block>
+      </ActionSheet>
+      <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
+        <Block left style={{height: 180, padding: 5, paddingBottom: 40}}>
+          <RadioGroup 
+            radioButtons={this.state.radioButtons2}
             color={nowTheme.COLORS.INFO} 
             //onPress={() => this.onPressRadioButton()} 
           />
@@ -243,6 +294,7 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 1,
   },
   buttonAdd: {
-    width: width - 240,
+   
+    width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
   },
 });
