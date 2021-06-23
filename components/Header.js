@@ -8,7 +8,7 @@ import Input from './Input';
 import Tabs from './Tabs';
 import nowTheme from '../constants/Theme';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 
 const { height, width } = Dimensions.get('window');
@@ -40,7 +40,38 @@ const BasketButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
+const CartButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={[styles.button, style], {zIndex:300}}  >
+   
 
+<Ionicons name="cart" color={'#828489'}  size={20} />
+  </TouchableOpacity>
+  
+);
+
+
+const ConfigButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={{zIndex:300, left:15}}  >
+   
+
+<Ionicons name="ellipsis-vertical-sharp" color={'#828489'}  size={20} />
+  </TouchableOpacity>
+  
+);
+
+const DeleteButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={{zIndex:300, left:15}}  >
+
+<Ionicons name="trash-sharp" color={'#828489'}  size={20} />
+  </TouchableOpacity>
+  
+);
+
+
+
+<TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+                </TouchableOpacity>
 
 class Header extends React.Component {
   handleLeftPress = () => {
@@ -77,7 +108,7 @@ class Header extends React.Component {
         ];
       case 'Category':
         return [
-          <View style={{top:0}}>
+          <View style={{top:10}}>
             <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
@@ -97,6 +128,21 @@ class Header extends React.Component {
           <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         </View>
         ];
+        case 'Product':
+          return [
+            <Block row style={{paddingTop: 20, width:70}}>
+            <CartButton  isWhite={white} />
+            <ConfigButton  isWhite={white} />
+          </Block>
+          ];
+          case 'Cart':
+            return [
+             // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
+              <View style={{top:10, width:50}}>
+                <DeleteButton  isWhite={white} />
+              </View>
+            ];
+
       case 'Search':
         return [
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />

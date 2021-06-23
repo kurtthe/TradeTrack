@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableHighlight,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
   Animated,
@@ -165,10 +165,42 @@ export default class Product extends React.Component {
                   <Text color={nowTheme.COLORS.INFO} size={18}> {product.type} </Text>
                 </Block>
               </Block>
+
               <Block flex>
-                <Image style={styles.image_temp}
-                  source={require('../assets/imgs/catalog-details.png')}
+                
+               <TouchableOpacity style={{
+                 backgroundColor:'#f5f6fa', 
+                 width: wp('85%') ,
+                 height: hp('7%') ,
+                 borderRadius:7.5,
+                 }}>
+
+                <Block row style={{paddingBottom: 15}}>
+
+                  <Block flex center >
+                  <Image style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
+
+
+                  source={require('../assets/imgs/img/file-sheet.png')}
                 />
+                  </Block>
+
+                  <Block flex={4}>
+                    <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
+                    <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
+                  </Block>
+
+                  <Block flex center >
+                  <Image style={styles.image_temp}
+
+
+                  source={require('../assets/imgs/img/download-circle.png')}
+                />
+                  </Block>
+
+                </Block>
+
+               </TouchableOpacity>
               </Block>
               <Block>
                 <Text style={{paddingVertical: 20}} size={16}>
@@ -208,7 +240,7 @@ export default class Product extends React.Component {
               shadowless
               style={styles.addToCart}
               color={nowTheme.COLORS.INFO}
-             // onPress={() => navigation.navigate("Cart")}
+              onPress={() => navigation.navigate("Cart")}
             >
               <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
             </Button>
@@ -264,9 +296,9 @@ const styles = StyleSheet.create({
   },
 
   image_temp: {
-    
-    width: wp('85%') ,
-    height: hp('10%') ,
+
+    width: 22,
+    height: 22,
     resizeMode: 'contain',
     
   },
