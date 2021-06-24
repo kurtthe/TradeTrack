@@ -101,14 +101,14 @@ export default class Cart extends React.Component {
             </Block>
           </Block>
         </Block>
-        {this.state.deleteAction && 
+
           <Block flex right style={styles.options}>
             <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
               <Ionicons name="trash-sharp" color={'red'}  size={20} />
             </TouchableOpacity>
           </Block>
-        }
-        {!this.state.deleteAction &&
+
+
           <Block right style={styles.options}>
             <Block row >
               <Button
@@ -134,7 +134,7 @@ export default class Cart extends React.Component {
               </Button>
             </Block>
           </Block>
-        }
+
       </Block>
     );
   };
