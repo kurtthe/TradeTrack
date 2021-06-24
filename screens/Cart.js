@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { Block, Text, theme ,  Button} from "galio-framework";
+import { Block, Text, theme, Button } from "galio-framework";
 import { nowTheme } from "../constants/";
 import { cart } from "../constants";
 import FilterButton from "../components/FilterButton";
@@ -16,13 +16,14 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
 
+
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
 export default class Cart extends React.Component {
   state = {
     cart: cart.products,
-    cart2: cart.suggestions,
+    cart2: cart.products,
     customStyleIndex: 0,
     deleteAction: false
   };
@@ -102,14 +103,7 @@ export default class Cart extends React.Component {
           </Block>
         </Block>
 
-          <Block flex right style={styles.options}>
-            <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-            </TouchableOpacity>
-          </Block>
-
-
-          <Block right style={styles.options}>
+          <Block right style={styles.options, {top:-20}}>
             <Block row >
               <Button
                 shadowless
@@ -138,6 +132,83 @@ export default class Cart extends React.Component {
       </Block>
     );
   };
+
+
+  renderProduct2 = ({ item }) => {
+    const { navigation } = this.props;
+
+    return (
+      <Block card shadow style={styles.product}>
+        <Block flex row>
+          <TouchableWithoutFeedback
+            //  onPress={() => navigation.navigate("Product", { product: item })}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={styles.imageHorizontal}
+            />
+          </TouchableWithoutFeedback>
+          <Block flex style={styles.productDescription}>
+            <Block row>
+              <Text color={nowTheme.COLORS.LIGHTGRAY}>
+                SKU:
+              </Text>
+              <Text color={nowTheme.COLORS.INFO}>
+                FIE228106B
+              </Text>
+            </Block>
+            <TouchableWithoutFeedback
+              //onPress={() =>  navigation.navigate("Product", { product: item }) }
+            >
+              <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
+                {item.title}
+              </Text>
+            </TouchableWithoutFeedback>
+            <Block flex left row space="between">
+              <Text
+                style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                color={nowTheme.COLORS.ORANGE} size={20}
+              >
+                ${item.price * item.qty}
+              </Text>
+            </Block>
+          </Block>
+        </Block>
+
+          {/* <Block flex right style={styles.options, {top:-20}}>
+            <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+            </TouchableOpacity>
+          </Block> */}
+
+          
+
+          <Block right style={styles.options, {top:-10}}>
+            <Block row >
+            <Button
+            color="warning"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
+            style={styles.buttonOrder}
+            //onPress={() => navigation.navigate("Login")}
+          >
+            Re-Order
+          </Button>
+
+          <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+            </TouchableOpacity>
+
+
+          {/* <TouchableOpacity   style={styles.addButton}   >
+             <Text> Re-Order</Text>
+                </TouchableOpacity> */}
+            </Block>
+          </Block>
+
+      </Block>
+    );
+  };
+
 
   renderASHeader = () => {
     return (
@@ -172,14 +243,14 @@ export default class Cart extends React.Component {
           />
         </Block>
 
-        <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
+        {/* <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.TEXT}>
             Cart subtotal ({productsQty} items):{" "}
             <Text style={{ fontFamily: 'montserrat-regular', fontWeight: '500' }} color={nowTheme.COLORS.ERROR}>
               ${total}
             </Text>
           </Text>
-        </Block>
+        </Block> */}
 
       </Block>
     );
@@ -216,7 +287,7 @@ export default class Cart extends React.Component {
           {customStyleIndex === 1
                     && <FlatList
                           data={this.state.cart2}
-                          renderItem={this.renderProduct}
+                          renderItem={this.renderProduct2}
                           showsVerticalScrollIndicator={false}
                           keyExtractor={(item, index) => `${index}-${item.title}`}
                           ListEmptyComponent={this.renderEmpty()}
@@ -364,5 +435,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', 
     width: '100%', 
     height: '5%'
-  }
+  },
+  buttonOrder: {
+   
+    width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
+  },
+
+  addButton: {
+    width: '25%',
+    height: 40,
+    backgroundColor: 'rgba(14, 58, 144, 0.1)',
+    borderRadius: 5
+  },
 });

@@ -69,9 +69,7 @@ const DeleteButton = ({ isWhite, style, navigation }) => (
 
 
 
-<TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-                </TouchableOpacity>
+
 
 class Header extends React.Component {
   handleLeftPress = () => {
