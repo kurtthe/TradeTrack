@@ -60,32 +60,44 @@ export default {
       {
         title: "Leather Jacket",
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/pp-4.jpg',
-        price: '$340'
+        price: 340,
+        stock: true,
+        qty: 1
       },
       {
         title: 'Saint Laurent',
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/bg35.jpg',
-        price: '$180'
+        price: 180,
+        stock: true,
+        qty: 1
       },
       {
         title: 'Polo Ralph Lauren',
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/bg29.jpg',
-        price: '$180'
+        price: 180,
+        stock: true,
+        qty: 1
       },
       {
         title: 'Thom Sweeney',
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/saint-laurent1.jpg',
-        price: '$290'
+        price: 290,
+        stock: true,
+        qty: 1
       },
       {
         title: "Polo T-Shirt",
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/polo.jpg',
-        price: '$200'
+        price: 200,
+        stock: true,
+        qty: 1
       },
       {
         title: 'Gucci',
         image: 'https://raw.githubusercontent.com/creativetimofficial/public-assets/master/now-ui-pro-react-native/gucci.jpg',
-        price: '$220'
+        price: 220,
+        stock: true,
+        qty: 1
       }
     ]
   }
