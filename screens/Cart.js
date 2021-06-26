@@ -345,7 +345,7 @@ export default class Cart extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.button}
-                // onPress={() => navigation.navigate("App")}
+                onPress={() => this.props.navigation.navigate("PlaceOrders")}
               >
                 Place Order
               </Button>

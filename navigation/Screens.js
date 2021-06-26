@@ -46,6 +46,7 @@ import CustomDrawerContent from './Menu';
 // header for screens
 import Header from '../components/Header';
 import tabs from "../constants/tabs";
+import PlaceOrders from '../screens/PlaceOrders';
 
 const { width } = Dimensions.get("screen");
 
@@ -226,7 +227,16 @@ function CartStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+      <Stack.Screen
+        name="PlaceOrders"
+        component={PlaceOrders}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Place Orders" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
       <Stack.Screen
         name="Gallery"
         component={Gallery}
