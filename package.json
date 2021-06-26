@@ -11,6 +11,7 @@
     "lint": "eslint *.js **/*.js"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.5.1",
     "@react-navigation/compat": "^5.1.25",
