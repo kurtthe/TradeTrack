@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, Text, View } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Block } from "galio-framework";
 
 import nowTheme from '../constants/Theme';
+import { color } from 'react-native-reanimated';
 
 class PickerButton extends React.Component {
   render() {
-    const {style, fontSize, placeholder, text, ...props } = this.props;
+    const {style, placeholder, text, icon, iconName, size, ...props } = this.props;
 
     const buttonStyles = [
         styles.button,
@@ -15,34 +16,55 @@ class PickerButton extends React.Component {
     ];
 
     return (
-        <>
+        <View style={styles.wholeContainer}>
             <Text size={14} style={styles.text}>
                 {text}
             </Text>
             <TouchableWithoutFeedback
                 style={buttonStyles}
-                textStyle={{ fontSize: fontSize || 12, fontWeight: '700' }}
                 {...props}
             >
-                <Block row>
-                    <Text>
+                <Block row space={'between'} style={styles.container}>
+                    <Text style={styles.placeholder}>
                         {placeholder}
                     </Text>
-                    <MaterialIcons name="expand-less" color={'gray'} size={30} />
+                    {icon && 
+                        <MaterialIcons 
+                            name={iconName || "expand-more"} 
+                            color={nowTheme.COLORS.ICONPICKER} 
+                            size={size || 40} 
+                        />
+                    }
                 </Block>
             </TouchableWithoutFeedback>
-        </>
+        </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+    wholeContainer:{
+        color: 'red'
+    },
     text: {
         fontSize: 14,
+        paddingVertical: 10,
+        color: nowTheme.COLORS.PRETEXT
+    },
+    placeholder: {
+        color: nowTheme.COLORS.PICKERTEXT
     },
     button: {
         width: 'auto',
-        height: 28,
+        height: 28
+    },
+    container: {
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: nowTheme.COLORS.PICKERTEXT,
+        padding: 5,
+        borderRadius: 5,
+        paddingLeft: 10
     },
     shadow: {
         shadowColor: "black",
