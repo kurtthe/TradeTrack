@@ -49,6 +49,9 @@ import Header from '../components/Header';
 import tabs from "../constants/tabs";
 import PlaceOrders from '../screens/PlaceOrders';
 import orderPlaced from '../screens/OrderPlaced';
+import Example from '../screens/DatePicker';
+
+
 
 const { width } = Dimensions.get("screen");
 
@@ -235,6 +238,16 @@ function CartStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Place Orders" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+        <Stack.Screen
+        name="DatePicker"
+        component={Example}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="DatePicker" navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
