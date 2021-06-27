@@ -15,6 +15,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import ActionSheet from "react-native-actions-sheet";
 import PickerButton from "../components/PickerButton";
 import RadioGroup from 'react-native-radio-buttons-group';
+import DateTimePicker from "react-native-modal-datetime-picker";
+import Icon from '../components/Icon';
+
 
 
 const { width } = Dimensions.get("screen");
@@ -24,18 +27,33 @@ const actionSheetRadioButtonRef = createRef();
 const radioButtonsData = [
     {
         id: '1',
-        label: 'Job Name',
-        value: 'Job Name',
+        label: 'Job Name -',
+        value: 'Job Name ',
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
     },
     {
         id: '2',
-        label: 'Job Name',
+        label: 'Job Name -',
         value: 'Job Name',
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
     },
+    {
+        id: '3',
+        label: 'Job Name -',
+        value: 'Job Name',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    },
+    {
+        id: '4',
+        label: 'Job Name -',
+        value: 'Job Name',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    },
+ 
 ]
 
 const radioButtonsHour = [
@@ -67,6 +85,21 @@ const radioButtonsHour = [
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
     },
+    {
+        id: '5',
+        label: '10 AM',
+        value: '10 AM',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    },
+    {
+        id: '6',
+        label: '11 AM',
+        value: '11 AM',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    },
+   
 ]
 
 const radioButtonsDelivery = [
@@ -87,12 +120,34 @@ const radioButtonsDelivery = [
 ]
 
 export default class PlaceOrders extends React.Component {
-    state = {
-        ordersPlaced: cart.products.slice(0,3), // To only show 3 elements
+
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          isDateTimePickerVisible: false,
+          ordersPlaced: cart.products.slice(0,3), // To only show 3 elements
         deleteAction: false,
         radioButtons: radioButtonsData,
         date: new Date()
-    };
+        };
+      }
+
+
+
+
+    showDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: true });
+      };
+    
+      hideDateTimePicker = () => {
+        this.setState({ isDateTimePickerVisible: false });
+      };
+    
+      handleDatePicked = date => {
+        console.log("A date has been picked: ", date);
+        this.hideDateTimePicker();
+      };
 
     handleQuantity = (id, qty) => {
         const { cart } = this.state;
@@ -252,14 +307,24 @@ export default class PlaceOrders extends React.Component {
                         actionSheetRadioButtonRef.current?.setModalVisible()
                     }}
                 />
+
+                <>
                 <PickerButton
                     text='Preferred Delivery Date'
                     placeholder='Select date'
                     icon
                     iconName={'calendar-today'}
                     size={25}
-                    onPress={() => { console.log('holis') }}
+                    onPress={this.showDateTimePicker}
                 />
+
+                    <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    />
+
+                </>
                 <PickerButton
                     text='Preferred Delivery Time'
                     placeholder='Select time'
@@ -316,7 +381,7 @@ export default class PlaceOrders extends React.Component {
     }
 
   render() {
-    const { customStyleIndex } = this.state
+    const { customStyleIndex, radioButtonsData } = this.state
     return (
     <Block flex center style={styles.cart}>
         <FlatList
@@ -401,11 +466,37 @@ export default class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
             <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
-                <RadioGroup 
+            {(radioButtonsData == radioButtonsHour || radioButtonsData == radioButtonsDelivery  )? ( 
+          
+            <RadioGroup 
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO} 
                     //onPress={() => this.onPressRadioButton()} 
                 />
+            )
+            :
+            (
+                <View>
+                    <Input
+                        right
+                        color="black"
+                        style={styles.search}
+                        placeholder="Search job"
+                        placeholderTextColor={'#8898AA'}
+                        // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
+                        iconContent={
+                        <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
+                        }
+                    />
+                     <Block left style={{ marginHorizontal: 16,}}>
+                    <RadioGroup 
+                    radioButtons={this.state.radioButtonsData}
+                    color={nowTheme.COLORS.INFO} 
+                    //onPress={() => this.onPressRadioButton()} 
+                />
+                </Block>
+                </View>
+            )}  
             </Block>
         </ActionSheet>
     </Block>
@@ -519,4 +610,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexWrap: 'wrap'
     },
+    search: {
+        height: 48,
+        width: width - 32,
+        marginHorizontal: 16,
+        borderWidth: 1,
+        borderRadius: 30,
+        borderColor: nowTheme.COLORS.BORDER
+      },
 });

@@ -126,7 +126,13 @@ export default class Cart extends React.Component {
                   +
                 </Text>
               </Button>
+              <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+            </TouchableOpacity>
+
+              
             </Block>
+           
           </Block>
 
       </Block>
@@ -175,11 +181,7 @@ export default class Cart extends React.Component {
           </Block>
         </Block>
 
-          {/* <Block flex right style={styles.options, {top:-20}}>
-            <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-            </TouchableOpacity>
-          </Block> */}
+      
 
           
 
@@ -194,14 +196,6 @@ export default class Cart extends React.Component {
             Re-Order
           </Button>
 
-          <TouchableOpacity  onPress={() => this.handleDelete(item.id)}  >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-            </TouchableOpacity>
-
-
-          {/* <TouchableOpacity   style={styles.addButton}   >
-             <Text> Re-Order</Text>
-                </TouchableOpacity> */}
             </Block>
           </Block>
 
@@ -307,7 +301,7 @@ export default class Cart extends React.Component {
             </TouchableWithoutFeedback>
           {/* End of Detail Orders ActionSheet Workaround */}
           <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
-            <Block style={{height: 200, padding: 20, paddingBottom: 40}}>
+            <Block style={{height: 220, padding: 20, paddingBottom: 40}}>
               <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
                 <Text>
                   1x Kaya Basin/Bath Wall Mixer 160mm..

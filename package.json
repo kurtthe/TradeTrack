@@ -28,6 +28,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-actions-sheet": "^0.4.9",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-modal-datetime-picker": "^10.0.0",
     "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
     "react-native-radio-buttons-group": "^2.2.4",
     "react-native-reanimated": "~1.13.0",
