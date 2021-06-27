@@ -19,6 +19,7 @@ import PasswordBeenChange from '../screens/TPasswordBeenChange';
 import Products from '../screens/TProduts';
 
 
+
 import Profile from '../screens/Profile';
 import Register from '../screens/Register';
 import Components from '../screens/Components';
@@ -46,6 +47,11 @@ import CustomDrawerContent from './Menu';
 // header for screens
 import Header from '../components/Header';
 import tabs from "../constants/tabs";
+import PlaceOrders from '../screens/PlaceOrders';
+import orderPlaced from '../screens/OrderPlaced';
+import Example from '../screens/DatePicker';
+
+
 
 const { width } = Dimensions.get("screen");
 
@@ -213,12 +219,12 @@ function SettingsStack(props) {
   );
 }
 
-function ArticlesStack(props) {
+function CartStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
         name="Cart"
-        component={Articles}
+        component={Cart}
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Cart" navigation={navigation} scene={scene} />
@@ -226,7 +232,36 @@ function ArticlesStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
-      
+      <Stack.Screen
+        name="PlaceOrders"
+        component={PlaceOrders}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Place Orders" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+        <Stack.Screen
+        name="DatePicker"
+        component={Example}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="DatePicker" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      <Stack.Screen
+        name="OrderPlaced"
+        component={orderPlaced}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header transparent navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
       <Stack.Screen
         name="Gallery"
         component={Gallery}
@@ -472,12 +507,12 @@ function HomeStack(props) {
         }}
       />
       <Stack.Screen
-        name="Cart"
+        name="Cart2"
         component={Cart}
         options={{
           header: ({ navigation, scene }) => (
             <Header
-              title="Shopping Cart"
+              title="Cart List"
               back
               navigation={navigation}
               scene={scene}
@@ -537,9 +572,9 @@ function AppStack(props) {
           />
           <MainTab.Screen
             name="Cart"
-            component={ArticlesStack}
+            component={CartStack}
             options={{
-              tabBarLabel: 'Cart',
+              tabBarLabel: 'Cart List',
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="cart" color={color} size={size} />
               ),

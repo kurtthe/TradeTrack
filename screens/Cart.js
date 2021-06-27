@@ -1,22 +1,36 @@
-import React from "react";
+import React, { createRef } from "react";
 import {
   StyleSheet,
   Dimensions,
   Image,
   FlatList,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  View
 } from "react-native";
-import { Block, Text, theme } from "galio-framework";
-import { Card, Select, Button } from "../components/";
+import { Block, Text, theme, Button } from "galio-framework";
 import { nowTheme } from "../constants/";
 import { cart } from "../constants";
+import FilterButton from "../components/FilterButton";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import SegmentedControlTab from 'react-native-segmented-control-tab'
+import ActionSheet from "react-native-actions-sheet";
+
 
 const { width } = Dimensions.get("screen");
+const actionSheetRef = createRef();
 
 export default class Cart extends React.Component {
   state = {
-    cart: cart.products
+    cart: cart.products,
+    cart2: cart.products,
+    customStyleIndex: 0,
+    deleteAction: false
   };
+
+  handleCustomIndexSelect = (index) => {
+    this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
+  }
 
   handleQuantity = (id, qty) => {
     const { cart } = this.state;
@@ -52,131 +66,154 @@ export default class Cart extends React.Component {
     const { navigation } = this.props;
 
     return (
-      <Block>
-        <Block card shadow style={styles.product}>
-          <Block flex row>
+      <Block card shadow style={styles.product}>
+        <Block flex row>
+          <TouchableWithoutFeedback
+            //  onPress={() => navigation.navigate("Product", { product: item })}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={styles.imageHorizontal}
+            />
+          </TouchableWithoutFeedback>
+          <Block flex style={styles.productDescription}>
+            <Block row>
+              <Text color={nowTheme.COLORS.LIGHTGRAY}>
+                SKU:
+              </Text>
+              <Text color={nowTheme.COLORS.INFO}>
+                FIE228106B
+              </Text>
+            </Block>
             <TouchableWithoutFeedback
-              onPress={() => navigation.navigate("Product", { product: item })}
+              //onPress={() =>  navigation.navigate("Product", { product: item }) }
             >
-              <Block style={styles.imageHorizontal}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={{
-                    height: nowTheme.SIZES.BASE * 5
-                  }}
-                />
-              </Block>
+              <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
+                {item.title}
+              </Text>
             </TouchableWithoutFeedback>
-            <Block flex style={styles.productDescription}>
-              <TouchableWithoutFeedback
-                onPress={() =>
-                  navigation.navigate("Product", { product: item })
-                }
+            <Block flex left row space="between">
+              <Text
+                style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                color={nowTheme.COLORS.ORANGE} size={20}
               >
-                <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-                  {item.title}
-                </Text>
-              </TouchableWithoutFeedback>
-              <Block flex row space="between">
-                <Block bottom>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={theme.SIZES.BASE * 0.75}
-                    color={nowTheme.COLORS[item.stock ? "SUCCESS" : "ERROR"]}
-                  >
-                    {item.stock ? "In Stock" : "Out of Stock"}
-                  </Text>
-                </Block>
-                <Block bottom>
-                  <Text
-                    style={{ fontFamily: 'montserrat-regular' }}
-                    size={theme.SIZES.BASE * 0.75}
-                    color={nowTheme.COLORS.ACTIVE}
-                  >
-                    ${item.price * item.qty}
-                  </Text>
-                </Block>
-              </Block>
+                ${item.price * item.qty}
+              </Text>
             </Block>
-          </Block>
-          <Block flex row space="between" style={styles.options}>
-            <Block style={{marginTop: 8}}>
-              <Select
-                defaultIndex={1}
-                disabled={!item.stock}
-                options={[1, 2, 3, 4, 5]}
-                onSelect={(index, value) => this.handleQuantity(item.id, value)}
-              />
-            </Block>
-            <Button
-              center
-              shadowless
-              color="default"
-              textStyle={styles.optionsButtonText}
-              style={styles.optionsButton}
-              onPress={() => this.handleDelete(item.id)}
-            >
-              DELETE
-            </Button>
-            <Button
-              center
-              shadowless
-              color="default"
-              textStyle={styles.optionsButtonText}
-              style={styles.optionsButton}
-              onPress={() => console.log("save for later")}
-            >
-              SAVE FOR LATER
-            </Button>
           </Block>
         </Block>
+
+          <Block right style={styles.options, {top:-20}}>
+            <Block row >
+              <Button
+                shadowless
+                style={styles.quantityButtons}
+                color={'rgba(102, 102, 102, 0.1)'}
+              >
+                <Text style={styles.quantityTexts}>
+                  -
+                </Text>
+              </Button>
+              <Text style={{marginHorizontal: 10, top:12}}>
+                1
+              </Text>
+              <Button 
+                shadowless 
+                style={styles.quantityButtons}
+                color={nowTheme.COLORS.INFO}
+              >
+                <Text color={'white'} style={styles.quantityTexts}>
+                  +
+                </Text>
+              </Button>
+              <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+            </TouchableOpacity>
+
+              
+            </Block>
+           
+          </Block>
+
       </Block>
     );
   };
 
-  renderHorizontalProduct = ({ item }) => {
-    const buttonStyles = {
-      ...styles.optionsButton,
-      marginTop: 5
-  };
+
+  renderProduct2 = ({ item }) => {
+    const { navigation } = this.props;
+
     return (
-      <Block style={{ marginRight: theme.SIZES.BASE }}>
-        <Card
-          item={item}
-          imageStyle={{ width: "auto", height: 94 }}
-          style={{ width: width / 2.88, borderRadius: 3 }}
-        />
-       
-        <Button
-          center
-          shadowless
-          color="active"
-          style={buttonStyles}
-          textStyle={[styles.optionsButtonText, { color: "white" }]}
-          onPress={() => this.handleAdd(item)}
-        >
-          ADD TO CART
-        </Button>
+      <Block card shadow style={styles.product}>
+        <Block flex row>
+          <TouchableWithoutFeedback
+            //  onPress={() => navigation.navigate("Product", { product: item })}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={styles.imageHorizontal}
+            />
+          </TouchableWithoutFeedback>
+          <Block flex style={styles.productDescription}>
+            <Block row>
+              <Text color={nowTheme.COLORS.LIGHTGRAY}>
+                SKU:
+              </Text>
+              <Text color={nowTheme.COLORS.INFO}>
+                FIE228106B
+              </Text>
+            </Block>
+            <TouchableWithoutFeedback
+              //onPress={() =>  navigation.navigate("Product", { product: item }) }
+            >
+              <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
+                {item.title}
+              </Text>
+            </TouchableWithoutFeedback>
+            <Block flex left row space="between">
+              <Text
+                style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                color={nowTheme.COLORS.ORANGE} size={20}
+              >
+                ${item.price * item.qty}
+              </Text>
+            </Block>
+          </Block>
+        </Block>
+
+      
+
+          
+
+          <Block right style={styles.options, {top:-10}}>
+            <Block row >
+            <Button
+            color="warning"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
+            style={styles.buttonOrder}
+            //onPress={() => navigation.navigate("Login")}
+          >
+            Re-Order
+          </Button>
+
+            </Block>
+          </Block>
+
       </Block>
     );
   };
 
-  renderHorizontalProducts = () => {
+
+  renderASHeader = () => {
     return (
-      <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
-        <Text style={styles.similarTitle} color={nowTheme.COLORS.HEADER}>
-          Customers who shopped for items in your cart also shopped for:
+      <Block row style={{paddingHorizontal: 20, paddingTop: 10, alignItems: 'center', justifyContent: 'space-between'}}>
+        <Text style={{ fontWeight: 'bold'}}>
+          Detail Orders
         </Text>
-        <FlatList
-          data={cart.suggestions}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => `${index}-${item.title}`}
-          renderItem={this.renderHorizontalProduct}
-        />
+        <MaterialIcons name="expand-more" color={'gray'} size={30} />
       </Block>
-    );
-  };
+    )
+  }
 
   renderHeader = () => {
     const { navigation } = this.props;
@@ -188,45 +225,27 @@ export default class Cart extends React.Component {
 
     return (
       <Block flex style={styles.header}>
-        <Block style={{ marginBottom: theme.SIZES.BASE }}>
+        <Block row >
+          <FilterButton
+            text={'Bathroom'}
+          />
+          <FilterButton
+            text={'Kitchen'}
+          />
+          <FilterButton
+            text={'Laundry'}
+          />
+        </Block>
+
+        {/* <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
           <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.TEXT}>
             Cart subtotal ({productsQty} items):{" "}
             <Text style={{ fontFamily: 'montserrat-regular', fontWeight: '500' }} color={nowTheme.COLORS.ERROR}>
               ${total}
             </Text>
           </Text>
-        </Block>
-        <Block center>
-          <Button
-            flex
-            center
-            style={styles.checkout}
-            color="active"
-            onPress={() => navigation.navigate("Account")}
-          >
-            PROCEED TO CHECKOUT
-          </Button>
-        </Block>
-      </Block>
-    );
-  };
+        </Block> */}
 
-  renderFooter = () => {
-    const { navigation } = this.props;
-    return (
-      <Block flex style={styles.footer}>
-        {this.renderHorizontalProducts()}
-        <Block center style={{ paddingHorizontal: theme.SIZES.BASE, marginTop: theme.SIZES.BASE }}>
-          <Button
-            flex
-            center
-            style={styles.checkout}
-            color="active"
-            onPress={() => navigation.navigate("Account")}
-          >
-            PROCEED TO CHECKOUT
-          </Button>
-        </Block>
       </Block>
     );
   };
@@ -235,35 +254,97 @@ export default class Cart extends React.Component {
     return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
   }
 
-  renderCheckoutButton() {
-    const { navigation } = this.props;
-    return (
-      <Block center>
-        <Button
-          flex
-          center
-          style={styles.checkout}
-          color="active"
-          onPress={() => navigation.navigate("Account")}
-        >
-          PROCEED TO CHECKOUT
-        </Button>
-      </Block>
-    );
-  }
-
   render() {
+    const { customStyleIndex } = this.state
     return (
       <Block flex center style={styles.cart}>
-        <FlatList
-          data={this.state.cart}
-          renderItem={this.renderProduct}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item, index) => `${index}-${item.title}`}
-          ListEmptyComponent={this.renderEmpty()}
-          ListHeaderComponent={this.renderHeader()}
-          ListFooterComponent={this.renderFooter()}
-        />
+        <SegmentedControlTab
+            values={['Your Orders', 'Previous Orders']}
+            selectedIndex={customStyleIndex}
+            onTabPress={this.handleCustomIndexSelect}
+            borderRadius={0}
+            tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
+            tabStyle={{ backgroundColor: '#FFFFFF', borderWidth: 0, borderColor: 'transparent' }}
+            activeTabStyle={{ backgroundColor: nowTheme.COLORS.BACKGROUND, marginTop: 2, borderBottomWidth: 2, borderBottomColor: nowTheme.COLORS.INFO}}
+            tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
+            activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
+          />
+          {customStyleIndex === 0
+                    && <FlatList
+                          data={this.state.cart}
+                          renderItem={this.renderProduct}
+                          showsVerticalScrollIndicator={false}
+                          keyExtractor={(item, index) => `${index}-${item.title}`}
+                          ListEmptyComponent={this.renderEmpty()}
+                          ListHeaderComponent={this.renderHeader()}
+                        />}
+          {customStyleIndex === 1
+                    && <FlatList
+                          data={this.state.cart2}
+                          renderItem={this.renderProduct2}
+                          showsVerticalScrollIndicator={false}
+                          keyExtractor={(item, index) => `${index}-${item.title}`}
+                          ListEmptyComponent={this.renderEmpty()}
+                          ListHeaderComponent={this.renderHeader()}
+                      />}
+          {/* Detail Orders ActionSheet Workaround */}
+            <TouchableWithoutFeedback 
+              onPress={() => actionSheetRef.current?.setModalVisible()}
+              style={{position: 'relative', bottom: 0}}
+            >
+              <Block row style={styles.detailOrders}>
+                <Text style={{ fontWeight: 'bold'}}>
+                  Detail Orders
+                </Text>
+                <MaterialIcons name="expand-less" color={'gray'} size={30} />
+              </Block>
+            </TouchableWithoutFeedback>
+          {/* End of Detail Orders ActionSheet Workaround */}
+          <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
+            <Block style={{height: 220, padding: 20, paddingBottom: 40}}>
+              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
+                <Text>
+                  1x Kaya Basin/Bath Wall Mixer 160mm..
+                </Text>
+                <Text>
+                  $375
+                </Text>
+              </Block>
+              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
+                <Text>
+                  1x Di Lusso 60cm Th601Ss Telescopi..
+                </Text>
+                <Text>
+                  $244.99
+                </Text>
+              </Block>
+              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
+                <Text>
+                  1x Lillian Basin Set 1/4 Turn Ceramic..
+                </Text>
+                <Text>
+                  $225.99
+                </Text>
+              </Block>
+              <View style={{borderWidth: 1, marginVertical: 5}}/>
+              <Block row style={{ justifyContent: 'space-between', paddingBottom: 15}}>
+                <Text>
+                  Total Orders
+                </Text>
+                <Text>
+                  $224.99
+                </Text>
+              </Block>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate("PlaceOrders")}
+              >
+                Place Order
+              </Button>
+            </Block>
+          </ActionSheet>
       </Block>
     );
   }
@@ -271,27 +352,12 @@ export default class Cart extends React.Component {
 
 const styles = StyleSheet.create({
   cart: {
-    width: width
+    width: width,
+    backgroundColor: nowTheme.COLORS.BACKGROUND
   },
   header: {
     paddingVertical: theme.SIZES.BASE,
-    marginTop: theme.SIZES.BASE * 2,
     marginHorizontal: theme.SIZES.BASE
-  },
-  footer: {
-    marginBottom: theme.SIZES.BASE * 2
-  },
-  divider: {
-    height: 1,
-    backgroundColor: nowTheme.COLORS.INPUT,
-    marginVertical: theme.SIZES.BASE
-  },
-  checkoutWrapper: {
-    paddingTop: theme.SIZES.BASE * 2,
-    margin: theme.SIZES.BASE,
-    borderStyle: "solid",
-    borderTopWidth: 1,
-    borderTopColor: nowTheme.COLORS.INPUT
   },
   products: {
     minHeight: "100%"
@@ -299,7 +365,7 @@ const styles = StyleSheet.create({
   product: {
     width: width * 0.9,
     borderWidth: 0,
-    marginVertical: theme.SIZES.BASE * 1.5,
+    marginVertical: theme.SIZES.BASE * 0.5,
     marginHorizontal: theme.SIZES.BASE,
     backgroundColor: theme.COLORS.WHITE,
     shadowColor: "black",
@@ -307,17 +373,18 @@ const styles = StyleSheet.create({
     shadowRadius: theme.SIZES.BASE / 4,
     shadowOpacity: 0.1,
     borderRadius: 3
-
   },
   productTitle: {
     fontFamily: 'montserrat-regular',
     flex: 1,
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    marginTop:10
   },
   productDescription: {
-    padding: theme.SIZES.BASE / 2
+    padding: theme.SIZES.BASE / 2,
   },
   imageHorizontal: {
+    height: nowTheme.SIZES.BASE * 5,
     width: nowTheme.SIZES.BASE * 5,
     margin: nowTheme.SIZES.BASE / 2
   },
@@ -338,51 +405,40 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 1
   },
-  optionsButtonText: {
-    fontFamily: 'montserrat-regular',
-    fontSize: theme.SIZES.BASE * 0.75,
-    color: theme.COLORS.WHITE,
-    fontWeight: "normal",
-    fontStyle: "normal",
-    letterSpacing: -0.29
-  },
-  optionsButton: {
-    width: "auto",
-    height: 34,
-    paddingHorizontal: theme.SIZES.BASE,
-    paddingVertical: 10,
-    borderRadius: 3,
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    shadowOpacity: 1
-  },
   checkout: {
     height: theme.SIZES.BASE * 3,
     fontSize: 14,
     width: width - theme.SIZES.BASE * 4
   },
-  similarTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    lineHeight: 20,
-    marginBottom: theme.SIZES.BASE,
-    paddingHorizontal: theme.SIZES.BASE / 6
+  quantityButtons: {
+    width: 25,
+    height: 25
   },
-  productVertical: {
-    height: theme.SIZES.BASE * 10.75,
-    width: theme.SIZES.BASE * 8.125,
-    overflow: "hidden",
-    borderWidth: 0,
-    borderRadius: 3,
+  quantityTexts: {
+    fontWeight: 'bold',
+    fontSize: 20
+  },  
+  button: {
     marginBottom: theme.SIZES.BASE,
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: "rgba(0, 0, 0, 0.1)",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowRadius: theme.SIZES.BASE / 4,
-    shadowOpacity: 1
-  }
+    width: width - theme.SIZES.BASE * 3,
+  },
+  detailOrders: {
+    backgroundColor: 'white',
+    paddingHorizontal: 20, 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    width: '100%', 
+    height: '5%'
+  },
+  buttonOrder: {
+   
+    width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
+  },
+
+  addButton: {
+    width: '25%',
+    height: 40,
+    backgroundColor: 'rgba(14, 58, 144, 0.1)',
+    borderRadius: 5
+  },
 });
