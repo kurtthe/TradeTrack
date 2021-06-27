@@ -127,6 +127,7 @@ export default class Category extends React.Component {
   }
 
   renderCard = ({ item }) => {
+    const { navigation } = this.props;
     return (
       <Block key={`Card-${item.title}`} height={cardHeight} style={styles.Card}>
         <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
@@ -167,7 +168,8 @@ export default class Category extends React.Component {
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
             style={styles.buttonAdd}
-            //onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("Cart")}
+           
           >
             Add
           </Button>
