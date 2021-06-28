@@ -108,7 +108,7 @@ export default class Cart extends React.Component {
               <Button
                 shadowless
                 style={styles.quantityButtons}
-                color={'rgba(102, 102, 102, 0.1)'}
+                color={'#f0f0f0'}
               >
                 <Text style={styles.quantityTexts}>
                   -
