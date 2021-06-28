@@ -115,7 +115,7 @@ export default class Product extends React.Component {
             <Text style={{marginLeft: 15}}>
               {`Bathroom Furnitures > `}
             </Text>
-            <Text numberOfLines={4} color={nowTheme.COLORS.INFO} style={{width: '50%',  }}>
+            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%',  }}>
               {product.title}
             </Text>
           </Block>
