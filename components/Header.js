@@ -91,7 +91,7 @@ class Header extends React.Component {
       case 'Home':
         return [
          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          <View style={{top:10}}>
+          <View>
             <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
@@ -172,16 +172,26 @@ class Header extends React.Component {
     return (
       <> 
         {title =="Home" ? (
-          <View   style={styles.headerView}>
+        
+
+         
           
 
-            <TouchableOpacity style={{position:'absolute', top:50, left: 30}} >
-              
+              <Block row   style={{width: wp('65%')}}>
+            <Block flex middle >
+            <TouchableOpacity  >
                   <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} /> 
-            
           </TouchableOpacity>
-            <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
-          </View> 
+              </Block>
+
+
+              <Block flex middle>
+              <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+              </Block>
+
+              </Block>
+
+       
         )
         : (
           <View style={{paddingTop:20, position:'absolute'}}>
@@ -417,19 +427,18 @@ const styles = StyleSheet.create({
     height: 120,
     resizeMode: 'contain',
   },
-  headerView: {
-    width:wp('95%'),
-    flexDirection:'row',
-    marginTop:15,
-    justifyContent: 'center',
-   
-  },
+
   image: {
     
     width: 27.5,
     height: 27.5,
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    marginLeft:-20,
+    top:-10
+  },
+  options: {
+    padding: theme.SIZES.BASE / 2
   },
 });
 
