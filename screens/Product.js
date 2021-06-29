@@ -103,9 +103,7 @@ export default class Product extends React.Component {
     )
   }
   render() {
-    const { selectedSize } = this.state;
     const { navigation, route } = this.props;
-    // const { params } = navigation && navigation.state;
     const product = route.params?.product;
 
     return (
@@ -118,7 +116,7 @@ export default class Product extends React.Component {
             <Text>
               {` > `}
             </Text>
-            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%',  }}>
+            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%'}}>
               {product.title}
             </Text>
           </Block>
@@ -135,80 +133,71 @@ export default class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE * 2
               }}
             >
-              <Text size={24} style={{ paddingBottom: 24, fontWeight: '500' }} >
+              <Text size={20} style={{ paddingBottom: 24, fontWeight: '500' }} >
                 {product.title}
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price: </Text>
-                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.price} </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={24} style={styles.priceOrange}> {product.price} </Text>
                 </Block>
                 <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
                 <Block flex right >
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     My Price: 
                   </Text>
-                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.myPrice} </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={24} style={styles.priceOrange}> {product.myPrice} </Text>
                 </Block>
               </Block>
             </Block>
-
-
+            <View style={styles.grayLine}/>
             <Block style={{ padding: theme.SIZES.BASE }}>
               <Text style={{paddingBottom: 15}} size={16} >Details Product</Text>
               <Block row style={{paddingBottom: 15}}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU: </Text>
-                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.sku} </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={14}> {product.sku} </Text>
                 </Block>
                 <Block flex >
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     Type: 
                   </Text>
-                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.type} </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={14}> {product.type} </Text>
                 </Block>
               </Block>
 
               <Block flex>
-                
-               <TouchableOpacity style={{
-                 backgroundColor:'#f5f6fa', 
-                 width: wp('85%') ,
-                 height: hp('8%') ,
-                 borderRadius:7.5,
-                 }}>
-
-                <Block row style={{paddingBottom: 15}}>
-
-                  <Block flex center >
-                  <Image style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
-
-
-                  source={require('../assets/imgs/img/file-sheet.png')}
-                />
+                <TouchableOpacity style={{
+                  backgroundColor:'#f5f6fa', 
+                  width: wp('85%') ,
+                  height: hp('8%') ,
+                  borderRadius:7.5,
+                  }}>
+                  <Block row style={{paddingBottom: 15}}>
+                    <Block flex center >
+                      <Image 
+                        style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
+                        source={require('../assets/imgs/img/file-sheet.png')}
+                      />
+                    </Block>
+                    <Block flex={4}>
+                      <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
+                      <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
+                    </Block>
+                    <Block flex center >
+                      <Image 
+                        style={styles.image_temp}
+                        source={require('../assets/imgs/img/download-circle.png')}
+                      />
+                    </Block>
                   </Block>
-
-                  <Block flex={4}>
-                    <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
-                    <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
-                  </Block>
-
-                  <Block flex center >
-                  <Image style={styles.image_temp}
-
-
-                  source={require('../assets/imgs/img/download-circle.png')}
-                />
-                  </Block>
-
-                </Block>
-
-               </TouchableOpacity>
+                </TouchableOpacity>
               </Block>
               <Block>
-                <Text style={{paddingVertical: 20}} size={16}>
+                <Text style={{paddingTop: 20}} size={16}>
                   Description
                 </Text>
+                <View style={styles.grayDescriptionLine}/>
                 {this.renderDescription(product)}
                 <Text center color={nowTheme.COLORS.ORANGE} style={{paddingTop: 10}}>
                   *Refer to manufacturer for full Warranty Details
@@ -258,9 +247,26 @@ const styles = StyleSheet.create({
     //marginTop: Platform.OS === "android" ? -HeaderHeight : 0
     marginTop: 0
   },
+  grayLine: {
+    marginTop: '5%', 
+    height: 4, 
+    width: width, 
+    backgroundColor: nowTheme.COLORS.BACKGROUND, 
+    marginHorizontal: -theme.SIZES.BASE
+  },
+  grayDescriptionLine: {
+    height: 1, 
+    width: '100%', 
+    backgroundColor: nowTheme.COLORS.BACKGROUND,
+    alignSelf: 'center',
+    marginVertical: 15
+  },
   priceGrayText: {
     paddingLeft: 2,
-    fontSize: 13
+    fontSize: 12
+  },
+  priceOrange: {
+    fontWeight: 'bold'
   },
   options: {
     position: "relative",
