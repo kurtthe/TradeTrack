@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   View, 
   FlatList,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
@@ -129,7 +130,7 @@ export default class Category extends React.Component {
   renderCard = ({ item }) => {
     const { navigation } = this.props;
     return (
-      <Block key={`Card-${item.title}`}  style={styles.Card}>
+      <Block key={`Card-${item.title}`} style={styles.Card}>
         <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
           <Image
             resizeMode="contain"
@@ -184,39 +185,44 @@ export default class Category extends React.Component {
   
     return (
       <>
-      <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND}>
-        <Block row style={{ height: 50, alignItems: 'center'}}>
-          <Text style={{marginLeft: 15}}>
-            {`Product > `}
+      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
+        <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
+          <Text>
+            {`Product`}
+          </Text>
+          <Text>
+            {`>`}
           </Text>
           <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
             Bathroom Products
           </Text>
         </Block>
-        <Block row style={{ padding: 5}}>
-          <FilterButton
-            text={'Filters'}
-            icon={require('../assets/nuk-icons/png/2x/filter.png')}
-          />
-          <FilterButton
-            text={'Category'}
-            onPress={() => {
-              actionSheetRef.current?.setModalVisible();
-            }}
-          />
-          <FilterButton
-            text={'Sub Category'}
-            onPress={() => {
-              actionSheetRef2.current?.setModalVisible();
-            }}
-          />
+        <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '4%'}}>
+          <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
+            <FilterButton
+              text={'Filters'}
+              icon={require('../assets/nuk-icons/png/2x/filter.png')}
+            />
+            <FilterButton
+              text={'Category'}
+              onPress={() => {
+                actionSheetRef.current?.setModalVisible();
+              }}
+            />
+            <FilterButton
+              text={'Sub Category'}
+              onPress={() => {
+                actionSheetRef2.current?.setModalVisible();
+              }}
+            />
+          </Block>
         </Block>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
           <FlatList
-            style={{margin: -5,}}
+            contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
             numColumns={2}
             data={category}
             renderItem={(item) => this.renderCard(item)}
@@ -261,15 +267,14 @@ const styles = StyleSheet.create({
   Card: {
     backgroundColor: 'white',
     width: cardWidth,
-    marginHorizontal: nowTheme.SIZES.BASE,
-    marginTop: nowTheme.SIZES.BASE * 2,
+    marginHorizontal: '2%',
     shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
     padding: 10,
     borderRadius:5,
-    marginBottom:10
+    marginBottom: '5%'
   },
   image: {
     width: cardWidth*0.90,
