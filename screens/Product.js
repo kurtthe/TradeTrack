@@ -115,7 +115,7 @@ export default class Product extends React.Component {
             <Text style={{marginLeft: 15}}>
               {`Bathroom Furnitures > `}
             </Text>
-            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
+            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%',  }}>
               {product.title}
             </Text>
           </Block>
@@ -171,7 +171,7 @@ export default class Product extends React.Component {
                <TouchableOpacity style={{
                  backgroundColor:'#f5f6fa', 
                  width: wp('85%') ,
-                 height: hp('7%') ,
+                 height: hp('8%') ,
                  borderRadius:7.5,
                  }}>
 
@@ -218,7 +218,7 @@ export default class Product extends React.Component {
             <Button
               shadowless
               style={styles.quantityButtons}
-              color={'rgba(102, 102, 102, 0.1)'}
+              color={'#f0f0f0'}
             >
               <Text style={styles.quantityTexts}>
                 -
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     bottom: theme.SIZES.BASE,
     left: 0,
     right: 0,
-    bottom: height / 28
+    bottom: height / 20
   },
   quantityButtons: {
     width: 40,
