@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   View, 
   FlatList,
-  ScrollView
+  ScrollView,
+  Platform
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
@@ -185,7 +186,7 @@ export default class Category extends React.Component {
     return (
       <>
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: 'space-evenly', marginLeft: '-3%' }}>
+        <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
           <Text>
             {`Product`}
           </Text>
