@@ -13,7 +13,7 @@ class FilterButton extends React.Component {
             <ArButton
                 small
                 color={'white'}
-                style={{flexDirection: 'row', justifyContent: 'space-evenly', padding: 5, paddingHorizontal: 10}}
+                style={{flexDirection: 'row', justifyContent: 'space-evenly', padding: 5, paddingHorizontal: 10, marginHorizontal: 0}}
                 onPress={onPress}
             >
                 {icon && 

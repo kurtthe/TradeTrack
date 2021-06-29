@@ -59,7 +59,7 @@ export default class Product extends React.Component {
             <Image
               resizeMode="contain"
               source={image}
-              style={{ width: width*0.9, height: width *0.8 }}
+              style={{ width: width*0.95, height: width *0.8 }}
             />
           </TouchableWithoutFeedback>
         ))}
@@ -111,9 +111,12 @@ export default class Product extends React.Component {
     return (
       <Block flex style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
-          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 50, alignItems: 'center'}}>
+          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
             <Text style={{marginLeft: 15}}>
-              {`Bathroom Furnitures > `}
+              {`Bathroom Furnitures`}
+            </Text>
+            <Text>
+              {` > `}
             </Text>
             <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%',  }}>
               {product.title}
@@ -214,37 +217,37 @@ export default class Product extends React.Component {
             </Block>
           </Block>
           </ScrollView>
-          <Block row center style={{position: 'relative'}}>
-            <Button
-              shadowless
-              style={styles.quantityButtons}
-              color={'#f0f0f0'}
-            >
-              <Text style={styles.quantityTexts}>
-                -
+          <View style={styles.quantityBar}>
+              <Button
+                shadowless
+                style={styles.quantityButtons}
+                color={'#f0f0f0'}
+              >
+                <Text style={styles.quantityTexts}>
+                  -
+                </Text>
+              </Button>
+              <Text style={{marginHorizontal: 10}}>
+                1
               </Text>
-            </Button>
-            <Text style={{marginHorizontal: 10}}>
-              1
-            </Text>
-            <Button 
-              shadowless 
-              style={styles.quantityButtons}
-              color={nowTheme.COLORS.ORANGE}
-            >
-              <Text color={'white'} style={styles.quantityTexts}>
-                +
-              </Text>
-            </Button>
-            <Button
-              shadowless
-              style={styles.addToCart}
-              color={nowTheme.COLORS.INFO}
-              onPress={() => navigation.navigate("Cart")}
-            >
-              <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
-            </Button>
-          </Block>
+              <Button 
+                shadowless 
+                style={styles.quantityButtons}
+                color={nowTheme.COLORS.ORANGE}
+              >
+                <Text color={'white'} style={styles.quantityTexts}>
+                  +
+                </Text>
+              </Button>
+              <Button
+                shadowless
+                style={styles.addToCart}
+                color={nowTheme.COLORS.INFO}
+                onPress={() => navigation.navigate("Cart")}
+              >
+                <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
+              </Button>
+          </View>
       </Block>
     );
   }
@@ -294,12 +297,24 @@ const styles = StyleSheet.create({
   addToCart: {
     width: width * 0.5,
   },
-
   image_temp: {
-
     width: 22,
     height: 22,
     resizeMode: 'contain',
-    
   },
+  quantityBar: {
+    paddingTop: Platform.OS == 'ios' ? 0 : 3,
+    backgroundColor: Platform.OS == 'ios' ? 'white': 'transparent',
+    flexDirection: 'row',
+    position: 'relative',
+    width: width,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 7 },
+    elevation: 2,
+    shadowRadius: 10,
+    shadowOpacity: 0.3,
+    borderTopColor: 'black',
+  }
 });
