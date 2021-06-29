@@ -41,20 +41,20 @@ const BasketButton = ({ isWhite, style, navigation }) => (
 );
 
 const CartButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style], {zIndex:300}}  >
+  <TouchableOpacity style={[styles.button, style], {zIndex:300, left:-10}}  >
    
 
-<Ionicons name="cart" color={'#828489'}  size={20} />
+<Ionicons name="cart" color={'#828489'}  size={30} />
   </TouchableOpacity>
   
 );
 
 
 const ConfigButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{zIndex:300, left:15}}  >
+  <TouchableOpacity style={{zIndex:300, left:0}}  >
    
 
-<Ionicons name="ellipsis-vertical-sharp" color={'#828489'}  size={20} />
+<Ionicons name="ellipsis-vertical-sharp" color={'#828489'}  size={30} />
   </TouchableOpacity>
   
 );
@@ -62,7 +62,7 @@ const ConfigButton = ({ isWhite, style, navigation }) => (
 const DeleteButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={{zIndex:300, left:15}}  >
 
-<Ionicons name="trash-sharp" color={'#828489'}  size={20} />
+<Ionicons name="trash-sharp" color={'#828489'}  size={30} />
   </TouchableOpacity>
   
 );
@@ -106,7 +106,7 @@ class Header extends React.Component {
         ];
       case 'Category':
         return [
-          <View style={{top:10}}>
+          <View style={{top:5}}>
             <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
@@ -122,13 +122,13 @@ class Header extends React.Component {
         ];
       case 'Products':
         return [
-          <View style={{top:10}}>
+          <View style={{top:5}}>
           <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         </View>
         ];
         case 'Product':
           return [
-            <Block row style={{paddingTop: 20, width:70}}>
+            <Block row style={{paddingTop: 10, width:70}}>
             <CartButton  isWhite={white} />
             <ConfigButton  isWhite={white} />
           </Block>

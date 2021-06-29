@@ -135,20 +135,20 @@ export default class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE * 2
               }}
             >
-              <Text size={24} style={{ paddingBottom: 24, fontWeight: '500' }} >
+              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :23) :  (Dimensions.get('window').height < 870) ? 20: 23} style={{ paddingBottom: 24, fontWeight: '500' }} >
                 {product.title}
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price: </Text>
-                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.price} </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :25) :  (Dimensions.get('window').height < 870) ? 20: 25}> {product.price} </Text>
                 </Block>
                 <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
                 <Block flex right >
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     My Price: 
                   </Text>
-                  <Text color={nowTheme.COLORS.ORANGE} size={25}> {product.myPrice} </Text>
+                  <Text color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :25) :  (Dimensions.get('window').height < 870) ? 20: 25}> {product.myPrice} </Text>
                 </Block>
               </Block>
             </Block>
@@ -159,13 +159,13 @@ export default class Product extends React.Component {
               <Block row style={{paddingBottom: 15}}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU: </Text>
-                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.sku} </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.sku} </Text>
                 </Block>
                 <Block flex >
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     Type: 
                   </Text>
-                  <Text color={nowTheme.COLORS.INFO} size={18}> {product.type} </Text>
+                  <Text color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.type} </Text>
                 </Block>
               </Block>
 
@@ -227,7 +227,7 @@ export default class Product extends React.Component {
                   -
                 </Text>
               </Button>
-              <Text style={{marginHorizontal: 10}}>
+              <Text style={{marginHorizontal: 10, left:-20}}>
                 1
               </Text>
               <Button 
@@ -241,12 +241,14 @@ export default class Product extends React.Component {
               </Button>
               <Button
                 shadowless
-                style={styles.addToCart}
+                style={styles.addToCart, {left:30}}
                 color={nowTheme.COLORS.INFO}
                 onPress={() => navigation.navigate("Cart")}
               >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
               </Button>
+
+              
           </View>
       </Block>
     );
@@ -287,8 +289,9 @@ const styles = StyleSheet.create({
     bottom: height / 20
   },
   quantityButtons: {
-    width: 40,
-    height: 40
+    width: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :40) :  (Dimensions.get('window').height < 870) ? 30: 40,
+    height: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :40) :  (Dimensions.get('window').height < 870) ? 30: 40,
+    left:-20
   },
   quantityTexts: {
     fontWeight: 'bold',
@@ -296,6 +299,7 @@ const styles = StyleSheet.create({
   },  
   addToCart: {
     width: width * 0.5,
+   
   },
   image_temp: {
     width: 22,
