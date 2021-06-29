@@ -52,101 +52,117 @@ class Help extends React.Component {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-     <DismissKeyboard>
+      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
-            <Block style={styles.registerContainer}>
+           
               <Block flex space="evenly">
-                <Block flex={0.4}  style={styles.socialConnect}>
+              <Block flex middle style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5} top middle >
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
-                  </Block>
-                  <Block flex={0.5} top middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-bold',
-                        textAlign: 'left'
-                      }}
-                      color="#2E2F33"
-                      size={20}
-                    >
-                     Help Support
-                    </Text>
-                  </Block>
-                </Block>
+              <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :30) :  (Dimensions.get('window').height < 870) ? 30: 40}} >
+                 <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                 </Block>
+                 <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -15 :-50) :  (Dimensions.get('window').height < 870) ? -15: -45}}>
+                   <Text
+                     style={{
+                       fontFamily: 'montserrat-bold',
+                       textAlign: 'left'
+                     }}
+                     color="#2E2F33"
+                     
+                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                   //size={20}
+                   >
+                    Help Support
+                   </Text>
+                 </Block>
+               </Block>
               
-                <Block flex={1.5}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={2}  space="between"  style={{backgroundColor:'transparent', marginHorizontal:20}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
-                      <Block >
-                      <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
+                      <Block>
+                    
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:
+                      (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -20 :-80) :  (Dimensions.get('window').height < 870) ? -20: -80
+                      }} >
+
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
-                          >
-                            
+                            numberOfLines={2} 
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
 
-                            This app is only for Burbend Trade Costumers.
+                          >
+                           This app is only for Burbend Trade Costumers.
                           </Text>
+
+                          
                         </Block>
 
-                        <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
-                             
+                        <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.2) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{ marginTop:
+                      (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -30 :10) :  (Dimensions.get('window').height < 870) ? 10: 0
+                      }} >
 
-                                If you need help to get access to your trade account or open one, Please contact us on:
-                          </Text>
+                        <Text
+                        color={nowTheme.COLORS.PRETEXT}
+                          style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                          row
+                          muted
+                          numberOfLines={4} 
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
+
+                        >
+                        If you need help to get access to your trade account or open one, Please contact us on:
+                        </Text>
+
+
                         </Block>
-                     <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
+                      <Block flex={0.1099} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :20) :  (Dimensions.get('window').height < 870) ? 40: 40, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
                           >
                           Email
                           </Text>
                         </Block>
-                        <Block width={width * 0.9} style={{marginLeft:10 }}  >
+                        <Block width={width * 0.9}>
                         <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:help@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
       title="help@burdens.com.au" >
                         <Text
                           color={'#444857'}
-                          size={18}
-                          style={{textDecorationLine: 'underline',}}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
+                          style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}}
                           >
                           help@burdens.com.au
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
-                        <Block middle top flex={0.2} style={{marginTop:10, marginLeft:10 }} width={width * 0.9} >
+                        <Block flex={0.1} style={{marginTop:30}} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+
                           >
                           Phone number
                           </Text>
                         </Block>
-                        <Block style={{marginLeft:10 }} width={width * 0.9} >
+                        <Block width={width * 0.9} >
                         <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('0399993333')}}>
                         <Text
                           color={'#444857'}
-                          size={18}
-                          style={{textDecorationLine: 'underline',}}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
+                          style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}} 
                           >
                          03 9999 3333
                           </Text>
@@ -164,16 +180,17 @@ class Help extends React.Component {
                         >
                           Back
                         </Button>
+                       
                       </Block>
 
-                           
+                            
                       
                         </Block>
                   
                   </Block>
                 </Block>
               </Block>
-            </Block>
+            
           </Block>
       
     
@@ -218,6 +235,7 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 3,
+
   },
 
   introImageStyle: {
