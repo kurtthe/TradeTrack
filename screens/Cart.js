@@ -108,7 +108,7 @@ export default class Cart extends React.Component {
               <Button
                 shadowless
                 style={styles.quantityButtons}
-                color={'rgba(102, 102, 102, 0.1)'}
+                color={'#f0f0f0'}
               >
                 <Text style={styles.quantityTexts}>
                   -
@@ -185,11 +185,11 @@ export default class Cart extends React.Component {
 
           
 
-          <Block right style={styles.options, {top:-10}}>
+          <Block right style={styles.options, {top:-25}}>
             <Block row >
             <Button
             color="warning"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color:'#0E3A90' }}
             style={styles.buttonOrder}
             //onPress={() => navigation.navigate("Login")}
           >
@@ -432,7 +432,10 @@ const styles = StyleSheet.create({
   },
   buttonOrder: {
    
-    width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
+    //width:  (Platform.OS === 'ios') ? width - 240 : width - 250,
+
+    width: (Platform.OS === 'ios') ? width - 240 :  (Dimensions.get('window').height < 870) ?width - 230: width - 350,
+
   },
 
   addButton: {

@@ -20,7 +20,7 @@ import FilterButton from "../components/FilterButton";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
-const cardHeight = height * 0.51;
+const cardHeight = height * 0.59;
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
@@ -129,7 +129,7 @@ export default class Category extends React.Component {
   renderCard = ({ item }) => {
     const { navigation } = this.props;
     return (
-      <Block key={`Card-${item.title}`} height={cardHeight} style={styles.Card}>
+      <Block key={`Card-${item.title}`}  style={styles.Card}>
         <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
           <Image
             resizeMode="contain"
@@ -281,8 +281,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'montserrat-bold',
-    fontSize:  14,
-    //fontSize:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').width < 670) ? hp('10%') : hp('40%')) :  (Dimensions.get('window').width < 870) ? hp('29%') : hp('40%'),
+    fontSize: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 12 :14) :  (Dimensions.get('window').height < 870) ? 11.5: 15,
     color: nowTheme.COLORS.ORANGE
   },
   addButton: {
@@ -297,6 +296,6 @@ const styles = StyleSheet.create({
   },
   buttonAdd: {
    
-    width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
+    width:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? width - 240 :width - 265)  : (Dimensions.get('window').height < 870) ? width - 220 : width - 300, 
   },
 });
