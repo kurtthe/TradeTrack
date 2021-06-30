@@ -177,31 +177,31 @@ export default class Product extends React.Component {
               </Block>
 
               <Block flex>
-                <TouchableOpacity style={{
-                  backgroundColor:'#f5f6fa', 
-                  width: wp('85%') ,
-                  height: hp('8%') ,
-                  borderRadius:7.5,
-                  }}>
-                  <Block row style={{paddingBottom: 15}}>
-                    <Block flex center >
-                      <Image 
-                        style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
-                        source={require('../assets/imgs/img/file-sheet.png')}
-                      />
-                    </Block>
-                    <Block flex={4}>
-                      <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
-                      <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
-                    </Block>
-                    <Block flex center >
-                      <Image 
-                        style={styles.image_temp}
-                        source={require('../assets/imgs/img/download-circle.png')}
-                      />
-                    </Block>
-                  </Block>
-                </TouchableOpacity>
+              <TouchableOpacity style={{
+                   backgroundColor:'#f5f6fa', 
+                   width: wp('85%') ,
+                   height: hp('8%') ,
+                   borderRadius:7.5,
+                   }}>
+                   <Block row style={{paddingBottom: 15}}>
+                     <Block flex center >
+                       <Image 
+                         style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
+                         source={require('../assets/imgs/img/file-sheet.png')}
+                       />
+                     </Block>
+                     <Block flex={4}>
+                       <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
+                       <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
+                     </Block>
+                     <Block flex center >
+                       <Image 
+                         style={styles.image_temp}
+                         source={require('../assets/imgs/img/download-circle.png')}
+                       />
+                     </Block>
+                   </Block>
+                 </TouchableOpacity>
               </Block>
               <Block>
                 <Text style={{paddingTop: 20}} size={16}>

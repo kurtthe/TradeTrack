@@ -587,7 +587,9 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'space-between', 
         width: width, 
-        height: 40
+        height: '8%',
+        borderTopLeftRadius:15,
+        borderTopRightRadius:15,
     },
     buttonOrder: {
         width:  (Platform.OS === 'ios') ? width - 240 : width - 300,

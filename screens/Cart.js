@@ -94,7 +94,7 @@ export default class Cart extends React.Component {
             </TouchableWithoutFeedback>
             <Block flex left row space="between">
               <Text
-                style={{ marginTop:10}}
+                style={{ marginTop:10, fontWeight:'bold'}}
                 color={nowTheme.COLORS.ORANGE} size={20}
               >
                 ${item.price * item.qty}
@@ -405,7 +405,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'space-between', 
     width: '100%', 
-    height: '5%'
+    height: '8%',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+   
   },
   buttonOrder: {
     width: '35%',
