@@ -17,7 +17,6 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
 
-
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
@@ -95,7 +94,7 @@ export default class Cart extends React.Component {
             </TouchableWithoutFeedback>
             <Block flex left row space="between">
               <Text
-                style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                style={{ marginTop:10}}
                 color={nowTheme.COLORS.ORANGE} size={20}
               >
                 ${item.price * item.qty}
@@ -103,47 +102,40 @@ export default class Cart extends React.Component {
             </Block>
           </Block>
         </Block>
-
-          <Block right style={styles.options, {top:-20}}>
-            <Block row >
-              <Button
-                shadowless
-                style={styles.quantityButtons}
-                color={'#f0f0f0'}
-              >
-                <Text style={styles.quantityTexts}>
-                  -
-                </Text>
-              </Button>
-              <Text style={{marginHorizontal: 10, top:12}}>
-                1
+        <Block right>
+          <Block row >
+            <Button
+              shadowless
+              style={styles.quantityButtons}
+              color={'#f0f0f0'}
+            >
+              <Text style={styles.quantityTexts}>
+                -
               </Text>
-              <Button 
-                shadowless 
-                style={styles.quantityButtons}
-                color={nowTheme.COLORS.INFO}
-              >
-                <Text color={'white'} style={styles.quantityTexts}>
-                  +
-                </Text>
-              </Button>
-              <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+            </Button>
+            <Text style={{marginHorizontal: 10, top:12}}>
+              1
+            </Text>
+            <Button 
+              shadowless 
+              style={styles.quantityButtons}
+              color={nowTheme.COLORS.INFO}
+            >
+              <Text color={'white'} style={styles.quantityTexts}>
+                +
+              </Text>
+            </Button>
+            <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
               <Ionicons name="trash-sharp" color={'red'}  size={20} />
             </TouchableOpacity>
-
-              
-            </Block>
-           
           </Block>
-
+        </Block>
       </Block>
     );
   };
 
-
   renderProduct2 = ({ item }) => {
     const { navigation } = this.props;
-
     return (
       <Block card shadow style={styles.product}>
         <Block flex row>
@@ -173,7 +165,7 @@ export default class Cart extends React.Component {
             </TouchableWithoutFeedback>
             <Block flex left row space="between">
               <Text
-                style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
+                style={{ fontWeight: 'bold', marginTop:10}}
                 color={nowTheme.COLORS.ORANGE} size={20}
               >
                 ${item.price * item.qty}
@@ -181,14 +173,8 @@ export default class Cart extends React.Component {
             </Block>
           </Block>
         </Block>
-
-      
-
-          
-
-          <Block right style={styles.options, {top:-25}}>
-            <Block row >
-            <Button
+        <Block right>
+          <Button
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color:'#0E3A90' }}
             style={styles.buttonOrder}
@@ -196,10 +182,7 @@ export default class Cart extends React.Component {
           >
             Re-Order
           </Button>
-
-            </Block>
-          </Block>
-
+        </Block>
       </Block>
     );
   };
@@ -219,34 +202,20 @@ export default class Cart extends React.Component {
   renderHeader = () => {
     const { navigation } = this.props;
     const { cart } = this.state;
-    const productsQty = cart.length;
-    const total =
-      cart &&
-      cart.reduce((prev, product) => prev + product.price * product.qty, 0);
 
     return (
-      <Block flex style={styles.header}>
-        <Block row >
-          <FilterButton
-            text={'Bathroom'}
-          />
-          <FilterButton
-            text={'Kitchen'}
-          />
-          <FilterButton
-            text={'Laundry'}
-          />
+      <Block width={width} style={{ alignItems: 'center', paddingVertical: 8, marginBottom: -5 }}>
+        <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', marginLeft: -width*0.26}}>
+            <FilterButton
+              text={'Bathroom'}
+            />
+            <FilterButton
+              text={'Kitchen'}
+            />
+            <FilterButton
+              text={'Laundry'}
+            />
         </Block>
-
-        {/* <Block style={{ marginHorizontal: theme.SIZES.BASE }}>
-          <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.TEXT}>
-            Cart subtotal ({productsQty} items):{" "}
-            <Text style={{ fontFamily: 'montserrat-regular', fontWeight: '500' }} color={nowTheme.COLORS.ERROR}>
-              ${total}
-            </Text>
-          </Text>
-        </Block> */}
-
       </Block>
     );
   };
@@ -345,7 +314,7 @@ export default class Cart extends React.Component {
               </Block>
               <Button
                 color="info"
-                textStyle={{ fontWeight: 'bold', fontSize: 16 }}
+                textStyle={{ fontWeight: 'bold', fontSize: 16, borderWidth: 1 }}
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate("PlaceOrders")}
               >
@@ -380,6 +349,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: theme.SIZES.BASE / 4,
     shadowOpacity: 0.1,
+    elevation: 2,
     borderRadius: 3
   },
   productTitle: {
@@ -390,14 +360,12 @@ const styles = StyleSheet.create({
   },
   productDescription: {
     padding: theme.SIZES.BASE / 2,
+    paddingBottom: 0
   },
   imageHorizontal: {
     height: nowTheme.SIZES.BASE * 5,
     width: nowTheme.SIZES.BASE * 5,
     margin: nowTheme.SIZES.BASE / 2
-  },
-  options: {
-    padding: theme.SIZES.BASE / 2
   },
   qty: {
     display: "flex",
@@ -440,8 +408,8 @@ const styles = StyleSheet.create({
     height: '5%'
   },
   buttonOrder: {
-    //width:  (Platform.OS === 'ios') ? width - 240 : width - 250,
-    width: (Platform.OS === 'ios') ? width - 240 :  (Dimensions.get('window').height < 870) ?width - 230: width - 350,
+    width: '35%',
+    height: 30
   },
   receiptText: {
     fontSize: 13,
