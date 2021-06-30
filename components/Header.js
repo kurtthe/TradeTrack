@@ -122,7 +122,7 @@ class Header extends React.Component {
         ];
       case 'Products':
         return [
-          <View style={{top:5}}>
+          <View style={{top:9}}>
           <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         </View>
         ];
