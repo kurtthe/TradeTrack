@@ -6,7 +6,8 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  View
+  View,
+  Platform
 } from "react-native";
 import { Block, Text, theme, Button } from "galio-framework";
 import { nowTheme } from "../constants/";
@@ -250,6 +251,36 @@ export default class Cart extends React.Component {
     );
   };
 
+  renderDetailOrdersAS = () => {
+    const orders = [
+      {
+        title: '1x Kaya Basin/Bath Wall Mixer 160mm..',
+        price: '$375'
+      },
+      {
+        title: '1x Di Lusso 60cm Th601Ss Telescopi..',
+        price: '$244.99'
+      },
+      {
+        title: '1x Lillian Basin Set 1/4 Turn Ceramic..',
+        price: '$225.99'
+      }
+    ]
+
+    return orders.map((orders) => {
+      return (
+        <Block keyExtractor={(i) => {index: i}} row style={{ justifyContent: 'space-between', paddingBottom: 7}}>
+          <Text style={styles.receiptText}>
+            {orders.title}
+          </Text>
+          <Text style={styles.receiptPrice}>
+            {orders.price}
+          </Text>
+        </Block>
+      )
+    })
+  }
+
   renderEmpty() {
     return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
   }
@@ -301,43 +332,20 @@ export default class Cart extends React.Component {
             </TouchableWithoutFeedback>
           {/* End of Detail Orders ActionSheet Workaround */}
           <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
-            <Block style={{height: 220, padding: 20, paddingBottom: 40}}>
-              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                <Text>
-                  1x Kaya Basin/Bath Wall Mixer 160mm..
-                </Text>
-                <Text>
-                  $375
-                </Text>
-              </Block>
-              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                <Text>
-                  1x Di Lusso 60cm Th601Ss Telescopi..
-                </Text>
-                <Text>
-                  $244.99
-                </Text>
-              </Block>
-              <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                <Text>
-                  1x Lillian Basin Set 1/4 Turn Ceramic..
-                </Text>
-                <Text>
-                  $225.99
-                </Text>
-              </Block>
+            <Block style={{height: 'auto', padding: 20}}>
+              {this.renderDetailOrdersAS()}
               <View style={{borderWidth: 1, marginVertical: 5}}/>
               <Block row style={{ justifyContent: 'space-between', paddingBottom: 15}}>
-                <Text>
+                <Text size={14}>
                   Total Orders
                 </Text>
-                <Text>
+                <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
                   $224.99
                 </Text>
               </Block>
               <Button
                 color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                textStyle={{ fontWeight: 'bold', fontSize: 16 }}
                 style={styles.button}
                 onPress={() => this.props.navigation.navigate("PlaceOrders")}
               >
@@ -419,6 +427,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },  
   button: {
+    borderRadius: 8,
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 3,
   },
@@ -431,13 +440,18 @@ const styles = StyleSheet.create({
     height: '5%'
   },
   buttonOrder: {
-   
     //width:  (Platform.OS === 'ios') ? width - 240 : width - 250,
-
     width: (Platform.OS === 'ios') ? width - 240 :  (Dimensions.get('window').height < 870) ?width - 230: width - 350,
-
   },
-
+  receiptText: {
+    fontSize: 13,
+    width: '60%'
+  }, 
+  receiptPrice: {
+    fontSize: 14,
+    color: nowTheme.COLORS.INFO,
+    fontWeight: Platform.OS == 'android' ? 'bold' : '500'
+  },
   addButton: {
     width: '25%',
     height: 40,
