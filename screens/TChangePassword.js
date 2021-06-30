@@ -44,47 +44,53 @@ class ChangePassword extends React.Component {
     >
      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
-            <Block style={styles.registerContainer}>
+           
               <Block flex space="evenly">
-                <Block flex={0.4}  style={styles.socialConnect}>
+              <Block flex middle style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5} top middle >
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
-                  </Block>
-                  <Block flex={0.5} top middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-bold',
-                        textAlign: 'left'
-                      }}
-                      color="#2E2F33"
-                      size={20}
-                    >
-                     Changes Password
-                    </Text>
-                  </Block>
-                  <Block middle top flex={0.2}  width={width * 0.9} >
+                 <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :30) :  (Dimensions.get('window').height < 870) ? 30: 40}} >
+                 <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                 </Block>
+                 <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :10) :  (Dimensions.get('window').height < 870) ? 15: 15}}>
+                   <Text
+                     style={{
+                       fontFamily: 'montserrat-bold',
+                       textAlign: 'left'
+                     }}
+                     color="#2E2F33"
+                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                   //size={20}
+                   >
+                    Changes Password
+                   </Text>
+                 </Block>
+                 <Block middle top flex={3}  style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 10 :-20) :  (Dimensions.get('window').height < 870) ? 10: -20}}  width={width * 0.9} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            style={{   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            numberOfLines={2} 
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :20) :  (Dimensions.get('window').height < 870) ? 18: 20}
+
                           >
                             
 
                             Please fill in a maximum of 8-16 characters with numbers
                           </Text>
                         </Block>
-                </Block>
+               </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent', marginTop:15}}>
+                <Block flex={2.3}  space="between"  style={{backgroundColor:'transparent', marginTop:15}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                     
                       <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                        
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:
+                      (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 45 :0) :  (Dimensions.get('window').height < 870) ? 42: 0
+                      }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
@@ -99,7 +105,7 @@ class ChangePassword extends React.Component {
                         <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
-                          placeholder="⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛"
+                          placeholder="•••••••••••••"
                           secureTextEntry={this.state.hidePass ? true : false}
                         />
                          <MaterialIcons
@@ -127,7 +133,7 @@ class ChangePassword extends React.Component {
                         <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
-                          placeholder="⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛⊛"
+                          placeholder="•••••••••••••"
                           secureTextEntry={this.state.hidePass ? true : false}
                         />
                          <MaterialIcons
@@ -141,7 +147,7 @@ class ChangePassword extends React.Component {
                            />
                         </Block>
                       </Block>
-                      <Block center>
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.8 :0.45) :  (Dimensions.get('window').height < 870) ? 1: 0.4} center  style={{ bottom:20}} >
                         <Button
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -151,11 +157,9 @@ class ChangePassword extends React.Component {
                         >
                          Changes Password
                         </Button>
-                      </Block>
 
-                            <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")}>  <Text   style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
-                        </Block>
+                        <SimpleButton onPress={() => navigation.navigate("Help")}>  <Text   style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
+
                         <Block style={{top:20}} row middle space="between">
                           
                           <Text
@@ -167,12 +171,15 @@ class ChangePassword extends React.Component {
                         <SimpleButton 	  onPress={() => navigation.navigate("Login")}
                   > Login</SimpleButton>
                         </Block>
+                      </Block>
+
+                       
                         </Block>
                   
                   </Block>
                 </Block>
               </Block>
-            </Block>
+           
           </Block>
       
     
@@ -183,22 +190,7 @@ class ChangePassword extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  registerContainer: {
-    marginTop: 55,
-    width: width * 1,
-    height: height < 812 ? height * 0.8 : height * 0.9,
-    backgroundColor: nowTheme.COLORS.WHITE,
-    borderRadius: 4,
-    shadowColor: nowTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: 'hidden',
-  },
+  
 	container: {
 		flex: 1,
 	},
@@ -209,7 +201,8 @@ const styles = StyleSheet.create({
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
-    marginHorizontal:20
+    marginHorizontal:2.5,
+    top:30
     // borderBottomWidth: StyleSheet.hairlineWidth,
     // borderColor: "rgba(136, 152, 170, 0.3)"
   },
@@ -217,6 +210,7 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 3,
+    bottom:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 10 :20) :  (Dimensions.get('window').height < 870) ? 1: 20
   },
 
   introImageStyle: {
