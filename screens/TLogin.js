@@ -44,22 +44,22 @@ class Login extends React.Component {
     >
      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
-            <Block style={styles.registerContainer}>
               <Block flex space="evenly">
-                <Block flex={0.4}  style={styles.socialConnect}>
+                <Block flex middle style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5} top middle >
+                  <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
                   <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
                   </Block>
-                  <Block flex={0.5} top middle>
+                  <Block flex={3} top middle>
                     <Text
                       style={{
                         fontFamily: 'montserrat-bold',
                         textAlign: 'left'
                       }}
                       color="#2E2F33"
-                      size={20}
+                     size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                    //size={20}
                     >
                       Welcome Back,{"\n"}
                       Please sign in with your account
@@ -67,17 +67,18 @@ class Login extends React.Component {
                   </Block>
                 </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={2.5}  space="between"  style={{backgroundColor:'transparent'}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.255 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+
                           >
                           Email
                           </Text>
@@ -91,13 +92,14 @@ class Login extends React.Component {
                             keyboardType={"email-address"}
                           />
                         </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
+                        <Block flex={0.2} style={{marginTop:15}} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+
                           >
                           Password
                           </Text>
@@ -126,7 +128,7 @@ class Login extends React.Component {
                         >Forgot Password?</ForgotButton>
                         </Block>
                       </Block>
-                      <Block center>
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.8 :0.45) :  (Dimensions.get('window').height < 870) ? 1: 0.4} center  >
                         <Button
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -136,11 +138,9 @@ class Login extends React.Component {
                         >
                          Login
                         </Button>
-                      </Block>
 
-                            <Block middle >
-                            <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
-                        </Block>
+                        <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>
+                    
                         <Block style={{top:20}} row middle space="between">
                           
                           <Text
@@ -152,12 +152,16 @@ class Login extends React.Component {
                         <SimpleButton 	  onPress={() => navigation.navigate("SignUp")}
                   > Learn how to open</SimpleButton>
                         </Block>
+                      </Block>
+
+                            
+                       
                         </Block>
                   
                   </Block>
                 </Block>
               </Block>
-            </Block>
+            
           </Block>
       
     
@@ -194,14 +198,15 @@ const styles = StyleSheet.create({
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
-    marginHorizontal:20
+    marginHorizontal:5
     // borderBottomWidth: StyleSheet.hairlineWidth,
     // borderColor: "rgba(136, 152, 170, 0.3)"
   },
 
   button: {
-    marginBottom: theme.SIZES.BASE,
+    marginBottom: theme.SIZES.BASE ,
     width: width - theme.SIZES.BASE * 3,
+    bottom:20
   },
 
   introImageStyle: {

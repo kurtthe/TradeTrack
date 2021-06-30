@@ -54,50 +54,56 @@ class SignUp extends React.Component {
     >
      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
-            <Block style={styles.registerContainer}>
+           
               <Block flex space="evenly">
-                <Block flex={0.4}  style={styles.socialConnect}>
+              <Block flex middle style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5} top middle >
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
-                  </Block>
-                  <Block flex={0.5} top middle>
-                    <Text
-                      style={{
-                        fontFamily: 'montserrat-bold',
-                        textAlign: 'left'
-                      }}
-                      color="#2E2F33"
-                      size={20}
-                    >
-                      Want to access the Burdens portal? You'll need to open a Burdens Trade account to get in.
-                    </Text>
-                  </Block>
-                </Block>
+                 <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
+                 <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                 </Block>
+                 <Block flex={3} top middle>
+                   <Text
+                     style={{
+                       fontFamily: 'montserrat-bold',
+                       textAlign: 'left'
+                     }}
+                     color="#2E2F33"
+                     
+                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                   //size={20}
+                   >
+                     Want to access the Burdens portal? You'll need to open a Burdens Trade account to get in.
+                   </Text>
+                 </Block>
+               </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={2}  space="between"  style={{backgroundColor:'transparent', marginHorizontal:20}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                    
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
+
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            numberOfLines={2} 
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :20) :  (Dimensions.get('window').height < 870) ? 18: 20}
+
                           >
                           To access the Burdens Portal, please contact via:
                           </Text>
                         </Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
+                      <Block flex={0.15} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 40 :40) :  (Dimensions.get('window').height < 870) ? 40: 80, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
                           >
                           Email
                           </Text>
@@ -107,20 +113,22 @@ class SignUp extends React.Component {
       title="help@burdens.com.au" >
                         <Text
                           color={'#444857'}
-                          size={18}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
                           style={{textDecorationLine: 'underline',}}
                           >
                           help@burdens.com.au
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
+                        <Block flex={0.15} style={{marginTop:30}} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
                             row
                             muted
-                            size={15}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+
                           >
                           Phone number
                           </Text>
@@ -129,7 +137,8 @@ class SignUp extends React.Component {
                         <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('0399993333')}}>
                         <Text
                           color={'#444857'}
-                          size={18}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
                           style={{textDecorationLine: 'underline',}}
                           >
                          03 9999 3333
@@ -148,18 +157,19 @@ class SignUp extends React.Component {
                         >
                           Back to Login
                         </Button>
-                      </Block>
-
-                            <Block middle >
+                        <Block middle >
                             <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text  style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
                         </Block>
+                      </Block>
+
+                            
                       
                         </Block>
                   
                   </Block>
                 </Block>
               </Block>
-            </Block>
+            
           </Block>
       
     
@@ -204,6 +214,7 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 3,
+    bottom:15
   },
 
   introImageStyle: {

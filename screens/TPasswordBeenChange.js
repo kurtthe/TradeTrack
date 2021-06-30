@@ -43,7 +43,7 @@ class PasswordBeenChange extends React.Component {
         Linking.openURL(phoneNumber);
      };
 
-
+ 
   render() {
     const { navigation } = this.props;
 
@@ -54,47 +54,28 @@ class PasswordBeenChange extends React.Component {
     >
      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
-            <Block style={styles.registerContainer}>
+           
               <Block flex space="evenly">
                 <Block flex={0.4}  style={styles.socialConnect}>
                  
 
-                  <Block flex={0.5}  middle >
+                <Block flex={3}  middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
                   <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
                   </Block>
-                  <Block flex={0.5}  middle>
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/check-badge.png')}/>
-                  </Block>
+                  
                 </Block>
               
-                <Block flex={0.9}  space="between"  style={{backgroundColor:'transparent'}}>
+                <Block flex={1.5}  space="between"  style={{backgroundColor:'transparent'}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
-                      <Block flex={0.2} style={{marginTop:10, }} mide >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
+                      <Block  middle>
+                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/check-badge.png')}/>
+                  </Block>
+                  <Block width={width * 0.9} >
+                     
+                        <Block middle >
                       
-                          </Text>
-                        </Block>
-                      <Block flex={0.2} style={{marginTop:10, }} >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
-                      
-                          </Text>
-                        </Block>
-                        <Block middle width={width * 0.9}>
-                        <TouchableWithoutFeedback activeOpacity={0.6} >
                         <Text
                           style={{
                             fontFamily: 'montserrat-bold',
@@ -106,23 +87,35 @@ class PasswordBeenChange extends React.Component {
                           >
                        Your Password has been Change
                           </Text>
-                          </TouchableWithoutFeedback>
+                          
                         </Block>
-                        <Block flex={0.2} style={{marginTop:30}} >
+                        <Block  middle style={{marginTop:30, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
-                            style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
+                            style={{ marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
                             row
                             muted
                             size={15}
                           >
-                             Please login again to enter Burdens Portals. Have a nice day!
+                             Please login again to enter Burdens Portals. 
+                          </Text>
+                        </Block>
+
+                        <Block  middle  >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{ marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={15}
+                          >
+                             Have a nice day!
                           </Text>
                         </Block>
                       
-                    
+                        </Block>
                       </Block>
-                      <Block center>
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.2 :0.45) :  (Dimensions.get('window').height < 870) ? 0.3: 0.4} center  >
                         <Button
                           color="warning"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
@@ -134,9 +127,7 @@ class PasswordBeenChange extends React.Component {
                         </Button>
                       </Block>
 
-                            <Block middle >
-                            <SimpleButton  onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
-                        </Block>
+                           
                       
                         </Block>
                   
@@ -144,7 +135,7 @@ class PasswordBeenChange extends React.Component {
                 </Block>
               </Block>
             </Block>
-          </Block>
+          
       
     
           </DismissKeyboard>
@@ -154,22 +145,7 @@ class PasswordBeenChange extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  registerContainer: {
-    marginTop: 55,
-    width: width * 1,
-    height: height < 812 ? height * 0.8 : height * 0.9,
-    backgroundColor: nowTheme.COLORS.WHITE,
-    borderRadius: 4,
-    shadowColor: nowTheme.COLORS.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowRadius: 8,
-    shadowOpacity: 0.1,
-    elevation: 1,
-    overflow: 'hidden',
-  },
+  
 	container: {
 		flex: 1,
 	},
@@ -192,8 +168,8 @@ const styles = StyleSheet.create({
 
   introImageStyle: {
     
-    width: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? wp('37%') : wp('40%')) :  (Dimensions.get('window').height < 870) ? wp('29%') : wp('40%'),
-    height: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('10%') : hp('40%')) :  (Dimensions.get('window').height < 870) ? hp('29%') : hp('40%'),
+    width: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? wp('35%') : wp('40%')) :  (Dimensions.get('window').height < 870) ? wp('35%') : wp('40%'),
+    height: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('35%') : hp('40%')) :  (Dimensions.get('window').height < 870) ? hp('35%') : hp('40%'),
     resizeMode: 'contain',
     
   },
@@ -202,6 +178,7 @@ const styles = StyleSheet.create({
 		position: "absolute",
     right:10,
     top:20,
+   
    
 	},
 });
