@@ -185,67 +185,65 @@ export default class PlaceOrders extends React.Component {
         return (
         <Block card shadow style={styles.product}>
             <Block flex row>
-            <TouchableWithoutFeedback
-                //  onPress={() => navigation.navigate("Product", { product: item })}
-            >
-                <Image
-                source={{ uri: item.image }}
-                style={styles.imageHorizontal}
-                />
-            </TouchableWithoutFeedback>
-            <Block flex style={styles.productDescription}>
-                <Block row>
-                <Text color={nowTheme.COLORS.LIGHTGRAY}>
-                    SKU:
-                </Text>
-                <Text color={nowTheme.COLORS.INFO}>
-                    FIE228106B
-                </Text>
-                </Block>
                 <TouchableWithoutFeedback
-                //onPress={() =>  navigation.navigate("Product", { product: item }) }
+                    //  onPress={() => navigation.navigate("Product", { product: item })}
                 >
-                <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-                    {item.title}
-                </Text>
+                    <Image
+                    source={{ uri: item.image }}
+                    style={styles.imageHorizontal}
+                    />
                 </TouchableWithoutFeedback>
-                <Block flex left row space="between">
-                <Text
-                    style={{ fontFamily: 'montserrat-regular' , marginTop:10}}
-                    color={nowTheme.COLORS.ORANGE} size={20}
-                >
-                    ${item.price * item.qty}
-                </Text>
+                <Block flex style={styles.productDescription}>
+                    <Block row>
+                        <Text color={nowTheme.COLORS.LIGHTGRAY}>
+                            SKU:
+                        </Text>
+                        <Text color={nowTheme.COLORS.INFO}>
+                            FIE228106B
+                        </Text>
+                    </Block>
+                    <TouchableWithoutFeedback
+                        //onPress={() =>  navigation.navigate("Product", { product: item }) }
+                        >
+                        <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
+                            {item.title}
+                        </Text>
+                    </TouchableWithoutFeedback>
+                    <Block flex left row space="between">
+                        <Text
+                            style={{ fontWeight:'bold', marginTop:10}}
+                            color={nowTheme.COLORS.ORANGE} size={20}
+                        >
+                            ${item.price * item.qty}
+                        </Text>
+                    </Block>
                 </Block>
             </Block>
-            </Block>
-
-            <Block right style={styles.options, {top:-20}}>
-                <Block row >
-                <Button
-                    shadowless
-                    style={styles.quantityButtons}
-                    color={'#f0f0f0'}
-                >
-                    <Text style={styles.quantityTexts}>
-                    -
+            <Block right>
+                <Block row>
+                    <Button
+                        shadowless
+                        style={styles.quantityButtons}
+                        color={'#f0f0f0'}
+                    >
+                        <Text style={styles.quantityTexts}>
+                        -
+                        </Text>
+                    </Button>
+                    <Text style={{marginHorizontal: 10, top:12}}>
+                        1
                     </Text>
-                </Button>
-                <Text style={{marginHorizontal: 10, top:12}}>
-                    1
-                </Text>
-                <Button 
-                    shadowless 
-                    style={styles.quantityButtons}
-                    color={nowTheme.COLORS.INFO}
-                >
-                    <Text color={'white'} style={styles.quantityTexts}>
-                    +
-                    </Text>
-                </Button>
+                    <Button 
+                        shadowless 
+                        style={styles.quantityButtons}
+                        color={nowTheme.COLORS.INFO}
+                    >
+                        <Text color={'white'} style={styles.quantityTexts}>
+                        +
+                        </Text>
+                    </Button>
                 </Block>
             </Block>
-
         </Block>
         );
     };
@@ -256,7 +254,7 @@ export default class PlaceOrders extends React.Component {
             <Block 
                 card 
                 backgroundColor={'white'} 
-                width={width*0.9} 
+                width={width} 
                 paddingTop={10} 
                 paddingHorizontal={20}
                 paddingBottom={20}
@@ -289,7 +287,7 @@ export default class PlaceOrders extends React.Component {
             <Block 
                 card 
                 backgroundColor={'white'} 
-                width={width*0.9} 
+                width={width} 
                 paddingTop={10} 
                 paddingHorizontal={20}
                 paddingBottom={20}
@@ -338,7 +336,7 @@ export default class PlaceOrders extends React.Component {
             <Block 
                 card 
                 backgroundColor={'white'} 
-                width={width*0.9} 
+                width={width} 
                 paddingTop={10} 
                 paddingHorizontal={20}
                 paddingBottom={20}
@@ -361,8 +359,34 @@ export default class PlaceOrders extends React.Component {
         )
     }
 
-    renderDeliveryOptions = () => {
+    renderDetailOrdersAS = () => {
+        const orders = [
+            {
+                title: '1x Kaya Basin/Bath Wall Mixer 160mm..',
+                price: '$375'
+            },
+            {
+                title: '1x Di Lusso 60cm Th601Ss Telescopi..',
+                price: '$244.99'
+            },
+            {
+                title: '1x Lillian Basin Set 1/4 Turn Ceramic..',
+                price: '$225.99'
+            }
+        ]
         
+        return orders.map((orders) => {
+            return (
+                <Block keyExtractor={(i) => {index: i}} row style={{ justifyContent: 'space-between', paddingBottom: 7}}>
+                    <Text style={styles.receiptText}>
+                        {orders.title}
+                    </Text>
+                    <Text style={styles.receiptPrice}>
+                        {orders.price}
+                    </Text>
+                </Block>
+            )
+        })
     }
 
     renderASHeader = () => {
@@ -380,8 +404,9 @@ export default class PlaceOrders extends React.Component {
         return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
     }
 
-  render() {
+    render() {
     const { customStyleIndex, radioButtonsData } = this.state
+    const { navigation } = this.props 
     return (
     <Block flex center style={styles.cart}>
         <FlatList
@@ -419,45 +444,22 @@ export default class PlaceOrders extends React.Component {
         </Block>
         {/* End of Detail Orders ActionSheet Workaround */}
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
-            <Block style={{height: 200, padding: 20, paddingBottom: 40}}>
-                <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                    <Text>
-                        1x Kaya Basin/Bath Wall Mixer 160mm..
-                    </Text>
-                    <Text>
-                        $375
-                    </Text>
-                </Block>
-                <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                    <Text>
-                        1x Di Lusso 60cm Th601Ss Telescopi..
-                    </Text>
-                    <Text>
-                        $244.99
-                    </Text>
-                </Block>
-                <Block row style={{ justifyContent: 'space-between', paddingBottom: 5}}>
-                    <Text>
-                        1x Lillian Basin Set 1/4 Turn Ceramic..
-                    </Text>
-                    <Text>
-                        $225.99
-                    </Text>
-                </Block>
+            <Block style={{height: 'auto', padding: 20}}>
+                {this.renderDetailOrdersAS()}
                 <View style={{borderWidth: 1, marginVertical: 5}}/>
                 <Block row style={{ justifyContent: 'space-between', paddingBottom: 15}}>
-                    <Text>
-                        Total Orders
+                    <Text size={14}>
+                    Total Orders
                     </Text>
-                    <Text>
-                        $224.99
+                    <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
+                    $224.99
                     </Text>
                 </Block>
                 <Button
                     color="info"
                     textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                     style={styles.button}
-                    onPress={() => navigation.navigate("orderPlaced")}
+                    onPress={() => navigation.navigate("OrderPlaced")}
                 >
                     Place Order
                 </Button>
@@ -465,10 +467,11 @@ export default class PlaceOrders extends React.Component {
         </ActionSheet>
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
-            <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
-            {(radioButtonsData == radioButtonsHour || radioButtonsData == radioButtonsDelivery  )? ( 
-          
-            <RadioGroup 
+            <Block left style={{height: 'auto', padding: 5, paddingBottom: 40}}>
+            {(radioButtonsData == radioButtonsHour || radioButtonsData == radioButtonsDelivery )
+            ? 
+            ( 
+                <RadioGroup 
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO} 
                     //onPress={() => this.onPressRadioButton()} 
@@ -488,13 +491,13 @@ export default class PlaceOrders extends React.Component {
                         <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
                         }
                     />
-                     <Block left style={{ marginHorizontal: 16,}}>
-                    <RadioGroup 
-                    radioButtons={this.state.radioButtonsData}
-                    color={nowTheme.COLORS.INFO} 
-                    //onPress={() => this.onPressRadioButton()} 
-                />
-                </Block>
+                    <Block left style={{ marginHorizontal: 16,}}>
+                        <RadioGroup 
+                            radioButtons={this.state.radioButtonsData}
+                            color={nowTheme.COLORS.INFO} 
+                            //onPress={() => this.onPressRadioButton()} 
+                        />
+                    </Block>
                 </View>
             )}  
             </Block>
@@ -526,6 +529,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: theme.SIZES.BASE / 4,
         shadowOpacity: 0.1,
+        elevation: 2,
         borderRadius: 3
     },
     productTitle: {
@@ -536,6 +540,7 @@ const styles = StyleSheet.create({
     },
     productDescription: {
         padding: theme.SIZES.BASE / 2,
+        paddingBottom: 0
     },
     imageHorizontal: {
         height: nowTheme.SIZES.BASE * 5,
@@ -610,6 +615,15 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexWrap: 'wrap'
     },
+    receiptText: {
+        fontSize: 13,
+        width: '60%'
+    }, 
+    receiptPrice: {
+        fontSize: 14,
+        color: nowTheme.COLORS.INFO,
+        fontWeight: Platform.OS == 'android' ? 'bold' : '500'
+    },
     search: {
         height: 48,
         width: width - 32,
@@ -617,5 +631,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 30,
         borderColor: nowTheme.COLORS.BORDER
-      },
+    },
 });
