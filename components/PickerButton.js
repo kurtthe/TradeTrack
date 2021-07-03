@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, Text, View } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Block } from "galio-framework";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 import nowTheme from '../constants/Theme';
 import { color } from 'react-native-reanimated';
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 'auto',
-        height: 28
+       
     },
     container: {
         alignItems: 'center',
@@ -64,7 +66,8 @@ const styles = StyleSheet.create({
         borderColor: nowTheme.COLORS.PICKERTEXT,
         padding: 5,
         borderRadius: 5,
-        paddingLeft: 10
+        paddingLeft: 10,
+        height: 45
     },
     shadow: {
         shadowColor: "black",
