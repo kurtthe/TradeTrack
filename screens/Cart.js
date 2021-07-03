@@ -205,7 +205,7 @@ export default class Cart extends React.Component {
 
     return (
       <Block width={width} style={{ alignItems: 'center', paddingVertical: 8, marginBottom: -5 }}>
-        <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', marginLeft: -width*0.26}}>
+       {/*  <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', marginLeft: -width*0.26}}>
             <FilterButton
               text={'Bathroom'}
             />
@@ -215,7 +215,7 @@ export default class Cart extends React.Component {
             <FilterButton
               text={'Laundry'}
             />
-        </Block>
+        </Block> */}
       </Block>
     );
   };
@@ -264,7 +264,7 @@ export default class Cart extends React.Component {
             onTabPress={this.handleCustomIndexSelect}
             borderRadius={0}
             tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
-            tabStyle={{ backgroundColor: '#FFFFFF', borderWidth: 0, borderColor: 'transparent' }}
+            tabStyle={{ backgroundColor: '#FFFFFF', borderWidth: 0, borderColor: 'transparent', borderBottomWidth: 2, borderBottomColor: '#D2D2D2' }}
             activeTabStyle={{ backgroundColor: nowTheme.COLORS.BACKGROUND, marginTop: 2, borderBottomWidth: 2, borderBottomColor: nowTheme.COLORS.INFO}}
             tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
             activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
@@ -303,7 +303,7 @@ export default class Cart extends React.Component {
           <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
             <Block style={{height: 'auto', padding: 20}}>
               {this.renderDetailOrdersAS()}
-              <View style={{borderWidth: 1, marginVertical: 5}}/>
+              <View style={{borderWidth: 0.7, marginVertical: 5, backgroundColor:'#E8E8E8', borderColor:'#E8E8E8'}}/>
               <Block row style={{ justifyContent: 'space-between', paddingBottom: 15}}>
                 <Text size={14}>
                   Total Orders
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     minHeight: "100%"
   },
   product: {
-    width: width * 0.9,
+    width: width * 0.92,
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.5,
     marginHorizontal: theme.SIZES.BASE,

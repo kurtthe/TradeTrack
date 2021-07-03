@@ -140,18 +140,18 @@ export default class Product extends React.Component {
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price: </Text>
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
 
-                  <Text color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :25) :  (Dimensions.get('window').height < 870) ? 20: 25}> {product.price} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :24) :  (Dimensions.get('window').height < 870) ? 20: 24}> {product.price} </Text>
 
                 </Block>
-                <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+                <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
                 <Block flex right >
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    My Price: 
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText, {right:5}}>
+                    My Price 
                   </Text>
 
-                  <Text color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :25) :  (Dimensions.get('window').height < 870) ? 20: 25}> {product.myPrice} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :24) :  (Dimensions.get('window').height < 870) ? 20: 24}> {product.myPrice} </Text>
 
                 </Block>
               </Block>
@@ -161,14 +161,14 @@ export default class Product extends React.Component {
               <Text style={{paddingBottom: 15}} size={16} >Details Product</Text>
               <Block row style={{paddingBottom: 15}}>
                 <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU: </Text>
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU </Text>
 
-                  <Text color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.sku} </Text>
+                  <Text  color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.sku} </Text>
 
                 </Block>
                 <Block flex >
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    Type: 
+                    Type
                   </Text>
 
                   <Text color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.type} </Text>
@@ -191,7 +191,7 @@ export default class Product extends React.Component {
                        />
                      </Block>
                      <Block flex={4}>
-                       <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf: </Text> 
+                       <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf </Text> 
                        <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
                      </Block>
                      <Block flex center >
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   priceGrayText: {
     paddingLeft: 2,
-    fontSize: 12
+    fontSize: 14
   },
   priceOrange: {
     fontWeight: 'bold'

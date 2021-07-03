@@ -179,7 +179,7 @@ export default class PlaceOrders extends React.Component {
         this.setState({ cart });
     };
 
-    renderProduct = ({ item }) => {
+/*     renderProduct = ({ item }) => {
         const { navigation } = this.props;
 
         return (
@@ -246,7 +246,7 @@ export default class PlaceOrders extends React.Component {
             </Block>
         </Block>
         );
-    };
+    }; */
 
     renderOptions = () => {
         return (
@@ -271,6 +271,7 @@ export default class PlaceOrders extends React.Component {
                         this.setState({ radioButtonsData: radioButtonsData})
                         actionSheetRadioButtonRef.current?.setModalVisible()
                     }}
+                   
                 />
                 <Text style={styles.text}>
                     Order Name
@@ -355,6 +356,48 @@ export default class PlaceOrders extends React.Component {
                     multiline 
                 />
             </Block>
+
+            <Block 
+                card 
+                backgroundColor={'white'} 
+                width={width} 
+               
+                marginBottom={20}
+            >
+                <Block style={{height: 'auto', padding: 25, top:-20}}>
+
+                <View style={styles.detailOrders}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16}}>
+                        Detail Orders
+                    </Text>
+                    <MaterialIcons name="expand-less" color={'gray'} size={30} />
+                </View>
+
+                {this.renderDetailOrdersAS()}
+                <View style={{borderWidth: 0.7, marginVertical: 5, backgroundColor:'#E8E8E8', borderColor:'#E8E8E8'}}/>
+                <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top:10}}>
+                    <Text size={14}>
+                    Total Orders
+                    </Text>
+                    <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
+                    $224.99
+                    </Text>
+                </Block>
+                <Block
+            center
+            style={{position: 'relative', bottom: 0, paddingHorizontal: 20}}
+        >
+                <Button
+                    color="info"
+                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                    style={styles.button}
+                    onPress={() => navigation.navigate("OrderPlaced")}
+                >
+                    Place Order
+                </Button>
+                </Block>
+            </Block>
+            </Block>
         </Block>
         )
     }
@@ -411,60 +454,16 @@ export default class PlaceOrders extends React.Component {
     <Block flex center style={styles.cart}>
         <FlatList
             data={this.state.ordersPlaced}
-            renderItem={this.renderProduct}
+           // renderItem={this.renderProduct}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => `${index}-${item.title}`}
             ListEmptyComponent={this.renderEmpty()}
             ListFooterComponent={this.renderOptions()}
         />
         {/* Detail Orders ActionSheet Workaround */}
-        <Block
-            center
-            style={{position: 'relative', bottom: 0, paddingHorizontal: 20}}
-        >
-            <TouchableWithoutFeedback
-                style={{ width: '100%' }}
-                onPress={() => actionSheetRef.current?.setModalVisible()}
-            >
-                <View style={styles.detailOrders}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16}}>
-                        Detail Orders
-                    </Text>
-                    <MaterialIcons name="expand-less" color={'gray'} size={30} />
-                </View>
-            </TouchableWithoutFeedback>
-            <Button 
-                color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                style={styles.button}
-                onPress={() => this.props.navigation.navigate("OrderPlaced")}
-            >
-                Place Order
-            </Button>
-        </Block>
+       
         {/* End of Detail Orders ActionSheet Workaround */}
-        <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
-            <Block style={{height: 'auto', padding: 20}}>
-                {this.renderDetailOrdersAS()}
-                <View style={{borderWidth: 1, marginVertical: 5}}/>
-                <Block row style={{ justifyContent: 'space-between', paddingBottom: 15}}>
-                    <Text size={14}>
-                    Total Orders
-                    </Text>
-                    <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
-                    $224.99
-                    </Text>
-                </Block>
-                <Button
-                    color="info"
-                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                    style={styles.button}
-                    onPress={() => navigation.navigate("OrderPlaced")}
-                >
-                    Place Order
-                </Button>
-            </Block>
-        </ActionSheet>
+       
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
             <Block left style={{height: 'auto', padding: 5, paddingBottom: 40}}>
@@ -579,17 +578,16 @@ const styles = StyleSheet.create({
     },  
     button: {
         width: width - theme.SIZES.BASE * 3,
+        marginTop: theme.SIZES.BASE,
     },
     detailOrders: {
         flexDirection: 'row',
         backgroundColor: 'white',
-        paddingHorizontal: 20, 
         alignItems: 'center', 
         justifyContent: 'space-between', 
         width: width, 
         height: '8%',
-        borderTopLeftRadius:15,
-        borderTopRightRadius:15,
+        marginVertical: theme.SIZES.BASE * 0.9,
     },
     buttonOrder: {
         width:  (Platform.OS === 'ios') ? width - 240 : width - 300,
@@ -606,7 +604,8 @@ const styles = StyleSheet.create({
     },
     orderName: {
         width: 'auto',
-        paddingVertical: 10
+        paddingVertical: 10,
+        height: 43
     },
     notes: {
         height: 100,
@@ -619,7 +618,8 @@ const styles = StyleSheet.create({
     },
     receiptText: {
         fontSize: 13,
-        width: '60%'
+        width: '60%',
+        color: '#363C4A'
     }, 
     receiptPrice: {
         fontSize: 14,
