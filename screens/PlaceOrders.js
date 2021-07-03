@@ -17,6 +17,7 @@ import PickerButton from "../components/PickerButton";
 import RadioGroup from 'react-native-radio-buttons-group';
 import DateTimePicker from "react-native-modal-datetime-picker";
 import Icon from '../components/Icon';
+import QuantityCounter from '../components/QuantityCounter';
 
 
 
@@ -220,29 +221,7 @@ export default class PlaceOrders extends React.Component {
                 </Block>
             </Block>
             <Block right>
-                <Block row>
-                    <Button
-                        shadowless
-                        style={styles.quantityButtons}
-                        color={'#f0f0f0'}
-                    >
-                        <Text style={styles.quantityTexts}>
-                        -
-                        </Text>
-                    </Button>
-                    <Text style={{marginHorizontal: 10, top:12}}>
-                        1
-                    </Text>
-                    <Button 
-                        shadowless 
-                        style={styles.quantityButtons}
-                        color={nowTheme.COLORS.INFO}
-                    >
-                        <Text color={'white'} style={styles.quantityTexts}>
-                        +
-                        </Text>
-                    </Button>
-                </Block>
+                <QuantityCounter quantity={1}/>
             </Block>
         </Block>
         );
