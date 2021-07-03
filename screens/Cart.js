@@ -16,6 +16,7 @@ import FilterButton from "../components/FilterButton";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
+import QuantityCounter from "../components/QuantityCounter";
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
@@ -104,27 +105,7 @@ export default class Cart extends React.Component {
         </Block>
         <Block right>
           <Block row >
-            <Button
-              shadowless
-              style={styles.quantityButtons}
-              color={'#f0f0f0'}
-            >
-              <Text style={styles.quantityTexts}>
-                -
-              </Text>
-            </Button>
-            <Text style={{marginHorizontal: 10, top:12}}>
-              1
-            </Text>
-            <Button 
-              shadowless 
-              style={styles.quantityButtons}
-              color={nowTheme.COLORS.INFO}
-            >
-              <Text color={'white'} style={styles.quantityTexts}>
-                +
-              </Text>
-            </Button>
+            <QuantityCounter quantity={1}/>
             <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
               <Ionicons name="trash-sharp" color={'red'}  size={20} />
             </TouchableOpacity>
