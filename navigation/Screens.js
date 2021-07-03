@@ -67,8 +67,8 @@ function ProductsStack(props) {
         component={Category}
         options={{
           header: ({ navigation, scene }) => {
-            const { params } = scene.descriptor;
-            const title = (params && params.headerTitle) || "Category";
+            const { headerTitle } = scene.route.params;
+            const title = headerTitle || "Category";
             return (<Header title={title} back navigation={navigation} scene={scene}  />);
           },
           cardStyle: { backgroundColor: "#FFFFFF" }

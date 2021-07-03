@@ -170,7 +170,6 @@ export default class Category extends React.Component {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => navigation.navigate("Cart")}
-           
           >
             Add
           </Button>
@@ -181,6 +180,7 @@ export default class Category extends React.Component {
 
   render() {
     const { navigation, route } = this.props;
+    const categoryTitle = route.params.headerTitle;
     const category = categories[route.params.headerTitle];
   
     return (
@@ -194,7 +194,7 @@ export default class Category extends React.Component {
             {`>`}
           </Text>
           <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
-            Bathroom Products
+            {categoryTitle} Products
           </Text>
         </Block>
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '4%'}}>
