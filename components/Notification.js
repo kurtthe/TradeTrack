@@ -49,7 +49,7 @@ export default class Notification extends React.Component {
               {system && (
                 <Block row space="between" style={{ height: 40, paddingTop:10 }}>
                   <Text color={nowTheme.COLORS.DEFAULT} style={{ fontFamily: 'montserrat-bold', }} size={14}>{title}</Text>
-                  <Block row paddingRight={((Dimensions.get('window').height < 670) ? 120 : 210)}>
+                  <Block row paddingRight={((Dimensions.get('window').height < 670) ? 120 : 170)}>
                   <Text color={nowTheme.COLORS.INFO} style={{fontFamily: 'montserrat-bold',    }} size={14}>{reference}</Text>
                   </Block>
                   <Block row >

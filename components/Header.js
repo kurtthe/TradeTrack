@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   },
   title: {
     width: '150%',
-    fontSize: ((Dimensions.get('window').height < 670) ? 22 : 28),
+    fontSize: ((Dimensions.get('window').height < 670) ? 22 : 26),
     fontWeight: 'bold',
     fontFamily: 'montserrat-bold',
     left:wp('-12.5%'),
@@ -421,8 +421,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   introImageStyle: {
-    width: 100,
-    height: 100,
+    width: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 100 :120)  : ((Dimensions.get('window').height < 595) ? 100 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 120:-120)),
+    height: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 100 :120)  : ((Dimensions.get('window').height < 595) ? 100 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 120:-120)),
     resizeMode: 'contain',
   },
 

@@ -75,13 +75,17 @@ class Components extends React.Component {
         <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
           <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
             <Text
-              style={{ fontFamily: 'montserrat-regular' }}
-              size={14}
+              style={{ fontFamily: 'montserrat-regular', top:-10 }}
+              size={14.5}
               color={'#848893'}
             >
-              enable this to hide "My price"
+              Enable this to hide "My price"
             </Text>
+            <Block style={{top:-20}} >
+
             <Switch/>
+            </Block>
+           
           </Block>
         </Block>
       </Block>
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-bold',
     paddingBottom: theme.SIZES.BASE,
     paddingHorizontal: theme.SIZES.BASE * 1,
-    marginTop: 44,
+    marginTop: 20,
     color: nowTheme.COLORS.HEADER
   },
   social: {
