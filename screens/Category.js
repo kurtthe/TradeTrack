@@ -141,24 +141,24 @@ export default class Category extends React.Component {
         <Block flex space='between' style={{ paddingBottom: 15}}>
           <Block row >
             <Text color={nowTheme.COLORS.LIGHTGRAY}>
-              SKU:
+              SKU
             </Text>
-            <Text color={nowTheme.COLORS.INFO}>
+            <Text color={nowTheme.COLORS.INFO} style={{fontSize: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 12 :14) :  (Dimensions.get('window').height < 870) ? 11.5: 15,}}>
               {` ${item.sku}`}
             </Text>
           </Block>
           <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5 }} size={15} >
             {item.title}
           </Text>
-          <Block row style={{width: '100%'}}>
+          <Block row style={{width: '100%', top:10}}>
             <Block flex>
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> Price: </Text>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> Price </Text>
               <Text style={styles.price}> {item.price} </Text>
             </Block>
-            <View  style={{borderWidth: 1, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+            <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                My Price: 
+                My Price
               </Text>
               <Text style={styles.price}> {item.myPrice} </Text>
             </Block>
@@ -170,7 +170,6 @@ export default class Category extends React.Component {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => navigation.navigate("Cart")}
-           
           >
             Add
           </Button>
@@ -181,6 +180,7 @@ export default class Category extends React.Component {
 
   render() {
     const { navigation, route } = this.props;
+    const categoryTitle = route.params.headerTitle;
     const category = categories[route.params.headerTitle];
   
     return (
@@ -194,7 +194,7 @@ export default class Category extends React.Component {
             {`>`}
           </Text>
           <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
-            Bathroom Products
+            {categoryTitle} Products
           </Text>
         </Block>
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '4%'}}>
@@ -302,5 +302,7 @@ const styles = StyleSheet.create({
   buttonAdd: {
    
     width:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? width - 240 :width - 265)  : (Dimensions.get('window').height < 870) ? width - 220 : width - 300, 
+    top:10,
+    marginBottom: theme.SIZES.BASE,
   },
 });

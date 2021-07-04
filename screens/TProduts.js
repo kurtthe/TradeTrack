@@ -50,8 +50,17 @@ class Components extends React.Component {
           />
         </Block>
         <Block flex row>
-          <Card categoryCard onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} item={articles[9]} style={{ marginRight: theme.SIZES.BASE }} />
-          <Card categoryCard onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} item={articles[10]} />
+          <Card 
+            categoryCard 
+            onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} 
+            item={articles[9]} 
+            style={{ marginRight: theme.SIZES.BASE }} 
+          />
+          <Card 
+            categoryCard 
+            onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} 
+            item={articles[10]} 
+          />
         </Block>
       </Block>
     );
