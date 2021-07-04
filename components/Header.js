@@ -91,22 +91,18 @@ class Header extends React.Component {
       case 'Home':
         return [
          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          <View>
+          <View style={{top:5.5}} >
             <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
-      case 'Deals':
-        return [
-          <BellButton key="chat-categories" navigation={navigation} />,
-          <BasketButton key="basket-categories" navigation={navigation} />
-        ];
+     
       case 'Categories':
         return [
           <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         ];
       case 'Category':
         return [
-          <View style={{top:11}}>
+          <View style={{top:5.5}}>
             <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         ];
@@ -117,18 +113,19 @@ class Header extends React.Component {
         ];
       case 'Account':
         return [
-          <BellButton key="chat-profile" navigation={navigation} />,
-          <BasketButton key="basket-deals" navigation={navigation} />
+          <View style={{top:5.5}}>
+            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+          </View>
         ];
       case 'Products':
         return [
-          <View style={{top:19}}>
+          <View style={{top:5.5}}>
           <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
         </View>
         ];
         case 'Product':
           return [
-            <Block row style={{paddingTop: 25, width:50}}>
+            <Block row style={{paddingTop: 17.5, width:50}}>
             <CartButton  isWhite={white} />
             <ConfigButton  isWhite={white} />
           </Block>
@@ -136,7 +133,7 @@ class Header extends React.Component {
           case 'Cart':
             return [
              // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-              <View style={{top:11, width:50}}>
+              <View style={{top:5.5, width:50}}>
                 <DeleteButton  isWhite={white} />
               </View>
             ];
@@ -145,21 +142,14 @@ class Header extends React.Component {
         return [
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
         ];
-      case 'Settings':
+   
+      case 'Bathroom':
         return [
-          <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
+          <View style={{top:5.5}} >
+          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
+        </View>
         ];
-      case 'NotificationsSettings':
-        return [
-          <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
-        ];
-        case 'Agreement':
-          return [
-            <BellButton key="chat-search" navigation={navigation} isWhite={white} />,
-            <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
-          ];
+       
       default:
         break;
     }
@@ -177,7 +167,7 @@ class Header extends React.Component {
          
           
 
-              <Block row   style={{width: wp('65%')}}>
+              <Block row   style={{width: wp('62.5%')}}>
             <Block flex middle >
             <TouchableOpacity  >
                   <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} /> 
@@ -185,7 +175,7 @@ class Header extends React.Component {
               </Block>
 
 
-              <Block flex middle>
+              <Block flex middle style={{top:5}}>
               <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
               </Block>
 
@@ -194,7 +184,7 @@ class Header extends React.Component {
        
         )
         : (
-          <View style={{paddingTop:20, position:'absolute'}}>
+          <View style={{paddingTop:12.5, position:'absolute'}}>
           <Icon
             name={back ? 'minimal-left2x' : 'minimal-left2x' }
             family="NowExtra"
@@ -285,10 +275,12 @@ class Header extends React.Component {
     const { search, options, tabs } = this.props;
     if (search || tabs || options) {
       return (
-        <Block center >
+        <Block center  >
           {/* {search ? this.renderSearch() : null}
           {options ? this.renderOptions() : null} */}
           {tabs ? this.renderTabs() : null} 
+
+         
         </Block>
       );
     }
@@ -334,6 +326,8 @@ class Header extends React.Component {
           {...props}
         />
         {this.renderHeader()}
+
+        
       </Block>
     );
   }
@@ -345,18 +339,21 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   title: {
-    width: '100%',
-    fontSize: 16,
+    width: '150%',
+    fontSize: ((Dimensions.get('window').height < 670) ? 22 : 28),
     fontWeight: 'bold',
     fontFamily: 'montserrat-bold',
-    //left:wp('31%'),
-    top:10
+    left:wp('-12.5%'),
+    textAlign:'center',
+    top:5.5
+
   },
   navbar: {
     paddingVertical: 0,
     paddingBottom: theme.SIZES.BASE * 1.5,
     paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
-    zIndex: 5
+    zIndex: 5,
+   
   },
   shadow: {
     backgroundColor: theme.COLORS.WHITE,
@@ -384,7 +381,8 @@ const styles = StyleSheet.create({
     right: 12
   },
   header: {
-    backgroundColor: theme.COLORS.WHITE
+    backgroundColor: theme.COLORS.WHITE,
+    
   },
   divider: {
     borderRightWidth: 0.3,
@@ -423,8 +421,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   introImageStyle: {
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
     resizeMode: 'contain',
   },
 
