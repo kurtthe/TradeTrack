@@ -39,9 +39,7 @@ class Home extends React.Component {
                 <Text size={28} bold color={theme.COLORS.WHITE}>
                   $12,500.15
                 </Text>
-                <View style={{backgroundColor:'#4D76C8', padding:5, borderRadius:7}}>
-                  <MaterialIcons name="request-quote" color={theme.COLORS.WHITE} size={32} />
-                </View>
+                
               </Block>
               <Block row middle space="between" style={styles.bottomView}>
                 <Text size={14} bold color={theme.COLORS.WHITE} style={{left:0}}> Overdue Balance </Text>
@@ -57,14 +55,14 @@ class Home extends React.Component {
                 style={{ fontFamily: "montserrat-bold" ,}}
                 color={'#363C4A'}
               >
-                Invoices
+                New Statements
               </Text>
               <Text
                 size={15}
                 style={{ fontFamily: "montserrat-regular", right:15 }}
                 color={nowTheme.COLORS.HEADER}
               >
-                See all
+                
               </Text>
             </Block>
           </Block>
@@ -125,49 +123,9 @@ class Home extends React.Component {
             </Block>
           </Block>
           <Block style={styles.cardHeader}>
-          <Block row middle space="between" style={{ paddingLeft:15, marginTop:5}}>
-              <Text
-                size={18}
-                style={{ fontFamily: "montserrat-bold" }}
-                color={nowTheme.COLORS.BLACK}
-              >
-              Burden News
-              </Text>
-              <Text
-                size={15}
-                style={{ fontFamily: "montserrat-regular", right:15 }}
-                color={nowTheme.COLORS.HEADER}
-              >
-              See all
-              </Text>
-            </Block>
+        
           </Block>
-        <Block flex style={{bottom:10}} >
-          <ScrollView  horizontal={true} >
-            <Block flex row >
-
-              <Card
-              item={articles[1]}
-              style={{ width:250, marginLeft: 15 }}
-            ctaColor={'#B6584E'}
-            />
-            <Card item={articles[2]}
-             style={{ width:250, marginLeft: 20 }}
-             ctaColor={'#B6584E'}
-            />
-            
-            </Block>
-          </ScrollView>
-            <Block center style={{padding:20}}>
-              <Button
-                color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, }}
-                style={styles.button}
-              >
-                Find our Store
-              </Button>
-            </Block>
-        </Block>
+       
       </ScrollView>
     );
   };

@@ -18,7 +18,8 @@ import PasswordBeenChange from '../screens/TPasswordBeenChange';
 
 
 import Products from '../screens/TProduts';
-import Profile from '../screens/Profile';
+import TAccount from '../screens/TAccounts';
+
 import Register from '../screens/Register';
 import Articles from '../screens/Articles';
 import Category from '../screens/Category';
@@ -143,26 +144,25 @@ function CartStack(props) {
 
 function AccountStack(props) {
   return (
-    <Stack.Navigator initialRouteName="Account" mode="card" headerMode="screen">
-      <Stack.Screen
-        name="Account"
-        component={Profile}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              transparent
-              white
-              title="Account"
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" },
-          headerTransparent: true
-        }}
-      />
-      
-    </Stack.Navigator>
+ 
+
+
+<Stack.Navigator mode="card" headerMode="screen">
+<Stack.Screen
+  name="Account"
+  component={TAccount}
+  options={{
+    header: ({ navigation, scene }) => (
+      <Header title="Account" navigation={navigation} scene={scene} />
+    ),
+    cardStyle: { backgroundColor: "#FFFFFF" }
+  }}
+/>
+
+
+</Stack.Navigator>
+
+
   );
 }
 

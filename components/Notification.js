@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View , Dimensions} from "react-native";
 import PropTypes from "prop-types";
 import { Block, Text, theme } from "galio-framework";
 import Icon from "./Icon";
@@ -36,27 +36,30 @@ export default class Notification extends React.Component {
       styles.card,
       !transparent && { backgroundColor: nowTheme.COLORS.WHITE },
       !transparent && styles.cardShadow,
-      system && { height: 150},
-      style
+      system && { height: 105},
+      style,
+      
     ];
     return (
       <Block style={container} middle>
         <TouchableWithoutFeedback onPress={onPress}>
-          <Block row style={{ width: "100%" }}>
+          <Block row style={{ width: "100%",  }}>
             
             <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
               {system && (
-                <Block row space="between" style={{ height: 40 }}>
-                  <Text color={nowTheme.COLORS.DEFAULT} style={{ fontFamily: 'montserrat-bold', paddingTop:8 }} size={14}>{title}</Text>
-                  <Text color={nowTheme.COLORS.INFO} style={{ fontFamily: 'montserrat-bold', top:30, left:0, position:'absolute' }} size={14}>{reference}</Text>
-                  <Block row style={{ marginTop: 3 }}>
+                <Block row space="between" style={{ height: 40, paddingTop:10 }}>
+                  <Text color={nowTheme.COLORS.DEFAULT} style={{ fontFamily: 'montserrat-bold', }} size={14}>{title}</Text>
+                  <Block row paddingRight={((Dimensions.get('window').height < 670) ? 120 : 210)}>
+                  <Text color={nowTheme.COLORS.INFO} style={{fontFamily: 'montserrat-bold',    }} size={14}>{reference}</Text>
+                  </Block>
+                  <Block row >
                     
                     <Text
                       color={nowTheme.COLORS.TIME}
                       style={{
                         fontFamily: "montserrat-regular",
-                        marginLeft: -85,
-                        paddingTop:8
+                        paddingRight:10
+                       
                       }}
                       size={14}
                     >
@@ -68,16 +71,17 @@ export default class Notification extends React.Component {
               <Text
                 color={nowTheme.COLORS.HEADER}
                 size={system ? 13 : 14}
-                style={{ fontFamily: "montserrat-regular", marginTop:25 }}
+                style={{ fontFamily: "montserrat-regular", marginTop:0 }}
               >
                 {body}
               </Text>
-              <Block row style={{ marginTop: -5 }}>
+              <Block row style={{ marginTop: -10 }}>
 
                 <View style={styles.bg_green}>
           
                 <Text
-                    style={{ fontFamily: 'montserrat-regular', paddingTop:2.5 }}
+                    style={{ fontFamily: 'montserrat-regular', textAlign: 'center',
+                  }}
                     size={theme.SIZES.BASE * 0.80}
                     color={nowTheme.COLORS.SUCCESS}
                   >
@@ -88,7 +92,7 @@ export default class Notification extends React.Component {
                 </Block>
                 <Block bottom>
                   <Text
-                    style={{ fontFamily: 'montserrat-bold', marginTop:-15 ,  left: -15,}}
+                    style={{ fontFamily: 'montserrat-bold', marginTop:-22.5 ,  left: -12,}}
                     size={theme.SIZES.BASE * 1}
                     color={nowTheme.COLORS.HEADER}
                   >
@@ -140,6 +144,9 @@ const styles = StyleSheet.create({
       backgroundColor:'#ecf8ee',
       borderRadius:30,
       marginTop:20,
-      paddingLeft:10
+      justifyContent:'center',
+      alignContent:'center',
+      
+     
   }
 });
