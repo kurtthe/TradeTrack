@@ -268,7 +268,24 @@ export default class Cart extends React.Component {
                           ListEmptyComponent={this.renderEmpty()}
                           ListHeaderComponent={this.renderHeader()}
                       />}
-          {/* Detail Orders ActionSheet Workaround */}
+            <TouchableWithoutFeedback
+              style={{position: 'relative', bottom: 0}}
+            >
+              <Block row style={styles.detailOrders}>
+                <Text style={{ fontWeight: 'bold'}}>
+                  Order total: $4,000
+                </Text>
+                <Button
+                  color="info"
+                  textStyle={{ fontWeight: 'bold', fontSize: 16 }}
+                  style={styles.button}
+                  onPress={() => this.props.navigation.navigate("PlaceOrders")}
+                >
+                  Checkout
+                </Button>
+              </Block>
+            </TouchableWithoutFeedback>
+            {/* Detail Orders ActionSheet Workaround 
             <TouchableWithoutFeedback 
               onPress={() => actionSheetRef.current?.setModalVisible()}
               style={{position: 'relative', bottom: 0}}
@@ -279,8 +296,8 @@ export default class Cart extends React.Component {
                 </Text>
                 <MaterialIcons name="expand-less" color={'gray'} size={30} />
               </Block>
-            </TouchableWithoutFeedback>
-          {/* End of Detail Orders ActionSheet Workaround */}
+            </TouchableWithoutFeedback> 
+           End of Detail Orders ActionSheet Workaround */}
           <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
             <Block style={{height: 'auto', padding: 20}}>
               {this.renderDetailOrdersAS()}
@@ -376,9 +393,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },  
   button: {
-    borderRadius: 8,
-    marginBottom: theme.SIZES.BASE,
-    width: width - theme.SIZES.BASE * 3,
+    borderRadius: 8
   },
   detailOrders: {
     backgroundColor: 'white',
@@ -386,10 +401,9 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'space-between', 
     width: '100%', 
-    height: '8%',
+    height: '10%',
     borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-   
+    borderTopRightRadius:15
   },
   buttonOrder: {
     width: '35%',

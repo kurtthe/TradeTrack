@@ -134,8 +134,9 @@ export default class PlaceOrders extends React.Component {
         };
       }
 
-
-
+    onPressRadioButton() {
+        actionSheetRadioButtonRef.current?.setModalVisible(false);
+    }
 
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true });
@@ -452,7 +453,7 @@ export default class PlaceOrders extends React.Component {
                 <RadioGroup 
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO} 
-                    //onPress={() => this.onPressRadioButton()} 
+                    onPress={() => this.onPressRadioButton()} 
                 />
             )
             :
@@ -472,8 +473,8 @@ export default class PlaceOrders extends React.Component {
                     <Block left style={{ marginHorizontal: 16,}}>
                         <RadioGroup 
                             radioButtons={this.state.radioButtonsData}
-                            color={nowTheme.COLORS.INFO} 
-                            //onPress={() => this.onPressRadioButton()} 
+                            color={nowTheme.COLORS.INFO}
+                            onPress={() => this.onPressRadioButton()} 
                         />
                     </Block>
                 </View>
