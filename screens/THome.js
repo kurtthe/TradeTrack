@@ -51,11 +51,11 @@ class Home extends React.Component {
             </ImageBackground>
           </Block>
           <Block style={styles.cardHeader}>
-            <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
+            <Block row middle space="between" style={{ paddingLeft:12, marginTop:30}}>
               <Text
                 size={18}
-                style={{ fontFamily: "montserrat-regular" }}
-                color={nowTheme.COLORS.BLACK}
+                style={{ fontFamily: "montserrat-bold" ,}}
+                color={'#363C4A'}
               >
                 Invoices
               </Text>
@@ -69,7 +69,7 @@ class Home extends React.Component {
             </Block>
           </Block>
           <Block style={styles.card}>
-            <Block>
+            <Block >
               <Notification
                 system
                 title="Invoice"
@@ -81,7 +81,7 @@ class Home extends React.Component {
                 iconName="email-852x"
                 iconFamily="NowExtra"
                 color={nowTheme.COLORS.TIME}
-                style={{ marginBottom: 5,  }}
+                style={{ marginBottom: 2,  }}
               />
               <Notification
                 system
@@ -125,7 +125,7 @@ class Home extends React.Component {
             </Block>
           </Block>
           <Block style={styles.cardHeader}>
-            <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
+          <Block row middle space="between" style={{ paddingLeft:15, marginTop:5}}>
               <Text
                 size={18}
                 style={{ fontFamily: "montserrat-regular" }}
@@ -142,25 +142,33 @@ class Home extends React.Component {
               </Text>
             </Block>
           </Block>
-        <Block flex>
+        <Block flex >
           <ScrollView  horizontal={true} >
-            <Block flex row>
+            <Block flex row >
+              <View style={{width:'15%', backgroundColor:'white', alignContent:'center', alignItems:'center',  marginLeft:19.5}}>
+
               <Card
                 item={articles[1]}
-                style={{ width:300, marginRight: theme.SIZES.BASE }}
+                style={{ width:'90%', top:-5 }}
                 ctaColor={'#B6584E'}
               />
+
+              </View>
+             
+
+              <View style={{width:'15%', backgroundColor:'white', alignContent:'center', alignItems:'center', marginLeft:20}}>
               <Card 
                 item={articles[2]}
-                style={{ width:300, marginRight: theme.SIZES.BASE }}
+                style={{ width:'90%', top:-5 }}
                 ctaColor={'#B6584E'}
               />
+              </View>
             </Block>
           </ScrollView>
-            <Block center>
+            <Block center style={{padding:20}}>
               <Button
                 color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, }}
                 style={styles.button}
               >
                 Find our Store
@@ -188,7 +196,7 @@ const styles = StyleSheet.create({
   articles: {
     width: width - theme.SIZES.BASE * 0.1,
     paddingVertical: theme.SIZES.BASE,
-    paddingHorizontal: 2,
+    paddingHorizontal: 0,
     fontFamily: 'montserrat-regular',
   },
   button: {
@@ -199,7 +207,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: nowTheme.COLORS.WHITE,
     marginTop: 10,
-    borderRadius: 3,
+    
     shadowColor: nowTheme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
@@ -207,9 +215,8 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   cardHeader: {
-    paddingTop: 30,
-    paddingBottom: 0, 
-    paddingLeft: 10
+    justifyContent:'center',
+    height:'4%'
   },
   imageBlock: {
     overflow: 'hidden',

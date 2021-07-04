@@ -6,7 +6,7 @@ import { Block, Text, theme } from 'galio-framework';
 import { articles, nowTheme } from '../constants/';
 import { Card } from '../components/';
 
-class Articles extends React.Component {
+class Articles111 extends React.Component {
   renderCards = () => {
     return (
       <Block style={styles.container}>
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Articles;
+export default Articles111;
