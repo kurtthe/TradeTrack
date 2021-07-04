@@ -97,7 +97,7 @@ export default class Product extends React.Component {
 
   renderDescription = (product) => {
     return (
-      product.description.map((d) => {
+      product.description?.map((d) => {
         return <Text style={{paddingBottom: 5}}>- {d}</Text>
       })
     )

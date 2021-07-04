@@ -28,15 +28,8 @@ import Search from '../screens/Search';
 import PlaceOrders from '../screens/PlaceOrders';
 import orderPlaced from '../screens/OrderPlaced';
 import Example from '../screens/DatePicker';
-
-
-
 // header for screens
 import Header from '../components/Header';
-
-
-
-
 
 const { width } = Dimensions.get("screen");
 
@@ -44,9 +37,6 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const MainTab = createBottomTabNavigator();
-
-
-
 
 function ProductsStack(props) {
   return (
