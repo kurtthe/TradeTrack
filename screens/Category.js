@@ -193,7 +193,7 @@ export default class Category extends React.Component {
             {categoryTitle} Products
           </Text>
         </Block> */}
-        <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '4%'}}>
+        <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
           <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
               text={'Filters'}

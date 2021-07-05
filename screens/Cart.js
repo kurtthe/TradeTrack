@@ -22,32 +22,13 @@ const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
 export default class Cart extends React.Component {
-  constructor (props){
-    super(props);
-    this.state = {
-      cart: cart.products,
-      cart2: cart.products,
-      customStyleIndex: 0,
-      deleteAction: false
-    };
+  state = {
+    cart: cart.products,
+    cart2: cart.products,
+    customStyleIndex: 0,
+    deleteAction: false
+  };
 
-    this.props.navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity 
-          onPress={() => {
-            this.setState({ 
-                deleteAction: !this.state.deleteAction
-              }
-            )
-          }} 
-          style={{paddingRight: 20}} 
-        >
-          <Ionicons name="trash-sharp" color={'#828489'}  size={25} />
-        </TouchableOpacity>
-      )
-    })
-  }
-  
   handleCustomIndexSelect = (index) => {
     this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
   }
@@ -123,15 +104,11 @@ export default class Cart extends React.Component {
           </Block>
         </Block>
         <Block right>
-          <Block row >
-            { !this.state.deleteAction &&
-                <QuantityCounter quantity={1}/>
-            }
-            { this.state.deleteAction && 
-              <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
-                <Ionicons name="trash-sharp" color={'red'}  size={20} />
-              </TouchableOpacity>
-            }
+          <Block row style={{paddingBottom:5}}>
+            <QuantityCounter quantity={1}/>
+            {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+              <Ionicons name="trash-sharp" color={'red'}  size={20} />
+            </TouchableOpacity> */}
           </Block>
         </Block>
       </Block>
@@ -177,7 +154,7 @@ export default class Cart extends React.Component {
             </Block>
           </Block>
         </Block>
-        <Block right>
+        <Block right style={{paddingBottom:5}}>
           <Button
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color:'#0E3A90' }}
@@ -291,6 +268,19 @@ export default class Cart extends React.Component {
                           ListEmptyComponent={this.renderEmpty()}
                           ListHeaderComponent={this.renderHeader()}
                       />}
+          {/* Detail Orders ActionSheet Workaround */}
+          {/*   <TouchableWithoutFeedback 
+              onPress={() => actionSheetRef.current?.setModalVisible()}
+              style={{position: 'relative', bottom: 0}}
+            >
+              <Block row style={styles.detailOrders}>
+                <Text style={{ fontWeight: 'bold'}}>
+                  Detail Orders
+                </Text>
+                <MaterialIcons name="expand-less" color={'gray'} size={30} />
+              </Block>
+            </TouchableWithoutFeedback> */}
+
             <TouchableWithoutFeedback
               style={{position: 'relative', bottom: 0}}
             >
@@ -304,25 +294,14 @@ export default class Cart extends React.Component {
                 shadowless
                 style={styles.addToCart, {left:10}}
                 color={nowTheme.COLORS.INFO}
-                onPress={() => navigation.navigate("PlaceOrders")}
+                onPress={() => this.props.navigation.navigate("PlaceOrders")}
               >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Checkout</Text>
               </Button>
               </Block>
             </TouchableWithoutFeedback>
-            {/* Detail Orders ActionSheet Workaround 
-            <TouchableWithoutFeedback 
-              onPress={() => actionSheetRef.current?.setModalVisible()}
-              style={{position: 'relative', bottom: 0}}
-            >
-              <Block row style={styles.detailOrders}>
-                <Text style={{ fontWeight: 'bold'}}>
-                  Detail Orders
-                </Text>
-                <MaterialIcons name="expand-less" color={'gray'} size={30} />
-              </Block>
-            </TouchableWithoutFeedback> 
-           End of Detail Orders ActionSheet Workaround */}
+
+          {/* End of Detail Orders ActionSheet Workaround */}
           <ActionSheet ref={actionSheetRef} headerAlwaysVisible CustomHeaderComponent={this.renderASHeader()}>
             <Block style={{height: 'auto', padding: 20}}>
               {this.renderDetailOrdersAS()}
@@ -343,8 +322,6 @@ export default class Cart extends React.Component {
               >
                 Place Order
               </Button>
-
-              
             </Block>
           </ActionSheet>
       </Block>
@@ -420,7 +397,9 @@ const styles = StyleSheet.create({
     fontSize: 20
   },  
   button: {
-    borderRadius: 8
+    borderRadius: 8,
+    marginBottom: theme.SIZES.BASE,
+    width: width - theme.SIZES.BASE * 3,
   },
   detailOrders: {
     backgroundColor: 'white',
@@ -428,9 +407,10 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'space-between', 
     width: '100%', 
-    height: '10%',
+    height: '8%',
     borderTopLeftRadius:15,
-    borderTopRightRadius:15
+    borderTopRightRadius:15,
+   
   },
   buttonOrder: {
     width: '35%',
@@ -450,10 +430,5 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'rgba(14, 58, 144, 0.1)',
     borderRadius: 5
-  },
-
-  addToCart: {
-    width: width * 0.5,
-   
   },
 });
