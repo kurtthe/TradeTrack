@@ -22,13 +22,32 @@ const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
 export default class Cart extends React.Component {
-  state = {
-    cart: cart.products,
-    cart2: cart.products,
-    customStyleIndex: 0,
-    deleteAction: false
-  };
+  constructor (props){
+    super(props);
+    this.state = {
+      cart: cart.products,
+      cart2: cart.products,
+      customStyleIndex: 0,
+      deleteAction: false
+    };
 
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity 
+          onPress={() => {
+            this.setState({ 
+                deleteAction: !this.state.deleteAction
+              }
+            )
+          }} 
+          style={{paddingRight: 20}} 
+        >
+          <Ionicons name="trash-sharp" color={'#828489'}  size={25} />
+        </TouchableOpacity>
+      )
+    })
+  }
+  
   handleCustomIndexSelect = (index) => {
     this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
   }
@@ -105,10 +124,14 @@ export default class Cart extends React.Component {
         </Block>
         <Block right>
           <Block row >
-            <QuantityCounter quantity={1}/>
-            <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-            </TouchableOpacity>
+            { !this.state.deleteAction &&
+                <QuantityCounter quantity={1}/>
+            }
+            { this.state.deleteAction && 
+              <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+                <Ionicons name="trash-sharp" color={'red'}  size={20} />
+              </TouchableOpacity>
+            }
           </Block>
         </Block>
       </Block>

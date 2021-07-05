@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Icon from '../components/Icon';
 
 import { nowTheme } from "../constants";
 
@@ -89,10 +90,21 @@ function CartStack(props) {
         name="Cart"
         component={Cart}
         options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Cart" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
+          title: 'Cart',
+          headerLeft: () => (
+            <Icon
+              style={{paddingLeft: 15}}
+              name={'minimal-left2x'}
+              family="NowExtra"
+              size={18}
+              onPress={() => props.navigation.goBack()}
+              color={nowTheme.COLORS.ICON}
+            /> 
+          )
+          // header: ({ navigation, scene }) => (
+          //   <Header title="Cart" navigation={navigation} scene={scene} />
+          // ),
+          // cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
       <Stack.Screen
