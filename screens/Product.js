@@ -97,7 +97,7 @@ export default class Product extends React.Component {
 
   renderDescription = (product) => {
     return (
-      product.description.map((d) => {
+      product.description?.map((d) => {
         return <Text style={{paddingBottom: 5}}>- {d}</Text>
       })
     )
@@ -109,8 +109,8 @@ export default class Product extends React.Component {
     return (
       <Block flex style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
-          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
-            <Text style={{marginLeft: 15}}>
+          <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 25, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
+            {/* <Text style={{marginLeft: 15}}>
               {`Bathroom Furnitures`}
             </Text>
             <Text>
@@ -118,7 +118,7 @@ export default class Product extends React.Component {
             </Text>
             <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%'}}>
               {product.title}
-            </Text>
+            </Text> */}
           </Block>
           <Block flex>
             {this.renderGallery()}
@@ -240,7 +240,7 @@ export default class Product extends React.Component {
               </Button>
               <Button
                 shadowless
-                style={styles.addToCart, {left:30}}
+                style={styles.addToCart, {left:35}}
                 color={nowTheme.COLORS.INFO}
                 onPress={() => navigation.navigate("Cart")}
               >
