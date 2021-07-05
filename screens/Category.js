@@ -115,16 +115,12 @@ export default class Category extends React.Component {
     radioButtons2:radioButtonsData2
   };
 
-  onPressRadioButton(radioButtonsArray) {
-    this.setState({
-      radioButtons: radioButtonsArray
-    })
+  onPressRadioButton2() {
+    actionSheetRef2.current?.setModalVisible(false);
   }
 
-  onPressRadioButton2(radioButtonsArray2) {
-    this.setState({
-      radioButtons2: radioButtonsArray2
-    })
+  onPressRadioButton() {
+    actionSheetRef.current?.setModalVisible(false);
   }
 
   renderCard = ({ item }) => {
@@ -150,17 +146,17 @@ export default class Category extends React.Component {
           <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5 }} size={15} >
             {item.title}
           </Text>
-          <Block row style={{width: '100%', top:10}}>
-            <Block flex>
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> Price </Text>
-              <Text style={styles.price}> {item.price} </Text>
+          <Block row style={{width: '100%'}}>
+            <Block flex >
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
+              <Text style={styles.price}>{item.price} </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 My Price
               </Text>
-              <Text style={styles.price}> {item.myPrice} </Text>
+              <Text style={styles.price}>{item.myPrice} </Text>
             </Block>
           </Block>
         </Block>
@@ -186,7 +182,7 @@ export default class Category extends React.Component {
     return (
       <>
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
+        {/* <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
           <Text>
             {`Product`}
           </Text>
@@ -196,7 +192,7 @@ export default class Category extends React.Component {
           <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
             {categoryTitle} Products
           </Text>
-        </Block>
+        </Block> */}
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '4%'}}>
           <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
@@ -245,7 +241,7 @@ export default class Category extends React.Component {
           <RadioGroup 
             radioButtons={this.state.radioButtons}
             color={nowTheme.COLORS.INFO} 
-            //onPress={() => this.onPressRadioButton()} 
+            onPress={() => this.onPressRadioButton()} 
           />
         </Block>
       </ActionSheet>
@@ -254,7 +250,7 @@ export default class Category extends React.Component {
           <RadioGroup 
             radioButtons={this.state.radioButtons2}
             color={nowTheme.COLORS.INFO} 
-            //onPress={() => this.onPressRadioButton()} 
+            onPress={() => this.onPressRadioButton2()} 
           />
         </Block>
       </ActionSheet>
@@ -281,7 +277,7 @@ const styles = StyleSheet.create({
     height: cardHeight*0.45
   },
   priceGrayText: {
-    paddingLeft: 2,
+    // paddingLeft: 2,
     fontSize: 13
   },
   price: {
