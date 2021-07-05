@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import Icon from '../components/Icon';
 
 import { nowTheme } from "../constants";
 
@@ -29,15 +30,8 @@ import Search from '../screens/Search';
 import PlaceOrders from '../screens/PlaceOrders';
 import orderPlaced from '../screens/OrderPlaced';
 import Example from '../screens/DatePicker';
-
-
-
 // header for screens
 import Header from '../components/Header';
-
-
-
-
 
 const { width } = Dimensions.get("screen");
 
@@ -45,9 +39,6 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const MainTab = createBottomTabNavigator();
-
-
-
 
 function ProductsStack(props) {
   return (
@@ -100,10 +91,21 @@ function CartStack(props) {
         name="Cart"
         component={Cart}
         options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Cart" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
+          title: 'Cart',
+          headerLeft: () => (
+            <Icon
+              style={{paddingLeft: 15}}
+              name={'minimal-left2x'}
+              family="NowExtra"
+              size={18}
+              onPress={() => props.navigation.goBack()}
+              color={nowTheme.COLORS.ICON}
+            /> 
+          )
+          // header: ({ navigation, scene }) => (
+          //   <Header title="Cart" navigation={navigation} scene={scene} />
+          // ),
+          // cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
       <Stack.Screen

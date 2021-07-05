@@ -132,9 +132,10 @@ class Header extends React.Component {
           ];
           case 'Cart':
             return [
-             // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-              <View style={{top:5.5, width:50}}>
-                <DeleteButton  isWhite={white} />
+
+            
+              <View style={{top:11, width:50}}>
+                {/* <DeleteButton  isWhite={white} /> */}
               </View>
             ];
 
