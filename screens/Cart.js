@@ -298,14 +298,16 @@ export default class Cart extends React.Component {
                 <Text style={{ fontWeight: 'bold'}}>
                   Order total: $4,000
                 </Text>
+              
+
                 <Button
-                  color="info"
-                  textStyle={{ fontWeight: 'bold', fontSize: 16 }}
-                  style={styles.button}
-                  onPress={() => this.props.navigation.navigate("PlaceOrders")}
-                >
-                  Checkout
-                </Button>
+                shadowless
+                style={styles.addToCart, {left:10}}
+                color={nowTheme.COLORS.INFO}
+                onPress={() => navigation.navigate("PlaceOrders")}
+              >
+                <Text size={18} color={nowTheme.COLORS.WHITE}>Checkout</Text>
+              </Button>
               </Block>
             </TouchableWithoutFeedback>
             {/* Detail Orders ActionSheet Workaround 
@@ -341,6 +343,8 @@ export default class Cart extends React.Component {
               >
                 Place Order
               </Button>
+
+              
             </Block>
           </ActionSheet>
       </Block>
@@ -446,5 +450,10 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: 'rgba(14, 58, 144, 0.1)',
     borderRadius: 5
+  },
+
+  addToCart: {
+    width: width * 0.5,
+   
   },
 });
