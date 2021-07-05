@@ -87,7 +87,7 @@ function ProductsStack(props) {
 function CartStack(props) {
   return (
     <Stack.Navigator mode="card" headerMode="screen">
-      <Stack.Screen
+ {/*      <Stack.Screen
         name="Cart"
         component={Cart}
         options={{
@@ -106,6 +106,17 @@ function CartStack(props) {
           //   <Header title="Cart" navigation={navigation} scene={scene} />
           // ),
           // cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      /> */}
+
+      <Stack.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Cart" navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
       <Stack.Screen
