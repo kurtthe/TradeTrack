@@ -5,9 +5,10 @@ import nowTheme from "../constants/Theme";
 
 const { height, width } = Dimensions.get("window");
 
-export default function GrayLine() {
+export default function GrayLine(props) {
+    
     return (
-        <View style={styles.grayLine}/>
+        <View style={[styles.grayLine, props.style]}/>
     )
 }
 
