@@ -1,15 +1,19 @@
-import React from "react";
-import { StyleSheet, Dimensions, ScrollView, View, ImageBackground } from "react-native";
-import { Block, theme, Text } from "galio-framework";
+import React, { createRef } from "react";
+import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, TouchableOpacity, SafeAreaView } from "react-native";
+import { Block, theme, Text, Input } from "galio-framework";
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { Card, Button } from "../components";
 import { Notification } from "../components";
 import { nowTheme, Images } from "../constants";
 import {  MaterialIcons } from "@expo/vector-icons";
 import GrayLine from "../components/GrayLine";
+import Icon from '../components/Icon';
 import FilterButton from "../components/FilterButton";
+import PickerButton from "../components/PickerButton";
+import ActionSheet from "react-native-actions-sheet";
 
 const { width } = Dimensions.get("screen");
+const actionSheetRef = createRef();
 
 class Home extends React.Component {
 
@@ -44,7 +48,7 @@ class Home extends React.Component {
     
     return orders.map((orders) => {
       return (
-        <Block keyExtractor={(i) => {index: i}} row style={{ justifyContent: 'space-between', paddingBottom: 7}}>
+        <Block keyExtractor={(i) => {index: i}} row style={{ justifyContent: 'space-between', paddingTop: 20}}>
             <Text style={styles.receiptText}>
                 {orders.title}
             </Text>
@@ -61,15 +65,29 @@ class Home extends React.Component {
         <Block style={{ padding: theme.SIZES.BASE }}>
           <Text style={{paddingBottom: 15}} size={16}>Payment Details</Text>
           <Block row style={{paddingBottom: 15}}>
-            <Block flex>
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>BSB</Text>
-              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>O83-125</Text>
+            <Block row flex center justifyContent={'space-between'}>
+              <Block>
+                <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>BSB</Text>
+                <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>O83-125</Text>
+              </Block>
+              <Block center flex>
+                <TouchableOpacity >
+                  <MaterialIcons name="edit" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
+                </TouchableOpacity>
+              </Block>
             </Block>
-            <Block flex >
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                Account
-              </Text>
-              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>04-8284743</Text>
+            <Block row flex center justifyContent={'space-between'}>
+              <Block>
+                <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                  Account
+                </Text>
+                <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>04-8284743</Text>
+              </Block>
+              <Block>
+                <TouchableOpacity >
+                  <MaterialIcons name="edit" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
+                </TouchableOpacity>
+              </Block>
             </Block>
           </Block>
           <Block row style={{paddingBottom: 15}}>
@@ -89,12 +107,12 @@ class Home extends React.Component {
               color="info"
               textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
               style={styles.button}
-              onPress={() => navigation.navigate("OrderPlaced")}
+              onPress={() => actionSheetRef.current?.setModalVisible()}
             >
               Pay via Credit Card
             </Button>
           </Block>
-          <GrayLine/>
+          <GrayLine style={{width: '100%', alignSelf: 'center'}}/>
 
           <Block>
             <View style={styles.detailOrders}>
@@ -103,9 +121,9 @@ class Home extends React.Component {
               </Text>
             </View>
             {this.renderDetailOrdersAS()}
-            <GrayLine/>
-            <Block row style={{ justifyContent: 'space-between', top:10, borderWidth: 1}}>
-              <Text size={14}>
+            <GrayLine style={{width: '100%', alignSelf: 'center'}}/>
+            <Block row style={{ justifyContent: 'space-between', top:10, marginBottom: -30}}>
+              <Text size={15}>
               Total Due
               </Text>
               <Text size={16} color={nowTheme.COLORS.INFO} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
@@ -214,6 +232,7 @@ class Home extends React.Component {
   render() {
     const { customStyleIndex } = this.state
     return (
+      <SafeAreaView>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.articles}
@@ -261,6 +280,59 @@ class Home extends React.Component {
             {customStyleIndex === 0 && this.renderBalance()}
             {customStyleIndex === 1 && this.renderStatements()}
         </ScrollView>
+        <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
+          <Block style={{height: 'auto', padding: 15, paddingBottom: 30}}>
+              <Text style={{fontWeight: 'bold'}}>
+                Payment via Credit Card
+              </Text>
+              <PickerButton
+                text='Pay Options'
+                placeholder='Select or search job'
+                icon
+                onPress={() => {
+                  console.log('holis')
+                }}
+              />
+              <Text style={{fontWeight: 'bold'}}>
+                Amount
+              </Text>
+              <Input
+                right
+                color="black"
+                style={styles.search}
+                placeholder="$00,00"
+                placeholderTextColor={'#8898AA'}
+                // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
+              />
+              <Block row style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
+                <Text size={15}>
+                  Your Balance
+                </Text>
+                <Text size={16} color={nowTheme.COLORS.INFO} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
+                  $12,500.12
+                </Text>
+              </Block>
+              <View>
+                <Button
+                  color="info"
+                  textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                  style={styles.buttonAS}
+                  //onPress={() => actionSheetRef.current?.setModalVisible()}
+                >
+                  Continue
+                </Button>
+                <Button
+                  color='eeeee4'
+                  textStyle={{ color:nowTheme.COLORS.LIGHTGRAY ,fontFamily: 'montserrat-bold', fontSize: 16 }}
+                  style={styles.buttonGrayAS, styles.buttonAS}
+                  //onPress={() => actionSheetRef.current?.setModalVisible()}
+                >
+                  Cancel
+                </Button>
+              </View>
+          </Block>
+        </ActionSheet>
+      </SafeAreaView>
     );
   }
 }
@@ -279,6 +351,17 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
+  },
+  buttonAS: {
+    width: width - theme.SIZES.BASE * 2,
+  },
+  buttonGrayAS: {
+    borderWidth: 1,
+    shadowColor: nowTheme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    shadowOpacity: .1,
+    elevation: 2
   },
   card: {
     backgroundColor: nowTheme.COLORS.WHITE,
@@ -333,7 +416,12 @@ const styles = StyleSheet.create({
   },
   statements: {
     marginLeft: 15
-  }
+  },
+  receiptText: {
+    fontSize: 13,
+    width: '60%',
+    color: nowTheme.COLORS.SECONDARY
+  },
 });
 
 export default Home;
