@@ -11,10 +11,6 @@ export default class Notification extends React.Component {
     const {
       body,
       color,
-      iconColor,
-      iconFamily,
-      iconName,
-      iconSize,
       onPress,
       style,
       system,
@@ -37,14 +33,12 @@ export default class Notification extends React.Component {
       !transparent && { backgroundColor: nowTheme.COLORS.WHITE },
       !transparent && styles.cardShadow,
       system && { height: 105},
-      style,
-      
+      style
     ];
     return (
-      <Block style={container} middle>
+      <Block style={container}>
         <TouchableWithoutFeedback onPress={onPress}>
-          <Block row style={{ width: "100%",  }}>
-            
+          <Block row>
             <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
               {system && (
                 <Block row space="between" style={{ height: 40, paddingTop:10 }}>
@@ -59,7 +53,6 @@ export default class Notification extends React.Component {
                       style={{
                         fontFamily: "montserrat-regular",
                         paddingRight:10
-                       
                       }}
                       size={14}
                     >
