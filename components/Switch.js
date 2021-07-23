@@ -47,6 +47,7 @@ class MkSwitch extends React.Component {
     return (
       <Switch
         value={value}
+        onValueChange={this.props.toggleSwitch}
         thumbColor={[
           value === true
             ? nowTheme.COLORS.SWITCH_ON
