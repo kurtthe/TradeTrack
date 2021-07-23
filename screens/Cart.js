@@ -80,7 +80,7 @@ export default class Cart extends React.Component {
           <Block flex style={styles.productDescription}>
             <Block row>
               <Text color={nowTheme.COLORS.LIGHTGRAY}>
-                SKU:
+                {`SKU `}
               </Text>
               <Text color={nowTheme.COLORS.INFO}>
                 FIE228106B
@@ -93,24 +93,24 @@ export default class Cart extends React.Component {
                 {item.title}
               </Text>
             </TouchableWithoutFeedback>
-            <Block flex left row space="between">
-              <Text
-                style={{ marginTop:10, fontWeight:'bold'}}
-                color={nowTheme.COLORS.ORANGE} size={20}
-              >
-                ${item.price * item.qty}
-              </Text>
+            <Block row style={{paddingBottom:5}}>
+              <Block flex left row space="between">
+                <Text
+                  style={{ marginTop:10, fontWeight:'bold'}}
+                  color={nowTheme.COLORS.ORANGE} size={20}
+                >
+                  ${item.price * item.qty}
+                </Text>
+              </Block>
+              <QuantityCounter quantity={1}/>
+              {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
+                <Ionicons name="trash-sharp" color={'red'}  size={20} />
+              </TouchableOpacity> */}
             </Block>
           </Block>
         </Block>
-        <Block right>
-          <Block row style={{paddingBottom:5}}>
-            <QuantityCounter quantity={1}/>
-            {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
-              <Ionicons name="trash-sharp" color={'red'}  size={20} />
-            </TouchableOpacity> */}
-          </Block>
-        </Block>
+          
+
       </Block>
     );
   };
@@ -131,7 +131,7 @@ export default class Cart extends React.Component {
           <Block flex style={styles.productDescription}>
             <Block row>
               <Text color={nowTheme.COLORS.LIGHTGRAY}>
-                SKU:
+                {`SKU `}  
               </Text>
               <Text color={nowTheme.COLORS.INFO}>
                 FIE228106B
@@ -285,17 +285,15 @@ export default class Cart extends React.Component {
               style={{position: 'relative', bottom: 0}}
             >
               <Block row style={styles.detailOrders}>
-                <Text style={{ fontWeight: 'bold'}}>
+                <Text>
                   Order total: $4,000
                 </Text>
-              
-
                 <Button
-                shadowless
-                style={styles.addToCart, {left:10}}
-                color={nowTheme.COLORS.INFO}
-                onPress={() => this.props.navigation.navigate("PlaceOrders")}
-              >
+                  shadowless
+                  style={styles.addToCart, {left:10}}
+                  color={nowTheme.COLORS.INFO}
+                  onPress={() => this.props.navigation.navigate("PlaceOrders")}
+                >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Checkout</Text>
               </Button>
               </Block>
@@ -406,11 +404,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, 
     alignItems: 'center', 
     justifyContent: 'space-between', 
-    width: '100%', 
-    height: '8%',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-   
+    width: width, 
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 7 },
+    elevation: 2,
+    shadowRadius: 10,
+    shadowOpacity: 0.3,
   },
   buttonOrder: {
     width: '35%',

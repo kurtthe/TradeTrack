@@ -27,6 +27,7 @@ class Components extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeSwitch: false,
       checkSelected: [],
       'switch-1': true,
       'switch-2': false,
@@ -68,25 +69,26 @@ class Components extends React.Component {
 
   renderSwitches = () => {
     return (
-      <Block flex style={styles.group, { backgroundColor:theme.COLORS.WHITE,borderRadius:8}}>
-        <Text size={16} style={styles.title}>
-          Client friendly mode
-        </Text>
-        <Block style={{ paddingHorizontal: theme.SIZES.BASE }}>
-          <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE }}>
-            <Text
-              style={{ fontFamily: 'montserrat-regular', top:-10 }}
-              size={14.5}
-              color={'#848893'}
-            >
-              Enable this to hide "My price"
-            </Text>
-            <Block style={{top:-20}} >
-
-            <Switch/>
-            </Block>
-           
-          </Block>
+      <Block row flex style={styles.group, styles.switchBlock}>
+        <Block width={'80%'} style={styles.textBlock}>
+          <Text size={16} style={styles.title}>
+            Client Friendly Mode
+          </Text>
+          <Text
+            style={{ fontFamily: 'montserrat-regular' }}
+            size={14.5}
+            color={'#848893'}
+          >
+            Enable this to hide "My Price"
+          </Text>
+        </Block>
+        <Block center width={'20%'} style={{ alignItems:'flex-end' }} >
+          <Switch
+            value={this.state.activeSwitch}
+            toggleSwitch={ () => 
+              this.setState({ activeSwitch: !this.state.activeSwitch})
+            }
+          />
         </Block>
       </Block>
     );
@@ -110,12 +112,19 @@ class Components extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  switchBlock: {
+    paddingHorizontal: theme.SIZES.BASE *0.7, 
+    backgroundColor:theme.COLORS.WHITE, 
+    borderRadius:8
+  },
+  textBlock: {
+    paddingVertical: theme.SIZES.BASE *1.3,
+    justifyContent: 'space-between'
+  },
   title: {
     fontFamily: 'montserrat-bold',
-    paddingBottom: theme.SIZES.BASE,
-    paddingHorizontal: theme.SIZES.BASE * 1,
-    marginTop: 20,
-    color: nowTheme.COLORS.HEADER
+    color: nowTheme.COLORS.HEADER,
+    paddingBottom: 5
   },
   social: {
     width: theme.SIZES.BASE * 3.5,
@@ -124,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   group: {
-    padding: 14,
+    padding: 14
   },
   shadow: {
     shadowColor: 'black',
