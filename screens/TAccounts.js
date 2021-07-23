@@ -11,9 +11,15 @@ import Icon from '../components/Icon';
 import FilterButton from "../components/FilterButton";
 import PickerButton from "../components/PickerButton";
 import ActionSheet from "react-native-actions-sheet";
+import RNPickerSelect from 'react-native-picker-select';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
+const pickerOptions = [
+  { label: 'Pay now', value: 'now' },
+  { label: 'Pay Overdue', value: 'overdue' },
+  { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
+]
 
 class Home extends React.Component {
 
@@ -285,14 +291,21 @@ class Home extends React.Component {
               <Text style={{fontWeight: 'bold'}}>
                 Payment via Credit Card
               </Text>
-              <PickerButton
+              <RNPickerSelect
+                placeholder={{label: 'Select an option'}}
+                textInputProps={{color: '#8898AA'}}
+                style={{placeholder: styles.pickerText, viewContainer: styles.pickerContainer}}
+                onValueChange={(value) => console.log(value)}
+                items={pickerOptions}
+              />
+              {/* <PickerButton
                 text='Pay Options'
                 placeholder='Select or search job'
                 icon
                 onPress={() => {
                   console.log('holis')
                 }}
-              />
+              /> */}
               <Text style={{fontWeight: 'bold'}}>
                 Amount
               </Text>
@@ -422,6 +435,18 @@ const styles = StyleSheet.create({
     width: '60%',
     color: nowTheme.COLORS.SECONDARY
   },
+  pickerContainer: {
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.PICKERTEXT,
+    padding: 5,
+    borderRadius: 5,
+    paddingLeft: 10,
+    height: 45
+  },
+  pickerText:{
+    color: nowTheme.COLORS.PICKERTEXT
+  }
 });
 
 export default Home;
