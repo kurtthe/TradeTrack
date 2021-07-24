@@ -171,7 +171,7 @@ class Header extends React.Component {
               <Block row   style={{width: wp('62.5%')}}>
             <Block flex middle >
             <TouchableOpacity  >
-                  <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} /> 
+                  {/* <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
           </TouchableOpacity>
               </Block>
 
