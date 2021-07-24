@@ -95,7 +95,7 @@ class Home extends React.Component {
                 iconName="email-852x"
                 iconFamily="NowExtra"
                 color={nowTheme.COLORS.TIME}
-                style={{ marginBottom: 5,  }}
+                style={{ marginBottom: 5 }}
                 onPress={() => this.props.navigation.navigate('InvoiceDetails')}
               />
               <Notification

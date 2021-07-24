@@ -22,13 +22,13 @@ const QuantityCounterWithInput = props => {
     useEffect (() => {
         if (quantity == 1) setDisabledMinus(true)
         else setDisabledMinus(false)
-        if (quantity == 6) setDisabledPlus(true)
+        if (quantity == 100) setDisabledPlus(true)
         else setDisabledPlus(false)
     }, [quantity])
 
     const plusCounter = () => {
         const quantity1 = quantity
-        if (quantity1 != 6) {
+        if (quantity1 != 100) {
         const plus = quantity1 + 1 
         setQuantity(plus)
         //props.personsHandler(plus)
