@@ -30,6 +30,7 @@ import Search from '../screens/Search';
 import PlaceOrders from '../screens/PlaceOrders';
 import orderPlaced from '../screens/OrderPlaced';
 import Example from '../screens/DatePicker';
+import InvoiceDetails from '../screens/InvoiceDetail';
 // header for screens
 import Header from '../components/Header';
 
@@ -215,6 +216,16 @@ function HomeStack(props) {
         options={{
           header: ({ navigation, scene }) => (
             <Header title="Search" back navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
+      <Stack.Screen
+        name="InvoiceDetails"
+        component={InvoiceDetails}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Invoice Details" back navigation={navigation} scene={scene} />
           ),
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
