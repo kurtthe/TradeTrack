@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   },
   articles: {
     width: width - theme.SIZES.BASE * 0.1,
-    paddingVertical: theme.SIZES.BASE,
+    paddingVertical: theme.SIZES.BASE * 0.1,
     paddingHorizontal: 0,
     fontFamily: 'montserrat-regular',
   },
