@@ -78,6 +78,16 @@ function ProductsStack(props) {
           cardStyle: { backgroundColor: "#FFFFFF" }
         }}
       />
+        <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          header: ({ navigation, scene }) => (
+            <Header title="Search" back navigation={navigation} scene={scene} />
+          ),
+          cardStyle: { backgroundColor: "#FFFFFF" }
+        }}
+      />
     </Stack.Navigator>
   );
 }
