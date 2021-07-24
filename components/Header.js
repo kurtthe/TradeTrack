@@ -74,7 +74,7 @@ const DeleteButton = ({ isWhite, style, navigation }) => (
 class Header extends React.Component {
   handleLeftPress = () => {
     const { back, navigation } = this.props;
-    return back ? navigation.goBack() : navigation.goBack();
+    return back && navigation.goBack();
   };
 
   renderRight = () => {

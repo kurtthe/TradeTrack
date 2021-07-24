@@ -11,9 +11,15 @@ import Icon from '../components/Icon';
 import FilterButton from "../components/FilterButton";
 import PickerButton from "../components/PickerButton";
 import ActionSheet from "react-native-actions-sheet";
+import RNPickerSelect from 'react-native-picker-select';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
+const pickerOptions = [
+  { label: 'Pay now', value: 'now' },
+  { label: 'Pay Overdue', value: 'overdue' },
+  { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
+]
 
 class Home extends React.Component {
 
@@ -62,7 +68,7 @@ class Home extends React.Component {
 
   renderBalance = () => {
     return (
-        <Block style={{ padding: theme.SIZES.BASE }}>
+        <Block style={{ padding: theme.SIZES.BASE, paddingBottom: '10%' }}>
           <Text style={{paddingBottom: 15}} size={16}>Payment Details</Text>
           <Block row style={{paddingBottom: 15}}>
             <Block row flex center justifyContent={'space-between'}>
@@ -72,7 +78,7 @@ class Home extends React.Component {
               </Block>
               <Block center flex>
                 <TouchableOpacity >
-                  <MaterialIcons name="edit" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
+                  <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
                 </TouchableOpacity>
               </Block>
             </Block>
@@ -85,7 +91,7 @@ class Home extends React.Component {
               </Block>
               <Block>
                 <TouchableOpacity >
-                  <MaterialIcons name="edit" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
+                  <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY}/>
                 </TouchableOpacity>
               </Block>
             </Block>
@@ -93,13 +99,13 @@ class Home extends React.Component {
           <Block row style={{paddingBottom: 15}}>
             <Block flex>
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Reference</Text>
-              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>O83-125</Text>
+              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>12345</Text>
             </Block>
             <Block flex >
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+              {/* <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 Period Ending
               </Text>
-              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>04-8284743</Text>
+              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>04-8284743</Text> */}
             </Block>
           </Block>
           <Block row style={{justifyContent: 'center'}}>
@@ -137,7 +143,7 @@ class Home extends React.Component {
               style={{ fontFamily: "montserrat-bold" ,}}
               color={'#363C4A'}
             >
-              New Statements
+              All invoices
             </Text>
           </Block>
           <Block>
@@ -267,7 +273,7 @@ class Home extends React.Component {
             </ImageBackground>
           </Block>
           <SegmentedControlTab
-            values={['Balance', 'Statements']}
+            values={['Invoices', 'Statements']}
             selectedIndex={customStyleIndex}
             onTabPress={this.handleCustomIndexSelect}
             borderRadius={0}
@@ -285,14 +291,21 @@ class Home extends React.Component {
               <Text style={{fontWeight: 'bold'}}>
                 Payment via Credit Card
               </Text>
-              <PickerButton
+              <RNPickerSelect
+                placeholder={{label: 'Select an option'}}
+                textInputProps={{color: '#8898AA'}}
+                style={{placeholder: styles.pickerText, viewContainer: styles.pickerContainer}}
+                onValueChange={(value) => console.log(value)}
+                items={pickerOptions}
+              />
+              {/* <PickerButton
                 text='Pay Options'
                 placeholder='Select or search job'
                 icon
                 onPress={() => {
                   console.log('holis')
                 }}
-              />
+              /> */}
               <Text style={{fontWeight: 'bold'}}>
                 Amount
               </Text>
@@ -422,6 +435,18 @@ const styles = StyleSheet.create({
     width: '60%',
     color: nowTheme.COLORS.SECONDARY
   },
+  pickerContainer: {
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.PICKERTEXT,
+    padding: 5,
+    borderRadius: 5,
+    paddingLeft: 10,
+    height: 45
+  },
+  pickerText:{
+    color: nowTheme.COLORS.PICKERTEXT
+  }
 });
 
 export default Home;

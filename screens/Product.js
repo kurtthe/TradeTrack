@@ -13,12 +13,19 @@ import {
 
 import { Block, Text, Button, theme } from "galio-framework";
 import { Icon } from "../components";
+import QuantityCounterWithInput from "../components/QuantityCounterWithInput";
 import nowTheme from "../constants/Theme";
 import Images from "../constants/Images";
 import { iPhoneX, HeaderHeight } from "../constants/utils";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get("window");
+const sizeConstantSmall = (Platform.OS === 'ios') 
+  ? ((Dimensions.get('window').height < 670) ? 14 : 16 ) 
+  : (Dimensions.get('window').height < 870) ? 14 : 16;
+const sizeConstantBig = (Platform.OS === 'ios') 
+  ? ((Dimensions.get('window').height < 670) ? 20 :24) 
+  : (Dimensions.get('window').height < 870) ? 20 : 24;
 
 export default class Product extends React.Component {
   state = {
@@ -142,7 +149,7 @@ export default class Product extends React.Component {
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :24) :  (Dimensions.get('window').height < 870) ? 20: 24}> {product.price} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.price} </Text>
 
                 </Block>
                 <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
@@ -151,7 +158,7 @@ export default class Product extends React.Component {
                     My Price 
                   </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :24) :  (Dimensions.get('window').height < 870) ? 20: 24}> {product.myPrice} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.myPrice} </Text>
 
                 </Block>
               </Block>
@@ -163,7 +170,7 @@ export default class Product extends React.Component {
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> SKU </Text>
 
-                  <Text  color={nowTheme.COLORS.INFO} size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}> {product.sku} </Text>
+                  <Text  color={nowTheme.COLORS.INFO} size={sizeConstantSmall}> {product.sku} </Text>
 
                 </Block>
                 <Block flex >
@@ -178,30 +185,30 @@ export default class Product extends React.Component {
 
               <Block flex>
               <TouchableOpacity style={{
-                   backgroundColor:'#f5f6fa', 
-                   width: wp('85%') ,
-                   height: hp('8%') ,
-                   borderRadius:7.5,
-                   }}>
-                   <Block row style={{paddingBottom: 15}}>
-                     <Block flex center >
-                       <Image 
-                         style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
-                         source={require('../assets/imgs/img/file-sheet.png')}
-                       />
-                     </Block>
-                     <Block flex={4}>
-                       <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf </Text> 
-                       <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
-                     </Block>
-                     <Block flex center >
-                       <Image 
-                         style={styles.image_temp}
-                         source={require('../assets/imgs/img/download-circle.png')}
-                       />
-                     </Block>
-                   </Block>
-                 </TouchableOpacity>
+                backgroundColor:'#f5f6fa', 
+                width: wp('85%') ,
+                height: hp('8%') ,
+                borderRadius:7.5,
+              }}>
+                  <Block row style={{paddingBottom: 15}}>
+                    <Block flex center >
+                      <Image 
+                        style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
+                        source={require('../assets/imgs/img/file-sheet.png')}
+                      />
+                    </Block>
+                    <Block flex={4}>
+                      <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf </Text> 
+                      <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
+                    </Block>
+                    <Block flex center >
+                      <Image 
+                        style={styles.image_temp}
+                        source={require('../assets/imgs/img/download-circle.png')}
+                      />
+                    </Block>
+                  </Block>
+                </TouchableOpacity>
               </Block>
               <Block>
                 <Text style={{paddingTop: 20}} size={16}>
@@ -217,37 +224,15 @@ export default class Product extends React.Component {
           </Block>
           </ScrollView>
           <View style={styles.quantityBar}>
+            <QuantityCounterWithInput quantity={1}/>
               <Button
                 shadowless
-                style={styles.quantityButtons}
-                color={'#f0f0f0'}
-              >
-                <Text style={styles.quantityTexts}>
-                  -
-                </Text>
-              </Button>
-              <Text style={{marginHorizontal: 10, left:-20}}>
-                1
-              </Text>
-              <Button 
-                shadowless 
-                style={styles.quantityButtons}
-                color={nowTheme.COLORS.ORANGE}
-              >
-                <Text color={'white'} style={styles.quantityTexts}>
-                  +
-                </Text>
-              </Button>
-              <Button
-                shadowless
-                style={styles.addToCart, {left:35}}
+                style={styles.addToCart}
                 color={nowTheme.COLORS.INFO}
                 onPress={() => navigation.navigate("Cart")}
               >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
               </Button>
-
-              
           </View>
       </Block>
     );
@@ -282,7 +267,7 @@ const styles = StyleSheet.create({
   },
   options: {
     position: "relative",
-    marginHorizontal: theme.SIZES.BASE,
+    marginHorizontal: theme.SIZES.BASE * 0.6,
     marginTop: -theme.SIZES.BASE * 2,
     backgroundColor: theme.COLORS.WHITE
   },
@@ -303,19 +288,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: height / 20
-  },
-  quantityButtons: {
-    width: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :40) :  (Dimensions.get('window').height < 870) ? 30: 40,
-    height: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :40) :  (Dimensions.get('window').height < 870) ? 30: 40,
-    left:-20
-  },
-  quantityTexts: {
-    fontWeight: 'bold',
-    fontSize: 20
-  },  
+  }, 
   addToCart: {
     width: width * 0.5,
-   
   },
   image_temp: {
     width: 22,
@@ -329,12 +304,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: width,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     shadowColor: "black",
     shadowOffset: { width: 0, height: 7 },
     elevation: 2,
     shadowRadius: 10,
     shadowOpacity: 0.3,
     borderTopColor: 'black',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
   }
 });

@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-picker/picker": "1.9.2",
     "@react-navigation/bottom-tabs": "^5.5.1",
     "@react-navigation/compat": "^5.1.25",
     "@react-navigation/drawer": "5.12.4",
@@ -29,7 +30,7 @@
     "react-native-actions-sheet": "^0.4.9",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-modal-datetime-picker": "^10.0.0",
-    "react-native-modal-dropdown": "git+https://github.com/siemiatj/react-native-modal-dropdown.git",
+    "react-native-picker-select": "^8.0.4",
     "react-native-progress": "^4.1.2",
     "react-native-radio-buttons-group": "^2.2.4",
     "react-native-reanimated": "~1.13.0",
