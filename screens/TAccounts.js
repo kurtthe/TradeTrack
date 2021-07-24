@@ -169,6 +169,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -182,6 +183,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -195,6 +197,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -208,6 +211,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
       </Block>
     );

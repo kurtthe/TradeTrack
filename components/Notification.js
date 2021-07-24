@@ -61,13 +61,22 @@ export default class Notification extends React.Component {
                   </Block>
                 </Block>
               )}
-              <Text
-                color={nowTheme.COLORS.HEADER}
-                size={system ? 13 : 14}
-                style={{ fontFamily: "montserrat-regular", marginTop:0 }}
-              >
-                {body}
-              </Text>
+              <Block row justifyContent='space-between'>
+                <Text
+                  color={nowTheme.COLORS.HEADER}
+                  size={system ? 13 : 14}
+                  style={{ fontFamily: "montserrat-regular", marginTop:0 }}
+                >
+                  {body}
+                </Text>
+                <Icon
+                  style={{ left:-20}}
+                  size={14}
+                  color={nowTheme.COLORS.LIGHTGRAY}
+                  name="right"
+                  family="AntDesign"
+                />
+              </Block>
               <Block row style={{ marginTop: -10 }}>
 
                 <View style={styles.bg_green}>
