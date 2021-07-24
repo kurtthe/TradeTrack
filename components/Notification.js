@@ -70,7 +70,7 @@ export default class Notification extends React.Component {
                   {body}
                 </Text>
                 <Icon
-                  style={{ left:-20}}
+                  style={{left:-20}}
                   size={14}
                   color={nowTheme.COLORS.LIGHTGRAY}
                   name="right"
