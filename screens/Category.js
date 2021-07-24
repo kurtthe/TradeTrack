@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
-
+import Icon from '../components/Icon';
 import { Button } from "../components";
-import { Block, Text, theme } from "galio-framework";
+import { Block, Text, theme, Input } from "galio-framework";
 
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
@@ -22,6 +22,9 @@ import FilterButton from "../components/FilterButton";
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
 const cardHeight = height * 0.59;
+const sizeConstant = (Platform.OS === 'ios') 
+  ? ((Dimensions.get('window').height < 670) ? 12 : 14) 
+  : (Dimensions.get('window').height < 870) ? 11.5 : 15
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
@@ -136,10 +139,10 @@ export default class Category extends React.Component {
         </TouchableWithoutFeedback>
         <Block flex space='between' style={{ paddingBottom: 15}}>
           <Block row >
-            <Text color={nowTheme.COLORS.LIGHTGRAY}>
+            <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
               SKU
             </Text>
-            <Text color={nowTheme.COLORS.INFO} style={{fontSize: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 12 :14) :  (Dimensions.get('window').height < 870) ? 11.5: 15,}}>
+            <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
               {` ${item.sku}`}
             </Text>
           </Block>
@@ -224,7 +227,7 @@ export default class Category extends React.Component {
             renderItem={(item) => this.renderCard(item)}
             keyExtractor={item => item.id}
           />
-          <Block center  style={{top:10}}  backgroundColor={nowTheme.COLORS.BACKGROUND} >
+          <Block center backgroundColor={nowTheme.COLORS.BACKGROUND}>
             <Button
               color="info"
               textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -237,6 +240,17 @@ export default class Category extends React.Component {
         </ScrollView>
       </Block>
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
+        <Input
+          right
+          color="black"
+          style={styles.search}
+          placeholder="Search"
+          placeholderTextColor={'#8898AA'}
+          // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
+          iconContent={
+          <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
+          }
+        />
         <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
           <RadioGroup 
             radioButtons={this.state.radioButtons}
@@ -293,12 +307,19 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: theme.SIZES.BASE,
-    width: width - theme.SIZES.BASE * 1,
+    width: width*0.9,
   },
   buttonAdd: {
-   
     width:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? width - 240 :width - 265)  : (Dimensions.get('window').height < 870) ? width - 220 : width - 300, 
     top:10,
     marginBottom: theme.SIZES.BASE,
   },
+  search: {
+    height: 48,
+    width: width - 32,
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: nowTheme.COLORS.BORDER
+  }
 });

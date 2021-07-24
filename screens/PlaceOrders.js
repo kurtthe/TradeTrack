@@ -53,8 +53,7 @@ const radioButtonsData = [
         value: 'Job Name',
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
-    },
- 
+    }
 ]
 
 const radioButtonsHour = [
@@ -99,8 +98,7 @@ const radioButtonsHour = [
         value: '11 AM',
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
-    },
-   
+    }
 ]
 
 const radioButtonsDelivery = [
@@ -117,22 +115,21 @@ const radioButtonsDelivery = [
         value: 'Take it by yourself',
         color: nowTheme.COLORS.INFO,
         labelStyle: {fontWeight: 'bold'}
-    },
+    }
 ]
 
 export default class PlaceOrders extends React.Component {
 
-
     constructor(props) {
         super(props);
         this.state = {
-          isDateTimePickerVisible: false,
-          ordersPlaced: cart.products.slice(0,3), // To only show 3 elements
-        deleteAction: false,
-        radioButtons: radioButtonsData,
-        date: new Date()
+            isDateTimePickerVisible: false,
+            ordersPlaced: cart.products.slice(0,3), // To only show 3 elements
+            deleteAction: false,
+            radioButtons: radioButtonsData,
+            date: new Date()
         };
-      }
+    }
 
     onPressRadioButton() {
         actionSheetRadioButtonRef.current?.setModalVisible(false);
@@ -140,16 +137,16 @@ export default class PlaceOrders extends React.Component {
 
     showDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: true });
-      };
+    };
     
-      hideDateTimePicker = () => {
+    hideDateTimePicker = () => {
         this.setState({ isDateTimePickerVisible: false });
-      };
+    };
     
-      handleDatePicked = date => {
+    handleDatePicked = date => {
         console.log("A date has been picked: ", date);
         this.hideDateTimePicker();
-      };
+    };
 
     handleQuantity = (id, qty) => {
         const { cart } = this.state;
@@ -251,7 +248,6 @@ export default class PlaceOrders extends React.Component {
                         this.setState({ radioButtonsData: radioButtonsData})
                         actionSheetRadioButtonRef.current?.setModalVisible()
                     }}
-                   
                 />
                 <Text style={styles.text}>
                     Order Name
@@ -336,47 +332,43 @@ export default class PlaceOrders extends React.Component {
                     multiline 
                 />
             </Block>
-
             <Block 
                 card 
                 backgroundColor={'white'} 
                 width={width} 
-               
-                marginBottom={20}
+                //marginBottom={20}
             >
-                <Block style={{height: 'auto', padding: 25, top:-20}}>
+                <Block style={styles.detailOrdersBlock}>
+                    <View style={styles.detailOrders}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 16}}>
+                            Detail Orders
+                        </Text>
+                    </View>
 
-                <View style={styles.detailOrders}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16}}>
-                        Detail Orders
-                    </Text>
-                    <MaterialIcons name="expand-less" color={'gray'} size={30} />
-                </View>
-
-                {this.renderDetailOrdersAS()}
-                <View style={{borderWidth: 0.7, marginVertical: 5, backgroundColor:'#E8E8E8', borderColor:'#E8E8E8'}}/>
-                <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top:10}}>
-                    <Text size={14}>
-                    Total Orders
-                    </Text>
-                    <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
-                    $224.99
-                    </Text>
+                    {this.renderDetailOrdersAS()}
+                    <View style={{borderWidth: 0.7, marginVertical: 5, backgroundColor:'#E8E8E8', borderColor:'#E8E8E8'}}/>
+                    <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top:10}}>
+                        <Text size={14}>
+                        Total Orders
+                        </Text>
+                        <Text size={16} color={nowTheme.COLORS.ORANGE} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
+                        $224.99
+                        </Text>
+                    </Block>
+                    <Block
+                        center
+                        style={{position: 'relative', bottom: 0, paddingHorizontal: 20}}
+                    >
+                        <Button
+                            color="info"
+                            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                            style={styles.button}
+                            onPress={() => this.props.navigation.navigate("OrderPlaced")}
+                        >
+                            Place Order
+                        </Button>
+                    </Block>
                 </Block>
-                <Block
-            center
-            style={{position: 'relative', bottom: 0, paddingHorizontal: 20}}
-        >
-                <Button
-                    color="info"
-                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                    style={styles.button}
-                    onPress={() => navigation.navigate("OrderPlaced")}
-                >
-                    Place Order
-                </Button>
-                </Block>
-            </Block>
             </Block>
         </Block>
         )
@@ -440,10 +432,6 @@ export default class PlaceOrders extends React.Component {
             ListEmptyComponent={this.renderEmpty()}
             ListFooterComponent={this.renderOptions()}
         />
-        {/* Detail Orders ActionSheet Workaround */}
-       
-        {/* End of Detail Orders ActionSheet Workaround */}
-       
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
             <Block left style={{height: 'auto', padding: 5, paddingBottom: 40}}>
@@ -557,7 +545,7 @@ const styles = StyleSheet.create({
         fontSize: 20
     },  
     button: {
-        width: width - theme.SIZES.BASE * 3,
+        width: width - theme.SIZES.BASE * 3.1,
         marginTop: theme.SIZES.BASE,
     },
     detailOrders: {
@@ -565,7 +553,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center', 
         justifyContent: 'space-between', 
-        width: width, 
         height: '8%',
         marginVertical: theme.SIZES.BASE * 0.9,
     },
@@ -605,6 +592,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: nowTheme.COLORS.INFO,
         fontWeight: Platform.OS == 'android' ? 'bold' : '500'
+    },
+    detailOrdersBlock: {
+        height: 'auto', 
+        paddingHorizontal: 25, 
+        paddingBottom: 10
     },
     search: {
         height: 48,
