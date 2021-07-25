@@ -86,6 +86,21 @@ class Home extends React.Component {
                 iconFamily="NowExtra"
                 color={nowTheme.COLORS.TIME}
                 style={{ marginBottom: 2,  }}
+                onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+              />
+              <Notification
+                system
+                title="Invoice"
+                reference="20792769"
+                time="05/03/2021"
+                body="LOT 97 - 105 CHELTENHAM...BEAU"
+                done="Invoiced"
+                price="1.200"
+                iconName="email-852x"
+                iconFamily="NowExtra"
+                color={nowTheme.COLORS.TIME}
+                style={{ marginBottom: 5 }}
+                onPress={() => this.props.navigation.navigate('InvoiceDetails')}
               />
               <Notification
                 system
@@ -99,6 +114,7 @@ class Home extends React.Component {
                 iconFamily="NowExtra"
                 color={nowTheme.COLORS.TIME}
                 style={{ marginBottom: 5,  }}
+                onPress={() => this.props.navigation.navigate('InvoiceDetails')}
               />
               <Notification
                 system
@@ -111,23 +127,11 @@ class Home extends React.Component {
                 iconName="email-852x"
                 iconFamily="NowExtra"
                 color={nowTheme.COLORS.TIME}
-                style={{ marginBottom: 5,  }}
-              />
-              <Notification
-                system
-                title="Invoice"
-                reference="20792769"
-                time="05/03/2021"
-                body="LOT 97 - 105 CHELTENHAM...BEAU"
-                done="Invoiced"
-                price="1.200"
-                iconName="email-852x"
-                iconFamily="NowExtra"
-                color={nowTheme.COLORS.TIME}
+
                 style={{ marginBottom: 0,  }}
-              /> 
-             
-          
+                onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+              />
+
           </Block>
         
           <Block style={styles.cardHeader}>

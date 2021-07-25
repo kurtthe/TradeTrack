@@ -151,18 +151,16 @@ export default class Cart extends React.Component {
               >
                 ${item.price * item.qty}
               </Text>
+              <Button
+                color="warning"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color:'#0E3A90' }}
+                style={styles.buttonOrder}
+                //onPress={() => navigation.navigate("Login")}
+              >
+                Re-Order
+              </Button>
             </Block>
           </Block>
-        </Block>
-        <Block right style={{paddingBottom:5}}>
-          <Button
-            color="warning"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color:'#0E3A90' }}
-            style={styles.buttonOrder}
-            //onPress={() => navigation.navigate("Login")}
-          >
-            Re-Order
-          </Button>
         </Block>
       </Block>
     );
