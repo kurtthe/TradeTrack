@@ -64,9 +64,20 @@ const DeleteButton = ({ isWhite, style, navigation }) => (
 
 <Ionicons name="trash-sharp" color={'#828489'}  size={25} />
   </TouchableOpacity>
+
+  
   
 );
 
+const DownloadButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={{zIndex:300, left:15}}  >
+
+<Ionicons name="download" color={'#0E3A90'}  size={25} />
+  </TouchableOpacity>
+
+  
+  
+);
 
 
 
@@ -144,6 +155,14 @@ class Header extends React.Component {
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
          
         ];
+
+        case 'Invoice Details':
+          return [
+            <View style={{top:7, width:50}}>
+            <DownloadButton  isWhite={white} /> 
+              </View>
+           
+          ];
    
       case 'Bathroom':
         return [
