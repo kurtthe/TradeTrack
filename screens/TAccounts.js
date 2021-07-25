@@ -5,7 +5,7 @@ import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { Card, Button } from "../components";
 import { Notification } from "../components";
 import { nowTheme, Images } from "../constants";
-import {  MaterialIcons } from "@expo/vector-icons";
+import {  MaterialIcons, Ionicons } from "@expo/vector-icons";
 import GrayLine from "../components/GrayLine";
 import Icon from '../components/Icon';
 import FilterButton from "../components/FilterButton";
@@ -226,12 +226,13 @@ class Home extends React.Component {
 
   renderStatements = () => {
     return (
-      <Block>
+      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
         <Block width={width} style={{ alignItems: 'center', paddingVertical: 8, marginBottom: -5 }}>
           <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', marginLeft: -width*0.30}}>
               <FilterButton
                 text={'By Date'}
-                //icon={require('../assets/nuk-icons/png/2x/calendar-60@2x.png')}
+                icon={require('../assets/imgs/img/calendar.png')}
+                //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
               />
               <FilterButton
                 text={'Last Month'}
