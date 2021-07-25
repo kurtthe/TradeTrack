@@ -99,7 +99,7 @@ class Home extends React.Component {
           <Block row style={{paddingBottom: 15}}>
             <Block flex>
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Reference</Text>
-              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>12345</Text>
+              <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 14 :16) :  (Dimensions.get('window').height < 870) ? 14: 16}>123-456</Text>
             </Block>
             <Block flex >
               {/* <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
@@ -149,7 +149,14 @@ class Home extends React.Component {
           <Block>
             {this.renderArticles()}
           </Block>
-          
+          <Block flex  >
+       
+       <Block center style={{paddingVertical:15}}>
+         
+       </Block>
+   
+   </Block>
+
         </Block>
     )
   }

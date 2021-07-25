@@ -142,6 +142,7 @@ class Header extends React.Component {
       case 'Search':
         return [
           <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
+         
         ];
    
       case 'Bathroom':
