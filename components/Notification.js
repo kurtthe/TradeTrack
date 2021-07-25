@@ -42,9 +42,10 @@ export default class Notification extends React.Component {
             <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
               {system && (
                 <Block row space="between" style={{ height: 40, paddingTop:10 }}>
+
+                   <Block row> 
                   <Text color={nowTheme.COLORS.DEFAULT} style={{ fontFamily: 'montserrat-bold', }} size={14}>{title}</Text>
-                  <Block row paddingRight={((Dimensions.get('window').height < 670) ? 120 : 170)}>
-                  <Text color={nowTheme.COLORS.INFO} style={{fontFamily: 'montserrat-bold',    }} size={14}>{reference}</Text>
+                  <Text color={nowTheme.COLORS.INFO} style={{fontFamily: 'montserrat-bold',  left:10   }} size={14}>{reference}</Text>
                   </Block>
                   <Block row >
                     
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
 
   card: {
     zIndex: 2,
-    height: 127,
+    height: 'auto',
     borderRadius: 3
   },
   cardShadow: {
@@ -148,7 +149,5 @@ const styles = StyleSheet.create({
       marginTop:20,
       justifyContent:'center',
       alignContent:'center',
-      
-     
   }
 });
