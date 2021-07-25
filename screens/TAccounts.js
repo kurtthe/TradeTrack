@@ -169,6 +169,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -182,6 +183,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -195,6 +197,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
         <Notification
           system
@@ -208,6 +211,7 @@ class Home extends React.Component {
           iconFamily="NowExtra"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
+          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
         />
       </Block>
     );
@@ -294,18 +298,10 @@ class Home extends React.Component {
               <RNPickerSelect
                 placeholder={{label: 'Select an option'}}
                 textInputProps={{color: '#8898AA'}}
-                style={{placeholder: styles.pickerText, viewContainer: styles.pickerContainer}}
+                style={{placeholder: styles.pickerText, viewContainer: styles.pickerContainer, inputAndroid: { color: nowTheme.COLORS.PICKERTEXT }}}
                 onValueChange={(value) => console.log(value)}
                 items={pickerOptions}
               />
-              {/* <PickerButton
-                text='Pay Options'
-                placeholder='Select or search job'
-                icon
-                onPress={() => {
-                  console.log('holis')
-                }}
-              /> */}
               <Text style={{fontWeight: 'bold'}}>
                 Amount
               </Text>
