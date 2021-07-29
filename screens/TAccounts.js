@@ -16,7 +16,7 @@ import RNPickerSelect from 'react-native-picker-select';
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 const pickerOptions = [
-  { label: 'Pay now', value: 'now' },
+  { label: 'Pay 30 Day', value: 'now' },
   { label: 'Pay Overdue', value: 'overdue' },
   { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
 ]
@@ -67,6 +67,7 @@ class Home extends React.Component {
   }
 
   renderBalance = () => {
+    const { customStyleIndex } = this.state
     return (
         <Block style={{ padding: theme.SIZES.BASE, paddingBottom: '10%' }}>
           <Text style={{paddingBottom: 15}} size={16}>Payment Details</Text>
@@ -143,19 +144,15 @@ class Home extends React.Component {
               style={{ fontFamily: "montserrat-bold" ,}}
               color={'#363C4A'}
             >
-              All invoices
+              All Statements
             </Text>
+
+            {this.renderFilters()}
           </Block>
           <Block>
             {this.renderArticles()}
           </Block>
-          <Block flex  >
-       
-       <Block center style={{paddingVertical:15}}>
-         
-       </Block>
-   
-   </Block>
+        
 
         </Block>
     )
@@ -227,23 +224,30 @@ class Home extends React.Component {
   renderStatements = () => {
     return (
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        <Block width={width} style={{ alignItems: 'center', paddingVertical: 8, marginBottom: -5 }}>
-          <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', marginLeft: -width*0.30}}>
-              <FilterButton
-                text={'By Date'}
-                icon={require('../assets/imgs/img/calendar.png')}
-                //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
-              />
-              <FilterButton
-                text={'Last Month'}
-              />
-              <FilterButton
-                text={'Overdue'}
-              />
-          </Block>
-        </Block>
+        
         {this.renderArticles()}
       </Block>
+    )
+  }
+
+
+  renderFilters = () => {
+    return (
+     
+      <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', top:28, marginLeft: -width*0.29}}>
+      <FilterButton
+        text={'By Date'}
+        icon={require('../assets/imgs/img/calendar.png')}
+        //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
+      />
+      <FilterButton
+        text={'Last Month'}
+      />
+      <FilterButton
+        text={'Overdue'}
+      />
+  </Block>
+      
     )
   }
 
@@ -285,7 +289,7 @@ class Home extends React.Component {
             </ImageBackground>
           </Block>
           <SegmentedControlTab
-            values={['Invoices', 'Statements']}
+            values={['Statements', 'Invoices']}
             selectedIndex={customStyleIndex}
             onTabPress={this.handleCustomIndexSelect}
             borderRadius={0}
@@ -422,9 +426,10 @@ const styles = StyleSheet.create({
   },
   newStatementsTitle: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
-    padding: 10,
+    padding: 15,
     marginLeft: -15,
-    width: width
+    width: width,
+    height:'9%'
   },
   notificationStyle: {
     marginBottom: 5, 

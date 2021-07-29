@@ -74,13 +74,8 @@ const DownloadButton = ({ isWhite, style, navigation }) => (
 
 <Ionicons name="download" color={'#0E3A90'}  size={25} />
   </TouchableOpacity>
-
-  
   
 );
-
-
-
 
 class Header extends React.Component {
   handleLeftPress = () => {
