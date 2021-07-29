@@ -1,13 +1,12 @@
-import React, { createRef } from "react";
+import React from "react";
 import {
     StyleSheet,
     Dimensions,
-    FlatList,
-    View
+    View, 
+    ScrollView
 } from "react-native";
-import { Block, Text, theme, Button, Input } from "galio-framework";
+import { Block, Text } from "galio-framework";
 import { nowTheme } from "../constants/";
-import { ScrollView } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("screen");
 
@@ -68,9 +67,8 @@ export default class InvoiceDetails extends React.Component {
     }
 
     render() {
-    const { navigation } = this.props 
     return (
-    <ScrollView flex center style={styles.cart}>
+    <ScrollView style={styles.cart}>
         <Block 
             card 
             backgroundColor={'white'} 
