@@ -95,7 +95,7 @@ class Register extends React.Component {
                     <View style={styles.modalContainer}>
                       <WebView 
                         style={{ flex: 1 }} 
-                        source={{uri: 'https://burdensbathrooms.com.au'}}
+                        source={{uri: 'http://app.tradetrak.com.au/'}}
                         renderLoading={this.ActivityIndicatorLoadingView}
                       />
                     </View>

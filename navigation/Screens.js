@@ -21,7 +21,7 @@ import PasswordBeenChange from '../screens/TPasswordBeenChange';
 import Products from '../screens/TProduts';
 import TAccount from '../screens/TAccounts';
 
-import Register from '../screens/Register';
+import TradeTrak from '../screens/TradeTrak';
 import Articles from '../screens/Articles';
 import Category from '../screens/Category';
 import Product from "../screens/Product";
@@ -194,7 +194,7 @@ function AccountStack(props) {
 function TradeTrakStack(props) {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Account" component={Register} options={{
+      <Stack.Screen name="Account" component={TradeTrak} options={{
         header: ({ navigation, scene }) => (
           <Header 
             title="Manages Job"
