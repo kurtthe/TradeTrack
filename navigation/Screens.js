@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -196,13 +196,14 @@ function TradeTrakStack(props) {
     <Stack.Navigator>
       <Stack.Screen name="Account" component={TradeTrak} options={{
         header: ({ navigation, scene }) => (
-          <Header 
-            title="Manages Job"
-            transparent
-            iconColor={'#333'}
-            navigation={navigation}
-            scene={scene}
-          />
+          <View></View>
+          // <Header 
+          //   title="Manages Job"
+          //   transparent
+          //   iconColor={'#333'}
+          //   navigation={navigation}
+          //   scene={scene}
+          // />
         ),
         cardStyle: { backgroundColor: "#FFFFFF" },
         headerTransparent: true
