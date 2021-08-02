@@ -137,7 +137,7 @@ export default class Category extends React.Component {
             source={item.image}
           />
         </TouchableWithoutFeedback>
-        <Block flex space='between' style={{ paddingBottom: 15}}>
+        <Block flex space='between' style={{ paddingBottom: 7}}>
           <Block row >
             <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
               SKU
@@ -146,7 +146,7 @@ export default class Category extends React.Component {
               {` ${item.sku}`}
             </Text>
           </Block>
-          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5 }} size={15} >
+          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }} size={15} >
             {item.title}
           </Text>
           <Block row style={{width: '100%'}}>
@@ -283,12 +283,13 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 0.2,
     padding: 10,
+    paddingVertical: theme.SIZES.BASE,
     borderRadius:5,
     marginBottom: '5%'
   },
   image: {
     width: cardWidth*0.90,
-    height: cardHeight*0.45
+    height: cardHeight*0.30
   },
   priceGrayText: {
     // paddingLeft: 2,
@@ -311,8 +312,7 @@ const styles = StyleSheet.create({
   },
   buttonAdd: {
     width:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? width - 240 :width - 265)  : (Dimensions.get('window').height < 870) ? width - 220 : width - 300, 
-    top:10,
-    marginBottom: theme.SIZES.BASE,
+    top:10
   },
   search: {
     height: 48,

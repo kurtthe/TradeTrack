@@ -1,10 +1,8 @@
 import React from 'react';
-import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
-
-import { Button, Input } from '../components';
-import { Images, nowTheme } from '../constants';
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-
+import { Block, Text, Button as GaButton, theme } from 'galio-framework';
+import { Button } from '../components';
+import { nowTheme } from '../constants';
+import { Ionicons } from "@expo/vector-icons";
 import { 
   View, 
   Modal, 
@@ -45,7 +43,6 @@ class Register extends React.Component {
     const { navigation } = this.props;
     return (
       <DismissKeyboard>
-        <Block flex middle>
           <Block flex middle>
               <Block flex space="evenly">
                 <Block flex={0.4} middle style={styles.socialConnect}>
@@ -80,30 +77,26 @@ class Register extends React.Component {
                 onRequestClose={() => this.setState({ showModal: false })}
               >
                 <View style={styles.modal}>
-                  <>
-                    <View style={{ width: width*0.9 }}>
-                      <TouchableWithoutFeedback
-                        onPress={() => this.setState({ showModal: false })}
-                      >
-                        <Ionicons
-                          name={'close'}
-                          size={30}
-                          style={{alignSelf: 'flex-end'}}
-                        />
-                      </TouchableWithoutFeedback>
-                    </View>
-                    <View style={styles.modalContainer}>
-                      <WebView 
-                        style={{ flex: 1 }} 
-                        source={{uri: 'http://app.tradetrak.com.au/'}}
-                        renderLoading={this.ActivityIndicatorLoadingView}
+                  <View style={{ width: width*0.9 }}>
+                    <TouchableWithoutFeedback
+                      onPress={() => this.setState({ showModal: false })}
+                    >
+                      <Ionicons
+                        name={'close'}
+                        size={30}
+                        style={{alignSelf: 'flex-end'}}
                       />
-                    </View>
-                  </>
+                    </TouchableWithoutFeedback>
+                  </View>
+                  <View style={styles.modalContainer}>
+                    <WebView 
+                      source={{uri: 'http://app.tradetrak.com.au/'}}
+                      renderLoading={this.ActivityIndicatorLoadingView}
+                    />
+                  </View>
                 </View>
               </Modal>
           </Block>
-        </Block>
       </DismissKeyboard>
     );
   }
@@ -117,8 +110,6 @@ const styles = StyleSheet.create({
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: "rgba(136, 152, 170, 0.3)"
   },
   createButton: {
     width: width * 0.5,
@@ -126,21 +117,18 @@ const styles = StyleSheet.create({
     marginBottom: 40
   },
   modal : {
+    marginTop: height*0.08,
     borderWidth: 2,
-    flex : 1,
     justifyContent : 'center',
-    alignItems : 'center',
-    backgroundColor: 'white'
+    alignItems : 'center'
 },
   modalContainer : {
-      backgroundColor : 'white',
-      width : '100%',
-      height : '80%',
-      top:10
+    width : '100%',
+    height : height*0.8,
   },
   ActivityIndicatorStyle: {
-      flex: 1,
-      justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 
