@@ -184,7 +184,7 @@ export default class Category extends React.Component {
   
     return (
       <>
-      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
+      <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
         {/* <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
           <Text>
             {`Product`}
