@@ -19,6 +19,7 @@ const { height, width } = Dimensions.get("screen");
 import nowTheme from "../constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { MaterialIcons } from "@expo/vector-icons";
+import { authSignIn } from "../services/UserServices"
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -34,20 +35,34 @@ class Login extends React.Component {
 			hidePass: true,
 		};
 	}
+
+  handleLogin = async () => {
+    try {
+      let authData = {
+        email: this.state.email,
+        password: this.state.password
+      }
+      const res = await authSignIn(authData)
+      if (res) {
+        this.props.navigation.navigate('App')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   render() {
     const { navigation } = this.props;
 
     return (
       <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-     <DismissKeyboard>
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
               <Block flex space="evenly">
                 <Block flex middle style={styles.socialConnect}>
-                 
-
                   <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
                   <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
                   </Block>
@@ -58,7 +73,7 @@ class Login extends React.Component {
                         textAlign: 'left'
                       }}
                       color="#2E2F33"
-                     size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                      size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
                     //size={20}
                     >
                       Welcome Back,{"\n"}
@@ -72,60 +87,63 @@ class Login extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                       <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.255 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
-                          <Text
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
-
-                          >
-                          Email
-                          </Text>
-                        </Block>
+                          style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                          row
+                          muted
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+                        >
+                        Email
+                        </Text>
+                      </Block>
                         <Block width={width * 0.9}>
                         <Input
-                            right
-                            placeholder="Enter your email here"
-                            iconContent={<Block />}
-                            shadowless
-                            keyboardType={"email-address"}
-                          />
+                          right
+                          placeholder="Enter your email here"
+                          iconContent={<Block />}
+                          shadowless
+                          keyboardType={"email-address"}
+                          value={this.state.email}
+						              onChangeText={(val) => this.setState({ email: val})}
+                        />
                         </Block>
                         <Block flex={0.2} style={{marginTop:15}} >
                           <Text
-                          color={nowTheme.COLORS.PRETEXT}
+                            color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
                             row
                             muted
                             size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
-
                           >
                           Password
                           </Text>
                         </Block>
                         <Block width={width * 0.9} >
-                        <Input
-                          secureTextEntry={true}
-                          iconContent={<Block />}
-                          placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
-                        />
-                         <MaterialIcons
-                             style={styles.icon}
-                             name={this.state.hidePass ? "visibility" : "visibility-off"}
-                             size={20}
-                             color={nowTheme.COLORS.ICON}
-                             onPress={() =>
-                               this.setState({ hidePass: !this.state.hidePass })
-                             }
-                           />
+                          <Input
+                            secureTextEntry={true}
+                            iconContent={<Block />}
+                            placeholder="Enter your correct password"
+                            secureTextEntry={this.state.hidePass ? true : false}
+                            value={this.state.password}
+						                onChangeText={(val) => this.setState({ password: val})}
+                          />
+                          <MaterialIcons
+                            style={styles.icon}
+                            name={this.state.hidePass ? "visibility" : "visibility-off"}
+                            size={20}
+                            color={nowTheme.COLORS.ICON}
+                            onPress={() =>
+                              this.setState({ hidePass: !this.state.hidePass })
+                            }
+                          />
                         </Block>
                         <Block middle right>
-                        <ForgotButton
-                          onPress={() => navigation.navigate("ForgotPassword")}
-                        
-                        >Forgot Password?</ForgotButton>
+                          <ForgotButton
+                            onPress={() => navigation.navigate("ForgotPassword")}
+                          >
+                            Forgot Password?
+                          </ForgotButton>
                         </Block>
                       </Block>
                       <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.8 :0.45) :  (Dimensions.get('window').height < 870) ? 1: 0.4} center  >
@@ -133,10 +151,10 @@ class Login extends React.Component {
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("App")}
+                          onPress={() => this.handleLogin()}
                           
                         >
-                         Login
+                          Login
                         </Button>
 
                         <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}} >Need Help?</Text></SimpleButton>

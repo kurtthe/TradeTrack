@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  StatusBar,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
@@ -11,14 +10,13 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button, Icon, Input,  } from '../components';
-import ForgotButton from '../components/ForgotButton'
+import { Button, Input,  } from '../components';
 import SimpleButton from '../components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "../constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { MaterialIcons } from "@expo/vector-icons";
+import { authResetPassword } from '../services/UserServices';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -30,10 +28,24 @@ class ForgotPassword extends React.Component {
 		this.state = {
 			isEnabled: false,
 			email: "",
-			password: "",
 			hidePass: true,
 		};
 	}
+
+  handleForgotPassword = async () => {
+    try {
+      let authData = {
+        email: this.state.email
+      }
+      const res = await authResetPassword(authData)
+      if (res) {
+        this.props.navigation.navigate("ChangePassword")
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  
   render() {
     const { navigation } = this.props;
 
@@ -41,13 +53,12 @@ class ForgotPassword extends React.Component {
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
-    >
-     <DismissKeyboard>
+      >
+      <DismissKeyboard>
           <Block flex middle style={{backgroundColor:'#fff'}}>
           
               <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
-                 
 
                  <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
@@ -96,55 +107,51 @@ class ForgotPassword extends React.Component {
                           </Text>
                         </Block>
                         <Block width={width * 0.9}>
-                        <Input
+                          <Input
                             right
                             placeholder="Enter your email here"
                             iconContent={<Block />}
                             shadowless
                             keyboardType={"email-address"}
+                            value={this.state.email}
+						                onChangeText={(val) => this.setState({ email: val})}
                           />
                         </Block>
-                      
-                     
-                   
                       </Block>
                       <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.8 :0.45) :  (Dimensions.get('window').height < 870) ? 0.8: 0.4} center  >
                         <Button
                           color="info"
                           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                           style={styles.button}
-                          onPress={() => navigation.navigate("ChangePassword")}
-                          
+                          onPress={() => this.handleForgotPassword()}
                         >
-                       Send Email
+                          Send Email
                         </Button>
-
-                        <SimpleButton onPress={() => navigation.navigate("Help")} >  <Text style={{textDecorationLine: 'underline',}}>Need Help?</Text></SimpleButton>
-
-
-                        <Block style={{top:20}} row middle space="between">
-                          
-                          <Text
-                          color={'#444857'}
-                          size={15}
-                          >
-                          Already remember your password?
+                        <SimpleButton onPress={() => navigation.navigate("Help")} >  
+                          <Text style={{textDecorationLine: 'underline',}}>
+                            Need Help?
                           </Text>
-                        <SimpleButton 	  onPress={() => navigation.navigate("Login")}
-                  > Login</SimpleButton>
+                        </SimpleButton>
+                        <Block style={{top:20}} row middle space="between">
+                          <Text
+                            color={'#444857'}
+                            size={15}
+                          >
+                            Already remember your password?
+                          </Text>
+                          <SimpleButton 
+                            onPress={() => navigation.navigate("Login")}
+                          > 
+                            Login
+                          </SimpleButton>
                         </Block>
                       </Block>
-                       
-                        </Block>
-                  
+                    </Block>
                   </Block>
                 </Block>
               </Block>
-            
           </Block>
-      
-    
-          </DismissKeyboard>
+      </DismissKeyboard>
     </KeyboardAvoidingView>
     );
   }
