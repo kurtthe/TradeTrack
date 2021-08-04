@@ -3,7 +3,7 @@ import { StyleSheet, TouchableWithoutFeedback, View , Dimensions} from "react-na
 import PropTypes from "prop-types";
 import { Block, Text, theme } from "galio-framework";
 import Icon from "./Icon";
-import { nowTheme } from "../constants";
+import { nowTheme } from "@constants";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class Notification extends React.Component {
