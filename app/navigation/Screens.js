@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Icon from '../components/Icon';
 
-import { nowTheme } from "../constants";
+import { nowTheme } from "@constants";
 
 // screens
 import Home from '../screens/THome';

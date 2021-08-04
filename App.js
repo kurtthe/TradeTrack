@@ -11,8 +11,8 @@ import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 import Screens from './app/navigation/Screens';
-import { Images, articles, nowTheme } from './constants';
-import { store } from './app/core/module/store/index';
+import { Images, articles, nowTheme } from '@constants/index';
+import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
 // cache app images
 const assetImages = [
@@ -29,7 +29,6 @@ const assetImages = [
   Images.ProfileBackground,
 ];
 
-// cache product images
 articles.map((article) => assetImages.push(article.image));
 
 function cacheImages(images) {
@@ -47,15 +46,6 @@ export default class App extends React.Component {
     isLoadingComplete: false,
     fontLoaded: false,
   };
-
-  // async componentDidMount() {
-  //   Font.loadAsync({
-  //     "montserrat-regular": require("./assets/font/Montserrat-Regular.ttf"),
-  //     "montserrat-bold": require("./assets/font/Montserrat-Bold.ttf")
-  //   });
-
-  //   this.setState({ fontLoaded: true });
-  // }
 
   render() {
     if (!this.state.isLoadingComplete) {

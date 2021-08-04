@@ -6,12 +6,15 @@ module.exports = function(api) {
       ["module-resolver", {
         "root": ["./"],
         "alias": {
-          "@env": "./environments",
-          "@constants": "./shared/constants",
+          "@env": "./environments/environment",
+          "@constants": "./app/shared/constants",
           "@custom-elements": "./app/custom-elements",
           "@custom-sections": "./app/custom-sections",
           "@screens": "./app/screens",
           "@shared": "./app/shared",
+          "@assets": "./assets",
+          "@core": "./app/core",
+          "@navigation": "./app/navigation",
         }
       }]
     ]

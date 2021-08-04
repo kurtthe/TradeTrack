@@ -16,7 +16,7 @@ import { Button } from "../components";
 import { Block, Text, theme, Input } from "galio-framework";
 
 import categories from "../constants/categories1";
-import { nowTheme } from "../constants";
+import { nowTheme } from "@constants";
 import FilterButton from "../components/FilterButton";
 
 const { width, height } = Dimensions.get("window");
