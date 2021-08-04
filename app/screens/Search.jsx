@@ -14,7 +14,7 @@ import { Block, Text, theme } from "galio-framework";
 const { width } = Dimensions.get("screen");
 
 import { articles, categories, nowTheme } from "../constants/";
-import { Icon, Card, Input } from "../components/";
+import { Icon, Card, Input } from "../components";
 
 const suggestions = [
   { id: "DJs", title: "Showers", image: categories["DJs"] },
