@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import { articles, nowTheme } from '../constants/';
-import { Card } from '../components/';
+import { Card } from '../components';
 
 class Articles111 extends React.Component {
   renderCards = () => {
