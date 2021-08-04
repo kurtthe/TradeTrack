@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 
 import Icon from "./Icon";
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 
 class DrawerItem extends React.Component {
   renderIcon = () => {

@@ -11,13 +11,13 @@ import {
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
-import Icon from '../components/Icon';
-import { Button } from "../components";
+import Icon from '@components/Icon';
+import { Button } from "@components";
 import { Block, Text, theme, Input } from "galio-framework";
 
-import categories from "../constants/categories1";
+import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
-import FilterButton from "../components/FilterButton";
+import FilterButton from "@components/FilterButton";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -200,7 +200,7 @@ export default class Category extends React.Component {
           <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
               text={'Filters'}
-              icon={require('../assets/nuk-icons/png/2x/filter.png')}
+              icon={require('@assets/nuk-icons/png/2x/filter.png')}
             />
             <FilterButton
               text={'Category'}

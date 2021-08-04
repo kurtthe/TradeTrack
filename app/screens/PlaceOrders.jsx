@@ -9,15 +9,15 @@ import {
     View
 } from "react-native";
 import { Block, Text, theme, Button, Input } from "galio-framework";
-import { nowTheme } from "../constants/";
-import { cart } from "../constants";
+import { nowTheme } from "@constants/";
+import { cart } from "@constants";
 import { MaterialIcons } from "@expo/vector-icons";
 import ActionSheet from "react-native-actions-sheet";
-import PickerButton from "../components/PickerButton";
+import PickerButton from "@components/PickerButton";
 import RadioGroup from 'react-native-radio-buttons-group';
 import DateTimePicker from "react-native-modal-datetime-picker";
-import Icon from '../components/Icon';
-import QuantityCounter from '../components/QuantityCounter';
+import Icon from '@components/Icon';
+import QuantityCounter from '@components/QuantityCounter';
 
 
 

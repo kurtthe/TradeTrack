@@ -3,7 +3,7 @@ import { StyleSheet, Image, Dimensions } from "react-native";
 import PropTypes from "prop-types";
 import { Block } from "galio-framework";
 
-import nowUITheme from "../constants/Theme";
+import nowUITheme from "@constants/Theme";
 
 const { width } = Dimensions.get('screen');
 

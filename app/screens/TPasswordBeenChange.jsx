@@ -12,12 +12,12 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button, Icon, Input,  } from '../components';
+import { Button, Icon, Input,  } from '@components';
 
-import SimpleButton from '../components/SimpleButton'
+import SimpleButton from '@components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -60,7 +60,7 @@ class PasswordBeenChange extends React.Component {
                  
 
                 <Block flex={3}  middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :30) :  (Dimensions.get('window').height < 870) ? 15: 40}} >
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
                   </Block>
                   
                 </Block>
@@ -70,7 +70,7 @@ class PasswordBeenChange extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                       <Block  middle>
-                  <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/check-badge.png')}/>
+                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/check-badge.png')}/>
                   </Block>
                   <Block width={width * 0.9} >
                      

@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, TouchableOpacity } from "react-native";
 import { Block, theme, Text } from "galio-framework";
 
-import { Card, Button } from "../components";
-import articles from "../constants/articles";
-import { Notification } from "../components";
-import { nowTheme, Images } from "../constants";
+import { Card, Button } from "@components";
+import articles from "@constants/articles";
+import { Notification } from "@components";
+import { nowTheme, Images } from "@constants";
 import {  MaterialIcons } from "@expo/vector-icons";
 
 
@@ -24,7 +24,7 @@ class Home extends React.Component {
               source={{
                 uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
               }}
-            // source={require('../assets/imgs/Frame_main.png')}
+            // source={require('@assets/imgs/Frame_main.png')}
               style={[
                 styles.imageBlock,
                 { width: width - theme.SIZES.BASE * 0.1, height: 162 }

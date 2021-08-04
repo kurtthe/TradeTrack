@@ -4,9 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import Icon from '../components/Icon';
-
-import { nowTheme } from "@constants";
 
 // screens
 import Home from '../screens/THome';
@@ -32,7 +29,7 @@ import orderPlaced from '../screens/OrderPlaced';
 import Example from '../screens/DatePicker';
 import InvoiceDetails from '../screens/InvoiceDetail';
 // header for screens
-import Header from '../components/Header';
+import Header from '@components/Header';
 
 const { width } = Dimensions.get("screen");
 

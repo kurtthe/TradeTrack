@@ -10,13 +10,13 @@ import {
   Platform
 } from "react-native";
 import { Block, Text, theme, Button } from "galio-framework";
-import { nowTheme } from "../constants/";
-import { cart } from "../constants";
-import FilterButton from "../components/FilterButton";
+import { nowTheme } from "@constants/";
+import { cart } from "@constants";
+import FilterButton from "@components/FilterButton";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
-import QuantityCounter from "../components/QuantityCounter";
+import QuantityCounter from "@components/QuantityCounter";
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();

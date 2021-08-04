@@ -2,14 +2,14 @@ import React, { createRef } from "react";
 import { StyleSheet, Dimensions, ScrollView, View, ImageBackground, TouchableOpacity, SafeAreaView } from "react-native";
 import { Block, theme, Text, Input } from "galio-framework";
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { Card, Button } from "../components";
-import { Notification } from "../components";
-import { nowTheme, Images } from "../constants";
+import { Card, Button } from "@components";
+import { Notification } from "@components";
+import { nowTheme, Images } from "@constants";
 import {  MaterialIcons, Ionicons } from "@expo/vector-icons";
-import GrayLine from "../components/GrayLine";
-import Icon from '../components/Icon';
-import FilterButton from "../components/FilterButton";
-import PickerButton from "../components/PickerButton";
+import GrayLine from "@components/GrayLine";
+import Icon from '@components/Icon';
+import FilterButton from "@components/FilterButton";
+import PickerButton from "@components/PickerButton";
 import ActionSheet from "react-native-actions-sheet";
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -237,7 +237,7 @@ class Home extends React.Component {
       <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', top:28, marginLeft: -width*0.29}}>
       <FilterButton
         text={'By Date'}
-        icon={require('../assets/imgs/img/calendar.png')}
+        icon={require('@assets/imgs/img/calendar.png')}
         //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
       />
       <FilterButton
@@ -264,7 +264,7 @@ class Home extends React.Component {
               source={{
                 uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
               }}
-            // source={require('../assets/imgs/Frame_main.png')}
+            // source={require('@assets/imgs/Frame_main.png')}
               style={[
                 styles.imageBlock,
                 { width: width - theme.SIZES.BASE * 0.1, height: 162 }

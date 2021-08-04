@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions, FlatList, Animated } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
 const { width } = Dimensions.get('screen');
-import nowTheme from '../constants/Theme';
+import nowTheme from '@constants/Theme';
 
 const defaultMenu = [
   { id: 'music', title: 'Music', },

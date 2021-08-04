@@ -3,7 +3,7 @@ import { StyleSheet, Slider } from "react-native";
 import PropTypes from "prop-types";
 import { Text, Block } from "galio-framework";
 
-import nowUITheme from "../constants/Theme";
+import nowUITheme from "@constants/Theme";
 
 class NSlider extends React.Component {
   constructor(props) {

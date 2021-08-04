@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet } from 'react-native';
 import { Block, Text, Button } from "galio-framework";
-import { nowTheme } from "../constants/";
+import { nowTheme } from "@constants/";
 
 const QuantityCounter = props => {
 

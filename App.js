@@ -10,7 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
-import Screens from './app/navigation/Screens';
+import Screens from '@navigation/Screens';
 import { Images, articles, nowTheme } from '@constants/index';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
@@ -73,8 +73,8 @@ export default class App extends React.Component {
 
   _loadResourcesAsync = async () => {
     await Font.loadAsync({
-      'montserrat-regular': require('./assets/font/Inter-Regular.ttf'),
-      'montserrat-bold': require('./assets/font/Inter-Bold.ttf'),
+      'montserrat-regular': require('@assets/font/Inter-Regular.ttf'),
+      'montserrat-bold': require('@assets/font/Inter-Bold.ttf'),
     });
 
     this.setState({ fontLoaded: true });

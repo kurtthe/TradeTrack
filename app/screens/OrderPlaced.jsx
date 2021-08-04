@@ -11,12 +11,12 @@ import {
 } from 'react-native';
 import { Block, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button } from '../components';
+import { Button } from '@components';
 
-import SimpleButton from '../components/SimpleButton'
+import SimpleButton from '@components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -33,14 +33,14 @@ class orderPlaced extends React.Component {
             <Block flex space="evenly">
                 <Block flex={0.4}  style={styles.socialConnect}>
                     <Block flex={0.5}  middle >
-                        <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                        <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
                     </Block>
                 </Block>
                 <Block flex={0.9} space="between"  style={{backgroundColor:'transparent'}}>
                     <Block center flex={0.9}>
                         <Block flex space="between" middle> 
                             <Block flex={0.5}  middle>
-                                <Image style={styles.introImageStyle}  source={require('../assets/imgs/delivery-truck-clock.png')}/>
+                                <Image style={styles.introImageStyle}  source={require('@assets/imgs/delivery-truck-clock.png')}/>
                             </Block>
                             <Block middle width={width * 0.9}>
                                 <Text
