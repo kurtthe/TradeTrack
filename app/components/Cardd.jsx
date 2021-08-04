@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
-import { nowTheme } from '../constants';
+import { nowTheme } from '@constants';
 const { width } = Dimensions.get("screen");
 
 class Cardd extends React.Component {

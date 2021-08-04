@@ -12,12 +12,12 @@ import {
 } from 'react-native';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button, Icon, Input,  } from '../components';
+import { Button, Icon, Input,  } from '@components';
 
-import SimpleButton from '../components/SimpleButton'
+import SimpleButton from '@components/SimpleButton'
 const { height, width } = Dimensions.get("screen");
 
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -60,7 +60,7 @@ class Help extends React.Component {
                  
 
               <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :30) :  (Dimensions.get('window').height < 870) ? 30: 40}} >
-                 <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+                 <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
                  </Block>
                  <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -15 :-50) :  (Dimensions.get('window').height < 870) ? -15: -45}}>
                    <Text

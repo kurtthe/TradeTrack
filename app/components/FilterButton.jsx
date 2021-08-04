@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import ArButton from './Button';
 
-import nowTheme from '../constants/Theme';
+import nowTheme from '@constants/Theme';
 
 class FilterButton extends React.Component {
     render() {

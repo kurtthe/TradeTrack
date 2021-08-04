@@ -1,8 +1,8 @@
 import React from 'react';
 import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button, Input } from '../components';
-import { Images, nowTheme } from '../constants';
+import { Button, Input } from '@components';
+import { Images, nowTheme } from '@constants';
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { 

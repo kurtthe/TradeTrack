@@ -12,11 +12,11 @@ import {
 } from "react-native";
 
 import { Block, Text, Button, theme } from "galio-framework";
-import { Icon } from "../components";
-import QuantityCounterWithInput from "../components/QuantityCounterWithInput";
-import nowTheme from "../constants/Theme";
-import Images from "../constants/Images";
-import { iPhoneX, HeaderHeight } from "../constants/utils";
+import { Icon } from "@components";
+import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
+import nowTheme from "@constants/Theme";
+import Images from "@constants/Images";
+import { iPhoneX, HeaderHeight } from "@constants/utils";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get("window");
@@ -194,7 +194,7 @@ export default class Product extends React.Component {
                     <Block flex center >
                       <Image 
                         style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
-                        source={require('../assets/imgs/img/file-sheet.png')}
+                        source={require('@assets/imgs/img/file-sheet.png')}
                       />
                     </Block>
                     <Block flex={4}>
@@ -204,7 +204,7 @@ export default class Product extends React.Component {
                     <Block flex center >
                       <Image 
                         style={styles.image_temp}
-                        source={require('../assets/imgs/img/download-circle.png')}
+                        source={require('@assets/imgs/img/download-circle.png')}
                       />
                     </Block>
                   </Block>

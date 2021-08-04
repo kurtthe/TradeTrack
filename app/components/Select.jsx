@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Block, Text } from 'galio-framework';
 
 import Icon from './Icon';
-import { nowTheme } from '../constants';
+import { nowTheme } from '@constants';
 
 class DropDown extends React.Component {
   state = {

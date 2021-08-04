@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { theme } from "galio-framework";
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 
 const { height, width } = Dimensions.get("window");
 

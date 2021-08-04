@@ -14,10 +14,10 @@ import Articles from './Articles';
 import { Block, Text, Button as GaButton, theme } from 'galio-framework';
 
 // Now UI themed components
-import { Images, nowTheme, articles, tabs } from '../constants';
-import { Card, Select, Switch } from '../components';
+import { Images, nowTheme, articles, tabs } from '@constants';
+import { Card, Select, Switch } from '@components';
 
-import Img from '../components/Img';
+import Img from '@components/Img';
 
 const { width } = Dimensions.get('screen');
 

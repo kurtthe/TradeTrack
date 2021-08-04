@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Dimensions, TextInput } from 'react-native';
 import { Block, Text, Button } from "galio-framework";
-import { nowTheme } from "../constants/";
+import { nowTheme } from "@constants/";
 
 const sizeConstant = (Platform.OS === 'ios') 
     ? ((Dimensions.get('window').height < 670) ? 30 :40) 

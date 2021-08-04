@@ -6,7 +6,7 @@ import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-fr
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
-import nowTheme from '../constants/Theme';
+import nowTheme from '@constants/Theme';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 
@@ -186,13 +186,13 @@ class Header extends React.Component {
               <Block row   style={{width: wp('62.5%')}}>
             <Block flex middle >
             <TouchableOpacity  >
-                  {/* <Image source={require('../assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
+                  {/* <Image source={require('@assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
           </TouchableOpacity>
               </Block>
 
 
               <Block flex middle style={{top:5}}>
-              <Image style={styles.introImageStyle}  source={require('../assets/imgs/img/logo.png')}/>
+              <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
               </Block>
 
               </Block>

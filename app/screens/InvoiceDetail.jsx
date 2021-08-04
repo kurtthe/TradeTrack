@@ -6,7 +6,7 @@ import {
     ScrollView
 } from "react-native";
 import { Block, Text } from "galio-framework";
-import { nowTheme } from "../constants/";
+import { nowTheme } from "@constants/";
 
 const { width } = Dimensions.get("screen");
 

@@ -32,7 +32,7 @@
 import React from "react";
 import { Switch, Platform } from "react-native";
 
-import nowTheme from "../constants/Theme";
+import nowTheme from "@constants/Theme";
 
 class MkSwitch extends React.Component {
   render() {

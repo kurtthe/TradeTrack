@@ -5,7 +5,7 @@ import { Block } from "galio-framework";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
-import nowTheme from '../constants/Theme';
+import nowTheme from '@constants/Theme';
 import { color } from 'react-native-reanimated';
 
 class PickerButton extends React.Component {
