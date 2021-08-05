@@ -23,15 +23,14 @@ const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-const cardInfo = [
-  {
+const cardInfo = {
     title: 'All products',
     image: 'https://live.staticflickr.com/65535/51356873868_2db763db5b_w.jpg',
     description:
       'Bathroom',
       cta: 'View article'
-  },
-]
+  }
+
 
 class Components extends React.Component {
   constructor(props) {
