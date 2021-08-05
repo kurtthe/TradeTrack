@@ -1,4 +1,5 @@
 import * as ServicesResources from "./ServicesResources.js";
+//import * as SecureStore from "expo-secure-store";
 
 export const authSignIn = async (authData) => {
 	try {
@@ -14,6 +15,7 @@ export const authSignIn = async (authData) => {
 		});
 		const parsedRes = await res.json();
 		if (parsedRes.api_key) {
+			//SecureStore.setItemAsync("token", parsedRes.api_key);
 			console.log('sign in')
             return true
 		} else {

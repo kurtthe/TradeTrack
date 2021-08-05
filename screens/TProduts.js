@@ -23,6 +23,16 @@ const { width } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
+const cardInfo = [
+  {
+    title: 'All products',
+    image: 'https://live.staticflickr.com/65535/51356873868_2db763db5b_w.jpg',
+    description:
+      'Bathroom',
+      cta: 'View article'
+  },
+]
+
 class Components extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +48,13 @@ class Components extends React.Component {
   renderCards = () => {
     return (
       <Block flex style={styles.group}>
-        <Block flex row>
+        <Card 
+          categoryCard 
+          onPress={() => this.props.navigation.navigate('Category', {headerTitle: 'All Products'})} 
+          item={cardInfo} 
+          style={{ marginRight: theme.SIZES.BASE }} 
+        />
+        {/* <Block flex row>
           <Card 
             categoryCard 
             onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[7].title})} 
@@ -62,7 +78,7 @@ class Components extends React.Component {
             onPress={() => this.props.navigation.navigate('Category', {headerTitle: articles[9].title})} 
             item={articles[10]} 
           />
-        </Block>
+        </Block> */}
       </Block>
     );
   };
