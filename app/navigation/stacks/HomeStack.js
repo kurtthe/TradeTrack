@@ -1,42 +1,41 @@
-function HomeStack(props) {
+import React from 'react';
+import { createStackNavigator } from "@react-navigation/stack";
+
+import Home from '../screens/THome';
+import Search from '../screens/Search';
+import InvoiceDetails from '../screens/InvoiceDetail';
+import {screensRoute} from './configRoutes'
+
+const Stack = createStackNavigator();
+
+function HomeStack() {
+
+  const screens = [
+    {
+      name: 'Home',
+      component: Home,
+      title: 'Home',
+      colorBackground: '#FFFFFF'
+    },
+    {
+      name: 'Search',
+      component: Search,
+      title: 'Search',
+      colorBackground: '#FFFFFF'
+    },
+    {
+      name: 'InvoiceDetails',
+      component: InvoiceDetails,
+      title: 'Invoice Details',
+      colorBackground: '#FFFFFF'
+    }
+  ];
+
   return (
     <Stack.Navigator mode="card" headerMode="screen" initialRouteName="Home">
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header
-              title="Home"
-              search
-              options
-              navigation={navigation}
-              scene={scene}
-            />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
-      <Stack.Screen
-        name="Search"
-        component={Search}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Search" back navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
-      <Stack.Screen
-        name="InvoiceDetails"
-        component={InvoiceDetails}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Invoice Details" back navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
+      {screensRoute(Stack, screens)}
     </Stack.Navigator>
   );
 }
+
+export default HomeStack
