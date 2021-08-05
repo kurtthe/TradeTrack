@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import TAccount from '@screens/TAccounts';
 import Search from '@screens/Search';
 
-import {screensRoute} from './configRoutes'
+import {screensRoute} from './ConfigRoutes'
 
 const Stack = createStackNavigator();
 

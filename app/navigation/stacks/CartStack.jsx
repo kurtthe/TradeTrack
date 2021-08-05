@@ -1,11 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Cart from '../screens/Cart';
-import PlaceOrders from '../screens/PlaceOrders';
-import orderPlaced from '../screens/OrderPlaced';
-import Example from '../screens/DatePicker';
-import { screensRoute } from './configRoutes';
+import Cart from '@screens/Cart';
+import PlaceOrders from '@screens/PlaceOrders';
+import orderPlaced from '@screens/OrderPlaced';
+import Example from '@screens/DatePicker';
+import { screensRoute } from './ConfigRoutes';
 
 const Stack = createStackNavigator();
 

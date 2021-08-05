@@ -1,10 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Home from '../screens/THome';
-import Search from '../screens/Search';
-import InvoiceDetails from '../screens/InvoiceDetail';
-import {screensRoute} from './configRoutes'
+import Home from '@screens/THome';
+import Search from '@screens/Search';
+import InvoiceDetails from '@screens/InvoiceDetail';
+
+import {screensRoute} from './ConfigRoutes'
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,7 @@ function HomeStack() {
       name: 'Home',
       component: Home,
       title: 'Home',
-      colorBackground: '#FFFFFF'
+      colorBackground: '#FFFFFF',
     },
     {
       name: 'Search',
