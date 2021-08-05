@@ -18,6 +18,7 @@ import { Block, Text, theme, Input } from "galio-framework";
 import categories from "../constants/categories1";
 import { nowTheme } from "../constants";
 import FilterButton from "../components/FilterButton";
+import { getProducts } from "../services/ProductServices";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -115,8 +116,14 @@ export default class Category extends React.Component {
 
   state = {
     radioButtons: radioButtonsData,
-    radioButtons2:radioButtonsData2
+    radioButtons2:radioButtonsData2,
+    data: []
   };
+
+  async componentDidMount() {
+    let res = await getProducts()
+    this.setState({ data: res})
+  }
 
   onPressRadioButton2() {
     actionSheetRef2.current?.setModalVisible(false);
@@ -129,12 +136,12 @@ export default class Category extends React.Component {
   renderCard = ({ item }) => {
     const { navigation } = this.props;
     return (
-      <Block key={`Card-${item.title}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
+      <Block key={`Card-${item.name}`} style={styles.Card}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Product'})}>
           <Image
             resizeMode="contain"
             style={styles.image}
-            source={item.image}
+            source={{uri: item.image}}
           />
         </TouchableWithoutFeedback>
         <Block flex space='between' style={{ paddingBottom: 7}}>
@@ -147,19 +154,19 @@ export default class Category extends React.Component {
             </Text>
           </Block>
           <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }} size={15} >
-            {item.title}
+            {item.name}
           </Text>
           <Block row style={{width: '100%'}}>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}>{item.price} </Text>
+              <Text style={styles.price}>{item.cost_price} </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 My Price
               </Text>
-              <Text style={styles.price}>{item.myPrice} </Text>
+              <Text style={styles.price}>{item.cost_price} </Text>
             </Block>
           </Block>
         </Block>
@@ -223,7 +230,7 @@ export default class Category extends React.Component {
           <FlatList
             contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
             numColumns={2}
-            data={category}
+            data={this.state.data}
             renderItem={(item) => this.renderCard(item)}
             keyExtractor={item => item.id}
           />
