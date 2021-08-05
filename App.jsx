@@ -10,7 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
-import Screens from '@navigation/Screens';
+import AppStack from '@navigation/index';
 import { Images, articles, nowTheme } from '@constants/index';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
@@ -62,7 +62,7 @@ export default class App extends React.Component {
           <Provider store={store}>
             <GalioProvider theme={nowTheme}>
               <Block flex>
-                <Screens />
+                <AppStack />
               </Block>
             </GalioProvider>
           </Provider>

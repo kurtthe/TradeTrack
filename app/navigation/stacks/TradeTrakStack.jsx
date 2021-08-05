@@ -1,4 +1,11 @@
-function TradeTrakStack(props) {
+import React from 'react';
+import { createStackNavigator } from "@react-navigation/stack";
+import TradeTrak from '@screens/TradeTrak';
+import Header from '@components/Header';
+
+const Stack = createStackNavigator();
+
+function TradeTrakStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Account" component={TradeTrak} options={{
@@ -17,3 +24,5 @@ function TradeTrakStack(props) {
     </Stack.Navigator>
   );
 }
+
+export default TradeTrakStack
