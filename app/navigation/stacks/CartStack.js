@@ -1,68 +1,47 @@
-function CartStack(props) {
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import Cart from '../screens/Cart';
+import PlaceOrders from '../screens/PlaceOrders';
+import orderPlaced from '../screens/OrderPlaced';
+import Example from '../screens/DatePicker';
+import { screensRoute } from './configRoutes';
+
+const Stack = createStackNavigator();
+
+function CartStack() {
+  const screens = [
+    {
+      name: 'Cart',
+      component: Cart,
+      title: 'Cart',
+      colorBackground: '#FFFFFF',
+    },
+    {
+      name: 'PlaceOrders',
+      component: PlaceOrders,
+      title: 'Place Orders',
+      colorBackground: '#FFFFFF',
+    },
+    {
+      name: 'DatePicker',
+      component: Example,
+      title: 'DatePicker',
+      colorBackground: '#FFFFFF',
+    },
+    {
+      name: 'OrderPlaced',
+      component: orderPlaced,
+      title: '',
+      colorBackground: '#FFFFFF',
+    },
+  ];
+
   return (
     <Stack.Navigator mode="card" headerMode="screen">
-  {/*      <Stack.Screen
-        name="Cart"
-        component={Cart}
-        options={{
-          title: 'Cart',
-          headerLeft: () => (
-            <Icon
-              style={{paddingLeft: 15}}
-              name={'minimal-left2x'}
-              family="NowExtra"
-              size={18}
-              onPress={() => props.navigation.goBack()}
-              color={nowTheme.COLORS.ICON}
-            /> 
-          )
-          // header: ({ navigation, scene }) => (
-          //   <Header title="Cart" navigation={navigation} scene={scene} />
-          // ),
-          // cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      /> */}
-
-      <Stack.Screen
-        name="Cart"
-        component={Cart}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Cart" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
-      <Stack.Screen
-        name="PlaceOrders"
-        component={PlaceOrders}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="Place Orders" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
-        <Stack.Screen
-        name="DatePicker"
-        component={Example}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header title="DatePicker" navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
-      <Stack.Screen
-        name="OrderPlaced"
-        component={orderPlaced}
-        options={{
-          header: ({ navigation, scene }) => (
-            <Header transparent navigation={navigation} scene={scene} />
-          ),
-          cardStyle: { backgroundColor: "#FFFFFF" }
-        }}
-      />
+      {screensRoute(Stack, screens)}
     </Stack.Navigator>
   );
 }
+
+export default CartStack;
