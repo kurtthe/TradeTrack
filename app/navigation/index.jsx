@@ -1,66 +1,35 @@
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import AppStack from './stacks/AppStack';
+import AuthStack from './stacks/OnboardingStack'
 
-import HomeStack from './stacks/HomeStack'
-import AccountStack from './stacks/AccountStack'
-import CartStack from './stacks/CartStack'
-import ProductsStack from './stacks/ProductsStack'
-import TradeTrakStack from './stacks/TradeTrakStack'
+import { screensRoute } from './stacks/ConfigRoutes';
 
-import {ConfigRouteMain} from './stacks/ConfigMainTabRoutes'
+const Stack = createStackNavigator();
 
-const MainTab = createBottomTabNavigator();
-
-function AppStack() {
+export default function AppRoute() {
   const screens = [
     {
-      name: 'Home',
-      component: HomeStack,
-      typeIcon: 'Ionicons',
-      icon: 'home',
-      title: 'Home'
+      name: 'AppStack',
+      component: AppStack,
+      title: '',
+      colorBackground: '#FFFFFF',
+      header: false,
+      headerTransparent: false,
     },
     {
-      name: 'Products',
-      component: ProductsStack,
-      typeIcon: 'Ionicons',
-      icon: 'file-tray-stacked',
-      title: 'Products'
-    },
-    {
-      name: 'Cart',
-      component: CartStack,
-      typeIcon: 'Ionicons',
-      icon: 'cart',
-      title: 'Cart'
-    },
-    {
-      name: 'Account',
-      component: AccountStack,
-      typeIcon: 'MaterialIcons',
-      icon: 'request-quote',
-      title: 'Account'
-    },
-    {
-      name: 'Job Management',
-      component: TradeTrakStack,
-      typeIcon: 'MaterialIcons',
-      icon: 'business-center',
-      title: 'Trade Trak'
+      name: 'AuthStack',
+      component: AuthStack,
+      title: '',
+      colorBackground: '#FFFFFF',
+      header: false,
+      headerTransparent: false,
     },
   ];
-
   return (
-    <MainTab.Navigator
-    initialRouteName="Home"
-    tabBarOptions={{
-      activeTintColor: '#0E3A90',
-    }}
-    >
-      {ConfigRouteMain(MainTab, screens)}
-    </MainTab.Navigator>
+    <Stack.Navigator mode="card" headerMode="none" initialRouteName="AuthStack">
+      {screensRoute(Stack, screens)}
+    </Stack.Navigator>
   );
 }
-
-export default AppStack

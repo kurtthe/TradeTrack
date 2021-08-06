@@ -2,13 +2,13 @@ import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 // screens
-import Login from '../screens/TLogin';
-import SignUp from '../screens/TSignUp';
-import Help from '../screens/THelp';
-import ForgotPassword from '../screens/TForgotPassword';
-import ChangePassword from '../screens/TChangePassword';
-import PasswordBeenChange from '../screens/TPasswordBeenChange';
-import AppStack from '../index'
+import Login from '@screens/TLogin';
+import SignUp from '@screens/TSignUp';
+import Help from '@screens/THelp';
+import ForgotPassword from '@screens/TForgotPassword';
+import ChangePassword from '@screens/TChangePassword';
+import PasswordBeenChange from '@screens/TPasswordBeenChange';
+import AppStack from './AppStack'
 import {screensRoute} from './ConfigRoutes'
 
 const Stack = createStackNavigator();
