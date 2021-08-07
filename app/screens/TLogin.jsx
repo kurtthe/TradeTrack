@@ -57,7 +57,7 @@ class Login extends React.Component {
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
 
     if(!!resLogin){
-      console.log("Login")
+      this.props.navigation.navigate("AppStack")
     }
   }
 
@@ -71,8 +71,7 @@ class Login extends React.Component {
   }
 
   handleChangePassword= (text)=>{
-    const regexValidate = regex.email;
-    if(!regexValidate.test(text)){
+    if(this.state.password !== ''){
       this.setState({inputPasswordError:true})
       return;
     }
@@ -245,7 +244,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
-                        disabled={!this.state.inputEmailError && !this.state.inputPasswordError}
+                        disabled={this.state.inputEmailError && this.state.inputPasswordError}
                       >
                         Login
                       </Button>
