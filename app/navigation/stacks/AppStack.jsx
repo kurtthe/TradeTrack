@@ -53,7 +53,7 @@ function AppStack() {
 
   return (
     <MainTab.Navigator
-    initialRouteName="Account"
+    initialRouteName="Home"
     tabBarOptions={{
       activeTintColor: '#0E3A90',
     }}

@@ -24,9 +24,9 @@ export class GeneralRequestService {
     }
   }
 
-  get(endpoint) {
+  get(endpoint, options) {
     try {
-      return this.httpService.get(endpoint)
+      return this.httpService.get(endpoint, {options})
     } catch (err) {
       this.httpCommonService.handleError(err)
     }
