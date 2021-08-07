@@ -22,9 +22,9 @@ import {
 } from 'react-native-responsive-screen';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import {GeneralRequestService} from '@core/services/generalRequest'
+import {GeneralRequestService} from '@core/services/general-request.service'
 import {endPoints} from '@shared/dictionaries/end-points'
-
+import {regex} from '@shared/dictionaries/regex'
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
@@ -40,22 +40,43 @@ class Login extends React.Component {
       email: '',
       password: '',
       hidePass: true,
+      inputEmailError: true,
+      inputPasswordError:true,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
 
-  handleLogin = ()=> {
+  handleLogin = async ()=> {
     const dataLogin = {
       username: this.state.email,
       password: this.state.password
     }
 
-    this.generalRequest.post(endPoints.auth, dataLogin).subscribe((response) => {
-      console.log("====>response ", response)
-    });
+    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
 
+    if(!!resLogin){
+      console.log("Login")
+    }
+  }
+
+  handleChangeEmail= (text)=>{
+    const regexValidate = regex.email;
+    if(!regexValidate.test(text)){
+      this.setState({inputEmailError:true})
+      return;
+    }
+    this.setState({inputEmailError:false})
+  }
+
+  handleChangePassword= (text)=>{
+    const regexValidate = regex.email;
+    if(!regexValidate.test(text)){
+      this.setState({inputPasswordError:true})
+      return;
+    }
+    this.setState({inputPasswordError:false})
   }
 
   render() {
@@ -155,6 +176,9 @@ class Login extends React.Component {
                           iconContent={<Block />}
                           shadowless
                           keyboardType={'email-address'}
+                          onChangeText={(event)=>this.handleChangeEmail(event)}
+                          error={this.state.inputEmailError}
+                          success={!this.state.inputEmailSuccess}
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -186,6 +210,9 @@ class Login extends React.Component {
                           iconContent={<Block />}
                           placeholder="Enter your correct password"
                           secureTextEntry={this.state.hidePass ? true : false}
+                          onChangeText={(event)=>this.handleChangePassword(event)}
+                          error={this.state.inputPasswordError}
+                          success={!this.state.inputPasswordError}
                         />
                         <MaterialIcons
                           style={styles.icon}
@@ -218,6 +245,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
+                        disabled={!this.state.inputEmailError && !this.state.inputPasswordError}
                       >
                         Login
                       </Button>

@@ -43,7 +43,8 @@
     "react-native-svg": "12.1.0",
     "react-native-webview": "^11.6.5",
     "react-redux": "^7.2.4",
-    "rxjs": "^7.3.0"
+    "rxjs": "^7.3.0",
+    "sweetalert2": "^11.1.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
