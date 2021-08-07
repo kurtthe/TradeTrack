@@ -22,9 +22,13 @@ import {
 } from 'react-native-responsive-screen';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import {GeneralRequestService} from '@core/services/general-request.service'
-import {endPoints} from '@shared/dictionaries/end-points'
-import {regex} from '@shared/dictionaries/regex'
+import {GeneralRequestService} from '@core/services/general-request.service';
+import {endPoints} from '@shared/dictionaries/end-points';
+import {regex} from '@shared/dictionaries/regex';
+
+import { connect  } from 'react-redux';
+import { sign } from '@core/module/store/auth/reducers/login';
+
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
@@ -47,6 +51,19 @@ class Login extends React.Component {
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
+  componentDidMount() {
+    this.redirectLogin()
+  }
+
+  componentDidUpdate(){
+    this.redirectLogin()
+  }
+
+  redirectLogin(){
+    if(this.props.token_login !== null){
+      this.props.navigation.navigate("AppStack");
+    }
+  }
 
   handleLogin = async ()=> {
     const dataLogin = {
@@ -57,7 +74,7 @@ class Login extends React.Component {
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
 
     if(!!resLogin){
-      this.props.navigation.navigate("AppStack")
+      this.props.sign(resLogin);
     }
   }
 
@@ -67,15 +84,15 @@ class Login extends React.Component {
       this.setState({inputEmailError:true})
       return;
     }
-    this.setState({inputEmailError:false})
+    this.setState({email: text, inputEmailError:false})
   }
 
   handleChangePassword= (text)=>{
-    if(this.state.password !== ''){
-      this.setState({inputPasswordError:true})
+    if(text !== ''){
+      this.setState({password: text, inputPasswordError:false})
       return;
     }
-    this.setState({inputPasswordError:false})
+    this.setState({inputPasswordError:true})
   }
 
   render() {
@@ -339,5 +356,10 @@ const styles = StyleSheet.create({
     top: 20,
   },
 });
+const mapStateToProps = (state) => ({
+  token_login: state.loginReducer.api_key
+});
 
-export default Login;
+const mapDispatchToProps = { sign };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
