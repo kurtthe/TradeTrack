@@ -18,8 +18,7 @@ export class GeneralRequestService {
   async post(endpoint, data) {
     try {
       const response =  await this.httpService.post(endpoint, data)
-      console.log(response, "=<rez")
-      return response;
+      return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err)
     }
