@@ -154,7 +154,7 @@ export default class Product extends React.Component {
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.cost_price} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.rrp}`} </Text>
 
                 </Block>
                 <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
@@ -163,7 +163,7 @@ export default class Product extends React.Component {
                     My Price 
                   </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.cost_price} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.cost_price}`} </Text>
 
                 </Block>
               </Block>
@@ -188,7 +188,7 @@ export default class Product extends React.Component {
                 </Block>
               </Block>
 
-              <Block flex>
+              {/* <Block flex>
               <TouchableOpacity style={{
                 backgroundColor:'#f5f6fa', 
                 width: wp('85%') ,
@@ -224,9 +224,9 @@ export default class Product extends React.Component {
                 <Text center color={nowTheme.COLORS.ORANGE} style={{paddingTop: 10}}>
                   *Refer to manufacturer for full Warranty Details
                 </Text>
-              </Block>
-            </Block>
-          </Block>
+              </Block> */}
+            </Block> 
+          </Block> 
           </ScrollView>
           <View style={styles.quantityBar}>
             <QuantityCounterWithInput quantity={1}/>

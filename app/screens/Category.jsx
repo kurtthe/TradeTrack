@@ -18,7 +18,7 @@ import { Block, Text, theme, Input } from "galio-framework";
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
-import { getProducts } from "../services/ProductServices";
+import { getProducts } from "../../services/ProductServices";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -116,8 +116,9 @@ export default class Category extends React.Component {
 
   state = {
     radioButtons: radioButtonsData,
-    radioButtons2:radioButtonsData2,
-    data: []
+    radioButtons2: radioButtonsData2,
+    data: [],
+    categoryActive: false
   };
 
   async componentDidMount() {
@@ -130,6 +131,7 @@ export default class Category extends React.Component {
   }
 
   onPressRadioButton() {
+    this.setState({ categoryActive: true })
     actionSheetRef.current?.setModalVisible(false);
   }
 
@@ -159,14 +161,14 @@ export default class Category extends React.Component {
           <Block row style={{width: '100%'}}>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}>{item.cost_price} </Text>
+              <Text style={styles.price}> {`$${item.rrp}`} </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 My Price
               </Text>
-              <Text style={styles.price}>{item.cost_price} </Text>
+              <Text style={styles.price}> {`$${item.cost_price}`} </Text>
             </Block>
           </Block>
         </Block>
@@ -204,7 +206,7 @@ export default class Category extends React.Component {
           </Text>
         </Block> */}
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
-          <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
+          <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
               text={'Filters'}
               icon={require('@assets/nuk-icons/png/2x/filter.png')}
@@ -214,13 +216,14 @@ export default class Category extends React.Component {
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
               }}
+              isActive={this.state.categoryActive}
             />
-            <FilterButton
+            {/* <FilterButton
               text={'Sub Category'}
               onPress={() => {
                 actionSheetRef2.current?.setModalVisible();
               }}
-            />
+            /> */}
           </Block>
         </Block>
         <ScrollView
