@@ -17,7 +17,7 @@ const { height, width } = Dimensions.get("screen");
 
 import nowTheme from "@constants/Theme";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { authResetPassword } from '../services/UserServices';
+import { authResetPassword } from '../../services/UserServices';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
