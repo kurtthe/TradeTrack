@@ -18,6 +18,7 @@ import { Block, Text, theme, Input } from "galio-framework";
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
+import { getProducts } from "../../services/ProductServices";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -115,29 +116,37 @@ export default class Category extends React.Component {
 
   state = {
     radioButtons: radioButtonsData,
-    radioButtons2:radioButtonsData2
+    radioButtons2: radioButtonsData2,
+    data: [],
+    categoryActive: false
   };
+
+  async componentDidMount() {
+    let res = await getProducts()
+    this.setState({ data: res})
+  }
 
   onPressRadioButton2() {
     actionSheetRef2.current?.setModalVisible(false);
   }
 
   onPressRadioButton() {
+    this.setState({ categoryActive: true })
     actionSheetRef.current?.setModalVisible(false);
   }
 
   renderCard = ({ item }) => {
     const { navigation } = this.props;
     return (
-      <Block key={`Card-${item.title}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Bathroom'})}>
+      <Block key={`Card-${item.name}`} style={styles.Card}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Product'})}>
           <Image
             resizeMode="contain"
             style={styles.image}
-            source={item.image}
+            source={{uri: item.image}}
           />
         </TouchableWithoutFeedback>
-        <Block flex space='between' style={{ paddingBottom: 15}}>
+        <Block flex space='between' style={{ paddingBottom: 7}}>
           <Block row >
             <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
               SKU
@@ -146,20 +155,20 @@ export default class Category extends React.Component {
               {` ${item.sku}`}
             </Text>
           </Block>
-          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5 }} size={15} >
-            {item.title}
+          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }} size={15} >
+            {item.name}
           </Text>
           <Block row style={{width: '100%'}}>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}>{item.price} </Text>
+              <Text style={styles.price}> {`$${item.rrp}`} </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 My Price
               </Text>
-              <Text style={styles.price}>{item.myPrice} </Text>
+              <Text style={styles.price}> {`$${item.cost_price}`} </Text>
             </Block>
           </Block>
         </Block>
@@ -184,7 +193,7 @@ export default class Category extends React.Component {
   
     return (
       <>
-      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
+      <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
         {/* <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
           <Text>
             {`Product`}
@@ -197,7 +206,7 @@ export default class Category extends React.Component {
           </Text>
         </Block> */}
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
-          <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
+          <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
               text={'Filters'}
               icon={require('@assets/nuk-icons/png/2x/filter.png')}
@@ -207,13 +216,14 @@ export default class Category extends React.Component {
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
               }}
+              isActive={this.state.categoryActive}
             />
-            <FilterButton
+            {/* <FilterButton
               text={'Sub Category'}
               onPress={() => {
                 actionSheetRef2.current?.setModalVisible();
               }}
-            />
+            /> */}
           </Block>
         </Block>
         <ScrollView
@@ -223,7 +233,7 @@ export default class Category extends React.Component {
           <FlatList
             contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
             numColumns={2}
-            data={category}
+            data={this.state.data}
             renderItem={(item) => this.renderCard(item)}
             keyExtractor={item => item.id}
           />
@@ -283,12 +293,13 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOpacity: 0.2,
     padding: 10,
+    paddingVertical: theme.SIZES.BASE,
     borderRadius:5,
     marginBottom: '5%'
   },
   image: {
     width: cardWidth*0.90,
-    height: cardHeight*0.45
+    height: cardHeight*0.30
   },
   priceGrayText: {
     // paddingLeft: 2,
@@ -311,8 +322,7 @@ const styles = StyleSheet.create({
   },
   buttonAdd: {
     width:  (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? width - 240 :width - 265)  : (Dimensions.get('window').height < 870) ? width - 220 : width - 300, 
-    top:10,
-    marginBottom: theme.SIZES.BASE,
+    top:10
   },
   search: {
     height: 48,

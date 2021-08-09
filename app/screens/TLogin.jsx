@@ -225,7 +225,7 @@ class Login extends React.Component {
                           secureTextEntry={true}
                           iconContent={<Block />}
                           placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
+                          secureTextEntry={this.state.hidePass}
                           onChangeText={(event)=>this.handleChangePassword(event)}
                           error={this.state.inputPasswordError}
                           success={!this.state.inputPasswordError}
