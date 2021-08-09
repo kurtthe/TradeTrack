@@ -4,8 +4,6 @@ import {
     Dimensions,
     Image,
     FlatList,
-    TouchableWithoutFeedback,
-    TouchableOpacity,
     View
 } from "react-native";
 import { Block, Text, theme, Button, Input } from "galio-framework";
@@ -22,10 +20,9 @@ import QuantityCounter from '@components/QuantityCounter';
 
 
 const { width } = Dimensions.get("screen");
-const actionSheetRef = createRef();
 const actionSheetRadioButtonRef = createRef();
 
-const radioButtonsData = [
+const radioButtonsWithSearch = [
     {
         id: '1',
         label: 'Job Name -',
@@ -118,6 +115,23 @@ const radioButtonsDelivery = [
     }
 ]
 
+const radioButtonsStore = [
+    {
+        id: '1',
+        label: 'Store 1',
+        value: 'Store 1',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    },
+    {
+        id: '2',
+        label: 'Store 2',
+        value: 'Store 2',
+        color: nowTheme.COLORS.INFO,
+        labelStyle: {fontWeight: 'bold'}
+    }
+]
+
 export default class PlaceOrders extends React.Component {
 
     constructor(props) {
@@ -126,7 +140,7 @@ export default class PlaceOrders extends React.Component {
             isDateTimePickerVisible: false,
             ordersPlaced: cart.products.slice(0,3), // To only show 3 elements
             deleteAction: false,
-            radioButtons: radioButtonsData,
+            radioButtons: radioButtonsWithSearch,
             date: new Date()
         };
     }
@@ -245,7 +259,7 @@ export default class PlaceOrders extends React.Component {
                     placeholder='Select or search job'
                     icon
                     onPress={() => {
-                        this.setState({ radioButtonsData: radioButtonsData})
+                        this.setState({ radioButtonsData: radioButtonsWithSearch})
                         actionSheetRadioButtonRef.current?.setModalVisible()
                     }}
                 />
@@ -320,6 +334,18 @@ export default class PlaceOrders extends React.Component {
                 marginBottom={20}
             >
                 <Text style={{fontWeight: 'bold'}}>
+                    Store
+                </Text>
+                <PickerButton
+                    text='Store Name'
+                    placeholder='Select store'
+                    icon
+                    onPress={() => {
+                        this.setState({ radioButtonsData: radioButtonsStore })
+                        actionSheetRadioButtonRef.current?.setModalVisible()
+                    }}
+                />
+                <Text style={{fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT}}>
                     Notes to Store
                 </Text>
                 <Input
@@ -335,8 +361,7 @@ export default class PlaceOrders extends React.Component {
             <Block 
                 card 
                 backgroundColor={'white'} 
-                width={width} 
-                //marginBottom={20}
+                width={width}
             >
                 <Block style={styles.detailOrdersBlock}>
                     <View style={styles.detailOrders}>
@@ -435,7 +460,7 @@ export default class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
             <Block left style={{height: 'auto', padding: 5, paddingBottom: 40}}>
-            {(radioButtonsData == radioButtonsHour || radioButtonsData == radioButtonsDelivery )
+            {(radioButtonsData !== radioButtonsWithSearch)
             ? 
             ( 
                 <RadioGroup 
