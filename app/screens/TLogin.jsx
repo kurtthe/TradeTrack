@@ -193,8 +193,6 @@ class Login extends React.Component {
                           shadowless
                           keyboardType={'email-address'}
                           onChangeText={(event)=>this.handleChangeEmail(event)}
-                          error={this.state.inputEmailError}
-                          success={!this.state.inputEmailSuccess}
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -227,8 +225,6 @@ class Login extends React.Component {
                           placeholder="Enter your correct password"
                           secureTextEntry={this.state.hidePass ? true : false}
                           onChangeText={(event)=>this.handleChangePassword(event)}
-                          error={this.state.inputPasswordError}
-                          success={!this.state.inputPasswordError}
                         />
                         <MaterialIcons
                           style={styles.icon}
@@ -261,7 +257,6 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
-                        disabled={this.state.inputEmailError && this.state.inputPasswordError}
                       >
                         Login
                       </Button>
