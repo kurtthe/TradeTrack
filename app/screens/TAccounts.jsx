@@ -138,22 +138,19 @@ class Home extends React.Component {
               </Text>
             </Block>
           </Block>
-          <Block row style={styles.newStatementsTitle}>
+          <Block style={styles.newStatementsTitle}>
             <Text
               size={18}
-              style={{ fontFamily: "montserrat-bold" ,}}
+              style={{ fontFamily: "montserrat-bold" }}
               color={'#363C4A'}
             >
               All Statements
             </Text>
-
             {this.renderFilters()}
           </Block>
-          <Block>
+          <Block style={{paddingBottom: '10%'}}>
             {this.renderArticles()}
           </Block>
-        
-
         </Block>
     )
   }
@@ -224,30 +221,26 @@ class Home extends React.Component {
   renderStatements = () => {
     return (
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        
         {this.renderArticles()}
       </Block>
     )
   }
 
-
   renderFilters = () => {
     return (
-     
       <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', top:28, marginLeft: -width*0.29}}>
-      <FilterButton
-        text={'By Date'}
-        icon={require('@assets/imgs/img/calendar.png')}
-        //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
+        <FilterButton
+          text={'By Date'}
+          icon={require('@assets/imgs/img/calendar.png')}
+          //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
+        />
+        <FilterButton
+          text={'Last Month'}
+        />
+        <FilterButton
+          text={'Overdue'}
       />
-      <FilterButton
-        text={'Last Month'}
-      />
-      <FilterButton
-        text={'Overdue'}
-      />
-  </Block>
-      
+      </Block>
     )
   }
 
