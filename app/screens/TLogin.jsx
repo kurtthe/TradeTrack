@@ -52,11 +52,11 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.redirectLogin()
+    this.redirectLogin();
   }
 
   componentDidUpdate(){
-    this.redirectLogin()
+    this.redirectLogin();
   }
 
   redirectLogin(){
@@ -72,27 +72,17 @@ class Login extends React.Component {
     }
 
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
-
     if(!!resLogin){
       this.props.sign(resLogin);
     }
   }
 
   handleChangeEmail= (text)=>{
-    const regexValidate = regex.email;
-    if(!regexValidate.test(text)){
-      this.setState({inputEmailError:true})
-      return;
-    }
-    this.setState({email: text, inputEmailError:false})
+    this.setState({email: text})
   }
 
   handleChangePassword= (text)=>{
-    if(text !== ''){
-      this.setState({password: text, inputPasswordError:false})
-      return;
-    }
-    this.setState({inputPasswordError:true})
+    this.setState({password: text})
   }
 
   render() {

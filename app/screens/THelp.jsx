@@ -3,23 +3,23 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  StatusBar,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
   Platform,
-  Linking,
+  Linking
 } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
-import { Button } from '@components';
+import { Button, Icon, Input,  } from '@components';
 
-const { height, width } = Dimensions.get('screen');
+import SimpleButton from '@components/SimpleButton'
+const { height, width } = Dimensions.get("screen");
 
-import nowTheme from '@constants/Theme';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import nowTheme from "@constants/Theme";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -27,327 +27,175 @@ const DismissKeyboard = ({ children }) => (
 
 class Help extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      isEnabled: false,
-      email: '',
-      password: '',
-      hidePass: true,
-    };
-  }
-
-  dialCall = (number) => {
-    let phoneNumber = '';
-    if (Platform.OS === 'android') {
-      phoneNumber = `tel:${number}`;
-    } else {
-      phoneNumber = `telprompt:${number}`;
+		super(props);
+		this.state = {
+			isEnabled: false,
+			email: "",
+			password: "",
+			hidePass: true,
+		};
     }
-    Linking.openURL(phoneNumber);
-  };
+    
+    dialCall = (number) => {
+        let phoneNumber = '';
+        if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
+        else {phoneNumber = `telprompt:${number}`; }
+        Linking.openURL(phoneNumber);
+     };
+
 
   render() {
     const { navigation } = this.props;
 
     return (
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff' }}>
-            <Block flex space="evenly">
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <DismissKeyboard>
+          <Block flex middle style={{backgroundColor:'#fff'}}>
+           
+              <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
-                <Block
-                  flex={3}
-                  top
-                  middle
-                  style={{
-                    top:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 30
-                          : 30
-                        : Dimensions.get('window').height < 870
-                        ? 30
-                        : 40,
-                  }}
-                >
-                  <Image
-                    style={styles.introImageStyle}
-                    source={require('@assets/imgs/img/logo.png')}
-                  />
-                </Block>
-                <Block
-                  flex={3}
-                  top
-                  middle
-                  style={{
-                    top:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? -15
-                          : -50
-                        : Dimensions.get('window').height < 870
-                        ? -15
-                        : -45,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: 'montserrat-bold',
-                      textAlign: 'left',
-                    }}
-                    color="#2E2F33"
-                    size={
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 20
-                          : 22
-                        : Dimensions.get('window').height < 870
-                        ? 20
-                        : 26
-                    }
-                    //size={20}
-                  >
+                 
+
+              <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 30 :30) :  (Dimensions.get('window').height < 870) ? 30: 40}} >
+                 <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
+                 </Block>
+                 <Block flex={3} top middle style={{top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -15 :-50) :  (Dimensions.get('window').height < 870) ? -15: -45}}>
+                   <Text
+                     style={{
+                       fontFamily: 'montserrat-bold',
+                       textAlign: 'left'
+                     }}
+                     color="#2E2F33"
+                     
+                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                   //size={20}
+                   >
                     Help Support
-                  </Text>
-                </Block>
-              </Block>
+                   </Text>
+                 </Block>
+               </Block>
+              
+                <Block flex={2}  space="between"  style={{backgroundColor:'transparent', marginHorizontal:20}}>
+                  <Block center flex={0.9}>
+                    <Block flex space="between" middle> 
+                      <Block>
+                    
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:
+                      (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -20 :-80) :  (Dimensions.get('window').height < 870) ? -20: -80
+                      }} >
 
-              <Block
-                flex={2}
-                space="between"
-                style={{ backgroundColor: 'transparent', marginHorizontal: 20 }}
-              >
-                <Block center flex={0.9}>
-                  <Block flex space="between" middle>
-                    <Block>
-                      <Block
-                        flex={
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 0.3
-                              : 0.15
-                            : Dimensions.get('window').height < 870
-                            ? 0.255
-                            : 0.15
-                        }
-                        style={{
-                          marginTop:
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? -20
-                                : -80
-                              : Dimensions.get('window').height < 870
-                              ? -20
-                              : -80,
-                        }}
-                      >
-                        <Text
+                          <Text
                           color={nowTheme.COLORS.PRETEXT}
-                          style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
-                          row
-                          muted
-                          numberOfLines={2}
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 15
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 15
-                              : 20
-                          }
-                        >
-                          This app is only for Burbend Trade Costumers.
-                        </Text>
-                      </Block>
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            numberOfLines={2} 
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
 
-                      <Block
-                        flex={
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 0.3
-                              : 0.2
-                            : Dimensions.get('window').height < 870
-                            ? 0.255
-                            : 0.15
-                        }
-                        style={{
-                          marginTop:
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? -30
-                                : 10
-                              : Dimensions.get('window').height < 870
-                              ? 10
-                              : 0,
-                        }}
-                      >
+                          >
+                           This app is only for Burbend Trade Costumers.
+                          </Text>
+
+                          
+                        </Block>
+
+                        <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.2) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{ marginTop:
+                      (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -30 :10) :  (Dimensions.get('window').height < 870) ? 10: 0
+                      }} >
+
                         <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                          style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
+                        color={nowTheme.COLORS.PRETEXT}
+                          style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                           row
                           muted
-                          numberOfLines={4}
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 15
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 15
-                              : 20
-                          }
+                          numberOfLines={4} 
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
+
                         >
-                          If you need help to get access to your trade account or open one, Please
-                          contact us on:
+                        If you need help to get access to your trade account or open one, Please contact us on:
                         </Text>
-                      </Block>
-                      <Block
-                        flex={0.1099}
-                        style={{
-                          marginTop:
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 0
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 40
-                              : 40,
-                        }}
-                      >
-                        <Text
+
+
+                        </Block>
+                      <Block flex={0.1099} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :20) :  (Dimensions.get('window').height < 870) ? 40: 40, }} >
+                          <Text
                           color={nowTheme.COLORS.PRETEXT}
-                          style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
-                          row
-                          muted
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 16
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                          }
-                        >
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+                          >
                           Email
-                        </Text>
-                      </Block>
-                      <Block width={width * 0.9}>
-                        <TouchableWithoutFeedback
-                          activeOpacity={0.6}
-                          onPress={() =>
-                            Linking.openURL(
-                              'mailto:help@burdens.com.au?subject=Access to the Burdens portal&body=Hi There',
-                            )
-                          }
-                          title="help@burdens.com.au"
-                        >
-                          <Text
-                            color={'#444857'}
-                            size={
-                              Platform.OS === 'ios'
-                                ? Dimensions.get('window').height < 670
-                                  ? 18
-                                  : 22
-                                : Dimensions.get('window').height < 870
-                                ? 18
-                                : 22
-                            }
-                            style={{
-                              textDecorationLine: 'underline',
-                              top:
-                                Platform.OS === 'ios'
-                                  ? Dimensions.get('window').height < 670
-                                    ? 0
-                                    : 0
-                                  : Dimensions.get('window').height < 870
-                                  ? 10
-                                  : 10,
-                            }}
-                          >
-                            help@burdens.com.au
                           </Text>
-                        </TouchableWithoutFeedback>
-                      </Block>
-                      <Block flex={0.1} style={{ marginTop: 30 }}>
+                        </Block>
+                        <Block width={width * 0.9}>
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:help@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
+      title="help@burdens.com.au" >
                         <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                          style={{
-                            marginLeft: 0,
-                            fontFamily: 'montserrat-regular',
-                            fontFamily: 'montserrat-regular',
-                          }}
-                          row
-                          muted
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 16
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                          }
-                        >
-                          Phone number
-                        </Text>
-                      </Block>
-                      <Block width={width * 0.9}>
-                        <TouchableWithoutFeedback
-                          activeOpacity={0.6}
-                          onPress={() => {
-                            this.dialCall('0399993333');
-                          }}
-                        >
-                          <Text
-                            color={'#444857'}
-                            size={
-                              Platform.OS === 'ios'
-                                ? Dimensions.get('window').height < 670
-                                  ? 18
-                                  : 22
-                                : Dimensions.get('window').height < 870
-                                ? 18
-                                : 22
-                            }
-                            style={{
-                              textDecorationLine: 'underline',
-                              top:
-                                Platform.OS === 'ios'
-                                  ? Dimensions.get('window').height < 670
-                                    ? 0
-                                    : 0
-                                  : Dimensions.get('window').height < 870
-                                  ? 10
-                                  : 10,
-                            }}
+                          color={'#444857'}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
+                          style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}}
                           >
-                            03 9999 3333
+                          help@burdens.com.au
                           </Text>
-                        </TouchableWithoutFeedback>
+                          </TouchableWithoutFeedback>
+                        </Block>
+                        <Block flex={0.1} style={{marginTop:30}} >
+                          <Text
+                          color={nowTheme.COLORS.PRETEXT}
+                            style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
+                            row
+                            muted
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
+
+                          >
+                          Phone number
+                          </Text>
+                        </Block>
+                        <Block width={width * 0.9} >
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('0399993333')}}>
+                        <Text
+                          color={'#444857'}
+                          size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
+
+                          style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}} 
+                          >
+                         03 9999 3333
+                          </Text>
+                       </TouchableWithoutFeedback>
+                        </Block>
+                    
                       </Block>
-                    </Block>
-                    <Block center>
-                      <Button
-                        color="info"
-                        textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                        style={styles.button}
-                        onPress={() => navigation.navigate('Login')}
-                      >
-                        Back
-                      </Button>
-                    </Block>
+                      <Block center>
+                        <Button
+                          color="info"
+                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                          style={styles.button}
+                          onPress={() => navigation.navigate("Login")}
+                          
+                        >
+                          Back
+                        </Button>
+                       
+                      </Block>
+
+                            
+                      
+                        </Block>
+                  
                   </Block>
                 </Block>
               </Block>
-            </Block>
+            
           </Block>
-        </DismissKeyboard>
-      </KeyboardAvoidingView>
+      
+    
+          </DismissKeyboard>
+    </KeyboardAvoidingView>
     );
   }
 }
@@ -362,24 +210,24 @@ const styles = StyleSheet.create({
     shadowColor: nowTheme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 4
     },
     shadowRadius: 8,
     shadowOpacity: 0.1,
     elevation: 1,
     overflow: 'hidden',
   },
-  container: {
-    flex: 1,
-  },
+	container: {
+		flex: 1,
+	},
   inner: {
     padding: 24,
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: "space-around"
   },
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
-    marginHorizontal: 20,
+    marginHorizontal:20
     // borderBottomWidth: StyleSheet.hairlineWidth,
     // borderColor: "rgba(136, 152, 170, 0.3)"
   },
@@ -387,33 +235,23 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 3,
+
   },
 
   introImageStyle: {
-    width:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? wp('37%')
-          : wp('40%')
-        : Dimensions.get('window').height < 870
-        ? wp('29%')
-        : wp('40%'),
-    height:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? hp('10%')
-          : hp('40%')
-        : Dimensions.get('window').height < 870
-        ? hp('29%')
-        : hp('40%'),
+    
+    width: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? wp('37%') : wp('40%')) :  (Dimensions.get('window').height < 870) ? wp('29%') : wp('40%'),
+    height: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('10%') : hp('40%')) :  (Dimensions.get('window').height < 870) ? hp('29%') : hp('40%'),
     resizeMode: 'contain',
+    
   },
 
   icon: {
-    position: 'absolute',
-    right: 10,
-    top: 20,
-  },
+		position: "absolute",
+    right:10,
+    top:20,
+   
+	},
 });
 
 export default Help;
