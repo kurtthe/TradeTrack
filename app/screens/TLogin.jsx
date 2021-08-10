@@ -78,11 +78,13 @@ class Login extends React.Component {
   }
 
   handleChangeEmail= (text)=>{
+
     this.setState({email: text})
   }
 
   handleChangePassword= (text)=>{
     this.setState({password: text})
+
   }
 
   render() {
@@ -213,7 +215,7 @@ class Login extends React.Component {
                           secureTextEntry={true}
                           iconContent={<Block />}
                           placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass ? true : false}
+                          secureTextEntry={this.state.hidePass}
                           onChangeText={(event)=>this.handleChangePassword(event)}
                         />
                         <MaterialIcons

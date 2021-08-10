@@ -56,7 +56,12 @@ export default class Product extends React.Component {
           {useNativeDriver: false}
           )}
       >
-        {productImages.map((image, index) => (
+        <Image
+          resizeMode="contain"
+          source={{uri: product.image}}
+          style={{ width: width*0.95, height: width *0.8 }}
+        />
+        {/* {productImages.map((image, index) => (
           <TouchableWithoutFeedback
             key={`product-image-${index}`}
             // onPress={() =>
@@ -69,7 +74,7 @@ export default class Product extends React.Component {
               style={{ width: width*0.95, height: width *0.8 }}
             />
           </TouchableWithoutFeedback>
-        ))}
+        ))} */}
       </ScrollView>
     );
   };
@@ -143,13 +148,13 @@ export default class Product extends React.Component {
 
               <Text size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :23) :  (Dimensions.get('window').height < 870) ? 20: 23} style={{ paddingBottom: 24, fontWeight: '500' }} >
 
-                {product.title}
+                {product.name}
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.price} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.rrp}`} </Text>
 
                 </Block>
                 <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
@@ -158,7 +163,7 @@ export default class Product extends React.Component {
                     My Price 
                   </Text>
 
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {product.myPrice} </Text>
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.cost_price}`} </Text>
 
                 </Block>
               </Block>
@@ -183,7 +188,7 @@ export default class Product extends React.Component {
                 </Block>
               </Block>
 
-              <Block flex>
+              {/* <Block flex>
               <TouchableOpacity style={{
                 backgroundColor:'#f5f6fa', 
                 width: wp('85%') ,
@@ -219,9 +224,9 @@ export default class Product extends React.Component {
                 <Text center color={nowTheme.COLORS.ORANGE} style={{paddingTop: 10}}>
                   *Refer to manufacturer for full Warranty Details
                 </Text>
-              </Block>
-            </Block>
-          </Block>
+              </Block> */}
+            </Block> 
+          </Block> 
           </ScrollView>
           <View style={styles.quantityBar}>
             <QuantityCounterWithInput quantity={1}/>
