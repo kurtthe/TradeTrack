@@ -161,14 +161,18 @@ export default class Category extends React.Component {
           <Block row style={{width: '100%'}}>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}> {`$${item.rrp}`} </Text>
+              <Text style={styles.price}> 
+                {`$${item.rrp}`}
+              </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 My Price
               </Text>
-              <Text style={styles.price}> {`$${item.cost_price}`} </Text>
+              <Text style={styles.price}>
+                {`$${item.cost_price}`}
+              </Text>
             </Block>
           </Block>
         </Block>
