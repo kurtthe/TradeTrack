@@ -52,11 +52,11 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.redirectLogin()
+    this.redirectLogin();
   }
 
   componentDidUpdate(){
-    this.redirectLogin()
+    this.redirectLogin();
   }
 
   redirectLogin(){
@@ -72,27 +72,19 @@ class Login extends React.Component {
     }
 
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
-
     if(!!resLogin){
       this.props.sign(resLogin);
     }
   }
 
   handleChangeEmail= (text)=>{
-    const regexValidate = regex.email;
-    if(!regexValidate.test(text)){
-      this.setState({inputEmailError:true})
-      return;
-    }
-    this.setState({email: text, inputEmailError:false})
+
+    this.setState({email: text})
   }
 
   handleChangePassword= (text)=>{
-    if(text !== ''){
-      this.setState({password: text, inputPasswordError:false})
-      return;
-    }
-    this.setState({inputPasswordError:true})
+    this.setState({password: text})
+
   }
 
   render() {
@@ -193,8 +185,6 @@ class Login extends React.Component {
                           shadowless
                           keyboardType={'email-address'}
                           onChangeText={(event)=>this.handleChangeEmail(event)}
-                          error={this.state.inputEmailError}
-                          success={!this.state.inputEmailSuccess}
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -227,8 +217,6 @@ class Login extends React.Component {
                           placeholder="Enter your correct password"
                           secureTextEntry={this.state.hidePass}
                           onChangeText={(event)=>this.handleChangePassword(event)}
-                          error={this.state.inputPasswordError}
-                          success={!this.state.inputPasswordError}
                         />
                         <MaterialIcons
                           style={styles.icon}
@@ -261,7 +249,6 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
-                        disabled={this.state.inputEmailError && this.state.inputPasswordError}
                       >
                         Login
                       </Button>
