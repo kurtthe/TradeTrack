@@ -6,12 +6,6 @@ import nowTheme from "@constants/Theme";
 class MkSwitch extends React.Component {
   render() {
     const { value, ...props } = this.props;
-    const thumbColor =
-      Platform.OS === "ios"
-        ? nowTheme.COLORS.PRIMARY
-        : Platform.OS === "android" && value
-        ? nowTheme.COLORS.SWITCH_ON
-        : nowTheme.COLORS.SWITCH_OFF;
 
     return (
       <Switch
