@@ -8,8 +8,17 @@ const putIcon = (color,size, typeIcon, icon)=>{
   return <MaterialIcons name={icon} color={color} size={size} />
 }
 
+const getHeader = (navigation, route, options, ComponentHeader=false) => {
+  if(!ComponentHeader){
+    return null;
+  }
+  return <ComponentHeader />;
+}
+
+
+
 export const ConfigRouteMain = (MainTab, screens) => {
-  return screens.map(({ name, component, typeIcon, icon, title }, index) => (
+  return screens.map(({ name, component, typeIcon, icon, title, header }, index) => (
     <MainTab.Screen
       key={index}
       name={name}
@@ -17,6 +26,7 @@ export const ConfigRouteMain = (MainTab, screens) => {
       options={{
         tabBarLabel: title,
         tabBarIcon: ({ color, size }) => putIcon(color, size, typeIcon, icon),
+        header: ({ navigation, route, options }) => getHeader(navigation, route, options, header)
       }}
     />
   ));
