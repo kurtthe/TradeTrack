@@ -47,9 +47,9 @@ export default class InvoiceDetails extends React.Component {
         return orders.map((orders) => {
             return (
                 <Block keyExtractor={(i) => {index: i}}>
-                    <Text style={styles.text}>
+                    {/* <Text style={styles.text}>
                         PRODUCT NO. {orders.productNo}
-                    </Text>
+                    </Text> */}
                     <Text style={styles.receiptText}>
                         {orders.title}
                     </Text>
@@ -80,7 +80,7 @@ export default class InvoiceDetails extends React.Component {
             marginBottom={5}
         >
             <Text style={styles.text}>
-                Costumer
+                Customer
             </Text>
             <Text>
                 Skilled PGF Maintance P/L
@@ -170,7 +170,7 @@ export default class InvoiceDetails extends React.Component {
             </Block>
             <Block row style={styles.totalPrices}>
                 <Text size={12}>
-                    Total Ex GST
+                    Total ex-GST
                 </Text>
                 <Text style={styles.receiptPrice}>
                     $894.75
@@ -178,7 +178,7 @@ export default class InvoiceDetails extends React.Component {
             </Block>
             <Block row style={styles.totalPrices}>
                 <Text size={12}>
-                    Total GTS
+                    GTS
                 </Text>
                 <Text style={styles.receiptPrice}>
                     $12.25
@@ -187,7 +187,7 @@ export default class InvoiceDetails extends React.Component {
             <View style={{borderWidth: 0.7, marginVertical: 5, backgroundColor:'#E8E8E8', borderColor:'#E8E8E8'}}/>
             <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top:10}}>
                 <Text size={14}>
-                Total Orders
+                Total
                 </Text>
                 <Text size={16} color={nowTheme.COLORS.INFO} style={{fontWeight: Platform.OS == 'android' ? 'bold' : '600'}}>
                 $894.75
