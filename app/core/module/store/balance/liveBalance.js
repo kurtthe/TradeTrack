@@ -11,7 +11,7 @@ const initialState = {
 }
 
 export const liveBalanceSlice = createSlice({
-  name: 'liveBalance',
+  name: 'getBalance',
   initialState,
   reducers: {
     getBalance: (state, action) => {
