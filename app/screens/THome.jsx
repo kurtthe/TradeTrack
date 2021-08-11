@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  View,
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
@@ -31,9 +30,9 @@ class Home extends React.Component {
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  componentDidMount() {
-    const responseLiveBalance = this.generalRequest.get(endPoints.burdensBalance, {headers: `Bearer ${this.props.token_login}`});
-    this.props.liveBalance(responseLiveBalance)
+  async componentDidMount() {
+    const responseLiveBalance = await this.generalRequest.get(endPoints.burdensBalance, {headers: `Bearer ${this.props.token_login}`});
+    this.props.getBalance(responseLiveBalance)
   }
 
   renderArticles = () => {
