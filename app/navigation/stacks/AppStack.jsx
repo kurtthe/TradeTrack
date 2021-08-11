@@ -10,6 +10,8 @@ import TradeTrakStack from './TradeTrakStack'
 
 import {ConfigRouteMain} from './ConfigMainTabRoutes'
 
+import Header from '@custom-elements/Header'
+
 const MainTab = createBottomTabNavigator();
 
 function AppStack() {
@@ -19,35 +21,40 @@ function AppStack() {
       component: HomeStack,
       typeIcon: 'Ionicons',
       icon: 'home',
-      title: 'Home'
+      title: 'Home',
+      header: <Header />
     },
     {
       name: 'Products',
       component: ProductsStack,
       typeIcon: 'Ionicons',
       icon: 'file-tray-stacked',
-      title: 'Products'
+      title: 'Products',
+      header: <Header />
     },
     {
       name: 'Cart',
       component: CartStack,
       typeIcon: 'Ionicons',
       icon: 'cart',
-      title: 'Cart'
+      title: 'Cart',
+      header: <Header />
     },
     {
       name: 'Account',
       component: AccountStack,
       typeIcon: 'MaterialIcons',
       icon: 'request-quote',
-      title: 'Account'
+      title: 'Account',
+      header: <Header />
     },
     {
       name: 'Job Management',
       component: TradeTrakStack,
       typeIcon: 'MaterialIcons',
       icon: 'business-center',
-      title: 'Trade Trak'
+      title: 'Trade Trak',
+      header: <Header />
     },
   ];
 
