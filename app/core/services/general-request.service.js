@@ -24,9 +24,10 @@ export class GeneralRequestService {
     }
   }
 
-  get(endpoint, options) {
+  async get(endpoint, options={}) {
     try {
-      return this.httpService.get(endpoint, {options})
+      const response = await this.httpService.get(endpoint, {...options})
+      return response.data
     } catch (err) {
       this.httpCommonService.handleError(err)
     }

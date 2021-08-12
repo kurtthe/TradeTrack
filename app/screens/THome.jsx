@@ -17,6 +17,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
+import { getInvoices } from '@core/module/store/balance/invoices';
 
 import { connect } from 'react-redux';
 
@@ -31,9 +32,16 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const responseLiveBalance = await this.generalRequest.get(endPoints.burdensBalance, {headers: `Bearer ${this.props.token_login}`});
-    this.props.getBalance(responseLiveBalance)
+    this.getDataPetition(endPoints.burdensBalance, this.props.getBalance);
+    this.getDataPetition(endPoints.invoices, this.props.getInvoices);
   }
+
+  async getDataPetition(endpoint, action=false){
+    const response = await this.generalRequest.get(endpoint, {headers: {'ttrak-key': this.props.token_login}});
+    action && action(response);
+    return response;
+  }
+
 
   renderArticles = () => {
     const { navigation } = this.props;
@@ -44,7 +52,6 @@ class Home extends React.Component {
             source={{
               uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
             }}
-            // source={require('@assets/imgs/Frame_main.png')}
             style={[styles.imageBlock, { width: width - theme.SIZES.BASE * 0.1, height: 162 }]}
             imageStyle={{
               width: width - theme.SIZES.BASE * 0.1,
@@ -66,7 +73,7 @@ class Home extends React.Component {
                 style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
               >
                 <Text size={28} bold color={theme.COLORS.WHITE}>
-                  $12,500.15
+                  ${this.props.liveBalance.current}
                 </Text>
 
                 <TouchableOpacity
@@ -83,7 +90,7 @@ class Home extends React.Component {
                 </Text>
                 <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
                   {' '}
-                  $1,500.00{' '}
+                  ${this.props.liveBalance.overdue}{' '}
                 </Text>
               </Block>
             </Block>
@@ -117,48 +124,6 @@ class Home extends React.Component {
             iconFamily="NowExtra"
             color={nowTheme.COLORS.TIME}
             style={{ marginBottom: 2 }}
-            onPress={() => this.props.navigation.navigate('InvoiceDetails')}
-          />
-          <Notification
-            system
-            title="Invoice"
-            reference="20792769"
-            time="05/03/2021"
-            body="LOT 97 - 105 CHELTENHAM...BEAU"
-            done="Invoiced"
-            price="1.200"
-            iconName="email-852x"
-            iconFamily="NowExtra"
-            color={nowTheme.COLORS.TIME}
-            style={{ marginBottom: 5 }}
-            onPress={() => this.props.navigation.navigate('InvoiceDetails')}
-          />
-          <Notification
-            system
-            title="Invoice"
-            reference="20792769"
-            time="05/03/2021"
-            body="LOT 97 - 105 CHELTENHAM...BEAU"
-            done="Invoiced"
-            price="1.200"
-            iconName="email-852x"
-            iconFamily="NowExtra"
-            color={nowTheme.COLORS.TIME}
-            style={{ marginBottom: 5 }}
-            onPress={() => this.props.navigation.navigate('InvoiceDetails')}
-          />
-          <Notification
-            system
-            title="Invoice"
-            reference="20792769"
-            time="05/03/2021"
-            body="LOT 97 - 105 CHELTENHAM...BEAU"
-            done="Invoiced"
-            price="1.200"
-            iconName="email-852x"
-            iconFamily="NowExtra"
-            color={nowTheme.COLORS.TIME}
-            style={{ marginBottom: 0 }}
             onPress={() => this.props.navigation.navigate('InvoiceDetails')}
           />
         </Block>
@@ -269,9 +234,10 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
-  token_login: state.loginReducer.api_key
+  token_login: state.loginReducer.api_key,
+  invoices: state.invoicesReducer.invoices
 });
 
-const mapDispatchToProps = { getBalance };
+const mapDispatchToProps = { getBalance, getInvoices };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
