@@ -8,7 +8,6 @@ import Help from '@screens/THelp';
 import ForgotPassword from '@screens/TForgotPassword';
 import ChangePassword from '@screens/TChangePassword';
 import PasswordBeenChange from '@screens/TPasswordBeenChange';
-import AppStack from './AppStack'
 import {screensRoute} from './ConfigRoutes'
 
 const Stack = createStackNavigator();
@@ -23,13 +22,6 @@ export default function OnboardingStack() {
       colorBackground: '#FFFFFF',
       header:true,
       headerTransparent:true
-    },
-    {
-      name: 'App',
-      component: AppStack,
-      title: '',
-      colorBackground: '#FFFFFF',
-      header:false,
     },
     {
       name: 'Login',
