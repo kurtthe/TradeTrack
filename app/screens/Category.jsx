@@ -7,7 +7,8 @@ import {
   View, 
   FlatList,
   ScrollView,
-  Platform
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
@@ -18,7 +19,7 @@ import { Block, Text, theme, Input } from "galio-framework";
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
-import { getProducts } from "../../services/ProductServices";
+import { getCategories, getProducts, loadMoreProducts } from "../../services/ProductServices";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -29,101 +30,91 @@ const sizeConstant = (Platform.OS === 'ios')
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
-const radioButtonsData = [
-  {
-    id: '1',
-    label: 'Bathroom Products',
-    value: 'Bathroom Products',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '2',
-    label: 'Bathroom Furniture',
-    value: 'Bathroom Furniture',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '3',
-    label: 'Showers',
-    value: 'Showers',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '4',
-    label: 'Bathroom Tapware',
-    value: 'Bathroom Tapware',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '5',
-    label: "Baths & Spa's",
-    value: "Baths & Spa's",
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '6',
-    label: "Toilets",
-    value: "Toilets",
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '7',
-    label: "Basins",
-    value: "Basins",
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-]
-
-const radioButtonsData2 = [
-  {
-    id: '1',
-    label: 'All Sub Categories',
-    value: 'All Sub Categories',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '2',
-    label: 'Bathroom Cabinets',
-    value: 'Bathroom Cabinets',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '3',
-    label: 'Bathroom Vanities',
-    value: 'Bathroom Vanities',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-  {
-    id: '4',
-    label: 'Mirrors & Shaving ',
-    value: 'Cabinets',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: {fontWeight: 'bold'}
-  },
-]
+// const radioButtonsData2 = [
+//   {
+//     id: '1',
+//     label: 'All Sub Categories',
+//     value: 'All Sub Categories',
+//     color: nowTheme.COLORS.INFO,
+//     labelStyle: {fontWeight: 'bold'}
+//   },
+//   {
+//     id: '2',
+//     label: 'Bathroom Cabinets',
+//     value: 'Bathroom Cabinets',
+//     color: nowTheme.COLORS.INFO,
+//     labelStyle: {fontWeight: 'bold'}
+//   },
+//   {
+//     id: '3',
+//     label: 'Bathroom Vanities',
+//     value: 'Bathroom Vanities',
+//     color: nowTheme.COLORS.INFO,
+//     labelStyle: {fontWeight: 'bold'}
+//   },
+//   {
+//     id: '4',
+//     label: 'Mirrors & Shaving ',
+//     value: 'Cabinets',
+//     color: nowTheme.COLORS.INFO,
+//     labelStyle: {fontWeight: 'bold'}
+//   },
+// ]
 
 export default class Category extends React.Component {
 
-  state = {
-    radioButtons: radioButtonsData,
-    radioButtons2: radioButtonsData2,
-    data: [],
-    categoryActive: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      radioButtons: [],
+      //radioButtons2: radioButtonsData2,
+      data: [],
+      categoryActive: false, 
+      loadingMoreData: false,
+      hideMyPrice: true,
+      ppage: 40
+    };
+  }
 
   async componentDidMount() {
     let res = await getProducts()
-    this.setState({ data: res})
+    let categories = await this.setCategories()
+    this.setState({ 
+      data: res, 
+      radioButtons: categories, 
+      hideMyPrice: this.props.route.params.myPrice
+    })
+  }
+
+  async setCategories() {
+    let categories = await getCategories()
+    let radioCategories = categories.map(c => ({
+      ...c, 
+      color: nowTheme.COLORS.INFO,
+      labelStyle: {fontWeight: 'bold'},
+      label: c.name,
+      value: c.name
+    }))
+    return radioCategories;
+  }
+
+  async loadMore() {
+    try {
+      if (this.state.ppage === 100){
+        return
+      }
+      this.setState({ loadingMoreData: true })
+      let results = await loadMoreProducts(this.state.ppage)
+      this.setState({ loadingMoreData: false })
+      this.setState({ data: results, ppage: this.state.ppage + 20 })
+      console.log('after', this.state.ppage)
+    } catch (err) {
+      console.log('errrrrorrr', err)
+    }
+  }
+
+  numberWithDecimals(number) {
+    return (Math.round(number * 100) / 100).toFixed(2)
   }
 
   onPressRadioButton2() {
@@ -161,14 +152,22 @@ export default class Category extends React.Component {
           <Block row style={{width: '100%'}}>
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}> {`$${item.rrp}`} </Text>
+              <Text style={styles.price}> 
+                {this.numberWithDecimals(item.rrp)}
+              </Text>
             </Block>
             <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
-            <Block flex >
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                My Price
-              </Text>
-              <Text style={styles.price}> {`$${item.cost_price}`} </Text>
+              <Block flex >
+              {!this.state.hideMyPrice && 
+                <>
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                    My Price
+                  </Text>
+                  <Text style={styles.price}>
+                    {this.numberWithDecimals(item.cost_price)}
+                  </Text>
+                </>
+              }
             </Block>
           </Block>
         </Block>
@@ -238,14 +237,17 @@ export default class Category extends React.Component {
             keyExtractor={item => item.id}
           />
           <Block center backgroundColor={nowTheme.COLORS.BACKGROUND}>
-            <Button
-              color="info"
-              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-              style={styles.button}
-              // onPress={() => navigation.navigate("App")}
-            >
-              Load more...
-            </Button>
+            {this.state.loadingMoreData 
+              ? <ActivityIndicator/>
+              : <Button
+                  color="info"
+                  textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                  style={styles.button}
+                  onPress={() => this.loadMore()}
+                >
+                  Load more...
+                </Button>
+            }
           </Block>
         </ScrollView>
       </Block>
@@ -262,11 +264,13 @@ export default class Category extends React.Component {
           }
         />
         <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
-          <RadioGroup 
-            radioButtons={this.state.radioButtons}
-            color={nowTheme.COLORS.INFO} 
-            onPress={() => this.onPressRadioButton()} 
-          />
+          <ScrollView style={{width: width}}>
+            <RadioGroup 
+              radioButtons={this.state.radioButtons}
+              color={nowTheme.COLORS.INFO} 
+              onPress={() => this.onPressRadioButton()} 
+            />
+          </ScrollView>
         </Block>
       </ActionSheet>
       <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
