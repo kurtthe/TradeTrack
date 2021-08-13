@@ -13,7 +13,7 @@ export class HttpCommonService {
     }
 
     if(error.response.status === 403) {
-      this.showAlertNotAuth('Opps!', 'Not Authenticated.');
+      this.showError(error, 'Opps!', 'Not Authenticated.');
       return
     }
 

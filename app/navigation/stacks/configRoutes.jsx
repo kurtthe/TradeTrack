@@ -1,25 +1,32 @@
 import React from 'react';
 import Header from '@components/Header';
 
-const putHeader = (navigation,scene, title, header=true)=>{
-  if(header){
-    const { headerTitle } = scene.route.params;
-    return (
-      <Header title={headerTitle || title} navigation={navigation} scene={scene} />
-    );
+const putHeader = (navigation,scene, header=false) => {
+  if(!header){
+    return null;
   }
-  return null;
+
+  return (
+    <Header
+      title={header.title}
+      back={header.back}
+      search={header.search}
+      options={header.options}
+      navigation={navigation}
+      scene={scene}
+    />
+  );
 }
 
 export const screensRoute = (Stack, screens) => {
-  return screens.map(({name, component, title, colorBackground, header, headerTransparent}, index) => (
+  return screens.map(({name, component, colorBackground, header, headerTransparent}, index) => (
     <Stack.Screen
       key={index}
       name={name}
       component={component}
       options={{
-        [headerTransparent && 'headerTransparent']: headerTransparent,
-        [header && 'header']: ({ navigation, scene }) => putHeader(navigation, scene, title, header),
+        headerTransparent: headerTransparent,
+        header: ({ navigation, scene }) => putHeader(navigation, scene, header),
         cardStyle: { backgroundColor: colorBackground }
       }}
     />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const putIcon = (color,size, typeIcon, icon)=>{
-  if(typeIcon == 'Ionicons'){
+  if(typeIcon === 'Ionicons'){
     return <Ionicons name={icon} color={color} size={size} />
   }
   return <MaterialIcons name={icon} color={color} size={size} />

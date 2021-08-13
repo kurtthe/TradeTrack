@@ -12,14 +12,18 @@ const screens = [
   {
     name: 'Account',
     component: TAccount,
-    title: 'Home',
-    colorBackground: '#FFFFFF'
+    colorBackground: '#FFFFFF',
+    header:{
+      title: 'Home',
+    }
   },
   {
     name: 'Search',
     component: Search,
-    title: 'Search',
-    colorBackground: '#FFFFFF'
+    colorBackground: '#FFFFFF',
+    header:{
+      title: 'Search',
+    }
   }
 ];
 
