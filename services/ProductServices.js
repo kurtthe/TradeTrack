@@ -21,3 +21,19 @@ export const getProducts = async () => {
 		console.log("ERROR", err);
 	}
 };
+
+export const getCategories = async () => {
+	try {
+		let result = await fetch(ServicesResources.GET_ALL_CATEGORIES, {
+			method: "GET",
+			headers: {
+                "ttrak-key": 'tt_V2Gzywch2iVbI1KwhHa6pd'
+				//Authorization: "Bearer " + (await getUserToken()),
+			}
+		});
+        let res = await result.json();
+		return res;
+	} catch (err) {
+		console.log("ERROR", err);
+	}
+};
