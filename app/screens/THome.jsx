@@ -33,7 +33,7 @@ class Home extends React.Component {
 
   async componentDidMount() {
     this.getDataPetition(endPoints.burdensBalance, this.props.getBalance);
-    this.getDataPetition(endPoints.invoices, this.props.getInvoices);
+    // this.getDataPetition(endPoints.invoices, this.props.getInvoices);
   }
 
   async getDataPetition(endpoint, action = false) {

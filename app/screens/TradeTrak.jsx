@@ -24,7 +24,7 @@ class Register extends React.Component {
         color="#009688"
         size="large"
         style={styles.ActivityIndicatorStyle}
-      /> 
+      />
     );
   }
 

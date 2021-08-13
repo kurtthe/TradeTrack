@@ -16,24 +16,35 @@ function CartStack() {
       component: Cart,
       title: 'Cart',
       colorBackground: '#FFFFFF',
+      header:{
+        title: 'Cart',
+      }
     },
     {
       name: 'PlaceOrders',
       component: PlaceOrders,
       title: 'Place Orders',
       colorBackground: '#FFFFFF',
+      header:{
+        title: 'Place Orders',
+      }
     },
     {
       name: 'DatePicker',
       component: Example,
       title: 'DatePicker',
       colorBackground: '#FFFFFF',
+      header:{
+        title: 'DatePicker',
+      }
     },
     {
       name: 'OrderPlaced',
       component: orderPlaced,
-      title: '',
       colorBackground: '#FFFFFF',
+      header:{
+        title: '',
+      }
     },
   ];
 
