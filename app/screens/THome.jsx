@@ -33,11 +33,12 @@ class Home extends React.Component {
 
   async componentDidMount() {
     this.getDataPetition(endPoints.burdensBalance, this.props.getBalance);
-    // this.getDataPetition(endPoints.invoices, this.props.getInvoices);
+    this.getDataPetition(endPoints.invoices, this.props.getInvoices);
   }
 
   async getDataPetition(endpoint, action = false) {
     const response = await this.generalRequest.get(endpoint, {
+      params:{'page': 1, 'per-page':10},
       headers: { 'ttrak-key': this.props.token_login },
     });
     action && action(response);
