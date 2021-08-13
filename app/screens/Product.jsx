@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   Image,
   Animated,
@@ -12,12 +11,8 @@ import {
 } from "react-native";
 
 import { Block, Text, Button, theme } from "galio-framework";
-import { Icon } from "@components";
 import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
 import nowTheme from "@constants/Theme";
-import Images from "@constants/Images";
-import { iPhoneX, HeaderHeight } from "@constants/utils";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get("window");
 const sizeConstantSmall = (Platform.OS === 'ios') 
@@ -56,25 +51,17 @@ export default class Product extends React.Component {
           {useNativeDriver: false}
           )}
       >
-        <Image
-          resizeMode="contain"
-          source={{uri: product.image}}
-          style={{ width: width*0.95, height: width *0.8 }}
-        />
-        {/* {productImages.map((image, index) => (
+        {productImages.map((image, index) => (
           <TouchableWithoutFeedback
             key={`product-image-${index}`}
-            // onPress={() =>
-            //    navigation.navigate("Gallery", { images: productImages, index })
-            // }
           >
             <Image
               resizeMode="contain"
-              source={image}
+              source={{uri: product.image}}
               style={{ width: width*0.95, height: width *0.8 }}
             />
           </TouchableWithoutFeedback>
-        ))} */}
+        ))}
       </ScrollView>
     );
   };
@@ -142,7 +129,7 @@ export default class Product extends React.Component {
             <Block
               style={{
                 paddingHorizontal: theme.SIZES.BASE,
-                paddingTop: theme.SIZES.BASE * 2
+                paddingTop: theme.SIZES.BASE
               }}
             >
 
@@ -246,7 +233,6 @@ export default class Product extends React.Component {
 
 const styles = StyleSheet.create({
   product: {
-    //marginTop: Platform.OS === "android" ? -HeaderHeight : 0
     marginTop: 0
   },
   grayLine: {
@@ -273,7 +259,7 @@ const styles = StyleSheet.create({
   options: {
     position: "relative",
     marginHorizontal: theme.SIZES.BASE * 0.6,
-    marginTop: -theme.SIZES.BASE * 2,
+    marginTop: -theme.SIZES.BASE,
     backgroundColor: theme.COLORS.WHITE
   },
   galleryImage: {
