@@ -4,9 +4,9 @@ const initialState = {
   id: null,
   company_id: null,
   updated: null,
-  current:null,
+  current: 0,
   thirty_day: null,
-  overdue: null,
+  overdue: 0,
   total: null
 }
 

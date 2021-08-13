@@ -1,80 +1,79 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { TouchableOpacity, StyleSheet, Platform, Dimensions, Keyboard, Image, View } from 'react-native';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  Dimensions,
+  Keyboard,
+  Image,
+  View,
+} from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 
 import Icon from './Icon';
 import Input from './Input';
 import Tabs from './Tabs';
 import nowTheme from '@constants/Theme';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
   Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
 const BellButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity
-    style={[styles.button, style]}
-  >
+  <TouchableOpacity style={[styles.button, style]}>
     <Icon
       family="NowExtra"
       size={16}
       name="bulb"
       color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
     />
-    <Block middle style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]} />
-  </TouchableOpacity>
-);
-
-const BasketButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style], {zIndex:300}} onPress={() => {Keyboard.dismiss(); navigation.navigate('Search');}} >
-    <Icon
-      family="NowExtra"
-      size={20}
-      name="zoom-bold2x"
-      color={'#828489'}
+    <Block
+      middle
+      style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]}
     />
   </TouchableOpacity>
 );
 
-const CartButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style], {zIndex:300, left:-10}}  >
-   
-
-<Ionicons name="cart" color={'#828489'}  size={25} />
+const BasketButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity
+    style={([styles.button, style], { zIndex: 300 })}
+    onPress={() => {
+      Keyboard.dismiss();
+      navigation.navigate('Search');
+    }}
+  >
+    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
   </TouchableOpacity>
-  
 );
 
+const CartButton = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity style={([styles.button, style], { zIndex: 300, left: -10 })}>
+    <Ionicons name="cart" color={'#828489'} size={25} />
+  </TouchableOpacity>
+);
 
 const ConfigButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{zIndex:300, left:0}}  >
-   
-
-<Ionicons name="ellipsis-vertical-sharp" color={'#828489'}  size={25} />
+  <TouchableOpacity style={{ zIndex: 300, left: 0 }}>
+    <Ionicons name="ellipsis-vertical-sharp" color={'#828489'} size={25} />
   </TouchableOpacity>
-  
 );
 
 const DeleteButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{zIndex:300, left:15}}  >
-
-<Ionicons name="trash-sharp" color={'#828489'}  size={25} />
+  <TouchableOpacity style={{ zIndex: 300, left: 15 }}>
+    <Ionicons name="trash-sharp" color={'#828489'} size={25} />
   </TouchableOpacity>
-
-  
-  
 );
 
 const DownloadButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{zIndex:300, left:15}}  >
-
-<Ionicons name="download" color={'#0E3A90'}  size={25} />
+  <TouchableOpacity style={{ zIndex: 300, left: 15 }}>
+    <Ionicons name="download" color={'#0E3A90'} size={25} />
   </TouchableOpacity>
-  
 );
 
 class Header extends React.Component {
@@ -86,128 +85,107 @@ class Header extends React.Component {
   renderRight = () => {
     const { white, title, navigation } = this.props;
     // const { routeName } = navigation.state;
-      
+
     if (title === 'Title') {
       return [
         <BellButton key="chat-title" navigation={navigation} isWhite={white} />,
-        <BasketButton key="basket-title" navigation={navigation} isWhite={white} />
+        <BasketButton key="basket-title" navigation={navigation} isWhite={white} />,
       ];
     }
     switch (title) {
       case 'Home':
         return [
-         // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
-          <View style={{top:5.5}} >
-            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
+          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
+          <View style={{ top: 5.5 }}>
+            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
         ];
-     
+
       case 'Categories':
-        return [
-          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-        ];
+        return [<BasketButton key="basket-home" navigation={navigation} isWhite={white} />];
       case 'Category':
         return [
-          <View style={{top:5.5}}>
-            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
+          <View style={{ top: 5.5 }}>
+            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
         ];
       case 'Profile':
         return [
           <BellButton key="chat-profile" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />
+          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />,
         ];
       case 'Account':
         return [
-          <View style={{top:5.5}}>
-            <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
+          <View style={{ top: 5.5 }}>
+            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
         ];
       case 'Products':
         return [
-          <View style={{top:5.5}}>
-          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-        </View>
+          <View style={{ top: 5.5 }}>
+            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
         ];
-        case 'Product':
-          return [
-            <Block row style={{paddingTop: 17.5, width:50}}>
-            <CartButton  isWhite={white} />
-            <ConfigButton  isWhite={white} />
-          </Block>
-          ];
-          case 'Cart':
-            return [
-
-            
-              <View style={{top:11, width:50}}>
-                {/* <DeleteButton  isWhite={white} /> */}
-              </View>
-            ];
+      case 'Product':
+        return [
+          <Block row style={{ paddingTop: 17.5, width: 50 }}>
+            <CartButton isWhite={white} />
+            <ConfigButton isWhite={white} />
+          </Block>,
+        ];
+      case 'Cart':
+        return [
+          <View style={{ top: 11, width: 50 }}>{/* <DeleteButton  isWhite={white} /> */}</View>,
+        ];
 
       case 'Search':
+        return [<BasketButton key="basket-search" navigation={navigation} isWhite={white} />];
+
+      case 'Invoice Details':
         return [
-          <BasketButton key="basket-search" navigation={navigation} isWhite={white} />
-         
+          <View style={{ top: 7, width: 50 }}>
+            <DownloadButton isWhite={white} />
+          </View>,
         ];
 
-        case 'Invoice Details':
-          return [
-            <View style={{top:7, width:50}}>
-            <DownloadButton  isWhite={white} /> 
-              </View>
-           
-          ];
-   
       case 'Bathroom':
         return [
-          <View style={{top:5.5}} >
-          <BasketButton  key="basket-home" navigation={navigation} isWhite={white} />
-        </View>
+          <View style={{ top: 5.5 }}>
+            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
         ];
-       
+
       default:
         break;
     }
   };
 
-
   renderHome = () => {
     const { title, back, white, iconColor } = this.props;
-    
+
     return (
-      <> 
-        {title =="Home" ? (
-        
+      <>
+        {title == 'Home' ? (
+          <Block row style={{ width: wp('62.5%') }}>
+            <Block flex middle>
+              <TouchableOpacity>
+                {/* <Image source={require('@assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
+              </TouchableOpacity>
+            </Block>
 
-         
-          
-
-              <Block row   style={{width: wp('62.5%')}}>
-            <Block flex middle >
-            <TouchableOpacity  >
-                  {/* <Image source={require('@assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
-          </TouchableOpacity>
-              </Block>
-
-
-              <Block flex middle style={{top:5}}>
-              <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')}/>
-              </Block>
-
-              </Block>
-
-       
-        )
-        : (
-          <View style={{paddingTop:12.5, position:'absolute'}}>
-          <Icon
-            name={back ? 'minimal-left2x' : 'minimal-left2x' }
-            family="NowExtra"
-            size={18}
-            onPress={this.handleLeftPress}
-            color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
-          /> 
+            <Block flex middle style={{ top: 5 }}>
+              <Image style={styles.introImageStyle} source={require('@assets/imgs/img/logo.png')} />
+            </Block>
+          </Block>
+        ) : (
+          <View style={{ paddingTop: 12.5, position: 'absolute' }}>
+            <Icon
+              name={back ? 'minimal-left2x' : 'minimal-left2x'}
+              family="NowExtra"
+              size={18}
+              onPress={this.handleLeftPress}
+              color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
+            />
           </View>
         )}
       </>
@@ -223,14 +201,16 @@ class Header extends React.Component {
         style={styles.search}
         placeholder="What are you looking for?"
         placeholderTextColor={'#8898AA'}
-        onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
+        onFocus={() => {
+          Keyboard.dismiss();
+          navigation.navigate('Search');
+        }}
         iconContent={
           <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
         }
       />
     );
   };
-
 
   renderOptions = () => {
     const { navigation, optionLeft, optionRight } = this.props;
@@ -283,7 +263,7 @@ class Header extends React.Component {
         data={tabs || []}
         initialIndex={tabIndex || defaultTab}
         key={tabIndex}
-        onChange={id => navigation.setParams({ tabId: id })}
+        onChange={(id) => navigation.setParams({ tabId: id })}
       />
     );
   };
@@ -291,12 +271,10 @@ class Header extends React.Component {
     const { search, options, tabs } = this.props;
     if (search || tabs || options) {
       return (
-        <Block center  >
+        <Block center>
           {/* {search ? this.renderSearch() : null}
           {options ? this.renderOptions() : null} */}
-          {tabs ? this.renderTabs() : null} 
-
-         
+          {tabs ? this.renderTabs() : null}
         </Block>
       );
     }
@@ -319,31 +297,28 @@ class Header extends React.Component {
     const headerStyles = [
       !noShadow ? styles.shadow : null,
       transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
-      
     ];
 
-    const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor } ];
+    const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor }];
 
     return (
-      <Block style={headerStyles, {height:theme.SIZES.BASE * 6.5}}>
+      <Block style={(headerStyles, { height: theme.SIZES.BASE * 6.5 })}>
         <NavBar
-          title={title == 'Home' ? '':title}
+          title={title == 'Home' ? '' : title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
-          rightStyle={{ alignItems: 'center',  }}
-          left={ this.renderHome() }
+          rightStyle={{ alignItems: 'center' }}
+          left={this.renderHome()}
           leftStyle={{ paddingVertical: 25, flex: 1.7 }}
           titleStyle={[
             styles.title,
             { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
-            titleColor && { color: titleColor }
+            titleColor && { color: titleColor },
           ]}
           {...props}
         />
         {this.renderHeader()}
-
-        
       </Block>
     );
   }
@@ -352,24 +327,22 @@ class Header extends React.Component {
 const styles = StyleSheet.create({
   button: {
     padding: 12,
-    position: 'relative'
+    position: 'relative',
   },
   title: {
     width: '150%',
-    fontSize: ((Dimensions.get('window').height < 670) ? 22 : 26),
+    fontSize: Dimensions.get('window').height < 670 ? 22 : 26,
     fontWeight: 'bold',
     fontFamily: 'montserrat-bold',
-    left:wp('-12.5%'),
-    textAlign:'center',
-    top:5.5
-
+    left: wp('-12.5%'),
+    textAlign: 'center',
+    top: 5.5,
   },
   navbar: {
     paddingVertical: 0,
     paddingBottom: theme.SIZES.BASE * 1.5,
     paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
     zIndex: 5,
-   
   },
   shadow: {
     backgroundColor: theme.COLORS.WHITE,
@@ -377,15 +350,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.2,
-    elevation: 3
+    elevation: 3,
   },
   shadowless: {
     elevation: 0,
     shadowOpacity: 0,
-    shadowOffset: { 
-      height: 0, 
+    shadowOffset: {
+      height: 0,
     },
-    shadowRadius: 0
+    shadowRadius: 0,
   },
   notify: {
     backgroundColor: nowTheme.COLORS.SUCCESS,
@@ -394,15 +367,14 @@ const styles = StyleSheet.create({
     width: theme.SIZES.BASE / 2,
     position: 'absolute',
     top: 9,
-    right: 12
+    right: 12,
   },
   header: {
     backgroundColor: theme.COLORS.WHITE,
-    
   },
   divider: {
     borderRightWidth: 0.3,
-    borderRightColor: theme.COLORS.ICON
+    borderRightColor: theme.COLORS.ICON,
   },
   search: {
     height: 48,
@@ -410,12 +382,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: nowTheme.COLORS.BORDER
+    borderColor: nowTheme.COLORS.BORDER,
   },
   options: {
     marginBottom: 24,
     marginTop: 10,
-    elevation: 4
+    elevation: 4,
   },
   tab: {
     backgroundColor: theme.COLORS.TRANSPARENT,
@@ -423,36 +395,53 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     borderWidth: 0,
     height: 24,
-    elevation: 0
+    elevation: 0,
   },
   tabTitle: {
     lineHeight: 19,
     fontWeight: '400',
-    color: nowTheme.COLORS.HEADER
+    color: nowTheme.COLORS.HEADER,
   },
   social: {
     width: theme.SIZES.BASE * 3.5,
     height: theme.SIZES.BASE * 3.5,
     borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   introImageStyle: {
-    width: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 100 :120)  : ((Dimensions.get('window').height < 595) ? 100 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 120:-120)),
-    height: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 100 :120)  : ((Dimensions.get('window').height < 595) ? 100 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 120:-120)),
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height < 670
+          ? 100
+          : 120
+        : Dimensions.get('window').height < 595
+        ? 100
+        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+        ? 120
+        : -120,
+    height:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height < 670
+          ? 100
+          : 120
+        : Dimensions.get('window').height < 595
+        ? 100
+        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+        ? 120
+        : -120,
     resizeMode: 'contain',
   },
 
   image: {
-    
     width: 27.5,
     height: 27.5,
     ...StyleSheet.absoluteFillObject,
     resizeMode: 'contain',
-    marginLeft:-20,
-    top:-10
+    marginLeft: -20,
+    top: -10,
   },
   options: {
-    padding: theme.SIZES.BASE / 2
+    padding: theme.SIZES.BASE / 2,
   },
 });
 
