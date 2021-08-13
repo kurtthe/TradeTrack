@@ -19,7 +19,7 @@ import { Block, Text, theme, Input } from "galio-framework";
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
-import { getCategories, getProducts } from "../../services/ProductServices";
+import { getCategories, getProducts, loadMoreProducts } from "../../services/ProductServices";
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -71,7 +71,8 @@ export default class Category extends React.Component {
       data: [],
       categoryActive: false, 
       loadingMoreData: false,
-      hideMyPrice: true
+      hideMyPrice: true,
+      ppage: 40
     };
   }
 
@@ -97,10 +98,19 @@ export default class Category extends React.Component {
     return radioCategories;
   }
 
-  loadMore() {
-    this.setState({ loadingMoreData: true })
-    console.log('mas dataaaa')
-    this.setState({ loadingMoreData: false })
+  async loadMore() {
+    try {
+      if (this.state.ppage === 100){
+        return
+      }
+      this.setState({ loadingMoreData: true })
+      let results = await loadMoreProducts(this.state.ppage)
+      this.setState({ loadingMoreData: false })
+      this.setState({ data: results, ppage: this.state.ppage + 20 })
+      console.log('after', this.state.ppage)
+    } catch (err) {
+      console.log('errrrrorrr', err)
+    }
   }
 
   numberWithDecimals(number) {

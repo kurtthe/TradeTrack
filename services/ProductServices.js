@@ -37,3 +37,20 @@ export const getCategories = async () => {
 		console.log("ERROR", err);
 	}
 };
+
+export const loadMoreProducts = async (ppage) => {
+	try {
+		let result = await fetch(`${ServicesResources.LOAD_MORE}?per-page=${ppage}`, {
+			method: "GET",
+			headers: {
+                "ttrak-key": 'tt_V2Gzywch2iVbI1KwhHa6pd'
+				//Authorization: "Bearer " + (await getUserToken()),
+			}
+		});
+        let res = await result.json();
+		console.log(' REEEESSSS', res)
+		return res;
+	} catch (err) {
+		console.log("ERROR", err)
+	}
+}
