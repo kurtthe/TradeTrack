@@ -16,26 +16,35 @@ function ProductsStack() {
     {
       name: 'Products',
       component: Products,
-      title: 'Products',
       colorBackground: '#FFFFFF',
+      header:{
+        title: 'Products',
+      }
     },
     {
       name: 'Category',
       component: Category,
       title: 'Category',
-      colorBackground: '#FFFFFF'
+      colorBackground: '#FFFFFF',
+      header:{
+        title: 'Products',
+      }
     },
     {
       name: 'Product',
       component: Product,
-      title: 'Product',
-      colorBackground: '#FFFFFF'
+      colorBackground: '#FFFFFF',
+      header:{
+        title: 'Product',
+      }
     },
     {
       name: 'Search',
       component: Search,
-      title: 'Search',
-      colorBackground: '#FFFFFF'
+      colorBackground: '#FFFFFF',
+      header:{
+        title: 'Search',
+      }
     }
   ];
 
