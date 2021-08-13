@@ -11,12 +11,17 @@ export class HttpCommonService {
       this.showAlertOffline();
       return
     }
+
+    if(error.response.status === 403) {
+      this.showAlertNotAuth('Opps!', 'Not Authenticated.');
+      return
+    }
+
     this.showError(error.response);
   }
 
-  showError(appError) {
-    const description = appError.data.message;
-    const title = 'Opps!';
+  showError(appError, title ="Opps!", message=false) {
+    const description = (message)? message: appError.data.message;
     this.alertService.show(title, description);
   }
 
