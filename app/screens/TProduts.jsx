@@ -49,7 +49,7 @@ class Components extends React.Component {
       <Block flex style={styles.group}>
         <Card 
           categoryCard 
-          onPress={() => this.props.navigation.navigate('Category', {headerTitle: 'All Products'})} 
+          onPress={() => this.props.navigation.navigate('Category', {myPrice: this.state.activeSwitch, headerTitle: 'All Products'})} 
           item={cardInfo} 
           style={{ marginRight: theme.SIZES.BASE }} 
         />
