@@ -24,7 +24,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import {GeneralRequestService} from '@core/services/general-request.service';
 import {endPoints} from '@shared/dictionaries/end-points';
-import {regex} from '@shared/dictionaries/regex';
 
 import { connect  } from 'react-redux';
 import { sign } from '@core/module/store/auth/reducers/login';
@@ -71,7 +70,7 @@ class Login extends React.Component {
       password: this.state.password
     }
 
-    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin)
+    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
     if(!!resLogin){
       this.props.sign(resLogin);
     }
