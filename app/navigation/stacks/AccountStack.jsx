@@ -14,7 +14,8 @@ const screens = [
     component: TAccount,
     colorBackground: '#FFFFFF',
     header:{
-      title: 'Home',
+      title: 'Account',
+      back: true
     }
   },
   {
