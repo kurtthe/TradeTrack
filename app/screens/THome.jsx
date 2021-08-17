@@ -46,7 +46,7 @@ class Home extends React.Component {
   }
 
   putInvoices = ()=>{
-    if(this.props.invoices.length === 0) {
+    if(this.props.invoices?.length === 0) {
       return (
         <Block>
           <Text>Not invoices</Text>
@@ -54,7 +54,7 @@ class Home extends React.Component {
       )
     }
 
-    return this.props.invoices.map((item, index)=>(
+    return this.props.invoices?.map((item, index)=>(
       <Notification
         key={index}
         system

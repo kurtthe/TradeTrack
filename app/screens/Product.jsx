@@ -23,9 +23,14 @@ const sizeConstantBig = (Platform.OS === 'ios')
   : (Dimensions.get('window').height < 870) ? 20 : 24;
 
 export default class Product extends React.Component {
-  state = {
-    selectedSize: null
-  };
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedSize: null,
+      hideMyPrice: !this.props.route.params.hideMyPrice
+    };
+  }
 
   scrollX = new Animated.Value(0);
 
@@ -65,6 +70,10 @@ export default class Product extends React.Component {
       </ScrollView>
     );
   };
+
+  numberWithDecimals(number) {
+    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  }
 
   renderProgress = () => {
     const { navigation, route } = this.props;
@@ -139,20 +148,26 @@ export default class Product extends React.Component {
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
-
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.rrp}`} </Text>
-
-                </Block>
-                <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
-                <Block flex right >
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText, {right:5}}>
-                    My Price 
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> 
+                    The Price 
                   </Text>
-
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.cost_price}`} </Text>
-
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> 
+                    {this.numberWithDecimals(product.rrp)} 
+                  </Text>
                 </Block>
+                {this.state.hideMyPrice &&
+                  <>
+                    <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+                    <Block flex right >
+                      <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText, {right:5}}>
+                        My Price 
+                      </Text>
+                      <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> 
+                        {this.numberWithDecimals(product.cost_price)} 
+                      </Text>
+                    </Block>
+                  </>
+                }
               </Block>
             </Block>
             <View style={styles.grayLine}/>
