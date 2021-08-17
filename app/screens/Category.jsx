@@ -15,6 +15,7 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import Icon from '@components/Icon';
 import { Button } from "@components";
 import { Block, Text, theme, Input } from "galio-framework";
+import { Searchbar } from 'react-native-paper';
 
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
@@ -72,7 +73,8 @@ export default class Category extends React.Component {
       categoryActive: false, 
       loadingMoreData: false,
       hideMyPrice: true,
-      ppage: 40
+      ppage: 40,
+      searchValue: ''
     };
   }
 
@@ -107,14 +109,13 @@ export default class Category extends React.Component {
       let results = await loadMoreProducts(this.state.ppage)
       this.setState({ loadingMoreData: false })
       this.setState({ data: results, ppage: this.state.ppage + 20 })
-      console.log('after', this.state.ppage)
     } catch (err) {
       console.log('errrrrorrr', err)
     }
   }
 
   numberWithDecimals(number) {
-    return (Math.round(number * 100) / 100).toFixed(2)
+    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
   }
 
   onPressRadioButton2() {
@@ -126,11 +127,24 @@ export default class Category extends React.Component {
     actionSheetRef.current?.setModalVisible(false);
   }
 
+  onChangeSearch(query) {
+    console.log(query)
+  }
+
+  onProductPressed(item) {
+    this.props.navigation.navigate('Product', 
+      {
+        hideMyPrice: this.state.hideMyPrice, 
+        product: item, 
+        headerTitle: 'Product'
+      })
+  }
+
   renderCard = ({ item }) => {
     const { navigation } = this.props;
     return (
       <Block key={`Card-${item.name}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Product', {product: item, headerTitle: 'Product'})}>
+        <TouchableWithoutFeedback onPress={() => this.onProductPressed(item)}>
           <Image
             resizeMode="contain"
             style={styles.image}
@@ -156,19 +170,19 @@ export default class Category extends React.Component {
                 {this.numberWithDecimals(item.rrp)}
               </Text>
             </Block>
-            <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
-              <Block flex >
-              {!this.state.hideMyPrice && 
-                <>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    My Price
-                  </Text>
-                  <Text style={styles.price}>
-                    {this.numberWithDecimals(item.cost_price)}
-                  </Text>
-                </>
-              }
-            </Block>
+            {!this.state.hideMyPrice && 
+              <>
+                <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+                  <Block flex >
+                    <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                      My Price
+                    </Text>
+                    <Text style={styles.price}>
+                      {this.numberWithDecimals(item.cost_price)}
+                    </Text>
+                </Block>
+              </>
+            }
           </Block>
         </Block>
         <Block center>
@@ -252,17 +266,29 @@ export default class Category extends React.Component {
         </ScrollView>
       </Block>
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
-        <Input
+        <Searchbar
+          placeholder="Search"
+          onChangeText={this.onChangeSearch}
+          style={styles.search}
+          inputStyle={styles.searchInput}
+        />
+        {/* <Input
           right
           color="black"
           style={styles.search}
           placeholder="Search"
           placeholderTextColor={'#8898AA'}
+          value={v => {this.setState({searchValue: v}); console.log('hohoo')}}
           // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
           iconContent={
-          <Icon size={16} color={theme.COLORS.MUTED} name="zoom-bold2x" family="NowExtra" />
+            <Icon 
+              size={16} 
+              color={theme.COLORS.MUTED} 
+              name="zoom-bold2x" 
+              family="NowExtra" 
+            />
           }
-        />
+        /> */}
         <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
           <ScrollView style={{width: width}}>
             <RadioGroup 
@@ -329,11 +355,16 @@ const styles = StyleSheet.create({
     top:10
   },
   search: {
-    height: 48,
+    height: 40,
     width: width - 32,
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: nowTheme.COLORS.BORDER
+    borderColor: nowTheme.COLORS.BORDER,
+    elevation: 0
+  },
+  searchInput: {
+    color: 'black',
+    fontSize: 16
   }
 });

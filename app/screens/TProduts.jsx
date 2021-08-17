@@ -85,7 +85,7 @@ class Components extends React.Component {
   renderSwitches = () => {
     return (
       <Block row flex style={styles.group, styles.switchBlock}>
-        <Block width={'80%'} style={styles.textBlock}>
+        <Block style={styles.textBlock}>
           <Text size={16} style={styles.title}>
             Client Friendly Mode
           </Text>
@@ -97,7 +97,7 @@ class Components extends React.Component {
             Enable this to hide "My Price"
           </Text>
         </Block>
-        <Block center width={'20%'} style={{ alignItems:'flex-end' }} >
+        <Block center style={{ width: '20%', alignItems:'flex-end' }} >
           <Switch
             value={this.state.activeSwitch}
             toggleSwitch={ () => 
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     borderRadius:8
   },
   textBlock: {
+    width: '80%',
     paddingVertical: theme.SIZES.BASE *1.3,
     justifyContent: 'space-between'
   },
