@@ -42,7 +42,7 @@ class Home extends React.Component {
     if(this.props.invoices.length === 0) {
       return (
         <Block>
-          <Text>Not invoices</Text>
+          <Text>Loading ...</Text>
         </Block>
       )
     }
