@@ -16,6 +16,8 @@ import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import {FormatMoneyService} from '@core/services/format-money.service'
+
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
@@ -31,6 +33,7 @@ class Home extends React.Component {
 
     this.state = {};
     this.getDataPetition = GetDataPetitionService.getInstance();
+    this.formatMoney = FormatMoneyService.getInstance();
   }
 
   async componentDidMount() {
@@ -71,7 +74,7 @@ class Home extends React.Component {
                   style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
                 >
                   <Text size={28} bold color={theme.COLORS.WHITE}>
-                    ${this.props.liveBalance.current}
+                    {this.formatMoney.format(this.props.liveBalance.current)}
                   </Text>
 
                   <TouchableOpacity
