@@ -11,6 +11,7 @@ import { Block, theme, Text } from 'galio-framework';
 import { Card, Button } from '@components';
 import articles from '@constants/articles';
 import { Notification } from '@components';
+import ListInvoices from '@custom-sections/ListInvoices';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -36,34 +37,6 @@ class Home extends React.Component {
     await this.getDataPetition.getInfo(endPoints.burdensBalance,this.props.token_login, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices,this.props.token_login, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
-  }
-
-  putInvoices = ()=>{
-    if(this.props.invoices.length === 0) {
-      return (
-        <Block>
-          <Text>Loading ...</Text>
-        </Block>
-      )
-    }
-
-    return this.props.invoices.map((item, index)=>(
-      <Notification
-        key={index}
-        system
-        title="Invoice"
-        reference={item.order_number}
-        time={item.created_date}
-        body={item.description}
-        done={item.status}
-        price={item.total_amount}
-        iconName="email-852x"
-        iconFamily="NowExtra"
-        color={nowTheme.COLORS.TIME}
-        style={{ marginBottom: 2 }}
-        onPress={() => this.props.navigation.navigate('InvoiceDetails', {invoice: item.id})}
-      />
-    ));
   }
 
   render() {
@@ -142,7 +115,7 @@ class Home extends React.Component {
           </Block>
 
           <Block style={styles.card}>
-            {this.putInvoices()}
+            <ListInvoices invoices={this.props.invoices} />
           </Block>
 
           <Block style={styles.cardHeader}>
