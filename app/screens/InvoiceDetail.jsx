@@ -6,6 +6,8 @@ import { GetDataPetitionService } from '@core/services/get-data-petition.service
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import { connect } from 'react-redux';
+import {FormatMoneyService} from '@core/services/format-money.service'
+
 
 const { width } = Dimensions.get('screen');
 
@@ -14,6 +16,7 @@ class InvoiceDetails extends React.Component {
     super(props);
 
     this.getDataPetition = GetDataPetitionService.getInstance();
+    this.formatMoney = FormatMoneyService.getInstance();
 
     this.state = {
       invoiceDetail: null,
@@ -42,8 +45,8 @@ class InvoiceDetails extends React.Component {
         <Block key ={index}>
           <Text style={styles.receiptText}>{orders.description}</Text>
           <Block row style={{ justifyContent: 'space-between', paddingBottom: 7 }}>
-            <Text style={styles.grayText}>{orders.sub_total}</Text>
-            <Text style={styles.detailPrice}>{orders.total}</Text>
+            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.total)}</Text>
           </Block>
         </Block>
       ));
@@ -91,9 +94,9 @@ class InvoiceDetails extends React.Component {
               </Block>
             </Block>
             <Text style={styles.text}>Branch</Text>
-            <Text>08 April 2021</Text>
+            <Text>{this.state.invoiceDetail.storeLocation.name}</Text>
             <Text style={styles.text}>Account Number</Text>
-            <Text>08 April 2021</Text>
+            <Text>N/A</Text>
           </Block>
           <Block
             card
@@ -117,15 +120,15 @@ class InvoiceDetails extends React.Component {
           >
             <Block row style={styles.totalPrices}>
               <Text size={12}>Delivery Fee</Text>
-              <Text style={styles.receiptPrice}>${this.state.invoiceDetail.delivery_charge}</Text>
+              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.delivery_charge || 0)}</Text>
             </Block>
             <Block row style={styles.totalPrices}>
               <Text size={12}>Total ex-GST</Text>
-              <Text style={styles.receiptPrice}>${this.state.invoiceDetail.gst}</Text>
+              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst)}</Text>
             </Block>
             <Block row style={styles.totalPrices}>
               <Text size={12}>GTS</Text>
-              <Text style={styles.receiptPrice}>${this.state.invoiceDetail.totalPrices}</Text>
+              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.gst)}</Text>
             </Block>
             <View
               style={{
@@ -142,7 +145,7 @@ class InvoiceDetails extends React.Component {
                 color={nowTheme.COLORS.INFO}
                 style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
               >
-                ${this.state.invoiceDetail.totalPrices}
+                {this.formatMoney.format(this.state.invoiceDetail.total_amount)}
               </Text>
             </Block>
           </Block>
