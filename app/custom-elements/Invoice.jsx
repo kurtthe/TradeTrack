@@ -6,8 +6,12 @@ import Icon from '@components/Icon';
 import { nowTheme } from '@constants';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { withNavigation } from '@react-navigation/compat';
+import {FormatMoneyService} from '@core/services/format-money.service'
 
 const Invoice = (props) => {
+
+  const formatMoney = FormatMoneyService.getInstance();
+
   const handleShowDetails = () => {
     props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id });
   };
@@ -69,7 +73,7 @@ const Invoice = (props) => {
                 size={theme.SIZES.BASE * 1}
                 color={nowTheme.COLORS.HEADER}
               >
-                ${props.invoice.total_amount}
+              {formatMoney.format(props.invoice.total_amount)}
               </Text>
             </Block>
           </Block>
