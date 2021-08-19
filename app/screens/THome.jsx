@@ -14,10 +14,11 @@ import { Notification } from '@components';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { GeneralRequestService } from '@core/services/general-request.service';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
+import { getNews } from '@core/module/store/news/news';
 
 import { connect } from 'react-redux';
 
@@ -28,21 +29,13 @@ class Home extends React.Component {
     super(props);
 
     this.state = {};
-    this.generalRequest = GeneralRequestService.getInstance();
+    this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
   async componentDidMount() {
-    this.getDataPetition(endPoints.burdensBalance, this.props.getBalance);
-    this.getDataPetition(endPoints.invoices, this.props.getInvoices);
-  }
-
-  async getDataPetition(endpoint, action = false) {
-    const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':10},
-      headers: { 'ttrak-key': this.props.token_login },
-    });
-    action && action(response);
-    return response;
+    await this.getDataPetition.getInfo(endPoints.burdensBalance,this.props.token_login, this.props.getBalance);
+    await this.getDataPetition.getInfo(endPoints.invoices,this.props.token_login, this.props.getInvoices);
+    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
   }
 
   putInvoices = ()=>{
@@ -68,7 +61,7 @@ class Home extends React.Component {
         iconFamily="NowExtra"
         color={nowTheme.COLORS.TIME}
         style={{ marginBottom: 2 }}
-        onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+        onPress={() => this.props.navigation.navigate('InvoiceDetails', {invoice: item.id})}
       />
     ));
   }
@@ -257,8 +250,9 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
   token_login: state.loginReducer.api_key,
   invoices: state.invoicesReducer.invoices,
+  news: state.newsReducer.news
 });
 
-const mapDispatchToProps = { getBalance, getInvoices };
+const mapDispatchToProps = { getBalance, getInvoices, getNews };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
