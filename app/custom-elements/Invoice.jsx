@@ -10,6 +10,8 @@ import {FormatMoneyService} from '@core/services/format-money.service'
 
 const Invoice = (props) => {
 
+  const dateInvoice = `${props.invoice.created_date}`.split(' ')
+  
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
@@ -36,6 +38,18 @@ const Invoice = (props) => {
                   size={14}
                 >
                   {props.invoice.order_number}
+                </Text>
+              </Block>
+              <Block row >
+                <Text
+                  color={nowTheme.COLORS.TIME}
+                  style={{
+                    fontFamily: nowTheme.FONT.primaryRegular,
+                    paddingRight:10
+                  }}
+                  size={14}
+                >
+                  {dateInvoice[0]}
                 </Text>
               </Block>
             </Block>
