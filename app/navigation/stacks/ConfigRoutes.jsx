@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '@components/Header';
+import Header from '@custom-sections/Header';
 
 const putHeader = (navigation,scene, header=false) => {
   if(!header){

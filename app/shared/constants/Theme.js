@@ -54,6 +54,11 @@ const COLORS = {
   GOOGLE: '#dd4b39'
 };
 
+const FONT = {
+  primaryBold: 'montserrat-bold',
+  primaryRegular: 'montserrat-regular'
+}
+
 const SIZES = {
   BASE: 16,
   FONT: 16,
@@ -62,5 +67,6 @@ const SIZES = {
 
 export default {
   COLORS,
-  SIZES
+  SIZES,
+  FONT
 };

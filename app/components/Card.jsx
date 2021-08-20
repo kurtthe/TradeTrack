@@ -8,6 +8,10 @@ import { nowTheme } from '@constants';
 const { width } = Dimensions.get("screen");
 
 class Card extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const {
       navigation,
@@ -34,9 +38,9 @@ class Card extends React.Component {
 
     const title = () => {
       return categoryCard ?
-        <ImageBackground 
+        <ImageBackground
           source={{
-            uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
+            uri: this.props.item.image,
           }}
           style={styles.imageBlock}
         >
@@ -45,7 +49,7 @@ class Card extends React.Component {
             size={14}
             color={'white'}
           >
-            {item.title}
+            {this.props.item.title.toString()}
           </Text>
         </ImageBackground>
       :
@@ -55,7 +59,7 @@ class Card extends React.Component {
             style={titleStyles}
             color={nowTheme.COLORS.SECONDARY}
           >
-            {item.title}
+            {this.props.item.title.toString()}
         </Text>
     }
 
@@ -80,39 +84,39 @@ class Card extends React.Component {
                     </Text>
                   </Block>
                 }
-                {item.description && !categoryCard && 
+                {this.props.item.description.toString() && !categoryCard && 
                   <Block flex center>
                     <Text
                       style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
                       size={14}
                       color={"#858C9C"}
                     >
-                      {item.description}
+                      {this.props.item.description.toString()}
                     </Text>
                   </Block>
                 }
-                {item.body &&
+                {this.props.item.body &&
                   <Block flex left>
                     <Text
                       style={{ fontFamily: 'montserrat-regular' }}
                       size={12}
                       color={nowTheme.COLORS.TEXT}
                     >
-                      {item.body}
+                      {this.props.item.body.toString()}
                     </Text>
                   </Block>
                 }
-                {item.price &&
+                {this.props.item.price &&
                   <Block flex left>
                     <Text
                       style={styles.itemPrice}
                     >
-                      {item.price}
+                      {this.props.item.price.toString()}
                     </Text>
                   </Block>
                 }
               </Block>
-              {item.cta && !categoryCard &&
+              {this.props.item.cta && !categoryCard &&
                 <Block right={ctaRight ? false : true}>
                   <Text
                     style={styles.articleButton}
@@ -121,7 +125,7 @@ class Card extends React.Component {
                     color={ctaColor || nowTheme.COLORS.ACTIVE}
                     bold
                   >
-                    {item.cta}
+                    {this.props.item.cta.toString()}
                   </Text>
                 </Block>
               }
