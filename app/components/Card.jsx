@@ -40,7 +40,8 @@ class Card extends React.Component {
       return categoryCard ?
         <ImageBackground
           source={{
-            uri: this.props.item.image,
+           // uri: this.props.item.image,
+            uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
           }}
           style={styles.imageBlock}
         >
