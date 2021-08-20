@@ -6,9 +6,26 @@ import * as ServicesResources from "./ServicesResources.js";
 // 	return user_token;
 // };
 
+const getSupplierId = async () => {
+	try{
+		let result = await fetch(ServicesResources.GET_SUPPLIERS, {
+			method: "GET",
+			headers: {
+                "ttrak-key": 'tt_V2Gzywch2iVbI1KwhHa6pd'
+				//Authorization: "Bearer " + (await getUserToken()),
+			}
+		});
+        let res = await result.json();
+		return res.id;
+	} catch (err) {
+		console.log("ERROR", err);
+	}
+}
+
 export const getProducts = async () => {
 	try {
-		let result = await fetch(ServicesResources.GET_ALL_PRODUCTS, {
+		let id = await getSupplierId()
+		let result = await fetch(`${ServicesResources.GET_ALL_PRODUCTS}${id}/products`, {
 			method: "GET",
 			headers: {
                 "ttrak-key": 'tt_V2Gzywch2iVbI1KwhHa6pd'
@@ -40,7 +57,8 @@ export const getCategories = async () => {
 
 export const loadMoreProducts = async (ppage) => {
 	try {
-		let result = await fetch(`${ServicesResources.LOAD_MORE}?per-page=${ppage}`, {
+		let id = await getSupplierId()
+		let result = await fetch(`${ServicesResources.GET_ALL_PRODUCTS}${id}/products?per-page=${ppage}`, {
 			method: "GET",
 			headers: {
                 "ttrak-key": 'tt_V2Gzywch2iVbI1KwhHa6pd'
