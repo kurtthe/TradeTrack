@@ -45,9 +45,8 @@ class Cart extends React.Component {
   };
 
   handleDelete = id => {
-    const { cart } = this.state;
-    const updatedCart = cart.filter(product => product.id !== id);
-    this.setState({ cart: updatedCart });
+    const updatedCart = this.props.cartProducts.filter(product => product.id !== id);
+    this.props.updateProducts(updatedCart)
   };
 
   handleAdd = item => {
@@ -118,7 +117,10 @@ class Cart extends React.Component {
                   {this.numberWithDecimals(item.cost_price)}
                 </Text>
               </Block>
-              <QuantityCounter quantity={1}/>
+              <QuantityCounter 
+                delete={() => this.handleDelete(item.id)} 
+                quantity={1}
+              />
               {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
                 <Ionicons name="trash-sharp" color={'red'}  size={20} />
               </TouchableOpacity> */}

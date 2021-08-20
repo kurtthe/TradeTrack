@@ -43,7 +43,7 @@ const QuantityCounter = props => {
     }
 
     const deleteItem = () => {
-        console.log('GONE')
+        props.delete()
     }
 
     return (
