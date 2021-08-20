@@ -163,7 +163,7 @@ class Home extends React.Component {
                 Store Finder
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 40 }}>
+            <Block center style={{ paddingVertical: 30 }}>
              
             </Block>
           </Block>
