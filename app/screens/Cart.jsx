@@ -25,8 +25,6 @@ const actionSheetRef = createRef();
 
 class Cart extends React.Component {
   state = {
-    // cart: cart.products,
-    // cart2: cart.products,
     customStyleIndex: 0,
     deleteAction: false
   };
@@ -65,9 +63,20 @@ class Cart extends React.Component {
     this.setState({ cart });
   };
 
+  numberWithDecimals(number) {
+    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  }
+
   onCheckoutPressed() {
-    console.log(this.props.cartProducts)
-    //this.props.navigation.navigate("PlaceOrders")
+    this.props.navigation.navigate("PlaceOrders")
+  }
+
+  orderTotal() {
+    let prices = this.props.cartProducts.map((p) => {
+      return p.cost_price
+    })
+    const reducer = (accumulator, curr) => accumulator + curr;
+    return `$${prices.reduce(reducer)}`
   }
 
   renderProduct = ({ item }) => {
@@ -106,7 +115,7 @@ class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  ${item.cost_price}
+                  {this.numberWithDecimals(item.cost_price)}
                 </Text>
               </Block>
               <QuantityCounter quantity={1}/>
@@ -243,7 +252,7 @@ class Cart extends React.Component {
     return (
       <Block flex center style={styles.cart}>
         <SegmentedControlTab
-            values={['Your Orders', 'Previous Orders']}
+            values={['Current Order', 'Previous Orders']}
             selectedIndex={customStyleIndex}
             onTabPress={this.handleCustomIndexSelect}
             borderRadius={0}
@@ -289,8 +298,8 @@ class Cart extends React.Component {
               style={{position: 'relative', bottom: 0}}
             >
               <Block row style={styles.detailOrders}>
-                <Text>
-                  Order total: $4,000
+                <Text style={{fontWeight: 'bold'}}>
+                  {`Order total: ${this.orderTotal()}`}
                 </Text>
                 <Button
                   shadowless

@@ -144,6 +144,7 @@ class Category extends React.Component {
 
   onAddPressed(item) {
     this.props.updateProducts([...this.props.cartProducts, item])
+    alert(`${item.name} added to cart`)
     //this.props.navigation.navigate("Cart")
   }
 
