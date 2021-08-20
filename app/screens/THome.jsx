@@ -11,13 +11,17 @@ import { Block, theme, Text } from 'galio-framework';
 import { Card, Button } from '@components';
 import articles from '@constants/articles';
 import { Notification } from '@components';
+import ListInvoices from '@custom-sections/ListInvoices';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { GeneralRequestService } from '@core/services/general-request.service';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import {FormatMoneyService} from '@core/services/format-money.service'
+
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
+import { getNews } from '@core/module/store/news/news';
 
 import { connect } from 'react-redux';
 
@@ -28,49 +32,14 @@ class Home extends React.Component {
     super(props);
 
     this.state = {};
-    this.generalRequest = GeneralRequestService.getInstance();
+    this.getDataPetition = GetDataPetitionService.getInstance();
+    this.formatMoney = FormatMoneyService.getInstance();
   }
 
   async componentDidMount() {
-    this.getDataPetition(endPoints.burdensBalance, this.props.getBalance);
-    this.getDataPetition(endPoints.invoices, this.props.getInvoices);
-  }
-
-  async getDataPetition(endpoint, action = false) {
-    const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':10},
-      headers: { 'ttrak-key': this.props.token_login },
-    });
-    action && action(response);
-    return response;
-  }
-
-  putInvoices = ()=>{
-    if(this.props.invoices?.length === 0) {
-      return (
-        <Block>
-          <Text>Not invoices</Text>
-        </Block>
-      )
-    }
-
-    return this.props.invoices?.map((item, index)=>(
-      <Notification
-        key={index}
-        system
-        title="Invoice"
-        reference={item.order_number}
-        time={item.created_date}
-        body={item.description}
-        done={item.status}
-        price={item.total_amount}
-        iconName="email-852x"
-        iconFamily="NowExtra"
-        color={nowTheme.COLORS.TIME}
-        style={{ marginBottom: 2 }}
-        onPress={() => this.props.navigation.navigate('InvoiceDetails')}
-      />
-    ));
+    await this.getDataPetition.getInfo(endPoints.burdensBalance,this.props.token_login, this.props.getBalance);
+    await this.getDataPetition.getInfo(endPoints.invoices,this.props.token_login, this.props.getInvoices);
+    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
   }
 
   render() {
@@ -105,7 +74,7 @@ class Home extends React.Component {
                   style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
                 >
                   <Text size={28} bold color={theme.COLORS.WHITE}>
-                    ${this.props.liveBalance.current}
+                    {this.formatMoney.format(this.props.liveBalance.current)}
                   </Text>
 
                   <TouchableOpacity
@@ -149,7 +118,7 @@ class Home extends React.Component {
           </Block>
 
           <Block style={styles.card}>
-            {this.putInvoices()}
+            <ListInvoices invoices={this.props.invoices} />
           </Block>
 
           <Block style={styles.cardHeader}>
@@ -257,8 +226,9 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
   token_login: state.loginReducer.api_key,
   invoices: state.invoicesReducer.invoices,
+  news: state.newsReducer.news
 });
 
-const mapDispatchToProps = { getBalance, getInvoices };
+const mapDispatchToProps = { getBalance, getInvoices, getNews };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
