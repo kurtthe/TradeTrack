@@ -13,6 +13,8 @@ import {
 import { Block, Text, Button, theme } from "galio-framework";
 import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
 import nowTheme from "@constants/Theme";
+import { connect  } from 'react-redux';
+import { updateProducts } from '@core/module/store/cart/cart';
 
 const { height, width } = Dimensions.get("window");
 const sizeConstantSmall = (Platform.OS === 'ios') 
@@ -22,7 +24,7 @@ const sizeConstantBig = (Platform.OS === 'ios')
   ? ((Dimensions.get('window').height < 670) ? 20 :24) 
   : (Dimensions.get('window').height < 870) ? 20 : 24;
 
-export default class Product extends React.Component {
+class Product extends React.Component {
 
   constructor(props) {
     super(props)
@@ -73,6 +75,12 @@ export default class Product extends React.Component {
 
   numberWithDecimals(number) {
     return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  }
+
+  onAddCartPressed(product) {
+    this.props.updateProducts([...this.props.cartProducts, product])
+    alert(`${product.name} added to cart`)
+    //navigation.navigate("Cart")
   }
 
   renderProgress = () => {
@@ -236,7 +244,7 @@ export default class Product extends React.Component {
                 shadowless
                 style={styles.addToCart}
                 color={nowTheme.COLORS.INFO}
-                onPress={() => navigation.navigate("Cart")}
+                onPress={() => this.onAddCartPressed(product)}
               >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
               </Button>
@@ -321,3 +329,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius:15,
   }
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+const mapDispatchToProps = { updateProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
