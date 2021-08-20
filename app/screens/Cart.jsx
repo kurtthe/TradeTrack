@@ -17,14 +17,16 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
 import QuantityCounter from "@components/QuantityCounter";
+import { connect  } from 'react-redux';
+import { updateProducts, getProducts } from '@core/module/store/cart/cart';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
-export default class Cart extends React.Component {
+class Cart extends React.Component {
   state = {
-    cart: cart.products,
-    cart2: cart.products,
+    // cart: cart.products,
+    // cart2: cart.products,
     customStyleIndex: 0,
     deleteAction: false
   };
@@ -34,7 +36,7 @@ export default class Cart extends React.Component {
   }
 
   handleQuantity = (id, qty) => {
-    const { cart } = this.state;
+    const { cartProducts } = this.props;
 
     const updatedCart = cart.map(product => {
       if (product.id === id) product.qty = qty;
@@ -63,6 +65,11 @@ export default class Cart extends React.Component {
     this.setState({ cart });
   };
 
+  onCheckoutPressed() {
+    console.log(this.props.cartProducts)
+    //this.props.navigation.navigate("PlaceOrders")
+  }
+
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
 
@@ -83,14 +90,14 @@ export default class Cart extends React.Component {
                 {`SKU `}
               </Text>
               <Text color={nowTheme.COLORS.INFO}>
-                FIE228106B
+                {item.sku}
               </Text>
             </Block>
             <TouchableWithoutFeedback
               //onPress={() =>  navigation.navigate("Product", { product: item }) }
             >
               <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-                {item.title}
+                {item.name}
               </Text>
             </TouchableWithoutFeedback>
             <Block row style={{paddingBottom:5}}>
@@ -99,7 +106,7 @@ export default class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  ${item.price * item.qty}
+                  ${item.cost_price}
                 </Text>
               </Block>
               <QuantityCounter quantity={1}/>
@@ -109,8 +116,6 @@ export default class Cart extends React.Component {
             </Block>
           </Block>
         </Block>
-          
-
       </Block>
     );
   };
@@ -250,12 +255,13 @@ export default class Cart extends React.Component {
           />
           {customStyleIndex === 0
                     && <FlatList
-                          data={this.state.cart}
+                          data={this.props.cartProducts}
                           renderItem={this.renderProduct}
                           showsVerticalScrollIndicator={false}
-                          keyExtractor={(item, index) => `${index}-${item.title}`}
+                          keyExtractor={(item, index) => `${index}-${item.sku}`}
                           ListEmptyComponent={this.renderEmpty()}
                           ListHeaderComponent={this.renderHeader()}
+                          style={{width: width}}
                         />}
           {customStyleIndex === 1
                     && <FlatList
@@ -290,7 +296,7 @@ export default class Cart extends React.Component {
                   shadowless
                   style={styles.addToCart, {left:10}}
                   color={nowTheme.COLORS.INFO}
-                  onPress={() => this.props.navigation.navigate("PlaceOrders")}
+                  onPress={() => this.onCheckoutPressed()}
                 >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Checkout</Text>
               </Button>
@@ -431,3 +437,11 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+const mapDispatchToProps = { updateProducts, getProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
