@@ -5,12 +5,17 @@ import {
 import { Block } from 'galio-framework';
 
 import News from '@custom-elements/News'
+import SkeletonNews from '@custom-sections/skeletons/News'
 
 const ListNews = (props) => {
   const putNews = ()=>{
     if(props.news.length === 0){
       return(
-        <Text>Loadin....</Text>
+        <>
+          <SkeletonNews />
+          <SkeletonNews />
+          <SkeletonNews />
+        </>
       )
     }
     
