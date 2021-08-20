@@ -1,52 +1,37 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import {
-  StyleSheet,
-  Image,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 
 const News = (props) => {
-  const cardContainer = [styles.card, styles.shadow];
-  const imgContainer = [
-    styles.imageContainer,
-    styles.verticalStyles,
-    styles.shadow
-  ];
+  const dateCreate = `${props.news.added_date}`.split(' ');
 
   return (
-    <TouchableWithoutFeedback onPress={() => props.onPress()}>
-      <Block card flex style={cardContainer}>
-        <View style={imgContainer}>
+    <TouchableWithoutFeedback>
+      <Block card flex style={styles.container}>
+        <View style={styles.imageContainer}>
           <Image
             resizeMode="cover"
             source={{ uri: props.news.preview.image }}
-            style={styles.fullImage}
+            style={styles.imagePreview}
           />
         </View>
-        <Block flex space="between" style={styles.cardDescription}>
-          <Block flex>
-            <Text
-              style={{ fontFamily: nowTheme.FONT.primaryRegular }}
-              size={14}
-              style={styles.cardTitle}
-              color={nowTheme.COLORS.SECONDARY}
-            >
+
+        <Block flex style={styles.info}>
+          <Block style={{marginBottom: 10}}>
+            <Text size={14} style={styles.cardTitle} color={nowTheme.COLORS.SECONDARY}>
               {props.news.preview.title}
             </Text>
           </Block>
-          <Block flex center>
-            <Text
-              style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'left', padding: 10 }}
-              size={14}
-              color={'#858C9C'}
-            >
+          <Block style={{marginBottom: 10}}>
+            <Text size={14} color={'#858C9C'}>
               {props.news.preview.description}
             </Text>
           </Block>
+          <Text style={{textAlign: 'right'}} size={14} color={'#B6584E'}>
+            {dateCreate[0]}
+          </Text>
         </Block>
       </Block>
     </TouchableWithoutFeedback>
@@ -54,63 +39,37 @@ const News = (props) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 114,
-    marginBottom: 4,
-  },
-  cardTitle: {
-    fontFamily: nowTheme.FONT.primaryBold,
-    paddingHorizontal: 9,
-    paddingTop: 7,
-    paddingBottom: 10,
-  },
-  cardDescription: {
-    padding: theme.SIZES.BASE / 2,
-  },
-  imageContainer: {
-    borderRadius: 3,
-    elevation: 1,
-    overflow: 'hidden',
-  },
-  horizontalImage: {
-    height: 122,
-    width: 'auto',
-  },
-  horizontalStyles: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-  },
-  verticalStyles: {
-    borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0,
-  },
-  fullImage: {
-    height: 215,
-  },
-  shadow: {
+    width: 280,
+    marginHorizontal: 5,
+
     shadowColor: '#8898AA',
     shadowOffset: { width: 2, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.2,
     elevation: 2,
   },
-  articleButton: {
-    fontFamily: nowTheme.FONT.primaryBold,
-    paddingHorizontal: 9,
-    paddingVertical: 7,
+  imageContainer: {
+    borderRadius: 3,
+    elevation: 1,
+    overflow: 'hidden',
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    shadowColor: '#8898AA',
+    shadowOffset: { width: 2, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    elevation: 2,
   },
-  itemPrice: {
-    fontFamily: nowTheme.FONT.primaryRegular,
-    fontSize: 12,
-    paddingHorizontal: 9,
-    color: nowTheme.COLORS.PRIMARY,
+  imagePreview: {
+    height: 215,
   },
-  imageBlock: {
-    width: '100%',
-    height: '100%',
+  info: {
+    padding: theme.SIZES.BASE / 2,
   },
 });
 
