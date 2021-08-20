@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ScrollView,
+  ScrollView,Text
 } from 'react-native';
 import { Block } from 'galio-framework';
 
@@ -8,8 +8,14 @@ import News from '@custom-elements/News'
 
 const ListNews = (props) => {
   const putNews = ()=>{
-    return props.news.map((item)=>(
-      <News item={item} />
+    if(props.news.length === 0){
+      return(
+        <Text>Loadin....</Text>
+      )
+    }
+    
+    return props.news.map((item, index)=>(
+      <News key={index} news={item} />
     ))
   }
 
