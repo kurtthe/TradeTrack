@@ -1,12 +1,20 @@
 import React from 'react';
 import Invoice from '@custom-elements/Invoice';
-import { Text } from 'galio-framework';
+
+import InvoicesSkeleton from '@custom-sections/skeletons/Invoices'
+
 
 const ListInvoices = (props)=>{
 
   const putContent = ()=> {
     if(props.invoices.length === 0){
-      return <Text>Loading...</Text>
+      return( 
+        <>
+          <InvoicesSkeleton />
+          <InvoicesSkeleton />
+          <InvoicesSkeleton />
+        </>
+      )
     }
 
     return props.invoices.map((item, index)=>(

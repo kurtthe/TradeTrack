@@ -7,7 +7,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 
 import { connect } from 'react-redux';
 import {FormatMoneyService} from '@core/services/format-money.service'
-
+import SkeletonInvoiceDetail from '@custom-sections/skeletons/InvoiceDetail'
 
 const { width } = Dimensions.get('screen');
 
@@ -154,7 +154,7 @@ class InvoiceDetails extends React.Component {
     }
 
     return(
-      <Text>Loading...</Text>
+      <SkeletonInvoiceDetail/>
     )
   }
 }
