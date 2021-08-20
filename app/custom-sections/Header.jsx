@@ -11,15 +11,15 @@ import {
 } from 'react-native';
 import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
 
-import Icon from './Icon';
-import Input from './Input';
-import Tabs from './Tabs';
+import Icon from '@components/Icon';
+import Input from '@components/Input';
+import Tabs from '@components/Tabs';
 import nowTheme from '@constants/Theme';
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  widthPercentageToDP as wp
 } from 'react-native-responsive-screen';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import {DownloadFile} from '@core/services/download-file.service'
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -70,21 +70,31 @@ const DeleteButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const DownloadButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 15 }}>
+const DownloadButton = (props) => (
+  <TouchableOpacity style={{ zIndex: 300, left: 15 }} onPress={()=>props.onPress()}>
     <Ionicons name="download" color={'#0E3A90'} size={25} />
   </TouchableOpacity>
 );
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.downloadFile = DownloadFile.getInstance();
+  }
+
   handleLeftPress = () => {
     const { back, navigation } = this.props;
     return back && navigation.goBack();
   };
 
+  handleDownloadFile = ()=> {
+    const { urlDownloadFile } = this.props.scene.route.params;
+    this.downloadFile.download(urlDownloadFile, 'pdf')
+  }
+
   renderRight = () => {
     const { white, title, navigation } = this.props;
-    // const { routeName } = navigation.state;
 
     if (title === 'Title') {
       return [
@@ -144,7 +154,7 @@ class Header extends React.Component {
       case 'Invoice Details':
         return [
           <View style={{ top: 7, width: 50 }}>
-            <DownloadButton isWhite={white} />
+            <DownloadButton isWhite={white}  onPress={()=>this.handleDownloadFile()}/>
           </View>,
         ];
 
@@ -272,8 +282,6 @@ class Header extends React.Component {
     if (search || tabs || options) {
       return (
         <Block center>
-          {/* {search ? this.renderSearch() : null}
-          {options ? this.renderOptions() : null} */}
           {tabs ? this.renderTabs() : null}
         </Block>
       );
@@ -292,7 +300,6 @@ class Header extends React.Component {
       shadowless,
       ...props
     } = this.props;
-    // const { routeName } = navigation.state;
     const noShadow = ['Search', 'Categories', 'Deals', 'Pro', 'Profile'].includes(title);
     const headerStyles = [
       !noShadow ? styles.shadow : null,
