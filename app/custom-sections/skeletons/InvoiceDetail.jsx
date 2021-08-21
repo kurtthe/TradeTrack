@@ -84,7 +84,7 @@ const firstLayout = [
     marginBottom: 10,
   },
 ];
-const Invoices = () => {
+const InvoicesDetail = () => {
 
   return (
     <View style={{padding: 10}}>
@@ -99,4 +99,4 @@ const Invoices = () => {
   );
 };
 
-export default Invoices;
+export default InvoicesDetail;

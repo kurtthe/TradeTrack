@@ -12,11 +12,12 @@ import { Card, Button } from '@components';
 import articles from '@constants/articles';
 import { Notification } from '@components';
 import ListInvoices from '@custom-sections/ListInvoices';
+import ListNews from '@custom-sections/ListNews';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
-import {FormatMoneyService} from '@core/services/format-money.service'
+import { FormatMoneyService } from '@core/services/format-money.service';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
@@ -37,8 +38,16 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
-    await this.getDataPetition.getInfo(endPoints.burdensBalance,this.props.token_login, this.props.getBalance);
-    await this.getDataPetition.getInfo(endPoints.invoices,this.props.token_login, this.props.getInvoices);
+    await this.getDataPetition.getInfo(
+      endPoints.burdensBalance,
+      this.props.token_login,
+      this.props.getBalance,
+    );
+    await this.getDataPetition.getInfo(
+      endPoints.invoices,
+      this.props.token_login,
+      this.props.getInvoices,
+    );
     await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
   }
 
@@ -140,20 +149,7 @@ class Home extends React.Component {
             </Block>
           </Block>
           <Block flex>
-            <ScrollView horizontal={true} style={{ bottom: 10 }}>
-              <Block flex row>
-                <Card
-                  item={articles[1]}
-                  style={{ width: 250, marginLeft: 15 }}
-                  ctaColor={'#B6584E'}
-                />
-                <Card
-                  item={articles[2]}
-                  style={{ width: 250, marginLeft: 20 }}
-                  ctaColor={'#B6584E'}
-                />
-              </Block>
-            </ScrollView>
+            <ListNews news={this.props.news} />
             <Block center style={{ paddingVertical: 5 }}>
               <Button
                 color="info"
@@ -229,7 +225,7 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
   token_login: state.loginReducer.api_key,
   invoices: state.invoicesReducer.invoices,
-  news: state.newsReducer.news
+  news: state.newsReducer.news,
 });
 
 const mapDispatchToProps = { getBalance, getInvoices, getNews };
