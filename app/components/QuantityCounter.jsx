@@ -16,8 +16,10 @@ const QuantityCounter = props => {
     }, [])
 
     useEffect (() => {
-        if (quantity == 1) setDisabledMinus(true)
-        else setDisabledMinus(false)
+        if (quantity == 0) {
+            setDisabledMinus(true);
+            deleteItem()
+        } else setDisabledMinus(false)
         if (quantity == 100) setDisabledPlus(true)
         else setDisabledPlus(false)
     }, [quantity])
@@ -33,11 +35,15 @@ const QuantityCounter = props => {
 
     const minusCounter = () => {
         const quantity1 = quantity
-        if (quantity1 != 1) {
+        if (quantity1 != 0) {
         const minus = quantity1 - 1 
         setQuantity(minus)
         //props.personsHandler(minus)
         }
+    }
+
+    const deleteItem = () => {
+        props.delete()
     }
 
     return (

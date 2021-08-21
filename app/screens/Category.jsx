@@ -21,6 +21,8 @@ import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
 import { getCategories, getProducts, loadMoreProducts } from "../../services/ProductServices";
+import { connect  } from 'react-redux';
+import { updateProducts } from '@core/module/store/cart/cart';
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -62,7 +64,7 @@ const actionSheetRef2 = createRef();
 //   },
 // ]
 
-export default class Category extends React.Component {
+class Category extends React.Component {
 
   constructor(props) {
     super(props);
@@ -140,8 +142,13 @@ export default class Category extends React.Component {
       })
   }
 
+  onAddPressed(item) {
+    this.props.updateProducts([...this.props.cartProducts, item])
+    alert(`${item.name} added to cart`)
+    //this.props.navigation.navigate("Cart")
+  }
+
   renderCard = ({ item }) => {
-    const { navigation } = this.props;
     return (
       <Block key={`Card-${item.name}`} style={styles.Card}>
         <TouchableWithoutFeedback onPress={() => this.onProductPressed(item)}>
@@ -190,7 +197,7 @@ export default class Category extends React.Component {
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
             style={styles.buttonAdd}
-            onPress={() => navigation.navigate("Cart")}
+            onPress={() => this.onAddPressed(item)}
           >
             Add
           </Button>
@@ -368,3 +375,11 @@ const styles = StyleSheet.create({
     fontSize: 16
   }
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+const mapDispatchToProps = { updateProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
