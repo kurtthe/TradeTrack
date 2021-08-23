@@ -116,13 +116,19 @@ class Home extends React.Component {
               <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
                 Invoices
               </Text>
-              <Text
+             
+
+              <TouchableOpacity
+                    onPress={() => navigation.navigate('Allinvoice')}
+                  >
+                <Text
                 size={15}
                 style={{ fontFamily: 'montserrat-regular', right: 15 }}
                 color={nowTheme.COLORS.HEADER}
               >
                 See all
               </Text>
+                  </TouchableOpacity>
             </Block>
           </Block>
 
@@ -139,13 +145,17 @@ class Home extends React.Component {
               >
                 Burden News
               </Text>
-              <Text
+              <TouchableOpacity
+                    onPress={() => navigation.navigate('AllNews')}
+                  >
+                <Text
                 size={15}
                 style={{ fontFamily: 'montserrat-regular', right: 15 }}
                 color={nowTheme.COLORS.HEADER}
               >
                 See all
               </Text>
+                  </TouchableOpacity>
             </Block>
           </Block>
           <Block flex>
