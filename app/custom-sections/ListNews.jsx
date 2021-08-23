@@ -2,10 +2,11 @@ import React from 'react';
 import {
   ScrollView,Text
 } from 'react-native';
-import { Block } from 'galio-framework';
+import { Block, theme } from 'galio-framework';
 
 import News from '@custom-elements/News'
 import SkeletonNews from '@custom-sections/skeletons/News'
+
 
 const ListNews = (props) => {
   const putNews = ()=>{
@@ -26,7 +27,7 @@ const ListNews = (props) => {
 
   return (
     <ScrollView horizontal={true} style={{ bottom: 10 }}>
-      <Block flex row>
+      <Block flex row style={{left: theme.SIZES.BASE / 2}}> 
         {putNews()}
       </Block>
     </ScrollView>
