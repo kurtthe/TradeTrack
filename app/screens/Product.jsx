@@ -13,6 +13,8 @@ import {
 import { Block, Text, Button, theme } from "galio-framework";
 import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
 import nowTheme from "@constants/Theme";
+import { connect  } from 'react-redux';
+import { updateProducts } from '@core/module/store/cart/cart';
 
 const { height, width } = Dimensions.get("window");
 const sizeConstantSmall = (Platform.OS === 'ios') 
@@ -22,10 +24,15 @@ const sizeConstantBig = (Platform.OS === 'ios')
   ? ((Dimensions.get('window').height < 670) ? 20 :24) 
   : (Dimensions.get('window').height < 870) ? 20 : 24;
 
-export default class Product extends React.Component {
-  state = {
-    selectedSize: null
-  };
+class Product extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      selectedSize: null,
+      hideMyPrice: !this.props.route.params.hideMyPrice
+    };
+  }
 
   scrollX = new Animated.Value(0);
 
@@ -65,6 +72,16 @@ export default class Product extends React.Component {
       </ScrollView>
     );
   };
+
+  numberWithDecimals(number) {
+    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  }
+
+  onAddCartPressed(product) {
+    this.props.updateProducts([...this.props.cartProducts, product])
+    alert(`${product.name} added to cart`)
+    //navigation.navigate("Cart")
+  }
 
   renderProgress = () => {
     const { navigation, route } = this.props;
@@ -139,20 +156,26 @@ export default class Product extends React.Component {
               </Text>
               <Block row style={{width: '100%'}}>
                 <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> The Price </Text>
-
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.rrp}`} </Text>
-
-                </Block>
-                <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
-                <Block flex right >
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText, {right:5}}>
-                    My Price 
+                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}> 
+                    The Price 
                   </Text>
-
-                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> {`$${product.cost_price}`} </Text>
-
+                  <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> 
+                    {this.numberWithDecimals(product.rrp)} 
+                  </Text>
                 </Block>
+                {this.state.hideMyPrice &&
+                  <>
+                    <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
+                    <Block flex right >
+                      <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText, {right:5}}>
+                        My Price 
+                      </Text>
+                      <Text style={{ fontFamily: 'montserrat-bold',}} color={nowTheme.COLORS.ORANGE} size={sizeConstantBig}> 
+                        {this.numberWithDecimals(product.cost_price)} 
+                      </Text>
+                    </Block>
+                  </>
+                }
               </Block>
             </Block>
             <View style={styles.grayLine}/>
@@ -221,7 +244,7 @@ export default class Product extends React.Component {
                 shadowless
                 style={styles.addToCart}
                 color={nowTheme.COLORS.INFO}
-                onPress={() => navigation.navigate("Cart")}
+                onPress={() => this.onAddCartPressed(product)}
               >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
               </Button>
@@ -306,3 +329,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius:15,
   }
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+const mapDispatchToProps = { updateProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
