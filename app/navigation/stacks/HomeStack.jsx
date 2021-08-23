@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '@screens/THome';
 import Search from '@screens/Search';
 import InvoiceDetails from '@screens/InvoiceDetail';
+import Allinvoice from '@screens/Allinvoice';
+import AllNews from '@screens/AllNews';
 
 import { screensRoute } from './ConfigRoutes';
 
@@ -35,6 +37,24 @@ function HomeStack() {
       colorBackground: '#FFFFFF',
       header: {
         title: 'Invoice Details',
+        back: true,
+      }
+    },
+    {
+      name: 'Allinvoice',
+      component: Allinvoice,
+      colorBackground: '#FFFFFF',
+      header: {
+        title: 'Invoices',
+        back: true,
+      }
+    },
+    {
+      name: 'AllNews',
+      component: AllNews,
+      colorBackground: '#FFFFFF',
+      header: {
+        title: 'News',
         back: true,
       }
     },

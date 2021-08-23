@@ -158,7 +158,7 @@ class Header extends React.Component {
           </View>,
         ];
 
-      case 'Bathroom':
+      case 'Invoices':
         return [
           <View style={{ top: 5.5 }}>
             <BasketButton key="basket-home" navigation={navigation} isWhite={white} />

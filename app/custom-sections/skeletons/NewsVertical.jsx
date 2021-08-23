@@ -3,6 +3,9 @@ import SkeletonContent from 'react-native-skeleton-content';
 import { StyleSheet } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
+
+
+
 const firstLayout = [
   {
     width: 280,
@@ -39,7 +42,7 @@ const News = () => {
   return (
     <Block style={styles.container}>
       <SkeletonContent
-        containerStyle={{ flex: 1, width: 300 }}
+        containerStyle={{ flex: 1, width: 30 }}
         animationDirection="horizontalLeft"
         boneColor="#ECECEC"
         layout={firstLayout}
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 114,
-    width: '100%',
+    width: 280,
     marginHorizontal: 5,
 
     shadowColor: '#8898AA',
