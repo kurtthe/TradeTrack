@@ -17,14 +17,14 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
 import QuantityCounter from "@components/QuantityCounter";
+import { connect  } from 'react-redux';
+import { updateProducts, getProducts } from '@core/module/store/cart/cart';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
-export default class Cart extends React.Component {
+class Cart extends React.Component {
   state = {
-    cart: cart.products,
-    cart2: cart.products,
     customStyleIndex: 0,
     deleteAction: false
   };
@@ -34,7 +34,7 @@ export default class Cart extends React.Component {
   }
 
   handleQuantity = (id, qty) => {
-    const { cart } = this.state;
+    const { cartProducts } = this.props;
 
     const updatedCart = cart.map(product => {
       if (product.id === id) product.qty = qty;
@@ -45,9 +45,8 @@ export default class Cart extends React.Component {
   };
 
   handleDelete = id => {
-    const { cart } = this.state;
-    const updatedCart = cart.filter(product => product.id !== id);
-    this.setState({ cart: updatedCart });
+    const updatedCart = this.props.cartProducts.filter(product => product.id !== id);
+    this.props.updateProducts(updatedCart)
   };
 
   handleAdd = item => {
@@ -62,6 +61,22 @@ export default class Cart extends React.Component {
 
     this.setState({ cart });
   };
+
+  numberWithDecimals(number) {
+    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  }
+
+  onCheckoutPressed() {
+    this.props.navigation.navigate("PlaceOrders")
+  }
+
+  orderTotal() {
+    let prices = this.props.cartProducts.map((p) => {
+      return p.cost_price
+    })
+    const reducer = (accumulator, curr) => accumulator + curr;
+    return `$${prices.reduce(reducer)}`
+  }
 
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
@@ -83,14 +98,14 @@ export default class Cart extends React.Component {
                 {`SKU `}
               </Text>
               <Text color={nowTheme.COLORS.INFO}>
-                FIE228106B
+                {item.sku}
               </Text>
             </Block>
             <TouchableWithoutFeedback
               //onPress={() =>  navigation.navigate("Product", { product: item }) }
             >
               <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-                {item.title}
+                {item.name}
               </Text>
             </TouchableWithoutFeedback>
             <Block row style={{paddingBottom:5}}>
@@ -99,18 +114,19 @@ export default class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  ${item.price * item.qty}
+                  {this.numberWithDecimals(item.cost_price)}
                 </Text>
               </Block>
-              <QuantityCounter quantity={1}/>
+              <QuantityCounter 
+                delete={() => this.handleDelete(item.id)} 
+                quantity={1}
+              />
               {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
                 <Ionicons name="trash-sharp" color={'red'}  size={20} />
               </TouchableOpacity> */}
             </Block>
           </Block>
         </Block>
-          
-
       </Block>
     );
   };
@@ -238,7 +254,7 @@ export default class Cart extends React.Component {
     return (
       <Block flex center style={styles.cart}>
         <SegmentedControlTab
-            values={['Your Orders', 'Previous Orders']}
+            values={['Current Order', 'Previous Orders']}
             selectedIndex={customStyleIndex}
             onTabPress={this.handleCustomIndexSelect}
             borderRadius={0}
@@ -250,12 +266,13 @@ export default class Cart extends React.Component {
           />
           {customStyleIndex === 0
                     && <FlatList
-                          data={this.state.cart}
+                          data={this.props.cartProducts}
                           renderItem={this.renderProduct}
                           showsVerticalScrollIndicator={false}
-                          keyExtractor={(item, index) => `${index}-${item.title}`}
+                          keyExtractor={(item, index) => `${index}-${item.sku}`}
                           ListEmptyComponent={this.renderEmpty()}
                           ListHeaderComponent={this.renderHeader()}
+                          style={{width: width}}
                         />}
           {customStyleIndex === 1
                     && <FlatList
@@ -283,14 +300,14 @@ export default class Cart extends React.Component {
               style={{position: 'relative', bottom: 0}}
             >
               <Block row style={styles.detailOrders}>
-                <Text>
-                  Order total: $4,000
+                <Text style={{fontWeight: 'bold'}}>
+                  {`Order total: ${this.orderTotal()}`}
                 </Text>
                 <Button
                   shadowless
                   style={styles.addToCart, {left:10}}
                   color={nowTheme.COLORS.INFO}
-                  onPress={() => this.props.navigation.navigate("PlaceOrders")}
+                  onPress={() => this.onCheckoutPressed()}
                 >
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Checkout</Text>
               </Button>
@@ -431,3 +448,11 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+const mapDispatchToProps = { updateProducts, getProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
