@@ -159,8 +159,10 @@ class Home extends React.Component {
                 Store Finder
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 30 }}>
-             
+            <Block center style={{ paddingVertical: 10}}>
+            
+            {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
+
             </Block>
           </Block>
         </ScrollView>

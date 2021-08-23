@@ -13,20 +13,20 @@ export class HttpCommonService {
     }
 
     if(error.response.status === 403) {
-      this.showError(error, 'Opps!', 'Not Authenticated.');
+      this.showError(error, 'Alert!', 'Not Authenticated.');
       return
     }
 
     this.showError(error.response);
   }
 
-  showError(appError, title ="Opps!", message=false) {
+  showError(appError, title ="Alert!", message=false) {
     const description = (message)? message: appError.data.message;
     this.alertService.show(title, description);
   }
 
   showAlertOffline() {
-    this.alertService.show('Opps!', 'No connection internet.');
+    this.alertService.show('Alert!', 'No connection internet.');
   }
 
 }

@@ -16,7 +16,7 @@ export class GetDataPetitionService {
 
   async getInfo(endpoint, token=false, action = false) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':10},
+      params:{'page': 1, 'per-page':5},
       headers: { 'ttrak-key': (!token)? '': token },
     });
     action && action(response);

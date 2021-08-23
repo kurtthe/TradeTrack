@@ -18,18 +18,19 @@ const News = (props) => {
           />
         </View>
 
-        <Block flex style={styles.info}>
+        <Block  flex style={styles.info}>
           <Block style={{marginBottom: 10}}>
-            <Text size={14} style={styles.cardTitle} color={nowTheme.COLORS.SECONDARY}>
+            <Text size={14} style={styles.cardTitle} color={nowTheme.COLORS.SECONDARY}  numberOfLines={2} >
               {props.news.preview.title}
             </Text>
           </Block>
           <Block style={{marginBottom: 10}}>
-            <Text size={14} color={'#858C9C'}>
+            <Text size={14} color={'#858C9C'} style={styles.cardDescription}  numberOfLines={3}>
               {props.news.preview.description}
             </Text>
           </Block>
-          <Text style={{textAlign: 'right'}} size={14} color={'#B6584E'}>
+          
+          <Text style={styles.cardDate} size={14} color={'#B6584E'}>
             {dateCreate[0]}
           </Text>
         </Block>
@@ -39,6 +40,23 @@ const News = (props) => {
 };
 
 const styles = StyleSheet.create({
+
+  cardDate: {
+    textAlign: 'right', 
+    marginRight: 15,
+    fontWeight:'bold',
+    paddingBottom: 10
+
+  },
+  cardDescription: {
+    padding: theme.SIZES.BASE / 2
+  },
+  cardTitle: {
+    fontFamily: 'montserrat-bold',
+    paddingHorizontal: 9,
+    paddingTop: 7,
+    paddingBottom: 10
+  },
   container: {
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
@@ -52,6 +70,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     elevation: 2,
+    
   },
   imageContainer: {
     borderRadius: 3,

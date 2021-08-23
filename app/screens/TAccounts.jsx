@@ -141,7 +141,7 @@ class Home extends React.Component {
           <Block style={styles.newStatementsTitle}>
             <Text
               size={18}
-              style={{ fontFamily: "montserrat-bold" }}
+              style={{ fontFamily: "montserrat-bold",  marginLeft: '1%' }}
               color={'#363C4A'}
             >
               All Statements
@@ -228,10 +228,11 @@ class Home extends React.Component {
 
   renderFilters = () => {
     return (
-      <Block row space={'evenly'} width={'70%'} style={{ justifyContent: 'space-evenly', top:28, marginLeft: -width*0.29}}>
+      <Block row space={'evenly'} width={'85%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%', padding:8}}>
         <FilterButton
           text={'By Date'}
           icon={require('@assets/imgs/img/calendar.png')}
+          
           //icon={<Ionicons name="calendar-outline" color={'#0E3A90'}  size={10} />}
         />
         <FilterButton
@@ -239,7 +240,7 @@ class Home extends React.Component {
         />
         <FilterButton
           text={'Overdue'}
-      />
+        />
       </Block>
     )
   }
@@ -257,7 +258,7 @@ class Home extends React.Component {
               source={{
                 uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
               }}
-            // source={require('@assets/imgs/Frame_main.png')}
+            // source={require('../assets/imgs/Frame_main.png')}
               style={[
                 styles.imageBlock,
                 { width: width - theme.SIZES.BASE * 0.1, height: 162 }

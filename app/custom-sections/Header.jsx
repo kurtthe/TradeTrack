@@ -54,7 +54,7 @@ const BasketButton = ({ isWhite, style, navigation }) => (
 
 const CartButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity style={([styles.button, style], { zIndex: 300, left: -10 })}>
-    <Ionicons name="cart" color={'#828489'} size={25} />
+    <Ionicons name="cart" color={'#828489'} size={5} />
   </TouchableOpacity>
 );
 

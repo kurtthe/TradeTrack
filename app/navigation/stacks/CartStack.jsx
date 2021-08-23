@@ -14,7 +14,7 @@ function CartStack() {
     {
       name: 'Cart',
       component: Cart,
-      title: 'Cart',
+      title: 'Cart1',
       colorBackground: '#FFFFFF',
       header:{
         title: 'Cart',
