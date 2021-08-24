@@ -32,7 +32,6 @@ class InvoiceDetails extends React.Component {
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
     const dataInvoice = await this.getDataPetition.getInfo(url, this.props.token_login);
-    console.log("==>dataInvoice",dataInvoice)
     this.setState({invoiceDetail: dataInvoice});
 
     this.props.navigation.setParams({
