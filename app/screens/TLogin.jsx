@@ -27,6 +27,7 @@ import {endPoints} from '@shared/dictionaries/end-points';
 
 import { connect  } from 'react-redux';
 import { sign } from '@core/module/store/auth/reducers/login';
+import * as SecureStore from "expo-secure-store";
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -58,8 +59,10 @@ class Login extends React.Component {
     this.redirectLogin();
   }
 
-  redirectLogin(){
-    if(this.props.token_login !== null){
+  async redirectLogin(){
+    const tokeExist = await SecureStore.getItemAsync('api_key');
+    
+    if(this.props.token_login !== null || tokeExist){
       this.props.navigation.navigate("AppStack");
     }
   }
@@ -73,6 +76,7 @@ class Login extends React.Component {
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
     if(!!resLogin){
       this.props.sign(resLogin);
+      await SecureStore.setItemAsync('api_key', resLogin.api_key);
     }
   }
 

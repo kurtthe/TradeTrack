@@ -38,17 +38,9 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
-    await this.getDataPetition.getInfo(
-      endPoints.burdensBalance,
-      this.props.token_login,
-      this.props.getBalance,
-    );
-    await this.getDataPetition.getInfo(
-      endPoints.invoices,
-      this.props.token_login,
-      this.props.getInvoices,
-    );
-    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
+    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
+    await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
   }
 
   render() {
@@ -116,19 +108,16 @@ class Home extends React.Component {
               <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
                 Invoices
               </Text>
-             
 
-              <TouchableOpacity
-                    onPress={() => navigation.navigate('Allinvoice')}
-                  >
+              <TouchableOpacity onPress={() => navigation.navigate('Allinvoice')}>
                 <Text
-                size={15}
-                style={{ fontFamily: 'montserrat-regular', right: 15 }}
-                color={nowTheme.COLORS.HEADER}
-              >
-                See all
-              </Text>
-                  </TouchableOpacity>
+                  size={15}
+                  style={{ fontFamily: 'montserrat-regular', right: 15 }}
+                  color={nowTheme.COLORS.HEADER}
+                >
+                  See all
+                </Text>
+              </TouchableOpacity>
             </Block>
           </Block>
 
@@ -145,17 +134,15 @@ class Home extends React.Component {
               >
                 Burden News
               </Text>
-              <TouchableOpacity
-                    onPress={() => navigation.navigate('AllNews')}
-                  >
+              <TouchableOpacity onPress={() => navigation.navigate('AllNews')}>
                 <Text
-                size={15}
-                style={{ fontFamily: 'montserrat-regular', right: 15 }}
-                color={nowTheme.COLORS.HEADER}
-              >
-                See all
-              </Text>
-                  </TouchableOpacity>
+                  size={15}
+                  style={{ fontFamily: 'montserrat-regular', right: 15 }}
+                  color={nowTheme.COLORS.HEADER}
+                >
+                  See all
+                </Text>
+              </TouchableOpacity>
             </Block>
           </Block>
           <Block flex>
@@ -169,10 +156,8 @@ class Home extends React.Component {
                 Store Finder
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 10}}>
-            
-            {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
-
+            <Block center style={{ paddingVertical: 10 }}>
+              {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
             </Block>
           </Block>
         </ScrollView>
@@ -235,7 +220,6 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
-  token_login: state.loginReducer.api_key,
   invoices: state.invoicesReducer.invoices,
   news: state.newsReducer.news,
 });
