@@ -10,7 +10,7 @@ import {
   Platform
 } from "react-native";
 import { Block, Text, theme, Button } from "galio-framework";
-import { nowTheme } from "@constants/";
+import { nowTheme } from "@constants/index";
 import { cart } from "@constants";
 import FilterButton from "@components/FilterButton";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
@@ -343,10 +343,10 @@ class Cart extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  cart: {
-    width: width,
-    backgroundColor: nowTheme.COLORS.BACKGROUND
-  },
+  // cart: {
+  //   width: width,
+  //   backgroundColor: nowTheme.COLORS.BACKGROUND
+  // },
   header: {
     paddingVertical: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE

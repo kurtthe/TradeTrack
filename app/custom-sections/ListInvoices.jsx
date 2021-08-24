@@ -1,7 +1,7 @@
 import React from 'react';
 import Invoice from '@custom-elements/Invoice';
 
-import InvoicesSkeleton from '@custom-sections/skeletons/Invoices'
+import InvoicesSkeleton from '@custom-elements/skeletons/Invoices'
 
 
 const ListInvoices = (props)=>{
