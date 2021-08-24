@@ -5,7 +5,7 @@ import {
 import { Block, theme } from 'galio-framework';
 
 import News from '@custom-elements/NewsVertical'
-import SkeletonNews from '@custom-sections/skeletons/NewsVertical'
+import SkeletonNews from '@custom-elements/skeletons/NewsVertical'
 
 
 const ListNews = (props) => {

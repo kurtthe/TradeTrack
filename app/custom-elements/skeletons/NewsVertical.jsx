@@ -4,8 +4,6 @@ import { StyleSheet } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
 
-
-
 const firstLayout = [
   {
     width: 280,
