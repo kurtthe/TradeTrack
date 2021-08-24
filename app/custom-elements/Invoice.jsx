@@ -75,11 +75,22 @@ const Invoice = (props) => {
                 <Text
                   style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'center' }}
                   size={theme.SIZES.BASE * 0.8}
-                  color={nowTheme.COLORS.SUCCESS}
+                   color={nowTheme.COLORS.SUCCESS}
                 >
                   {props.invoice.status}
                 </Text>
               </View>
+
+              {/* <View style={styles.bg_purple}>
+                <Text
+                  style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'center' }}
+                  size={theme.SIZES.BASE * 0.8}
+                   color={'#0E3A90'}
+                >
+                  {props.invoice.status}
+                </Text>
+              </View> */}
+
             </Block>
             <Block bottom>
               <Text
@@ -120,6 +131,15 @@ const styles = StyleSheet.create({
     width: wp('20%'),
     height: 25,
     backgroundColor: '#ecf8ee',
+    borderRadius: 30,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  bg_purple: {
+    width: wp('20%'),
+    height: 25,
+    backgroundColor: '#eff1f7',
     borderRadius: 30,
     marginTop: 20,
     justifyContent: 'center',
