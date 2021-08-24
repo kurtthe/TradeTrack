@@ -13,6 +13,15 @@ import PickerButton from "@components/PickerButton";
 import ActionSheet from "react-native-actions-sheet";
 import RNPickerSelect from 'react-native-picker-select';
 
+
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import { endPoints } from '@shared/dictionaries/end-points';
+import ListInvoices from '@custom-sections/ListInvoices';
+
+import { connect } from 'react-redux';
+
+
+
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 const pickerOptions = [
@@ -21,10 +30,32 @@ const pickerOptions = [
   { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
 ]
 
-class Home extends React.Component {
+class Account extends React.Component {
 
-  state = {
-    customStyleIndex: 0
+  constructor(props) {
+    super(props);
+
+
+    this.state = {
+      customStyleIndex: 0
+    };
+    this.getDataPetition = GetDataPetitionService.getInstance();
+    
+  }
+
+
+  async componentDidMount() {
+    await this.getDataPetition.getInfo(
+      endPoints.burdensBalance,
+      this.props.token_login,
+      this.props.getBalance,
+    );
+    await this.getDataPetition.getInfo(
+      endPoints.invoices,
+      this.props.token_login,
+      this.props.getInvoices,
+    );
+    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
   }
 
   handleCustomIndexSelect = (index) => {
@@ -146,7 +177,7 @@ class Home extends React.Component {
             >
               All Statements
             </Text>
-            {this.renderFilters()}
+          
           </Block>
           <Block style={{paddingBottom: '10%'}}>
             {this.renderArticles()}
@@ -160,59 +191,47 @@ class Home extends React.Component {
       <Block style={styles.card, this.state.customStyleIndex === 1 && styles.statements}>
         <Notification
           system
-          title="Invoice"
-          reference="20792769"
-          time="05/03/2021"
-          body="LOT 97 - 105 CHELTENHAM...BEAU"
-          done="Invoiced"
-          price="1.200"
-          iconName="email-852x"
-          iconFamily="NowExtra"
+          title="Statement"
+          reference="214357"
+          time="2021-07-31"
+          body="Burdens Statement"
+          price="37,782.24"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
-          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+          onPress={() => alert('web view pdf')}
+        />
+         <Notification
+          system
+          title="Statement"
+          reference="214357"
+          time="2021-07-31"
+          body="Burdens Statement"
+          price="37,782.24"
+          color={nowTheme.COLORS.TIME}
+          style={styles.notificationStyle}
+          onPress={() => alert('web view pdf')}
         />
         <Notification
           system
-          title="Invoice"
-          reference="20792769"
-          time="05/03/2021"
-          body="LOT 97 - 105 CHELTENHAM...BEAU"
-          done="Invoiced"
-          price="1.200"
-          iconName="email-852x"
-          iconFamily="NowExtra"
+          title="Statement"
+          reference="214357"
+          time="2021-07-31"
+          body="Burdens Statement"
+          price="37,782.24"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
-          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+          onPress={() => alert('web view pdf')}
         />
         <Notification
           system
-          title="Invoice"
-          reference="20792769"
-          time="05/03/2021"
-          body="LOT 97 - 105 CHELTENHAM...BEAU"
-          done="Invoiced"
-          price="1.200"
-          iconName="email-852x"
-          iconFamily="NowExtra"
+          title="Statement"
+          reference="214357"
+          time="2021-07-31"
+          body="Burdens Statement"
+          price="37,782.24"
           color={nowTheme.COLORS.TIME}
           style={styles.notificationStyle}
-          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
-        />
-        <Notification
-          system
-          title="Invoice"
-          reference="20792769"
-          time="05/03/2021"
-          body="LOT 97 - 105 CHELTENHAM...BEAU"
-          done="Invoiced"
-          price="1.200"
-          iconName="email-852x"
-          iconFamily="NowExtra"
-          color={nowTheme.COLORS.TIME}
-          style={styles.notificationStyle}
-          onPress={() => this.props.navigation.navigate('InvoiceDetails')}
+          onPress={() => alert('web view pdf')}
         />
       </Block>
     );
@@ -221,7 +240,31 @@ class Home extends React.Component {
   renderStatements = () => {
     return (
       <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        {this.renderArticles()}
+        <Block style={{left : theme.SIZES.BASE * -1.7}}>
+        {this.renderFilters()}
+        </Block>
+         
+      <Block style={{top:0}}>
+      <ScrollView >
+
+           <Block flex>
+            <ListInvoices invoices={this.props.invoices} />
+            <Block center style={{ paddingVertical: 5 }}>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.button}
+              >
+                Load More..
+              </Button>
+            </Block>
+            <Block center style={{ paddingVertical: 5}}>
+            
+            </Block>
+          </Block>
+        </ScrollView>
+
+      </Block>  
       </Block>
     )
   }
@@ -423,7 +466,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginLeft: -15,
     width: width,
-    height:'9%'
+    height:'5.5%'
   },
   notificationStyle: {
     marginBottom: 5, 
@@ -452,4 +495,10 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+const mapStateToProps = (state) => ({
+  token_login: state.loginReducer.api_key,
+  invoices: state.invoicesReducer.invoices,
+});
+
+
+export default connect(mapStateToProps)(Account);
