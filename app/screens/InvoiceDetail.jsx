@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import {FormatMoneyService} from '@core/services/format-money.service'
 import SkeletonInvoiceDetail from '@custom-elements/skeletons/InvoiceDetail'
 
+import BottomModal from '@custom-elements/BottomModal'
+
 const { width } = Dimensions.get('screen');
 
 class InvoiceDetails extends React.Component {
@@ -95,7 +97,7 @@ class InvoiceDetails extends React.Component {
             </Block>
             <Text style={styles.text}>Branch</Text>
             <Text>{this.state.invoiceDetail.storeLocation.name}</Text>
-           
+          
           </Block>
           <Block
             card
@@ -148,6 +150,7 @@ class InvoiceDetails extends React.Component {
               </Text>
             </Block>
           </Block>
+          <BottomModal show={true}/>
         </ScrollView>
       );
     }

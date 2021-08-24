@@ -12,6 +12,7 @@ enableScreens();
 
 import AppStack from '@navigation/index';
 import { Images, articles, nowTheme } from '@constants/index';
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
 // cache app images
@@ -40,6 +41,13 @@ function cacheImages(images) {
     }
   });
 }
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+  },
+};
 
 export default class App extends React.Component {
   state = {
@@ -61,9 +69,11 @@ export default class App extends React.Component {
         <NavigationContainer>
           <Provider store={store}>
             <GalioProvider theme={nowTheme}>
-              <Block flex>
-                <AppStack />
-              </Block>
+              <PaperProvider theme={theme}>
+                <Block flex>
+                  <AppStack />
+                </Block>
+              </PaperProvider>
             </GalioProvider>
           </Provider>
         </NavigationContainer>
