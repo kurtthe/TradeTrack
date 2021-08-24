@@ -40,6 +40,19 @@ const BellButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
+const SearchHome = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity
+    style={([styles.button, style], { zIndex: 300 })}
+    onPress={() => {
+      Keyboard.dismiss();
+      navigation.navigate('SearchHome');
+    }}
+  >
+   <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+  </TouchableOpacity>
+);
+
+
 const BasketButton = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
@@ -48,7 +61,7 @@ const BasketButton = ({ isWhite, style, navigation }) => (
       navigation.navigate('Search');
     }}
   >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+    {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} /> */}
   </TouchableOpacity>
 );
 
@@ -107,7 +120,7 @@ class Header extends React.Component {
         return [
           // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
           <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+            <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
           </View>,
         ];
 
@@ -150,6 +163,9 @@ class Header extends React.Component {
 
       case 'Search':
         return [<BasketButton key="basket-search" navigation={navigation} isWhite={white} />];
+
+        case 'SearchHome':
+          return [<SearchHome key="basket-search" navigation={navigation} isWhite={white} />];
 
       case 'Invoice Details':
         return [

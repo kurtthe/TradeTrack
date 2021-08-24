@@ -119,7 +119,7 @@ class Home extends React.Component {
              
 
               <TouchableOpacity
-                    onPress={() => navigation.navigate('Allinvoice')}
+                    onPress={() => navigation.navigate('Account')}
                   >
                 <Text
                 size={15}
@@ -165,6 +165,7 @@ class Home extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.button}
+                onPress={() => navigation.navigate('Store')}
               >
                 Store Finder
               </Button>
