@@ -1,6 +1,6 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { StyleSheet, Image, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 
@@ -32,9 +32,24 @@ const News = (props) => {
             </Text>
           </Block>
           
-          <Text style={styles.cardDate} size={14} color={'#B6584E'}>
-            {dateCreate[0]}
-          </Text>
+          <Block center row>
+
+            <TouchableOpacity
+                      onPress={() => alert('web view')}
+                    >
+            <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
+              Read More +
+            </Text>
+            </TouchableOpacity>
+                    
+                  <Block style={{left:30,}} >
+                  <Text style={styles.cardDate} size={14} color={'#B6584E'}>
+                    {dateCreate[0]}
+                  </Text>
+
+                  </Block>
+
+            </Block>
         </Block>
       </Block>
     </TouchableWithoutFeedback>
@@ -45,9 +60,18 @@ const styles = StyleSheet.create({
 
   cardDate: {
     textAlign: 'right', 
-    marginRight: 15,
+    marginRight: 35,
     fontWeight:'bold',
     paddingBottom: 10
+
+  },
+
+  cardRead: {
+    textAlign: 'right', 
+    marginRight: 40,
+    fontWeight:'bold',
+    paddingBottom: 10,
+    fontWeight:'bold'
 
   },
   cardDescription: {
