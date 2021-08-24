@@ -109,7 +109,9 @@ class Home extends React.Component {
                 Invoices
               </Text>
 
-              <TouchableOpacity onPress={() => navigation.navigate('Allinvoice')}>
+              <TouchableOpacity
+                    onPress={() => navigation.navigate('Account')}
+                  >
                 <Text
                   size={15}
                   style={{ fontFamily: 'montserrat-regular', right: 15 }}
@@ -152,6 +154,7 @@ class Home extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.button}
+                onPress={() => navigation.navigate('Store')}
               >
                 Store Finder
               </Button>
