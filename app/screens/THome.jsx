@@ -3,21 +3,18 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
-import { Card, Button } from '@components';
-import articles from '@constants/articles';
-import { Notification } from '@components';
+import {  Button } from '@components';
 import ListInvoices from '@custom-sections/ListInvoices';
 import ListNews from '@custom-sections/ListNews';
+import LiveBalance from '@custom-sections/LiveBalance';
+
 import { nowTheme } from '@constants';
-import { MaterialIcons } from '@expo/vector-icons';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
-import { FormatMoneyService } from '@core/services/format-money.service';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
@@ -34,7 +31,6 @@ class Home extends React.Component {
 
     this.state = {};
     this.getDataPetition = GetDataPetitionService.getInstance();
-    this.formatMoney = FormatMoneyService.getInstance();
   }
 
   async componentDidMount() {
@@ -49,55 +45,8 @@ class Home extends React.Component {
     return (
       <Block flex center style={styles.home}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-          <Block flex card center shadow style={styles.category}>
-            <ImageBackground
-              source={{
-                uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
-              }}
-              style={[styles.imageBlock, { width: width - theme.SIZES.BASE * 0.1, height: 162 }]}
-              imageStyle={{
-                width: width - theme.SIZES.BASE * 0.1,
-                height: 162,
-              }}
-            >
-              <Block style={styles.categoryTitle}>
-                <Text
-                  color={nowTheme.COLORS.TIME}
-                  style={{ fontFamily: 'montserrat-bold', paddingLeft: 0 }}
-                  size={14}
-                >
-                  Current Balance
-                </Text>
-                <Block
-                  row
-                  middle
-                  space="between"
-                  style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
-                >
-                  <Text size={28} bold color={theme.COLORS.WHITE}>
-                    {this.formatMoney.format(this.props.liveBalance.current)}
-                  </Text>
-
-                  <TouchableOpacity
-                    style={{ backgroundColor: '#4D76C8', padding: 5, borderRadius: 7 }}
-                    onPress={() => navigation.navigate('Account')}
-                  >
-                    <MaterialIcons name="request-quote" color={theme.COLORS.WHITE} size={32} />
-                  </TouchableOpacity>
-                </Block>
-                <Block row middle space="between" style={styles.bottomView}>
-                  <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
-                    {' '}
-                    Overdue Balance{' '}
-                  </Text>
-                  <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
-                    {' '}
-                    ${this.props.liveBalance.overdue}{' '}
-                  </Text>
-                </Block>
-              </Block>
-            </ImageBackground>
-          </Block>
+          <LiveBalance button={true}/>
+          
           <Block style={styles.cardHeader}>
             <Block
               row
