@@ -8,7 +8,7 @@ const PdfViewer = (props) => {
   console.log("==>props pdfviewer", props)
   return (
     <View style={styles.container}>
-      <PDFReader url={props.url} />
+      <PDFReader url={'https://pidamazonia.com/sites/all/themes/pid/viewpdf/viewer.html?file=https://pidamazonia.com/sites/default/files//Infografia%20EXPO%20VIRTUAL.pdf'} />
     </View>
   );
 };
