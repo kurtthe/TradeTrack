@@ -17,10 +17,9 @@ import RNPickerSelect from 'react-native-picker-select';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListInvoices from '@custom-sections/ListInvoices';
+import LiveBalance from '@custom-sections/LiveBalance';
 
 import { connect } from 'react-redux';
-
-
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
@@ -296,35 +295,7 @@ class Account extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.articles}
         >
-          <Block flex card center shadow style={styles.category}>
-            <ImageBackground
-              source={{
-                uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
-              }}
-            // source={require('../assets/imgs/Frame_main.png')}
-              style={[
-                styles.imageBlock,
-                { width: width - theme.SIZES.BASE * 0.1, height: 162 }
-              ]}
-              imageStyle={{
-                width: width - theme.SIZES.BASE * 0.1,
-                height: 162
-              }}
-            >
-              <Block style={styles.categoryTitle}>
-                <Text color={nowTheme.COLORS.TIME} style={{ fontFamily: 'montserrat-bold', paddingLeft:0 }} size={14}>Current Balance</Text>
-                <Block row middle space="between" style={{ marginBottom: theme.SIZES.BASE , paddingLeft:0, paddingRight:6}}>
-                  <Text size={28} bold color={theme.COLORS.WHITE}>
-                    $12,500.15
-                  </Text>
-                </Block>
-                <Block row middle space="between" style={styles.bottomView}>
-                  <Text size={14} bold color={theme.COLORS.WHITE} style={{left:0}}> Overdue Balance </Text>
-                  <Text size={14} bold color={theme.COLORS.WHITE} style={{left:0}}> $1,500.00 </Text>
-                </Block>
-            </Block>
-            </ImageBackground>
-          </Block>
+          <LiveBalance />
           <SegmentedControlTab
             values={['Statements', 'Invoices']}
             selectedIndex={customStyleIndex}

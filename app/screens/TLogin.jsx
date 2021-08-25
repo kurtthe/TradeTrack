@@ -62,7 +62,7 @@ class Login extends React.Component {
   async redirectLogin(){
     const tokeExist = await SecureStore.getItemAsync('api_key');
     
-    if(this.props.token_login !== null || tokeExist){
+    if(tokeExist){
       this.props.navigation.navigate("AppStack");
     }
   }
