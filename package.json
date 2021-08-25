@@ -11,6 +11,7 @@
     "lint": "eslint *.js **/*.js"
   },
   "dependencies": {
+    "@pstyczynski/react-native-expo-pdfjs": "^1.0.0",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-picker/picker": "1.9.2",
@@ -49,6 +50,7 @@
     "react-native-svg": "12.1.0",
     "react-native-webview": "^11.6.5",
     "react-redux": "^7.2.4",
+    "rn-pdf-reader-js": "^4.1.1",
     "rxjs": "^7.3.0"
   },
   "devDependencies": {

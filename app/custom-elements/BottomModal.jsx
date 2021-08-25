@@ -17,7 +17,7 @@ const BottomModal = (props) => {
       <View style={styles.modal}>
         <View style={styles.modalDialog}>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => console.log('Pressed')} style={styles.btnClose}>
+            <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
               <Text>X</Text>
             </TouchableOpacity>
           </View>
