@@ -59,7 +59,7 @@ const LiveBalance = (props) => {
             </Text>
             <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
               {' '}
-              ${balance.overdue}{' '}
+              {formatMoney.format(balance.overdue)}{' '}
             </Text>
           </Block>
         </Block>
@@ -87,10 +87,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
   },
-});
-
-const mapStateToProps = (state) => ({
-  liveBalance: state.liveBalanceReducer,
 });
 
 export default withNavigation(LiveBalance);
