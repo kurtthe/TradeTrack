@@ -6,7 +6,7 @@ import { Block, theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
 import GrayLine from '@components/GrayLine';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import Order from '@custom-elements/Order';
+import BalanceDetail from '@custom-elements/BalanceDetail';
 
 const formatMoney = FormatMoneyService.getInstance();
 const { width } = Dimensions.get('screen');
@@ -15,28 +15,30 @@ const Balance = () => {
   const balance = useSelector((state) => state.liveBalanceReducer);
 
   const renderDetailOrdersAS = () => {
+  const dateBalance = `${balance.updated}`.split(' ')
+
+    
     const orders = [
       {
         title: 'Accurate as of',
-        price: '5th May 2021',
+        price: dateBalance[0],
       },
       {
         title: 'Current Month',
-        price: '$15,000.00',
+        price: balance.current,
       },
       {
         title: '30 Day Balance',
-        price: '$15,000.00',
+        price: balance.thirty_day,
       },
       {
         title: 'Overdue Amount',
-        color: 'red',
-        price: '-$2,499.88',
+        price: balance.overdue,
       },
     ];
 
     return orders.map((orders, index) => {
-      return <Order key={index} item={orders} />;
+      return <BalanceDetail key={index} item={orders} />;
     });
   };
 
@@ -45,14 +47,8 @@ const Balance = () => {
       <View style={styles.detailOrders}>
         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Balance Details</Text>
       </View>
-
-      <Block row style={{ justifyContent: 'space-between', paddingTop: 20 }}>
-        <Text style={styles.receiptText}>{props.item.title}</Text>
-        <Text style={[styles.receiptPrice, props.item.color && { color: nowTheme.COLORS.ORANGE }]}>
-          {formatMoney.format(props.item.price)}
-        </Text>
-      </Block>
-
+      
+      {renderDetailOrdersAS()}
       <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
       <Block row style={{ justifyContent: 'space-between', top: 10, marginBottom: -30 }}>
         <Text size={15}>Total Due</Text>
@@ -82,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     width: '60%',
     color: nowTheme.COLORS.SECONDARY,
-  },
+  }
 });
 
 export default Balance;

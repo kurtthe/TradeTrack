@@ -43,9 +43,6 @@ export class GeneralRequestService {
         headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options
       })
-
-      console.log("==>response",response)
-      
       return response.data
     } catch (err) {
       this.httpCommonService.handleError(err)

@@ -10,7 +10,7 @@ const BalanceDetail = (props) => {
   return (
     <Block row style={{ justifyContent: 'space-between', paddingTop: 20 }}>
       <Text style={styles.receiptText}>{props.item.title}</Text>
-      <Text style={[styles.receiptPrice, props.item.color && { color: nowTheme.COLORS.ORANGE }]}>
+      <Text style={[styles.receiptPrice, (props.item.color < 0) && { color: nowTheme.COLORS.ORANGE }]}>
         {formatMoney.format(props.item.price)}
       </Text>
     </Block>
