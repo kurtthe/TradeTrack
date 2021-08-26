@@ -45,7 +45,14 @@ const Balance = () => {
       <View style={styles.detailOrders}>
         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Balance Details</Text>
       </View>
-      {renderDetailOrdersAS()}
+
+      <Block row style={{ justifyContent: 'space-between', paddingTop: 20 }}>
+        <Text style={styles.receiptText}>{props.item.title}</Text>
+        <Text style={[styles.receiptPrice, props.item.color && { color: nowTheme.COLORS.ORANGE }]}>
+          {formatMoney.format(props.item.price)}
+        </Text>
+      </Block>
+
       <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
       <Block row style={{ justifyContent: 'space-between', top: 10, marginBottom: -30 }}>
         <Text size={15}>Total Due</Text>
@@ -70,6 +77,11 @@ const styles = StyleSheet.create({
     width: width,
     height: '8%',
     marginVertical: theme.SIZES.BASE * 0.9,
+  },
+  receiptText: {
+    fontSize: 13,
+    width: '60%',
+    color: nowTheme.COLORS.SECONDARY,
   },
 });
 

@@ -6,7 +6,7 @@ import { FormatMoneyService } from '@core/services/format-money.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
-const Order = (props) => {
+const BalanceDetail = (props) => {
   return (
     <Block row style={{ justifyContent: 'space-between', paddingTop: 20 }}>
       <Text style={styles.receiptText}>{props.item.title}</Text>
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Order;
+export default BalanceDetail;
