@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { Ionicons } from '@expo/vector-icons';
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
+
+const { width } = Dimensions.get('screen');
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -15,22 +17,16 @@ const Statement = (props) => {
     <Block style={styles.container}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <Block row space="between" style={{ height: 40, paddingTop: 10 }}>
+            <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
               <Block row>
                 <Text
                   color={nowTheme.COLORS.DEFAULT}
                   style={{ fontFamily: 'montserrat-bold' }}
-                  size={14}
+                  size={15.5}
                 >
                   Statement
                 </Text>
-                <Text
-                  color={nowTheme.COLORS.INFO}
-                  style={{ fontFamily: 'montserrat-bold', left: 10 }}
-                  size={14}
-                >
-                  {props.statement.id}
-                </Text>
+                
               </Block>
               <Block row>
                 <Text
@@ -52,11 +48,11 @@ const Statement = (props) => {
                 size={15}
                 style={{ fontFamily: 'montserrat-regular', marginTop: 20 }}
               >
-                Burdens Statement
+               
               </Text>
 
               <Ionicons
-                style={{ left: -10, top: -5 }}
+                style={{ left: -10, }}
                 name="eye"
                 color={nowTheme.COLORS.LIGHTGRAY}
                 size={20}
@@ -65,11 +61,11 @@ const Statement = (props) => {
             <Block row style={{ marginTop: -10 }}></Block>
             <Block bottom>
               <Text
-                style={{ fontFamily: 'montserrat-bold', marginTop: -9, left: -12 }}
+                style={{ fontFamily: 'montserrat-bold', marginTop: 0, left: -12 }}
                 size={theme.SIZES.BASE * 1}
                 color={nowTheme.COLORS.HEADER}
               >
-                {formatMoney.format(props.statement.total)}
+                {formatMoney.format(props.statement.new)}
               </Text>
             </Block>
           </Block>
@@ -91,6 +87,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     borderRadius: 3,
     marginBottom: 5,
+    width:width
   },
 });
 

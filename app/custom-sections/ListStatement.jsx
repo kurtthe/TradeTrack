@@ -34,7 +34,10 @@ const ListStatement = (props) => {
           All Statements
         </Text>
       </Block>
-      <Block style={{ paddingBottom: '10%' }}>{renderStatements()}</Block>
+      <Block center style={{ paddingBottom: '5%',  }}>{renderStatements()}</Block>
+      <Block center style={{ paddingVertical: 20, }}>
+              {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
+            </Block>
     </>
   );
 };
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginLeft: -15,
     width: width,
-    height: '5.5%',
+    height: '5%',
   },
 });
 
