@@ -83,7 +83,7 @@ class SignUp extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                     
-                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.25) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
 
                           <Text
                           color={nowTheme.COLORS.PRETEXT}

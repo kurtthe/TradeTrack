@@ -115,7 +115,8 @@ class ForgotPassword extends React.Component {
                             shadowless
                             keyboardType={"email-address"}
                             value={this.state.email}
-						                onChangeText={(val) => this.setState({ email: val})}
+                            onChangeText={(val) => this.setState({ email: val})}
+                            autoCapitalize='none'
                           />
                         </Block>
                       </Block>

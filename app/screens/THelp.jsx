@@ -83,7 +83,7 @@ class Help extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                     
-                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:
+                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.19) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:
                       (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -20 :-80) :  (Dimensions.get('window').height < 870) ? -20: -80
                       }} >
 
@@ -102,7 +102,7 @@ class Help extends React.Component {
                           
                         </Block>
 
-                        <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.2) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{ marginTop:
+                        <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.25) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{ marginTop:
                       (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? -30 :10) :  (Dimensions.get('window').height < 870) ? 10: 0
                       }} >
 
