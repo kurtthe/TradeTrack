@@ -32,9 +32,7 @@ import * as SecureStore from "expo-secure-store";
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
-
 class Login extends React.Component {
-
   generalRequest
 
   constructor(props) {
@@ -44,29 +42,22 @@ class Login extends React.Component {
       email: '',
       password: '',
       hidePass: true,
-      inputEmailError: true,
+      inputEmailError:true,
       inputPasswordError:true,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  componentDidMount() {
-    this.redirectLogin();
-  }
-
-  componentDidUpdate(){
-    this.redirectLogin();
+  async componentDidMount() {
+    await this.redirectLogin();
   }
 
   async redirectLogin(){
-    const tokeExist = await SecureStore.getItemAsync('api_key');
-    
-    if(!tokeExist){
-      return;
+    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
+    if(this.props.token_login !== null && !!tokenStorageExist){
+      this.props.navigation.navigate("AppStack");
     }
-    
-    this.props.navigation.navigate("AppStack");
   }
 
   handleLogin = async ()=> {
@@ -77,8 +68,9 @@ class Login extends React.Component {
 
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
     if(!!resLogin){
-      this.props.sign(resLogin);
       await SecureStore.setItemAsync('api_key', resLogin.api_key);
+      this.props.sign(resLogin);
+      await this.redirectLogin()
     }
   }
 
