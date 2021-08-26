@@ -8,4 +8,5 @@ export const endPoints = {
   invoicesDetail: `${environment.api}burdens/invoices/:id?expand=structure,storeLocation`,
   downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download`,
   news: `${environment.api}news`,
+  statements: `${environment.api}burdens/statements`,
 }

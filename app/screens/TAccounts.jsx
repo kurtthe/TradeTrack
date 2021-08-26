@@ -25,7 +25,11 @@ import { GetDataPetitionService } from '@core/services/get-data-petition.service
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListInvoices from '@custom-sections/ListInvoices';
 import LiveBalance from '@custom-sections/LiveBalance';
-import Balance from '@custom-sections/Balance'
+import Balance from '@custom-sections/Balance';
+import ListStatement from '@custom-sections/ListStatement';
+
+import { getStatements } from '@core/module/store/statements/statements';
+
 import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('screen');
@@ -47,17 +51,7 @@ class Account extends React.Component {
   }
 
   async componentDidMount() {
-    await this.getDataPetition.getInfo(
-      endPoints.burdensBalance,
-      this.props.token_login,
-      this.props.getBalance,
-    );
-    await this.getDataPetition.getInfo(
-      endPoints.invoices,
-      this.props.token_login,
-      this.props.getInvoices,
-    );
-    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
+    await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
   }
 
   handleCustomIndexSelect = (index) => {
@@ -156,16 +150,7 @@ class Account extends React.Component {
         <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
 
         <Balance />
-        <Block style={styles.newStatementsTitle}>
-          <Text
-            size={18}
-            style={{ fontFamily: 'montserrat-bold', marginLeft: '1%' }}
-            color={'#363C4A'}
-          >
-            All Statements
-          </Text>
-        </Block>
-        <Block style={{ paddingBottom: '10%' }}>{this.renderArticles()}</Block>
+        <ListStatement statements={this.props.statements} />
       </Block>
     );
   };
@@ -460,7 +445,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   token_login: state.loginReducer.api_key,
-  invoices: state.invoicesReducer.invoices,
+  statements: state.statementsReducer.statements,
 });
 
-export default connect(mapStateToProps)(Account);
+const mapDispatchToProps = { getStatements };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);
