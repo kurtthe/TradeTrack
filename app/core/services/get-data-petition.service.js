@@ -21,5 +21,16 @@ export class GetDataPetitionService {
     action && action(response);
     return response;
   }
+
+  async getInfo2(endpoint, action = false) {
+    const response = await this.generalRequest.get(endpoint, {
+      params:{'page': 1, 'per-page':12},
+    });
+    action && action(response);
+    return response;
+  }
+
 }
+
+
 

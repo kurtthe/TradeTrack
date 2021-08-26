@@ -15,7 +15,7 @@ const PdfViewer = (props) => {
   
   return (
     <View style={styles.container}>
-      <PDFReader url={'https://pidamazonia.com/sites/all/themes/pid/viewpdf/viewer.html?file=https://pidamazonia.com/sites/default/files//Infografia%20EXPO%20VIRTUAL.pdf'} />
+      <PDFReader url={'http://zoada-au.com/123456.pdf'} />
     </View>
   );
 };
