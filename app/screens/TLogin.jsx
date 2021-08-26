@@ -93,7 +93,7 @@ class Login extends React.Component {
         style={styles.container}
       >
         <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff' }}>
+          <Block flex middle style={{ backgroundColor: '#fff',  }}>
             <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
                 <Block
@@ -118,6 +118,7 @@ class Login extends React.Component {
                 </Block>
                 <Block flex={3} top middle>
                   <Text
+                  
                     style={{
                       fontFamily: 'montserrat-bold',
                       textAlign: 'left',
@@ -141,7 +142,7 @@ class Login extends React.Component {
               </Block>
 
               <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
-                <Block center flex={0.9}>
+                <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
                       <Block
@@ -182,6 +183,7 @@ class Login extends React.Component {
                           shadowless
                           keyboardType={'email-address'}
                           onChangeText={(event)=>this.handleChangeEmail(event)}
+                          autoCapitalize='none'
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -295,6 +297,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    
   },
   inner: {
     padding: 24,
