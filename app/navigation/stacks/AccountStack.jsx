@@ -1,39 +1,36 @@
 import React from 'react';
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator } from '@react-navigation/stack';
 
 import TAccount from '@screens/TAccounts';
 import Search from '@screens/Search';
 
-import {screensRoute} from './ConfigRoutes'
+import { screensRoute } from './ConfigRoutes';
 
 const Stack = createStackNavigator();
 
 const screens = [
   {
-    name: 'Account',
+    name: 'AccountDetails',
     component: TAccount,
     colorBackground: '#FFFFFF',
-    header:{
+    header: {
       title: 'Account',
-      back: true
-    }
+      back: true,
+    },
   },
   {
     name: 'Search',
     component: Search,
     colorBackground: '#FFFFFF',
-    header:{
+    header: {
       title: 'Search',
-    }
-  }
+    },
+  },
 ];
 
 function AccountStack() {
   return (
-    <Stack.Navigator
-      mode="card"
-      headerMode="screen"
-    >
+    <Stack.Navigator mode="card" headerMode="screen" initialRouteName="AccountDetails">
       {screensRoute(Stack, screens)}
     </Stack.Navigator>
   );

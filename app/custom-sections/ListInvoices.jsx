@@ -24,7 +24,7 @@ const ListInvoices = (props) => {
   };
 
   const handleRedirectAllInvoices = () => {
-    props.navigation.navigate('Account', { tabActive: 1 });
+    props.navigation.navigate('Account')
   };
 
   return (
