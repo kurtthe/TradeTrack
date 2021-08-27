@@ -9,6 +9,8 @@ const News = (props) => {
 
   return (
     <TouchableWithoutFeedback>
+
+      
       <Block card flex style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
@@ -29,26 +31,25 @@ const News = (props) => {
               {props.news.preview.description}
             </Text>
           </Block>
+          
+          <Block center row>
 
-          <Block  row>
+            <TouchableOpacity
+                      onPress={() => alert('web view')}
+                    >
+            <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
+              Read More +
+            </Text>
+            </TouchableOpacity>
+                    
+                  <Block style={{left:30,}} >
+                  <Text style={styles.cardDate} size={14} color={'#B6584E'}>
+                    {dateCreate[0]}
+                  </Text>
 
-          <TouchableOpacity
-                    onPress={() => alert('web view')}
-                  >
-          <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
-            Read More +
-          </Text>
-          </TouchableOpacity>
-                  
-                <Block  style={{left:'340%',}} >
-                <Text style={styles.cardDate} size={14} color={'#B6584E'}>
-                  {dateCreate[0]}
-                </Text>
+                  </Block>
 
-                </Block>
-         
-          </Block>
-         
+            </Block>
         </Block>
       </Block>
     </TouchableWithoutFeedback>
@@ -66,8 +67,8 @@ const styles = StyleSheet.create({
   },
 
   cardRead: {
-    
-   left:'12%',
+    textAlign: 'right', 
+    marginRight: 40,
     fontWeight:'bold',
     paddingBottom: 10,
     fontWeight:'bold'
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 114,
-    width: 280,
+    width: '95%',
     marginHorizontal: 5,
 
     shadowColor: '#8898AA',

@@ -27,13 +27,12 @@ import {endPoints} from '@shared/dictionaries/end-points';
 
 import { connect  } from 'react-redux';
 import { sign } from '@core/module/store/auth/reducers/login';
+import * as SecureStore from "expo-secure-store";
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
-
 class Login extends React.Component {
-
   generalRequest
 
   constructor(props) {
@@ -43,23 +42,20 @@ class Login extends React.Component {
       email: '',
       password: '',
       hidePass: true,
-      inputEmailError: true,
+      inputEmailError:true,
       inputPasswordError:true,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  componentDidMount() {
-    this.redirectLogin();
+  async componentDidMount() {
+    await this.redirectLogin();
   }
 
-  componentDidUpdate(){
-    this.redirectLogin();
-  }
-
-  redirectLogin(){
-    if(this.props.token_login !== null){
+  async redirectLogin(){
+    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
+    if(this.props.token_login !== null && !!tokenStorageExist){
       this.props.navigation.navigate("AppStack");
     }
   }
@@ -72,7 +68,9 @@ class Login extends React.Component {
 
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
     if(!!resLogin){
+      await SecureStore.setItemAsync('api_key', resLogin.api_key);
       this.props.sign(resLogin);
+      await this.redirectLogin()
     }
   }
 
@@ -95,7 +93,7 @@ class Login extends React.Component {
         style={styles.container}
       >
         <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff' }}>
+          <Block flex middle style={{ backgroundColor: '#fff',  }}>
             <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
                 <Block
@@ -120,6 +118,7 @@ class Login extends React.Component {
                 </Block>
                 <Block flex={3} top middle>
                   <Text
+                  
                     style={{
                       fontFamily: 'montserrat-bold',
                       textAlign: 'left',
@@ -143,7 +142,7 @@ class Login extends React.Component {
               </Block>
 
               <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
-                <Block center flex={0.9}>
+                <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
                       <Block
@@ -184,6 +183,7 @@ class Login extends React.Component {
                           shadowless
                           keyboardType={'email-address'}
                           onChangeText={(event)=>this.handleChangeEmail(event)}
+                          autoCapitalize='none'
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -297,6 +297,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    
   },
   inner: {
     padding: 24,

@@ -3,6 +3,7 @@ import { StyleSheet, TouchableWithoutFeedback, View , Dimensions} from "react-na
 import PropTypes from "prop-types";
 import { Block, Text, theme } from "galio-framework";
 import Icon from "./Icon";
+import {  MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { nowTheme } from "@constants";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -32,7 +33,7 @@ export default class Notification extends React.Component {
       styles.card,
       !transparent && { backgroundColor: nowTheme.COLORS.WHITE },
       !transparent && styles.cardShadow,
-      system && { height: 105},
+      system && { height: 95},
       style
     ];
     return (
@@ -65,37 +66,23 @@ export default class Notification extends React.Component {
               <Block row justifyContent='space-between'>
                 <Text
                   color={nowTheme.COLORS.HEADER}
-                  size={system ? 13 : 14}
-                  style={{ fontFamily: "montserrat-regular", marginTop:0 }}
+                  size={system ? 15 : 16}
+                  style={{ fontFamily: "montserrat-regular", marginTop:20 }}
                 >
                   {body}
                 </Text>
-                <Icon
-                  style={{left:-20}}
-                  size={14}
-                  color={nowTheme.COLORS.LIGHTGRAY}
-                  name="right"
-                  family="AntDesign"
-                />
+               
+ 
+              <Ionicons  style={{left:-10, top:-5}} name="eye" color={nowTheme.COLORS.LIGHTGRAY}  size={20} />
               </Block>
               <Block row style={{ marginTop: -10 }}>
 
-                <View style={styles.bg_green}>
-          
-                <Text
-                    style={{ fontFamily: 'montserrat-regular', textAlign: 'center',
-                  }}
-                    size={theme.SIZES.BASE * 0.80}
-                    color={nowTheme.COLORS.SUCCESS}
-                  >
-                    {done}
-                  </Text>       
-                </View>
+                
                   
                 </Block>
                 <Block bottom>
                   <Text
-                    style={{ fontFamily: 'montserrat-bold', marginTop:-22.5 ,  left: -12,}}
+                    style={{ fontFamily: 'montserrat-bold', marginTop:-9 ,  left: -12,}}
                     size={theme.SIZES.BASE * 1}
                     color={nowTheme.COLORS.HEADER}
                   >

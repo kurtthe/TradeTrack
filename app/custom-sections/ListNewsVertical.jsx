@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
-import News from '@custom-elements/News'
-import SkeletonNews from '@custom-elements/skeletons/News'
+import News from '@custom-elements/NewsVertical'
+import SkeletonNews from '@custom-elements/skeletons/NewsVertical'
 
 
 const ListNews = (props) => {
@@ -26,8 +26,8 @@ const ListNews = (props) => {
   }
 
   return (
-    <ScrollView horizontal={true} style={{ bottom: 10 }}>
-      <Block flex row style={{left: theme.SIZES.BASE / 2}}> 
+    <ScrollView horizontal={false} style={{ bottom: 10 }}>
+      <Block style={{left: theme.SIZES.BASE / 2}}> 
         {putNews()}
       </Block>
     </ScrollView>
