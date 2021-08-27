@@ -76,18 +76,31 @@ class Category extends React.Component {
       loadingMoreData: false,
       hideMyPrice: true,
       ppage: 40,
-      searchValue: ''
+      searchValue: '', 
+      loading: false
     };
   }
 
   async componentDidMount() {
-    let res = await getProducts()
-    let categories = await this.setCategories()
-    this.setState({ 
-      data: res, 
-      radioButtons: categories, 
-      hideMyPrice: this.props.route.params.myPrice
+    this.setState({
+      loading: true
     })
+    try{
+      let res = await getProducts()
+      let categories = await this.setCategories()
+      this.setState({ 
+        data: res, 
+        radioButtons: categories, 
+        hideMyPrice: this.props.route.params.myPrice,
+        loading: false
+      })
+    } catch(e) {
+      console.log('err', e)
+    } finally {
+      this.setState({
+        loading: false
+      })
+    }
   }
 
   async setCategories() {
@@ -250,13 +263,16 @@ class Category extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          <FlatList
-            contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
-            numColumns={2}
-            data={this.state.data}
-            renderItem={(item) => this.renderCard(item)}
-            keyExtractor={item => item.id}
-          />
+          {this.state.loading 
+            ? <ActivityIndicator/>
+            : <FlatList
+                contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
+                numColumns={2}
+                data={this.state.data}
+                renderItem={(item) => this.renderCard(item)}
+                keyExtractor={item => item.id}
+              /> 
+          }
           <Block center backgroundColor={nowTheme.COLORS.BACKGROUND}>
             {this.state.loadingMoreData 
               ? <ActivityIndicator/>
