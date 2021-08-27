@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Dimensions, View, ScrollView } from 'react-native';
 import { Block, Text } from 'galio-framework';
-import { nowTheme } from '@constants/';
+import { nowTheme } from '@constants/index';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import { connect } from 'react-redux';
 import {FormatMoneyService} from '@core/services/format-money.service'
-import SkeletonInvoiceDetail from '@custom-sections/skeletons/InvoiceDetail'
+import SkeletonInvoiceDetail from '@custom-elements/skeletons/InvoiceDetail'
 
 const { width } = Dimensions.get('screen');
 
@@ -31,7 +31,7 @@ class InvoiceDetails extends React.Component {
     const url = endPoints.invoicesDetail.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
-    const dataInvoice = await this.getDataPetition.getInfo(url, this.props.token_login);
+    const dataInvoice = await this.getDataPetition.getInfo(url);
     this.setState({invoiceDetail: dataInvoice});
 
     this.props.navigation.setParams({
@@ -43,10 +43,10 @@ class InvoiceDetails extends React.Component {
 
     return this.state.invoiceDetail.structure.items.map((orders, index) => (
         <Block key ={index}>
-          <Text style={styles.receiptText}>{orders.description}</Text>
+          <Text  numberOfLines={2} style={styles.receiptText}>{orders.description}</Text>
           <Block row style={{ justifyContent: 'space-between', paddingBottom: 7 }}>
             <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
-            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.total)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
           </Block>
         </Block>
       ));
@@ -95,8 +95,7 @@ class InvoiceDetails extends React.Component {
             </Block>
             <Text style={styles.text}>Branch</Text>
             <Text>{this.state.invoiceDetail.storeLocation.name}</Text>
-            <Text style={styles.text}>Account Number</Text>
-            <Text>N/A</Text>
+          
           </Block>
           <Block
             card
@@ -127,7 +126,7 @@ class InvoiceDetails extends React.Component {
               <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst)}</Text>
             </Block>
             <Block row style={styles.totalPrices}>
-              <Text size={12}>GTS</Text>
+              <Text size={12}>GST</Text>
               <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.gst)}</Text>
             </Block>
             <View
@@ -160,10 +159,10 @@ class InvoiceDetails extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  cart: {
-    width: width,
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
-  },
+  // cart: {
+  //   width: width,
+  //   backgroundColor: nowTheme.COLORS.BACKGROUND,
+  // },
   text: {
     fontSize: 10,
     paddingTop: 10,
@@ -171,12 +170,15 @@ const styles = StyleSheet.create({
   },
   grayText: {
     color: nowTheme.COLORS.PRETEXT,
+    top:-7
   },
   detailPrice: {
     fontWeight: Platform.OS == 'android' ? 'bold' : '500',
+    top:-25
   },
   receiptText: {
     paddingVertical: 10,
+    width:'80%'
   },
   receiptPrice: {
     fontSize: 14,
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
   },
   totalPrices: {
     justifyContent: 'space-between',
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   lastCard: {
     borderRadius: 20,

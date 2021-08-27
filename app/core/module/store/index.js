@@ -5,6 +5,7 @@ import liveBalanceReducer from './balance/liveBalance'
 import invoicesReducer from './balance/invoices'
 import newsReducer from './news/news'
 import productsReducer from './cart/cart'
+import statementsReducer from './statements/statements'
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     liveBalanceReducer,
     invoicesReducer,
     newsReducer,
-    productsReducer
+    productsReducer,
+    statementsReducer
   },
 });

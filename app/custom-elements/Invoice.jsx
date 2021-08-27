@@ -6,12 +6,11 @@ import Icon from '@components/Icon';
 import { nowTheme } from '@constants';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { withNavigation } from '@react-navigation/compat';
-import {FormatMoneyService} from '@core/services/format-money.service'
+import { FormatMoneyService } from '@core/services/format-money.service';
 
 const Invoice = (props) => {
+  const dateInvoice = `${props.invoice.invoice_date}`.split(' ');
 
-  const dateInvoice = `${props.invoice.created_date}`.split(' ')
-  
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
@@ -40,12 +39,12 @@ const Invoice = (props) => {
                   {props.invoice.order_number}
                 </Text>
               </Block>
-              <Block row >
+              <Block row>
                 <Text
                   color={nowTheme.COLORS.TIME}
                   style={{
                     fontFamily: nowTheme.FONT.primaryRegular,
-                    paddingRight:10
+                    paddingRight: 10,
                   }}
                   size={14}
                 >
@@ -70,14 +69,14 @@ const Invoice = (props) => {
                 family="AntDesign"
               />
             </Block>
-            <Block row >
+            <Block row>
               <View style={styles.bg_green}>
                 <Text
                   style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'center' }}
                   size={theme.SIZES.BASE * 0.8}
                   color={nowTheme.COLORS.SUCCESS}
                 >
-                  {props.invoice.status}
+                  {props.invoice.type}
                 </Text>
               </View>
             </Block>
@@ -87,7 +86,7 @@ const Invoice = (props) => {
                 size={theme.SIZES.BASE * 1}
                 color={nowTheme.COLORS.HEADER}
               >
-              {formatMoney.format(props.invoice.total_amount)}
+                {formatMoney.format(props.invoice.total_amount)}
               </Text>
             </Block>
           </Block>
@@ -120,6 +119,15 @@ const styles = StyleSheet.create({
     width: wp('20%'),
     height: 25,
     backgroundColor: '#ecf8ee',
+    borderRadius: 30,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  bg_purple: {
+    width: wp('20%'),
+    height: 25,
+    backgroundColor: '#eff1f7',
     borderRadius: 30,
     marginTop: 20,
     justifyContent: 'center',

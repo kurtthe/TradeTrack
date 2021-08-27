@@ -26,7 +26,7 @@ export class FormatMoneyService {
     symbol: '$'
   }*/
   format(value) {
-    const valueFormat = this.fm.from(parseInt(value), { symbol: '$' }, true);
-    return `${valueFormat.symbol}${valueFormat.fullAmount}`
+    const valueFormat = this.fm.from(parseFloat(value), { symbol: '$' }, true);
+    return `${valueFormat.symbol}${(parseFloat(value)< 0) ? '-':''}${valueFormat.fullAmount}`
   }
 }

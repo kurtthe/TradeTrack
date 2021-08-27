@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 export class AlertService {
   show(title, message) {
     Alert.alert(
-      `${title || 'Opps!'}`,
+      `${title || 'Alert'}`,
       `${message || 'Error, please try again'}`,
       [
         {
