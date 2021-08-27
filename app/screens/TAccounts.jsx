@@ -64,10 +64,9 @@ class Account extends React.Component {
 
 
   async componentDidMount() {
-    const { tabIndexSelected } = this.props.route.params;
-    if (!!tabIndexSelected) {
+    if (!!this.props.route.params) {
       this.setState({
-        customStyleIndex: tabIndexSelected,
+        customStyleIndex: this.props.route.params.tabIndexSelected,
       });
     }
     await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
