@@ -75,7 +75,7 @@ class Cart extends React.Component {
       return p.cost_price
     })
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `$${prices.reduce(reducer)}`
+    return `$${prices.reduce(reducer, 0)}`
   }
 
   renderProduct = ({ item }) => {
