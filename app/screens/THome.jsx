@@ -41,7 +41,7 @@ class Home extends React.Component {
       <Block flex center style={styles.home}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
           <LiveBalance button={true} />
-          <ListInvoices invoices={this.props.invoices} />
+          <ListInvoices invoices={this.props.invoices} title={true} />
           
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>
@@ -76,7 +76,6 @@ class Home extends React.Component {
               </Button>
             </Block>
             <Block center style={{ paddingVertical: 10 }}>
-              {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
             </Block>
           </Block>
         </ScrollView>
