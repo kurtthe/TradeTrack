@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
-import {  Button } from '@components';
+import { Button } from '@components';
 import ListInvoices from '@custom-sections/ListInvoices';
 import ListNews from '@custom-sections/ListNews';
 import LiveBalance from '@custom-sections/LiveBalance';
@@ -45,37 +40,9 @@ class Home extends React.Component {
     return (
       <Block flex center style={styles.home}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-          <LiveBalance button={true}/>
+          <LiveBalance button={true} />
+          <ListInvoices invoices={this.props.invoices} />
           
-          <Block style={styles.cardHeader}>
-            <Block
-              row
-              middle
-              space="between"
-              style={{ paddingLeft: 15, marginTop: 40, height: 20 }}
-            >
-              <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
-                Invoices
-              </Text>
-
-              <TouchableOpacity
-                    onPress={() => navigation.navigate('Account')}
-                  >
-                <Text
-                  size={15}
-                  style={{ fontFamily: 'montserrat-regular', right: 15 }}
-                  color={nowTheme.COLORS.HEADER}
-                >
-                  See all
-                </Text>
-              </TouchableOpacity>
-            </Block>
-          </Block>
-
-          <Block style={styles.card}>
-            <ListInvoices invoices={this.props.invoices} />
-          </Block>
-
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>
               <Text

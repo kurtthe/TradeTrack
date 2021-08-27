@@ -249,6 +249,10 @@ class Account extends React.Component {
 
   render() {
     const { customStyleIndex } = this.state;
+
+    const tabActive = this.props.route.params;
+    console.log("==>tabActive",tabActive)
+    
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
@@ -299,7 +303,6 @@ class Account extends React.Component {
               style={styles.search}
               placeholder="$00,00"
               placeholderTextColor={'#8898AA'}
-              // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
             />
             <Block row style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
               <Text size={15}>Your Balance</Text>
@@ -316,7 +319,6 @@ class Account extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.buttonAS}
-                //onPress={() => actionSheetRef.current?.setModalVisible()}
               >
                 Continue
               </Button>
@@ -328,7 +330,6 @@ class Account extends React.Component {
                   fontSize: 16,
                 }}
                 style={(styles.buttonGrayAS, styles.buttonAS)}
-                //onPress={() => actionSheetRef.current?.setModalVisible()}
               >
                 Cancel
               </Button>
@@ -446,6 +447,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   token_login: state.loginReducer.api_key,
   statements: state.statementsReducer.statements,
+  invoices: state.invoicesReducer.invoices,
 });
 
 const mapDispatchToProps = { getStatements };
