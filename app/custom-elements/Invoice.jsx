@@ -9,7 +9,7 @@ import { withNavigation } from '@react-navigation/compat';
 import { FormatMoneyService } from '@core/services/format-money.service';
 
 const Invoice = (props) => {
-  const dateInvoice = `${props.invoice.created_date}`.split(' ');
+  const dateInvoice = `${props.invoice.invoice_date}`.split(' ');
 
   const formatMoney = FormatMoneyService.getInstance();
 
@@ -76,7 +76,7 @@ const Invoice = (props) => {
                   size={theme.SIZES.BASE * 0.8}
                   color={nowTheme.COLORS.SUCCESS}
                 >
-                  {props.invoice.status}
+                  {props.invoice.type}
                 </Text>
               </View>
             </Block>

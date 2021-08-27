@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width,
     backgroundColor: 'rgba(75, 106, 170, 0.5)',
+    
   },
   category: {
     backgroundColor: theme.COLORS.WHITE,
