@@ -30,7 +30,7 @@ const screens = [
 
 function AccountStack() {
   return (
-    <Stack.Navigator mode="card" headerMode="screen" initialRouteName="AccountDetails">
+    <Stack.Navigator mode="card" headerMode="screen">
       {screensRoute(Stack, screens)}
     </Stack.Navigator>
   );

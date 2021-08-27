@@ -51,12 +51,13 @@ class Account extends React.Component {
   }
 
   async componentDidMount() {
-
-    const tabActive = this.props.route;
-    console.log("==>props",this.props)
-    console.log("==>tabActive",tabActive)
-    console.log("==>this.props.navigation.state",this.props.navigation.state)
-    
+    const { tabIndexSelected } = this.props.route.params;
+    console.log("=>tabIndexSelected",tabIndexSelected)
+    if (!!tabIndexSelected) {
+      this.setState({
+        customStyleIndex: tabIndexSelected,
+      });
+    }
     await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
   }
 
@@ -220,7 +221,7 @@ class Account extends React.Component {
         <Block style={{ top: 0 }}>
           <ScrollView>
             <Block flex>
-              <ListInvoices invoices={this.props.invoices} />
+              <ListInvoices invoices={this.props.invoices} title={false} />
               <Block center style={{ paddingVertical: 5 }}>
                 <Button
                   color="info"
