@@ -6,7 +6,7 @@ export const endPoints = {
   burdensBalance: `${environment.api}burdens/balance`,
   invoices: `${environment.api}burdens/invoices`,
   invoicesDetail: `${environment.api}burdens/invoices/:id?expand=structure,storeLocation`,
-  downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download`,
+  downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download?rrp=true`,
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements`,
   downloadStatementDetail: `${environment.api}burdens/statements/:id/download`,

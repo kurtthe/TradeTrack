@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   SafeAreaView,
+  Clipboard
 } from 'react-native';
 import { Block, theme, Text, Input } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -46,13 +47,24 @@ class Account extends React.Component {
 
     this.state = {
       customStyleIndex: 0,
+      clipboardText: "",
+      textInputText: ""
+      
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
+  setBsbClipboard = async () => {
+    await Clipboard.setString('083125');
+  }
+
+  setAccountClipboard = async () => {
+    await Clipboard.setString('048284743');
+  }
+
+
   async componentDidMount() {
     const { tabIndexSelected } = this.props.route.params;
-    console.log("=>tabIndexSelected",tabIndexSelected)
     if (!!tabIndexSelected) {
       this.setState({
         customStyleIndex: tabIndexSelected,
@@ -68,7 +80,7 @@ class Account extends React.Component {
   renderBalance = () => {
     const { customStyleIndex } = this.state;
     return (
-      <Block style={{ padding: theme.SIZES.BASE, paddingBottom: '10%' }}>
+      <Block style={{ padding: theme.SIZES.BASE, top: '0.5%' }}>
         <Text style={{ paddingBottom: 15 }} size={16}>
           Payment Details
         </Text>
@@ -93,7 +105,7 @@ class Account extends React.Component {
               </Text>
             </Block>
             <Block center flex>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={this.setBsbClipboard}>
                 <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
               </TouchableOpacity>
             </Block>
@@ -114,11 +126,11 @@ class Account extends React.Component {
                     : 16
                 }
               >
-                04-8284743
+                04-828-4743
               </Text>
             </Block>
             <Block>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={this.setAccountClipboard}>
                 <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
               </TouchableOpacity>
             </Block>
@@ -140,7 +152,7 @@ class Account extends React.Component {
                   : 16
               }
             >
-              123-456
+              bring from endpoint
             </Text>
           </Block>
         </Block>
@@ -157,68 +169,23 @@ class Account extends React.Component {
         <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
 
         <Balance />
-        <ListStatement statements={this.props.statements} />
+        
+              <Block style={{top:'-3.3%'}}>
+        <ListStatement  statements={this.props.statements} />
+        </Block>
+     
+        
       </Block>
     );
   };
 
-  renderArticles = () => {
-    return (
-      <Block style={(styles.card, this.state.customStyleIndex === 1 && styles.statements)}>
-        <Notification
-          system
-          title="Statement"
-          reference="214357"
-          time="2021-07-31"
-          body="Burdens Statement"
-          price="37,782.24"
-          color={nowTheme.COLORS.TIME}
-          style={styles.notificationStyle}
-          onPress={() => alert('web view pdf')}
-        />
-        <Notification
-          system
-          title="Statement"
-          reference="214357"
-          time="2021-07-31"
-          body="Burdens Statement"
-          price="37,782.24"
-          color={nowTheme.COLORS.TIME}
-          style={styles.notificationStyle}
-          onPress={() => alert('web view pdf')}
-        />
-        <Notification
-          system
-          title="Statement"
-          reference="214357"
-          time="2021-07-31"
-          body="Burdens Statement"
-          price="37,782.24"
-          color={nowTheme.COLORS.TIME}
-          style={styles.notificationStyle}
-          onPress={() => alert('web view pdf')}
-        />
-        <Notification
-          system
-          title="Statement"
-          reference="214357"
-          time="2021-07-31"
-          body="Burdens Statement"
-          price="37,782.24"
-          color={nowTheme.COLORS.TIME}
-          style={styles.notificationStyle}
-          onPress={() => alert('web view pdf')}
-        />
-      </Block>
-    );
-  };
-
+  
   renderStatements = () => {
     return (
-      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }} >
         <Block style={{ left: theme.SIZES.BASE * -1.7 }}>{this.renderFilters()}</Block>
 
-        <Block style={{ top: 0 }}>
+        <Block >
           <ScrollView>
             <Block flex>
               <ListInvoices invoices={this.props.invoices} title={false} />
@@ -245,11 +212,11 @@ class Account extends React.Component {
         row
         space={'evenly'}
         width={'85%'}
-        style={{ justifyContent: 'space-evenly', marginLeft: '-3%', padding: 8 }}
+        style={{ justifyContent: 'space-evenly', marginLeft: '-20%', padding: 8 ,}}
       >
         <FilterButton text={'By Date'} icon={require('@assets/imgs/img/calendar.png')} />
-        <FilterButton text={'Last Month'} />
-        <FilterButton text={'Overdue'} />
+        
+        <FilterButton text={'For Type'} />
       </Block>
     );
   };
@@ -261,6 +228,7 @@ class Account extends React.Component {
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
           <LiveBalance />
+          <Block  style={{top:10}}>
           <SegmentedControlTab
             values={['Statements', 'Invoices']}
             selectedIndex={customStyleIndex}
@@ -283,6 +251,7 @@ class Account extends React.Component {
             tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
             activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
           />
+          </Block>
           {customStyleIndex === 0 && this.renderBalance()}
           {customStyleIndex === 1 && this.renderStatements()}
         </ScrollView>
