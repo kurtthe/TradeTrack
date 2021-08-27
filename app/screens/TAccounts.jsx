@@ -51,6 +51,12 @@ class Account extends React.Component {
   }
 
   async componentDidMount() {
+
+    const tabActive = this.props.route;
+    console.log("==>props",this.props)
+    console.log("==>tabActive",tabActive)
+    console.log("==>this.props.navigation.state",this.props.navigation.state)
+    
     await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
   }
 
@@ -250,9 +256,6 @@ class Account extends React.Component {
   render() {
     const { customStyleIndex } = this.state;
 
-    const tabActive = this.props.route.params;
-    console.log("==>tabActive",tabActive)
-    
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
@@ -445,7 +448,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key,
   statements: state.statementsReducer.statements,
   invoices: state.invoicesReducer.invoices,
 });
