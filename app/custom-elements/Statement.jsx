@@ -1,18 +1,25 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { Ionicons } from '@expo/vector-icons';
 import { nowTheme } from '@constants';
+import { endPoints } from '@shared/dictionaries/end-points';
+
 import { FormatMoneyService } from '@core/services/format-money.service';
+import BottomModal from '@custom-elements/BottomModal';
+import PdfViewer from '@custom-elements/PdfViewer';
 
 const formatMoney = FormatMoneyService.getInstance();
 
 const Statement = (props) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
   const dateStatement = `${props.statement.created_date}`.split(' ');
 
-  
   return (
-    <Block style={styles.container}>
+    <>
+      <Block style={styles.container}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
             <Block row space="between" style={{ height: 40, paddingTop: 10 }}>
@@ -55,12 +62,14 @@ const Statement = (props) => {
                 Burdens Statement
               </Text>
 
-              <Ionicons
-                style={{ left: -10, top: -5 }}
-                name="eye"
-                color={nowTheme.COLORS.LIGHTGRAY}
-                size={20}
-              />
+              <TouchableOpacity onPress={() => setShowModal(true)}>
+                <Ionicons
+                  style={{ left: -10, top: -5 }}
+                  name="eye"
+                  color={nowTheme.COLORS.LIGHTGRAY}
+                  size={20}
+                />
+              </TouchableOpacity>
             </Block>
             <Block row style={{ marginTop: -10 }}></Block>
             <Block bottom>
@@ -74,7 +83,11 @@ const Statement = (props) => {
             </Block>
           </Block>
         </Block>
-    </Block>
+      </Block>
+      <BottomModal show={showModal} close={() => setShowModal(false)}>
+        <PdfViewer url={urlDownloadFile} />
+      </BottomModal>
+    </>
   );
 };
 

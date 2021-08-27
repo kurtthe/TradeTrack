@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     marginLeft: -15,
     width: width,
     height: '5.5%',
+    marginBottom: 8
   },
 });
 

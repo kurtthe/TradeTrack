@@ -9,4 +9,5 @@ export const endPoints = {
   downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download`,
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements`,
+  downloadStatementDetail: `${environment.api}burdens/statements/:id/download`,
 }
