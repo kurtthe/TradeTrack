@@ -17,7 +17,7 @@ class AllNews extends React.Component {
     super(props);
 
     this.state = {
-      perPageData: 5,
+      perPageData: 20,
       news: [],
     };
 
@@ -40,7 +40,7 @@ class AllNews extends React.Component {
 
   handleLoadMore = () => {
     const oldData = this.state.perPageData;
-    this.setState({ perPageData: oldData + 5 });
+    this.setState({ perPageData: oldData + 20 });
   };
 
   handelGetNews = (data) => {
