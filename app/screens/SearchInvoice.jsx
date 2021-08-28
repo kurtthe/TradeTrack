@@ -1,68 +1,37 @@
-import React from "react";
+import React from 'react';
 import {
-  View,
   Animated,
-  FlatList,
   Dimensions,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-} from "react-native";
-import { Block, Text, theme } from "galio-framework";
-import { articles, categories, nowTheme } from "@constants/";
-import { Icon, Card, Input } from "@components";
-
+} from 'react-native';
+import { Block, theme, Text } from 'galio-framework';
+import { Icon, Input } from '@components';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
-import FilterButton from "@components/FilterButton";
 import ListInvoices from '@custom-sections/ListInvoices';
-import { Button } from "@components";
+import { nowTheme } from "@constants/";
 
-import { connect } from 'react-redux';
+const { width } = Dimensions.get('screen');
 
-
-
-const { width } = Dimensions.get("screen");
-
-
-
-const suggestions = [
-  { id: "Order Number", title: "Order Number" },
-  { id: "Description", title: "Description" },
-];
-
-class SearchHome extends React.Component {
-
+class SearchInvoice extends React.Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
-      results: [],
-      search: "",
+      invoicesFilter: [],
+      search: '',
       active: false,
+      notFound: false,
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
-    
   }
 
   async componentDidMount() {
-    await this.getDataPetition.getInfo(
-      endPoints.burdensBalance,
-      this.props.token_login,
-      this.props.getBalance,
-    );
-    await this.getDataPetition.getInfo(
-      endPoints.invoices,
-      this.props.token_login,
-      this.props.getInvoices,
-    );
-    await this.getDataPetition.getInfo(endPoints.news, this.props.token_login, this.props.getNews);
+    await this.handlePetitionInvoices();
   }
-
-
 
   animatedValue = new Animated.Value(0);
 
@@ -76,32 +45,40 @@ class SearchHome extends React.Component {
     }).start();
   }
 
-  handleSearchChange = (search) => {
-    const results = articles.filter(
-      (item) => search && item.title.toLowerCase().includes(search)
-    );
-    this.setState({ results, search });
+  handlePetitionInvoices = async (textFilter = '') => {
+    await this.getDataPetition.getInfo(endPoints.invoices, this.handleDataInvoices, 10, {
+      search: textFilter,
+    });
+  };
+
+  handleDataInvoices = (data) => {
+
+    if (data.length > 0) {
+      this.setState({
+        invoicesFilter: data,
+        notFound: false,
+      });
+      return;
+    }
+    this.setState({
+      notFound: true,
+    });
+  };
+
+  handleSearchChange = (text) => {
+    setTimeout(() => {}, 1000);
+    this.handlePetitionInvoices(text);
     this.animate();
   };
 
   renderSearch = () => {
     const { search } = this.state;
     const iconSearch = search ? (
-      <TouchableWithoutFeedback onPress={() => this.setState({ search: "" })}>
-        <Icon
-          size={16}
-          color={theme.COLORS.MUTED}
-          name="magnifying-glass"
-          family="entypo"
-        />
+      <TouchableWithoutFeedback onPress={() => this.setState({ search: '' })}>
+        <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
       </TouchableWithoutFeedback>
     ) : (
-      <Icon
-        size={16}
-        color={theme.COLORS.MUTED}
-        name="magnifying-glass"
-        family="entypo"
-      />
+      <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
     );
 
     return (
@@ -117,7 +94,7 @@ class SearchHome extends React.Component {
         placeholder="What are you looking for?"
         onFocus={() => this.setState({ active: true })}
         onBlur={() => this.setState({ active: false })}
-        //onChangeText={this.handleSearchChange}
+        onChangeText={(text) => this.handleSearchChange(text)}
       />
     );
   };
@@ -125,11 +102,7 @@ class SearchHome extends React.Component {
   renderNotFound = () => {
     return (
       <Block style={styles.notfound}>
-        <Text
-          style={{ fontFamily: "montserrat-regular" }}
-          size={18}
-          color={nowTheme.COLORS.TEXT}
-        >
+        <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
           We didn’t find "<Text bold>{this.state.search}</Text>" in the Data Base.
         </Text>
 
@@ -137,7 +110,7 @@ class SearchHome extends React.Component {
           size={18}
           style={{
             marginTop: theme.SIZES.BASE,
-            fontFamily: "montserrat-regular",
+            fontFamily: 'montserrat-regular',
           }}
           color={nowTheme.COLORS.TEXT}
         >
@@ -147,125 +120,23 @@ class SearchHome extends React.Component {
     );
   };
 
-  renderSuggestions = () => {
-    const { navigation } = this.props;
-
-    return (
-      <FlatList
-        data={suggestions}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.suggestion}
-            onPress={() => navigation.navigate("Category", { ...item })}
-          >
-            <Block flex row middle space="between">
-              <Text
-                style={{ fontFamily: "montserrat-regular" }}
-                size={14}
-                color={nowTheme.COLORS.TEXT}
-              >
-                {item.title}
-              </Text>
-              <Icon
-                name="chevron-right"
-                family="evilicon"
-                style={{ paddingRight: 5 }}
-              />
-            </Block>
-          </TouchableOpacity>
-        )}
-      />
-    );
-  };
-
-  renderDeals = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.dealsContainer}
-      >
-        <Block flex>
-          <Block flex row>
-            <Card
-              item={articles[1]}
-              style={{ marginRight: theme.SIZES.BASE }}
-            />
-            <Card item={articles[2]} />
-          </Block>
-          <Card item={articles[0]} horizontal />
-        </Block>
-      </ScrollView>
-    );
-  };
-
-  renderResult = (result) => {
-    const opacity = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.8, 1],
-      extrapolate: "clamp",
-    });
-
-    return (
-      <Animated.View
-        style={{ width: width - theme.SIZES.BASE * 2, opacity }}
-        key={`result-${result.title}`}
-      >
-        <Card item={result} horizontal />
-      </Animated.View>
-    );
-  };
-
-  renderResults = () => {
-    const { results, search } = this.state;
-
-    if (results.length != 0 && search) {
-      return (
-        <Block style={{ width: width - 40 }}>
-          {this.renderNotFound()}
-          {this.renderSuggestions()}
-          <Text
-            style={{ fontFamily: "montserrat-regular" }}
-            size={18}
-            color={nowTheme.COLORS.TEXT}
-          >
-            Daily Deals
-          </Text>
-          {this.renderDeals()}
-        </Block>
-      );
-    }
-
-    return (
-      <ScrollView>
-        <Block style={{ paddingTop: theme.SIZES.BASE * 2 }}>
-          {results.map((result) => this.renderResult(result))}
-        </Block>
-      </ScrollView>
-    );
-  };
-
   render() {
     return (
-      <Block flex  style={styles.searchContainer}>
+      <Block flex style={styles.searchContainer}>
         <Block center style={styles.header}>
           {this.renderSearch()}
-
-         
         </Block>
 
-        <ScrollView >
-
-        {/* {this.renderResults()} */}
-
-            <Block flex>
-            <ListInvoices invoices={this.props.invoices} />
-           
-            </Block>
+        <ScrollView>
+          <Block flex>
+            {this.state.notFound ? (
+              this.renderNotFound()
+            ) : (
+              <ListInvoices invoices={this.state.invoicesFilter} />
+            )}
+          </Block>
         </ScrollView>
-        
       </Block>
-      
     );
   }
 }
@@ -283,16 +154,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
   },
-  shadow: {
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 3 },
-    shadowRadius: 4,
-    shadowOpacity: 0.1,
-    elevation: 2,
-  },
   header: {
     backgroundColor: theme.COLORS.WHITE,
-    shadowColor: "rgba(0, 0, 0, 0.2)",
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     shadowOpacity: 1,
@@ -302,67 +166,6 @@ const styles = StyleSheet.create({
   notfound: {
     marginVertical: theme.SIZES.BASE * 2,
   },
-  suggestion: {
-    height: theme.SIZES.BASE * 1.5,
-    marginBottom: theme.SIZES.BASE,
-  },
-  result: {
-    backgroundColor: theme.COLORS.WHITE,
-    marginBottom: theme.SIZES.BASE,
-    borderWidth: 0,
-  },
-  resultTitle: {
-    flex: 1,
-    flexWrap: "wrap",
-    paddingBottom: 6,
-  },
-  resultDescription: {
-    padding: theme.SIZES.BASE / 2,
-  },
-  image: {
-    overflow: "hidden",
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-  },
-  dealsContainer: {
-    justifyContent: "center",
-    paddingTop: theme.SIZES.BASE,
-  },
-  deals: {
-    backgroundColor: theme.COLORS.WHITE,
-    marginBottom: theme.SIZES.BASE,
-    borderWidth: 0,
-  },
-  dealsTitle: {
-    flex: 1,
-    flexWrap: "wrap",
-    paddingBottom: 6,
-  },
-  dealsDescription: {
-    padding: theme.SIZES.BASE / 2,
-  },
-  imageHorizontal: {
-    overflow: "hidden",
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-  },
-  imageVertical: {
-    overflow: "hidden",
-    borderTopRightRadius: 4,
-    borderTopLeftRadius: 4,
-  },
 });
 
-
-
-
-//export default (SearchHome);
-
-
-const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key,
-  invoices: state.invoicesReducer.invoices,
-});
-
-
-export default connect(mapStateToProps)(SearchHome);
+export default SearchInvoice;

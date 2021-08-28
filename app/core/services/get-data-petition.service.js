@@ -14,9 +14,9 @@ export class GetDataPetitionService {
     return GetDataPetitionService.instance;
   }
 
-  async getInfo(endpoint, action = false, perPage=5) {
+  async getInfo(endpoint, action = false, perPage=5, paramsMore={}) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page': perPage},
+      params:{'page': 1, 'per-page': perPage, ...paramsMore},
     });
 
     action && action(response);
