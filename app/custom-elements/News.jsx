@@ -1,86 +1,94 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import { StyleSheet, Image, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
+import BottomModal from '@custom-elements/BottomModal';
+import WebView from '@custom-elements/WebView';
+import { heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const News = (props) => {
+  const [showModal, setShowModal] = useState(false);
+
   const dateCreate = `${props.news.added_date}`.split(' ');
 
+
   return (
-    <TouchableWithoutFeedback>
-      <Block card flex style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image
-            resizeMode="cover"
-            source={{ uri: props.news.preview.image }}
-            style={styles.imagePreview}
-          />
-        </View>
+    <>
+      <TouchableWithoutFeedback>
+        <Block card flex style={styles.container}>
+          <View style={styles.imageContainer}>
+            <Image
+              resizeMode="cover"
+              source={{ uri: props.news.preview.image }}
+              style={styles.imagePreview}
+            />
+          </View>
 
-        <Block  flex style={styles.info}>
-          <Block style={{marginBottom: 10}}>
-            <Text size={14} style={styles.cardTitle} color={nowTheme.COLORS.SECONDARY}  numberOfLines={2} >
-              {props.news.preview.title}
-            </Text>
-          </Block>
-          <Block style={{marginBottom: 10}}>
-            <Text size={14} color={'#858C9C'} style={styles.cardDescription}  numberOfLines={3}>
-              {props.news.preview.description}
-            </Text>
-          </Block>
+          <Block flex style={styles.info}>
+            <Block style={{ marginBottom: 10 }}>
+              <Text
+                size={14}
+                style={styles.cardTitle}
+                color={nowTheme.COLORS.SECONDARY}
+                numberOfLines={2}
+              >
+                {props.news.preview.title}
+              </Text>
+            </Block>
+            <Block style={{ marginBottom: 10 }}>
+              <Text size={14} color={'#858C9C'} style={styles.cardDescription} numberOfLines={3}>
+                {props.news.preview.description}
+              </Text>
+            </Block>
 
-          <Block  row>
+            <Block row>
+              <TouchableOpacity onPress={() => setShowModal(true)}>
+                <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
+                  Read More +
+                </Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-                    onPress={() => alert('web view')}
-                  >
-          <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
-            Read More +
-          </Text>
-          </TouchableOpacity>
-                  
-                <Block  style={{left:'340%',}} >
+              <Block style={{ left: '340%' }}>
                 <Text style={styles.cardDate} size={14} color={'#B6584E'}>
                   {dateCreate[0]}
                 </Text>
-
-                </Block>
-         
+              </Block>
+            </Block>
           </Block>
-         
         </Block>
-      </Block>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      <BottomModal show={showModal} close={() => setShowModal(false)}>
+      <View style={{ height: hp('90%'),}}>
+        <WebView url={props.news.link} />
+        </View>
+      </BottomModal>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-
   cardDate: {
-    textAlign: 'right', 
+    textAlign: 'right',
     marginRight: 35,
-    fontWeight:'bold',
-    paddingBottom: 10
-
+    fontWeight: 'bold',
+    paddingBottom: 10,
   },
 
   cardRead: {
-    
-   left:'12%',
-    fontWeight:'bold',
+    left: '12%',
+    fontWeight: 'bold',
     paddingBottom: 10,
-    fontWeight:'bold'
-
+    fontWeight: 'bold',
   },
   cardDescription: {
-    padding: theme.SIZES.BASE / 2
+    padding: theme.SIZES.BASE / 2,
   },
   cardTitle: {
     fontFamily: 'montserrat-bold',
     paddingHorizontal: 9,
     paddingTop: 7,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   container: {
     backgroundColor: theme.COLORS.WHITE,
@@ -95,7 +103,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     elevation: 2,
-    
   },
   imageContainer: {
     borderRadius: 3,
