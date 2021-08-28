@@ -14,18 +14,11 @@ export class GetDataPetitionService {
     return GetDataPetitionService.instance;
   }
 
-  async getInfo(endpoint, action = false) {
+  async getInfo(endpoint, action = false, perPage=5) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':5},
+      params:{'page': 1, 'per-page': perPage},
     });
-    action && action(response);
-    return response;
-  }
 
-  async getInfo2(endpoint, action = false) {
-    const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':12},
-    });
     action && action(response);
     return response;
   }
