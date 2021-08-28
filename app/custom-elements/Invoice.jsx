@@ -70,11 +70,11 @@ const Invoice = (props) => {
               />
             </Block>
             <Block row>
-              <View style={styles.bg_green}>
+              <View style={(props.invoice.type !== 'Invoice')? styles.bg_purple:styles.bg_green}>
                 <Text
                   style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'center' }}
                   size={theme.SIZES.BASE * 0.8}
-                  color={nowTheme.COLORS.SUCCESS}
+                  color={(props.invoice.type !== 'Invoice')? nowTheme.COLORS.PURPLEINVOICE: nowTheme.COLORS.SUCCESS}
                 >
                   {props.invoice.type}
                 </Text>
