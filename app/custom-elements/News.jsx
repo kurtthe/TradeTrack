@@ -5,17 +5,16 @@ import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 import BottomModal from '@custom-elements/BottomModal';
 import WebView from '@custom-elements/WebView';
-import { heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const News = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const dateCreate = `${props.news.added_date}`.split(' ');
 
-
-  return (
-    <>
-      <TouchableWithoutFeedback>
+  const putContent = () => {
+    if (!props.vertical) {
+      return (
         <Block card flex style={styles.container}>
           <View style={styles.imageContainer}>
             <Image
@@ -57,10 +56,54 @@ const News = (props) => {
             </Block>
           </Block>
         </Block>
-      </TouchableWithoutFeedback>
+      );
+    }
+
+    return (
+      <Block card row style={styles.containerV}>
+        <View style={styles.imageContainerV}>
+          <Image
+            resizeMode="cover"
+            source={{ uri: props.news.preview.image }}
+            style={styles.imagePreviewV}
+          />
+        </View>
+        <Block flex style={styles.infoV}>
+          <Block>
+            <Text
+              size={14}
+              style={styles.cardTitle}
+              color={nowTheme.COLORS.SECONDARY}
+              numberOfLines={2}
+            >
+              {props.news.preview.title}
+            </Text>
+          </Block>
+          <Block>
+            <Text size={14} color={'#858C9C'} style={styles.cardDescription} numberOfLines={3}>
+              {props.news.preview.description}
+            </Text>
+          </Block>
+
+          <Block row>
+            <TouchableOpacity onPress={() => setShowModal(true)}>
+              <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
+                View Article
+              </Text>
+            </TouchableOpacity>
+          </Block>
+        </Block>
+      </Block>
+    );
+  };
+
+  return (
+    <>
+      {putContent()}
+
       <BottomModal show={showModal} close={() => setShowModal(false)}>
-      <View style={{ height: hp('90%'),}}>
-        <WebView url={props.news.link} />
+        <View style={{ height: hp('90%') }}>
+          <WebView url={props.news.link} />
         </View>
       </BottomModal>
     </>
@@ -121,6 +164,38 @@ const styles = StyleSheet.create({
   },
   info: {
     padding: theme.SIZES.BASE / 2,
+  },
+//  styles Vertical News
+  cardRead: {
+    textAlign: 'right', 
+    marginLeft: 8,
+    fontWeight:'bold',
+    paddingBottom: 10,
+    fontWeight:'bold'
+  },
+  containerV: {
+    backgroundColor: theme.COLORS.WHITE,
+    marginVertical: theme.SIZES.BASE,
+    borderWidth: 0,
+    height: 145,
+    width: '95%',
+    marginHorizontal: 5,
+
+    shadowColor: '#8898AA',
+    shadowOffset: { width: 2, height: 3 },
+    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    elevation: 2,
+  },
+  imageContainerV: {
+    width: '50%',
+    height: '100%',
+  },
+  imagePreviewV: {
+    height: 145,
+  },
+  infoV: {
+    paddingHorizontal: 10,
   },
 });
 
