@@ -3,38 +3,45 @@ import SkeletonContent from 'react-native-skeleton-content';
 import { StyleSheet } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
-
 const firstLayout = [
   {
-    width: 280,
-    height: 215,
-    marginBottom: 10
-  },
+    width: 200,
+    height: 145,
+    marginRight: 10
+  }
+];
+
+const secondLayout = [
   {
-    width: 260,
+    width: 170,
     height: 20,
-    marginBottom: 5
+    marginLeft: 10,
+    marginTop: 5
   },
   {
-    width: 260,
-    height: 10,
-    marginBottom: 5
+    width: 170,
+    height: 12,
+    marginLeft: 10,
+    marginTop: 18
   },
   {
-    width: 260,
-    height: 10,
-    marginBottom: 5
+    width: 170,
+    height: 12,
+    marginLeft: 10,
+    marginTop: 5
   },
   {
-    width: 260,
-    height: 10,
-    marginBottom: 5
+    width: 170,
+    height: 12,
+    marginLeft: 10,
+    marginTop: 5
   },
   {
-    width: 260,
-    height: 10,
-    marginBottom: 5
-  },
+    width: 50,
+    height: 15,
+    marginLeft: 10,
+    marginTop: 25
+  }
 ];
 const News = () => {
   return (
@@ -46,6 +53,13 @@ const News = () => {
         layout={firstLayout}
         isLoading={true}
       />
+      <SkeletonContent
+        containerStyle={{ flex: 1, width: 30 }}
+        animationDirection="horizontalLeft"
+        boneColor="#ECECEC"
+        layout={secondLayout}
+        isLoading={true}
+      />
     </Block>
   );
 };
@@ -55,8 +69,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
-    minHeight: 114,
-    width: 280,
+    height: 145,
+    width: '95%',
     marginHorizontal: 5,
 
     shadowColor: '#8898AA',
@@ -64,6 +78,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     elevation: 2,
+
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 });
 export default News;

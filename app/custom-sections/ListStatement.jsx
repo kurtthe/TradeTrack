@@ -28,16 +28,13 @@ const ListStatement = (props) => {
       <Block style={styles.newStatementsTitle}>
         <Text
           size={18}
-          style={{ fontFamily: 'montserrat-bold', marginLeft: '1%' }}
+          style={{ fontFamily: 'montserrat-bold', marginLeft: '1%' , top:12 }}
           color={'#363C4A'}
         >
           All Statements
         </Text>
       </Block>
       <Block center style={{ paddingBottom: '5%',  }}>{renderStatements()}</Block>
-      <Block center style={{ paddingVertical: 20, }}>
-              {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
-            </Block>
     </>
   );
 };
@@ -45,11 +42,10 @@ const ListStatement = (props) => {
 const styles = StyleSheet.create({
   newStatementsTitle: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
-    padding: 15,
+    paddingHorizontal: 15,
+    height:'4%',
     marginLeft: -15,
     width: width,
-    height: '5.5%',
-    marginBottom: 8
   },
 });
 

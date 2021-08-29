@@ -15,30 +15,34 @@ const Balance = () => {
   const balance = useSelector((state) => state.liveBalanceReducer);
 
   const renderDetailOrdersAS = () => {
-  const dateBalance = `${balance.updated}`.split(' ')
+    const dateBalance = `${balance.updated}`.split(' ');
 
-    
     const orders = [
       {
         title: 'Accurate as of',
-        price: dateBalance[0],
+        value: dateBalance[0],
+        date: true,
       },
       {
         title: 'Current Month',
-        price: balance.current,
+        value: balance.current,
       },
       {
         title: '30 Day Balance',
-        price: balance.thirty_day,
+        value: balance.thirty_day,
       },
       {
         title: 'Overdue Amount',
-        price: balance.overdue,
+        value: balance.overdue,
       },
     ];
 
     return orders.map((orders, index) => {
-      return <BalanceDetail key={index} item={orders} />;
+      return (
+      <Block style={{top:-15}}>
+      <BalanceDetail key={index} item={orders} />
+      </Block>
+      );
     });
   };
 
@@ -47,10 +51,10 @@ const Balance = () => {
       <View style={styles.detailOrders}>
         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Balance Details</Text>
       </View>
-      
+
       {renderDetailOrdersAS()}
-      <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
-      <Block row style={{ justifyContent: 'space-between', top: 10, marginBottom: -30 }}>
+      <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-10 }} />
+      <Block row style={{ justifyContent: 'space-between', margin: 5 }}>
         <Text size={15}>Total Due</Text>
         <Text
           size={16}
@@ -71,14 +75,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width,
-    height: '8%',
-    marginVertical: theme.SIZES.BASE * 0.9,
+    height: '5%',
+    marginVertical: theme.SIZES.BASE * 0.7,
   },
   receiptText: {
     fontSize: 13,
     width: '60%',
     color: nowTheme.COLORS.SECONDARY,
-  }
+  },
 });
 
 export default Balance;
