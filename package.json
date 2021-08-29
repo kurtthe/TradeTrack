@@ -11,6 +11,7 @@
     "lint": "eslint *.js **/*.js"
   },
   "dependencies": {
+    "@pstyczynski/react-native-expo-pdfjs": "^1.0.0",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-picker/picker": "1.9.2",
@@ -26,6 +27,7 @@
     "expo-asset": "~8.2.1",
     "expo-file-system": "~9.3.0",
     "expo-font": "~8.4.0",
+    "expo-secure-store": "^10.2.0",
     "expo-sharing": "~8.5.0",
     "format-money-js": "^1.4.3",
     "galio-framework": "^0.7.1",
@@ -34,6 +36,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-actions-sheet": "^0.4.9",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-maps": "0.27.1",
     "react-native-modal-datetime-picker": "^10.0.0",
     "react-native-paper": "^4.9.2",
     "react-native-picker-select": "^8.0.4",
@@ -47,6 +50,7 @@
     "react-native-svg": "12.1.0",
     "react-native-webview": "^11.6.5",
     "react-redux": "^7.2.4",
+    "rn-pdf-reader-js": "^4.1.1",
     "rxjs": "^7.3.0"
   },
   "devDependencies": {

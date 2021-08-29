@@ -14,13 +14,27 @@ export class GetDataPetitionService {
     return GetDataPetitionService.instance;
   }
 
-  async getInfo(endpoint, token=false, action = false) {
+  async getInfo(endpoint, action = false, perPage=6, paramsMore={}) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':10},
-      headers: { 'ttrak-key': (!token)? '': token },
+      params:{'page': 1, 'per-page': perPage, ...paramsMore},
     });
+
     action && action(response);
     return response;
   }
+
+
+  async getInfoStatements(endpoint, action = false, perPage=13, paramsMore={}) {
+    const response = await this.generalRequest.get(endpoint, {
+      params:{'page': 1, 'per-page': perPage, ...paramsMore},
+    });
+
+    action && action(response);
+    return response;
+  }
+
+
 }
+
+
 

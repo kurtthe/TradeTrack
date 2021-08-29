@@ -51,7 +51,8 @@ const COLORS = {
   GITHUB: '#333333',
   BEHANCE: '#1769ff',
   REDDIT: '#ff4500',
-  GOOGLE: '#dd4b39'
+  GOOGLE: '#dd4b39',
+  PURPLEINVOICE: '#7E8BAF'
 };
 
 const FONT = {

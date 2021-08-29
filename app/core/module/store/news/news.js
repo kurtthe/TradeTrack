@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export const newsSlice = createSlice({
-  name: 'invoices',
+  name: 'news',
   initialState,
   reducers: {
     getNews: (state, action) => {
