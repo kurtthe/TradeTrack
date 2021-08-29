@@ -1,5 +1,4 @@
 import * as FileSystem from 'expo-file-system';
-import * as Sharing from "expo-sharing";
 
 export class DownloadFile {
   static instance;
@@ -22,9 +21,7 @@ export class DownloadFile {
     try {
       const downloadResumable = this.createDownload(url,format);
       const { uri } = await downloadResumable.downloadAsync();
-      if(await Sharing.isAvailableAsync()){
-        await Sharing.shareAsync(uri);
-      }
+      return uri
 
     } catch (e) {
       console.log("error download",e);

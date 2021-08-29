@@ -15,32 +15,44 @@ import Icon from '@components/Icon';
 import Input from '@components/Input';
 import Tabs from '@components/Tabs';
 import nowTheme from '@constants/Theme';
-import {
-  widthPercentageToDP as wp
-} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
-import {DownloadFile} from '@core/services/download-file.service'
+import { DownloadFile } from '@core/services/download-file.service';
+import BottomModal from '@custom-elements/BottomModal';
+import PdfViewer from '@custom-elements/PdfViewer';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
   Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-const BellButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={[styles.button, style]}>
-    <Icon
-      family="NowExtra"
-      size={16}
-      name="bulb"
-      color={nowTheme.COLORS[isWhite ? 'WHITE' : 'ICON']}
-    />
-    <Block
-      middle
-      style={[styles.notify, { backgroundColor: nowTheme.COLORS[isWhite ? 'WHITE' : 'PRIMARY'] }]}
-    />
+
+const SearchHome = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity
+    style={([styles.button, style], { zIndex: 300 })}
+    onPress={() => {
+      Keyboard.dismiss();
+      navigation.navigate('SearchHome');
+    }}
+  >
+    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
   </TouchableOpacity>
 );
 
-const BasketButton = ({ isWhite, style, navigation }) => (
+const SearchProducts = ({ isWhite, style, navigation }) => (
+  <TouchableOpacity
+    style={([styles.button, style], { zIndex: 300 })}
+    onPress={() => {
+      Keyboard.dismiss();
+      navigation.navigate('SearchProducts');
+    }}
+  >
+    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+  </TouchableOpacity>
+);
+
+
+
+const SearchAccount = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
@@ -48,7 +60,7 @@ const BasketButton = ({ isWhite, style, navigation }) => (
       navigation.navigate('Search');
     }}
   >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+     {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
   </TouchableOpacity>
 );
 
@@ -64,14 +76,8 @@ const ConfigButton = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const DeleteButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 15 }}>
-    <Ionicons name="trash-sharp" color={'#828489'} size={25} />
-  </TouchableOpacity>
-);
-
 const DownloadButton = (props) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 15 }} onPress={()=>props.onPress()}>
+  <TouchableOpacity style={{ zIndex: 300, left: 15 }} onPress={() => props.onPress()}>
     <Ionicons name="download" color={'#0E3A90'} size={25} />
   </TouchableOpacity>
 );
@@ -79,7 +85,10 @@ const DownloadButton = (props) => (
 class Header extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {
+      showModalBottom: false,
+      urlFilePdf: '',
+    };
     this.downloadFile = DownloadFile.getInstance();
   }
 
@@ -88,54 +97,52 @@ class Header extends React.Component {
     return back && navigation.goBack();
   };
 
-  handleDownloadFile = ()=> {
+  handleDownloadFile = async () => {
     const { urlDownloadFile } = this.props.scene.route.params;
-    this.downloadFile.download(urlDownloadFile, 'pdf')
-  }
+    const urlPdf =  await this.downloadFile.download(urlDownloadFile, 'pdf');
+
+    this.setState({
+      urlFilePdf:urlDownloadFile,
+      showModalBottom: true,
+    });
+  };
+  openViewerPdf = () => {
+    const { urlDownloadFile } = this.props.scene.route.params;
+
+    console.log('urlDownloadFile',urlDownloadFile)
+    
+    this.setState({
+      urlFilePdf:urlDownloadFile,
+      showModalBottom: true,
+    });
+  };
 
   renderRight = () => {
     const { white, title, navigation } = this.props;
 
-    if (title === 'Title') {
-      return [
-        <BellButton key="chat-title" navigation={navigation} isWhite={white} />,
-        <BasketButton key="basket-title" navigation={navigation} isWhite={white} />,
-      ];
-    }
+    
     switch (title) {
       case 'Home':
         return [
-          // <BellButton key="chat-home" navigation={navigation} isWhite={white} />,
           <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+            <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
           </View>,
         ];
+        case 'Products':
+          return [
+            <View style={{ top: 6.5 }}>
+              <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
+            </View>,
+          ];
 
-      case 'Categories':
-        return [<BasketButton key="basket-home" navigation={navigation} isWhite={white} />];
-      case 'Category':
-        return [
-          <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
-          </View>,
-        ];
-      case 'Profile':
-        return [
-          <BellButton key="chat-profile" navigation={navigation} isWhite={white} />,
-          <BasketButton key="basket-deals" navigation={navigation} isWhite={white} />,
-        ];
-      case 'Account':
-        return [
-          <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
-          </View>,
-        ];
-      case 'Products':
-        return [
-          <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
-          </View>,
-        ];
+          case 'Account':
+            return [
+              <View style={{ top: 5.5 }}>
+                <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
+              </View>,
+            ];
+  
+     
       case 'Product':
         return [
           <Block row style={{ paddingTop: 17.5, width: 50 }}>
@@ -143,25 +150,23 @@ class Header extends React.Component {
             <ConfigButton isWhite={white} />
           </Block>,
         ];
-      case 'Cart':
-        return [
-          <View style={{ top: 11, width: 50 }}>{/* <DeleteButton  isWhite={white} /> */}</View>,
-        ];
 
-      case 'Search':
-        return [<BasketButton key="basket-search" navigation={navigation} isWhite={white} />];
+      case 'SearchHome':
+        return [<SearchHome key="basket-search" navigation={navigation} isWhite={white} />];
+
+        case 'SearchProducts':
+          return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
 
       case 'Invoice Details':
         return [
           <View style={{ top: 7, width: 50 }}>
-            <DownloadButton isWhite={white}  onPress={()=>this.handleDownloadFile()}/>
-          </View>,
-        ];
-
-      case 'Bathroom':
-        return [
-          <View style={{ top: 5.5 }}>
-            <BasketButton key="basket-home" navigation={navigation} isWhite={white} />
+            <DownloadButton isWhite={white} onPress={() => this.handleDownloadFile()} />
+            <BottomModal
+              show={this.state.showModalBottom}
+              close={() => this.setState({ showModalBottom: false })}
+            >
+              <PdfViewer url={this.state.urlFilePdf} />
+            </BottomModal>
           </View>,
         ];
 
@@ -280,11 +285,7 @@ class Header extends React.Component {
   renderHeader = () => {
     const { search, options, tabs } = this.props;
     if (search || tabs || options) {
-      return (
-        <Block center>
-          {tabs ? this.renderTabs() : null}
-        </Block>
-      );
+      return <Block center>{tabs ? this.renderTabs() : null}</Block>;
     }
   };
   render() {

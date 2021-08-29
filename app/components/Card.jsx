@@ -183,7 +183,8 @@ const styles = StyleSheet.create({
   },
   verticalStyles: {
     borderBottomRightRadius: 0,
-    borderBottomLeftRadius: 0
+    borderBottomLeftRadius: 0,
+    
   },
   fullImage: {
     height: 215
@@ -207,8 +208,8 @@ const styles = StyleSheet.create({
     color: nowTheme.COLORS.PRIMARY
   },
   imageBlock: {
-    width: 90,
-    height: 90
+    width: '100%',
+    height: '100%'
   }
 });
 

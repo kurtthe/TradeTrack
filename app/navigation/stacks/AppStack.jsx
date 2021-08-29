@@ -33,7 +33,12 @@ function AppStack() {
       component: CartStack,
       typeIcon: 'Ionicons',
       icon: 'cart',
-      title: 'Cart'
+      title: 'Cart',
+      title: 'Cart',
+      badge:{
+        textBadge: 3
+      }
+      
     },
     {
       name: 'Account',

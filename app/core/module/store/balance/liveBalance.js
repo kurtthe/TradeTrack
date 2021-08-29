@@ -7,7 +7,8 @@ const initialState = {
   current: 0,
   thirty_day: null,
   overdue: 0,
-  total: null
+  total: null,
+  client_number:null
 }
 
 export const liveBalanceSlice = createSlice({
@@ -23,6 +24,7 @@ export const liveBalanceSlice = createSlice({
       state.thirty_day = data.thirty_day
       state.overdue = data.overdue
       state.total = data.total
+      state.client_number = data.client_number
     },
   },
 })
