@@ -34,6 +34,10 @@ function AppStack() {
       typeIcon: 'Ionicons',
       icon: 'cart',
       title: 'Cart',
+      title: 'Cart',
+      badge:{
+        textBadge: 3
+      }
       
     },
     {
