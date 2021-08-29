@@ -23,7 +23,9 @@ const Statement = (props) => {
     <>
       <Block style={styles.container}>
         <Block row>
-          <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
+      
+          <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}  >
+          <TouchableOpacity onPress={() => setShowModal(true)}>
             <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
               <Block row>
                 <Text
@@ -55,14 +57,14 @@ const Statement = (props) => {
                 style={{ fontFamily: 'montserrat-regular', marginTop: 20 }}
               ></Text>
 
-              <TouchableOpacity onPress={() => setShowModal(true)}>
+            
                 <Ionicons
-                  style={{ left: -10, top: -5 }}
+                  style={{ left: -10,  }}
                   name="eye"
                   color={nowTheme.COLORS.LIGHTGRAY}
                   size={20}
                 />
-              </TouchableOpacity>
+           
             </Block>
             <Block row style={{ marginTop: -10 }}></Block>
             <Block bottom>
@@ -74,7 +76,9 @@ const Statement = (props) => {
                 {formatMoney.format(props.statement.new)}
               </Text>
             </Block>
+            </TouchableOpacity>
           </Block>
+         
         </Block>
       </Block>
       <BottomModal show={showModal} close={() => setShowModal(false)}>

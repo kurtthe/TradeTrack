@@ -212,7 +212,6 @@ class Category extends React.Component {
               }}
               isActive={this.state.categoryActive}
             />
-            
           </Block>
         </Block>
         <ScrollView

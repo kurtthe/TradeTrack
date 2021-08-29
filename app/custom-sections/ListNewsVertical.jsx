@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
-import News from '@custom-elements/NewsVertical'
+import News from '@custom-elements/News'
 import SkeletonNews from '@custom-elements/skeletons/NewsVertical'
 
 
@@ -21,7 +21,7 @@ const ListNews = (props) => {
     }
     
     return props.news.map((item, index)=>(
-      <News key={index} news={item} />
+      <News key={index} news={item} vertical={true} />
     ))
   }
 

@@ -12,27 +12,51 @@ import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('screen');
 
-class Allinvoice extends React.Component {
+class AllNews extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      perPageData: 20,
+      news: [],
+    };
+
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
   async componentDidMount() {
-    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
-    await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
-    await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
+    await this.getDataPetitionNews();
   }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (this.state.perPageData !== prevState.perPageData) {
+      await this.getDataPetitionNews();
+    }
+  }
+
+  getDataPetitionNews = async () => {
+    await this.getDataPetition.getInfo(endPoints.news, this.handelGetNews, this.state.perPageData);
+  };
+
+  handleLoadMore = () => {
+    const oldData = this.state.perPageData;
+    this.setState({ perPageData: oldData + 20 });
+  };
+
+  handelGetNews = (data) => {
+    this.setState({
+      news: data,
+    });
+  };
 
   render() {
     return (
       <ScrollView>
         <Block flex>
-          <ListNews news={this.props.news} />
+          <ListNews news={this.state.news} />
           <Block center style={{ paddingVertical: 5 }}>
             <Button
+              onPress={() => this.handleLoadMore()}
               color="info"
               textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
               style={styles.button}
@@ -40,16 +64,9 @@ class Allinvoice extends React.Component {
               Load More...
             </Button>
           </Block>
-          <Block center style={{ paddingVertical: 10 }}>
-            {/* <Block center style={{ paddingVertical: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 670) ? 40 :30)  : ((Dimensions.get('window').height < 595) ? 40 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? 30:-30)) }}> */}
-          </Block>
         </Block>
       </ScrollView>
     );
-
-    // return(
-    //   <SkeletonInvoiceDetail/>
-    // )
   }
 }
 
@@ -72,8 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  news: state.newsReducer.news,
-});
-
-export default connect(mapStateToProps)(Allinvoice);
+export default AllNews;

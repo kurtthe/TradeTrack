@@ -14,21 +14,25 @@ export class GetDataPetitionService {
     return GetDataPetitionService.instance;
   }
 
-  async getInfo(endpoint, action = false) {
+  async getInfo(endpoint, action = false, perPage=6, paramsMore={}) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':5},
+      params:{'page': 1, 'per-page': perPage, ...paramsMore},
     });
+
     action && action(response);
     return response;
   }
 
-  async getInfo2(endpoint, action = false) {
+
+  async getInfoStatements(endpoint, action = false, perPage=13, paramsMore={}) {
     const response = await this.generalRequest.get(endpoint, {
-      params:{'page': 1, 'per-page':12},
+      params:{'page': 1, 'per-page': perPage, ...paramsMore},
     });
+
     action && action(response);
     return response;
   }
+
 
 }
 
