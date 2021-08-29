@@ -38,7 +38,11 @@ const Balance = () => {
     ];
 
     return orders.map((orders, index) => {
-      return <BalanceDetail key={index} item={orders} />;
+      return (
+      <Block style={{top:-15}}>
+      <BalanceDetail key={index} item={orders} />
+      </Block>
+      );
     });
   };
 
@@ -49,7 +53,7 @@ const Balance = () => {
       </View>
 
       {renderDetailOrdersAS()}
-      <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
+      <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-10 }} />
       <Block row style={{ justifyContent: 'space-between', margin: 5 }}>
         <Text size={15}>Total Due</Text>
         <Text
@@ -71,8 +75,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width,
-    height: '8%',
-    marginVertical: theme.SIZES.BASE * 0.9,
+    height: '5%',
+    marginVertical: theme.SIZES.BASE * 0.7,
   },
   receiptText: {
     fontSize: 13,

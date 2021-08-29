@@ -251,12 +251,7 @@ class Category extends React.Component {
               }}
               isActive={this.state.categoryActive}
             />
-            {/* <FilterButton
-              text={'Sub Category'}
-              onPress={() => {
-                actionSheetRef2.current?.setModalVisible();
-              }}
-            /> */}
+           
           </Block>
         </Block>
         <ScrollView

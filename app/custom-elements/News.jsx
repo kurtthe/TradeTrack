@@ -44,7 +44,7 @@ const News = (props) => {
             <Block row>
               <TouchableOpacity onPress={() => setShowModal(true)}>
                 <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
-                  Read More +
+                  Read More
                 </Text>
               </TouchableOpacity>
 
@@ -88,7 +88,7 @@ const News = (props) => {
           <Block row>
             <TouchableOpacity onPress={() => setShowModal(true)}>
               <Text style={styles.cardRead} size={14} color={'#0E3A90'}>
-                View Article
+                Read More
               </Text>
             </TouchableOpacity>
           </Block>
