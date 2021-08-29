@@ -9,7 +9,7 @@ const putIcon = (color,size, typeIcon, icon)=>{
 }
 
 export const ConfigRouteMain = (MainTab, screens) => {
-  return screens.map(({ name, component, typeIcon, icon, title, number }, index) => (
+  return screens.map(({ name, component, typeIcon, icon, title, badge }, index) => (
     <MainTab.Screen
       key={index}
       name={name}
@@ -17,7 +17,7 @@ export const ConfigRouteMain = (MainTab, screens) => {
       options={{
         tabBarLabel: title,
         tabBarIcon: ({ color, size }) => putIcon(color, size, typeIcon, icon),
-        tabBarBadge: number
+        tabBarBadge: (!badge)? null: badge.textBadge
       }}
     />
   ));
