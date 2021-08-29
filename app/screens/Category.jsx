@@ -33,36 +33,7 @@ const sizeConstant = (Platform.OS === 'ios')
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
-// const radioButtonsData2 = [
-//   {
-//     id: '1',
-//     label: 'All Sub Categories',
-//     value: 'All Sub Categories',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '2',
-//     label: 'Bathroom Cabinets',
-//     value: 'Bathroom Cabinets',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '3',
-//     label: 'Bathroom Vanities',
-//     value: 'Bathroom Vanities',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '4',
-//     label: 'Mirrors & Shaving ',
-//     value: 'Cabinets',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-// ]
+
 
 class Category extends React.Component {
 
@@ -227,17 +198,7 @@ class Category extends React.Component {
     return (
       <>
       <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        {/* <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
-          <Text>
-            {`Product`}
-          </Text>
-          <Text>
-            {`>`}
-          </Text>
-          <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
-            {categoryTitle} Products
-          </Text>
-        </Block> */}
+       
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
           <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
@@ -251,7 +212,6 @@ class Category extends React.Component {
               }}
               isActive={this.state.categoryActive}
             />
-           
           </Block>
         </Block>
         <ScrollView
