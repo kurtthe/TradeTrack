@@ -386,6 +386,7 @@ class Account extends React.Component {
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
                 onPress={() => this.onPressRadioButton()}
+                containerStyle={{alignItems: 'left'}}
               />
             
           
