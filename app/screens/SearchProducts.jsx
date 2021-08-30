@@ -13,14 +13,14 @@ import {
 import { Block, Text, theme } from "galio-framework";
 import { articles, categories, nowTheme } from "@constants/";
 import { Icon, Card, Input } from "@components";
-
+import { Searchbar } from 'react-native-paper';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from "@components";
 
 import { connect } from 'react-redux';
 
-import { getCategories, getProducts, loadMoreProducts } from "../../services/ProductServices";
+import { getProducts, searchProducts } from "../../services/ProductServices";
 import { updateProducts } from '@core/module/store/cart/cart';
 
 
@@ -110,7 +110,6 @@ class SearchHome extends React.Component {
 
   onAddPressed(item) {
     this.props.updateProducts([...this.props.cartProducts, item])
-    alert(`${item.name} added to cart`)
     //this.props.navigation.navigate("Cart")
   }
 
@@ -185,40 +184,25 @@ class SearchHome extends React.Component {
     );
   };
 
-  renderSearch = () => {
-    const { search } = this.state;
-    const iconSearch = search ? (
-      <TouchableWithoutFeedback onPress={() => this.setState({ search: "" })}>
-        <Icon
-          size={16}
-          color={theme.COLORS.MUTED}
-          name="magnifying-glass"
-          family="entypo"
-        />
-      </TouchableWithoutFeedback>
-    ) : (
-      <Icon
-        size={16}
-        color={theme.COLORS.MUTED}
-        name="magnifying-glass"
-        family="entypo"
-      />
-    );
+  onChangeSearch = async (query) => {
+    try {
+      let searchResult = await searchProducts(query);
+      console.log(searchResult)
+      this.setState({
+        data: searchResult
+      })
+    } catch (e) {
+      console.log('search error', e)
+    }
+  }
 
+  renderSearch = () => {
     return (
-      <Input
-        right
-        color="black"
-        autoFocus={true}
-        autoCorrect={false}
-        autoCapitalize="none"
-        iconContent={iconSearch}
-        defaultValue={search}
-        style={styles.search}
+      <Searchbar
         placeholder="What are you looking for?"
-        onFocus={() => this.setState({ active: true })}
-        onBlur={() => this.setState({ active: false })}
-        //onChangeText={this.handleSearchChange}
+        onChangeText={this.onChangeSearch}
+        style={styles.search}
+        inputStyle={styles.searchInput}
       />
     );
   };
@@ -342,41 +326,24 @@ class SearchHome extends React.Component {
   render() {
     return (
       <View>
-      <Block flex  style={styles.searchContainer}>
-        <Block center style={styles.header}>
-          {this.renderSearch()}
-
-         
+        <Block flex  style={styles.searchContainer}>
+          <Block center style={styles.header}>
+            {this.renderSearch()}
+          </Block>
         </Block>
-
-        </Block>
-
         <Block style={{top:60}}>
-
-        <ScrollView >
-
-       {this.renderResults()} 
-       
-
-       <Block row backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
-
+          {this.renderResults()} 
+          <Block row backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
             <FlatList
-                contentContainerStyle={{alignItems: 'center'}}
-                numColumns={2}
-                data={this.state.data}
-                renderItem={(item) => this.renderCard(item)}
-                keyExtractor={item => item.id}
-              
-              /> 
-           
-            </Block>
-       
-        </ScrollView>
+              contentContainerStyle={{alignItems: 'center'}}
+              numColumns={2}
+              data={this.state.data}
+              renderItem={(item) => this.renderCard(item)}
+              keyExtractor={item => item.id}
+            /> 
+          </Block>
         </Block>
-   
-
       </View>
-      
     );
   }
 }
@@ -398,7 +365,10 @@ const styles = StyleSheet.create({
   searchContainer: {
     width: width,
     paddingHorizontal: theme.SIZES.BASE,
-    
+  },
+  searchInput: {
+    color: 'black',
+    fontSize: 16
   },
   search: {
     height: 48,
