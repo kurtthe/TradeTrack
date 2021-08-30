@@ -79,7 +79,6 @@ class Product extends React.Component {
 
   onAddCartPressed(product) {
     this.props.updateProducts([...this.props.cartProducts, product])
-    alert(`${product.name} added to cart`)
     //navigation.navigate("Cart")
   }
 
