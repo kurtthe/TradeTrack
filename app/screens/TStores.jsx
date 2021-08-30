@@ -221,7 +221,7 @@ class Callouts extends React.Component {
             description="by pressing on transparent area of custom callout"
           />
         </MapView>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           <View style={styles.bubble}>
             <Text>Tap on markers to see different callouts</Text>
           </View>
@@ -239,7 +239,7 @@ class Callouts extends React.Component {
           >
             <Text>Hide</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     );
   }
