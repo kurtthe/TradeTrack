@@ -79,7 +79,6 @@ class Product extends React.Component {
 
   onAddCartPressed(product) {
     this.props.updateProducts([...this.props.cartProducts, product])
-    alert(`${product.name} added to cart`)
     //navigation.navigate("Cart")
   }
 
@@ -126,15 +125,7 @@ class Product extends React.Component {
       <Block flex style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
           <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 25, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
-            {/* <Text style={{marginLeft: 15}}>
-              {`Bathroom Furnitures`}
-            </Text>
-            <Text>
-              {` > `}
-            </Text>
-            <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: '55%'}}>
-              {product.title}
-            </Text> */}
+           
           </Block>
           <Block flex>
             {this.renderGallery()}
@@ -198,43 +189,6 @@ class Product extends React.Component {
                 </Block>
               </Block>
 
-              {/* <Block flex>
-              <TouchableOpacity style={{
-                backgroundColor:'#f5f6fa', 
-                width: wp('85%') ,
-                height: hp('8%') ,
-                borderRadius:7.5,
-              }}>
-                  <Block row style={{paddingBottom: 15}}>
-                    <Block flex center >
-                      <Image 
-                        style={{marginLeft:20, width: 30, height: 30, resizeMode: 'contain',}}
-                        source={require('@assets/imgs/img/file-sheet.png')}
-                      />
-                    </Block>
-                    <Block flex={4}>
-                      <Text style={{fontFamily: 'montserrat-regular', padding:9}} size={14}  > Catalog Details.pdf </Text> 
-                      <Text style={{fontFamily: 'montserrat-regular', paddingLeft:10, top:-9.5 }} size={12}  > 2mb </Text> 
-                    </Block>
-                    <Block flex center >
-                      <Image 
-                        style={styles.image_temp}
-                        source={require('@assets/imgs/img/download-circle.png')}
-                      />
-                    </Block>
-                  </Block>
-                </TouchableOpacity>
-              </Block>
-              <Block>
-                <Text style={{paddingTop: 20}} size={16}>
-                  Description
-                </Text>
-                <View style={styles.grayDescriptionLine}/>
-                {this.renderDescription(product)}
-                <Text center color={nowTheme.COLORS.ORANGE} style={{paddingTop: 10}}>
-                  *Refer to manufacturer for full Warranty Details
-                </Text>
-              </Block> */}
             </Block> 
           </Block> 
           </ScrollView>

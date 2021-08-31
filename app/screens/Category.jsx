@@ -20,7 +20,7 @@ import { Searchbar } from 'react-native-paper';
 import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
-import { getCategories, getProducts, loadMoreProducts } from "../../services/ProductServices";
+import { getCategories, getProducts, loadMoreProducts, searchCategories } from "../../services/ProductServices";
 import { connect  } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
 
@@ -33,36 +33,7 @@ const sizeConstant = (Platform.OS === 'ios')
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
-// const radioButtonsData2 = [
-//   {
-//     id: '1',
-//     label: 'All Sub Categories',
-//     value: 'All Sub Categories',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '2',
-//     label: 'Bathroom Cabinets',
-//     value: 'Bathroom Cabinets',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '3',
-//     label: 'Bathroom Vanities',
-//     value: 'Bathroom Vanities',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-//   {
-//     id: '4',
-//     label: 'Mirrors & Shaving ',
-//     value: 'Cabinets',
-//     color: nowTheme.COLORS.INFO,
-//     labelStyle: {fontWeight: 'bold'}
-//   },
-// ]
+
 
 class Category extends React.Component {
 
@@ -77,7 +48,8 @@ class Category extends React.Component {
       hideMyPrice: true,
       ppage: 40,
       searchValue: '', 
-      loading: false
+      loading: false,
+      selectedCategory: {}
     };
   }
 
@@ -87,7 +59,8 @@ class Category extends React.Component {
     })
     try{
       let res = await getProducts()
-      let categories = await this.setCategories()
+      let rawCategories = await getCategories()
+      let categories = this.setCategories(rawCategories)
       this.setState({ 
         data: res, 
         radioButtons: categories, 
@@ -103,8 +76,16 @@ class Category extends React.Component {
     }
   }
 
-  async setCategories() {
-    let categories = await getCategories()
+  // async componentDidUpdate() {
+  //   if (this.state.selectedCategory != {}) {
+  //     let products = await getProductsFiltered(this.state.selectedCategory.id)
+  //     this.setState({
+  //       data: products
+  //     })
+  //   }
+  // }
+
+  setCategories(categories) {
     let radioCategories = categories.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
@@ -137,13 +118,26 @@ class Category extends React.Component {
     actionSheetRef2.current?.setModalVisible(false);
   }
 
-  onPressRadioButton() {
-    this.setState({ categoryActive: true })
+  onPressRadioButton(pick) {
+    const selected = pick.filter(o => o.selected) 
+    this.setState({ 
+      categoryActive: true,
+      selectedCategory: selected,
+      data: selected[0]?.products
+    })
     actionSheetRef.current?.setModalVisible(false);
   }
 
-  onChangeSearch(query) {
-    console.log(query)
+  onChangeSearch = async (query) => {
+    try {
+      let searchResult = await searchCategories(query);
+      let categories = this.setCategories(searchResult);
+      this.setState({
+        radioButtons: categories
+      })
+    } catch (e) {
+      console.log('search error', e)
+    }
   }
 
   onProductPressed(item) {
@@ -157,7 +151,6 @@ class Category extends React.Component {
 
   onAddPressed(item) {
     this.props.updateProducts([...this.props.cartProducts, item])
-    alert(`${item.name} added to cart`)
     //this.props.navigation.navigate("Cart")
   }
 
@@ -227,17 +220,7 @@ class Category extends React.Component {
     return (
       <>
       <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-        {/* <Block row width={width*0.9} style={{ height: 50, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly', marginLeft: '-3%' }}>
-          <Text>
-            {`Product`}
-          </Text>
-          <Text>
-            {`>`}
-          </Text>
-          <Text numberOfLines={1} color={nowTheme.COLORS.INFO} style={{width: 250}}>
-            {categoryTitle} Products
-          </Text>
-        </Block> */}
+       
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
           <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
@@ -251,12 +234,6 @@ class Category extends React.Component {
               }}
               isActive={this.state.categoryActive}
             />
-            {/* <FilterButton
-              text={'Sub Category'}
-              onPress={() => {
-                actionSheetRef2.current?.setModalVisible();
-              }}
-            /> */}
           </Block>
         </Block>
         <ScrollView
@@ -295,29 +272,13 @@ class Category extends React.Component {
           style={styles.search}
           inputStyle={styles.searchInput}
         />
-        {/* <Input
-          right
-          color="black"
-          style={styles.search}
-          placeholder="Search"
-          placeholderTextColor={'#8898AA'}
-          value={v => {this.setState({searchValue: v}); console.log('hohoo')}}
-          // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
-          iconContent={
-            <Icon 
-              size={16} 
-              color={theme.COLORS.MUTED} 
-              name="zoom-bold2x" 
-              family="NowExtra" 
-            />
-          }
-        /> */}
-        <Block left style={{height: 250, padding: 5, paddingBottom: 40}}>
+        <Block style={{height: 250, padding: 5, paddingBottom: 40}}>
           <ScrollView style={{width: width}}>
             <RadioGroup 
               radioButtons={this.state.radioButtons}
               color={nowTheme.COLORS.INFO} 
-              onPress={() => this.onPressRadioButton()} 
+              onPress={(pick) => this.onPressRadioButton(pick)}
+              containerStyle={{alignItems: 'left'}}
             />
           </ScrollView>
         </Block>
@@ -327,7 +288,8 @@ class Category extends React.Component {
           <RadioGroup 
             radioButtons={this.state.radioButtons2}
             color={nowTheme.COLORS.INFO} 
-            onPress={() => this.onPressRadioButton2()} 
+            onPress={() => this.onPressRadioButton2()}
+            containerStyle={{alignItems: 'left'}}
           />
         </Block>
       </ActionSheet>
