@@ -43,6 +43,7 @@ class InvoiceDetails extends React.Component {
 
     return this.state.invoiceDetail.structure.items.map((orders, index) => (
         <Block key ={index}>
+          <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
           <Text  numberOfLines={2} style={styles.receiptText}>{orders.description}</Text>
           <Block row style={{ justifyContent: 'space-between', paddingBottom: 7 }}>
             <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
@@ -164,13 +165,20 @@ const styles = StyleSheet.create({
   //   backgroundColor: nowTheme.COLORS.BACKGROUND,
   // },
   text: {
-    fontSize: 10,
+    fontSize: 11.5,
     paddingTop: 10,
     color: nowTheme.COLORS.PRETEXT,
   },
   grayText: {
     color: nowTheme.COLORS.PRETEXT,
     top:-7
+  },
+  grayTextSKU: {
+    color: nowTheme.COLORS.PRETEXT,
+    top:7,
+    left:-3.5,
+    fontSize: 11.5,
+   
   },
   detailPrice: {
     fontWeight: Platform.OS == 'android' ? 'bold' : '500',

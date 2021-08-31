@@ -18,7 +18,7 @@ import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import GrayLine from '@components/GrayLine';
 import Icon from '@components/Icon';
 import FilterButton from '@components/FilterButton';
-import PickerButton from '@components/PickerButton';
+import RadioGroup from 'react-native-radio-buttons-group';
 import ActionSheet from 'react-native-actions-sheet';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -28,17 +28,49 @@ import ListInvoices from '@custom-sections/ListInvoices';
 import LiveBalance from '@custom-sections/LiveBalance';
 import Balance from '@custom-sections/Balance';
 import ListStatement from '@custom-sections/ListStatement';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
+
 
 import { getStatements } from '@core/module/store/statements/statements';
+import { getBalance } from '@core/module/store/balance/liveBalance';
 
 import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('screen');
 const actionSheetRef = createRef();
+const actionSheetType = createRef();
+
 const pickerOptions = [
   { label: 'Pay 30 Day', value: 'now' },
   { label: 'Pay Overdue', value: 'overdue' },
   { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
+];
+
+
+const radioButtonsHour = [
+  {
+    id: '1',
+    label: 'INVOICE',
+    value: 'INVOICE',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '2',
+    label: 'CREDIT NOTES',
+    value: 'CREDIT NOTES',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '3',
+    label: 'QUOTE',
+    value: 'QUOTE',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+
 ];
 
 class Account extends React.Component {
@@ -46,6 +78,8 @@ class Account extends React.Component {
     super(props);
 
     this.state = {
+      isDateTimePickerVisible: false,
+      isTypePickerVisible:false,
       customStyleIndex: 0,
       clipboardText: "",
       textInputText: ""
@@ -62,6 +96,26 @@ class Account extends React.Component {
     await Clipboard.setString('048284743');
   }
 
+  showDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: true });
+  };
+
+
+  hideDateTimePicker = () => {
+    this.setState({ isDateTimePickerVisible: false });
+  };
+
+  handleDatePicked = (date) => {
+    console.log('A date has been picked: ', date);
+    this.hideDateTimePicker();
+  };
+
+
+  onPressRadioButton() {
+    actionSheetType.current?.setModalVisible(false);
+  }
+
+  
 
   async componentDidMount() {
     if (!!this.props.route.params) {
@@ -69,7 +123,8 @@ class Account extends React.Component {
         customStyleIndex: this.props.route.params.tabIndexSelected,
       });
     }
-    await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
+    await this.getDataPetition.getInfoStatements(endPoints.statements, this.props.getStatements);
+    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
   }
 
   handleCustomIndexSelect = (index) => {
@@ -151,7 +206,7 @@ class Account extends React.Component {
                   : 16
               }
             >
-              bring from endpoint
+             {this.props.liveBalance.client_number}
             </Text>
           </Block>
         </Block>
@@ -181,24 +236,18 @@ class Account extends React.Component {
   
   renderStatements = () => {
     return (
-      <Block flex center backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }} >
-        <Block style={{ left: theme.SIZES.BASE * -1.7 }}>{this.renderFilters()}</Block>
+      <Block flex  backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }} >
+       
+       <Block style={{ top: 5 }}>
+       {this.renderFilters()}
+       
+         </Block>
 
-        <Block >
-          <ScrollView>
-            <Block flex>
+        <Block flex center style={styles.home}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
               <ListInvoices invoices={this.props.invoices} title={false} />
-              <Block center style={{ paddingVertical: 5 }}>
-                <Button
-                  color="info"
-                  textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                  style={styles.button}
-                >
-                  Load More..
-                </Button>
-              </Block>
-              <Block center style={{ paddingVertical: 5 }}></Block>
-            </Block>
+             
+             
           </ScrollView>
         </Block>
       </Block>
@@ -207,21 +256,40 @@ class Account extends React.Component {
 
   renderFilters = () => {
     return (
-      <Block
-        row
-        space={'evenly'}
-        width={'85%'}
-        style={{ justifyContent: 'space-evenly', marginLeft: '-20%', padding: 8 ,}}
-      >
-        <FilterButton text={'By Date'} icon={require('@assets/imgs/img/calendar.png')} />
-        
-        <FilterButton text={'For Type'} />
-      </Block>
+
+      <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}>
+
+<>
+          <FilterButton text={'By Date'} icon={require('@assets/imgs/img/calendar.png')}  onPress={this.showDateTimePicker} />
+
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+            />
+          </>
+
+
+      
+        <FilterButton 
+          text={'For Type'} 
+          // onPress={() => actionSheetType.current?.setModalVisible()}
+
+           onPress={() => {
+            this.setState({ radioButtonsData: radioButtonsHour });
+            actionSheetType.current?.setModalVisible();
+          }}
+        />
+
+
+           
+     </Block>
+
     );
   };
 
   render() {
-    const { customStyleIndex } = this.state;
+    const { customStyleIndex, radioButtonsData } = this.state;
 
     return (
       <SafeAreaView>
@@ -305,9 +373,26 @@ class Account extends React.Component {
               >
                 Cancel
               </Button>
+              
             </View>
           </Block>
         </ActionSheet>
+
+
+
+        <ActionSheet ref={actionSheetType} headerAlwaysVisible>
+          <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
+          <RadioGroup
+                radioButtons={this.state.radioButtonsData}
+                color={nowTheme.COLORS.INFO}
+                onPress={() => this.onPressRadioButton()}
+                containerStyle={{alignItems: 'left'}}
+              />
+            
+          
+          </Block>
+        </ActionSheet>
+
       </SafeAreaView>
     );
   }
@@ -315,8 +400,9 @@ class Account extends React.Component {
 
 const styles = StyleSheet.create({
   home: {
+   
     width: width,
-    backgroundColor: '#e5e5e5',
+    top:-10
   },
   articles: {
     width: width - theme.SIZES.BASE * 0.1,
@@ -414,13 +500,16 @@ const styles = StyleSheet.create({
   pickerText: {
     color: nowTheme.COLORS.PICKERTEXT,
   },
+
+
 });
 
 const mapStateToProps = (state) => ({
   statements: state.statementsReducer.statements,
   invoices: state.invoicesReducer.invoices,
+  liveBalance: state.liveBalanceReducer,
 });
 
-const mapDispatchToProps = { getStatements };
+const mapDispatchToProps = { getStatements, getBalance };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

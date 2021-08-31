@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { connect  } from 'react-redux';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeStack from './HomeStack'
@@ -12,7 +12,8 @@ import {ConfigRouteMain} from './ConfigMainTabRoutes'
 
 const MainTab = createBottomTabNavigator();
 
-function AppStack() {
+function AppStack(props) {
+
   const screens = [
     {
       name: 'Home',
@@ -34,7 +35,10 @@ function AppStack() {
       typeIcon: 'Ionicons',
       icon: 'cart',
       title: 'Cart',
-      
+      title: 'Cart',
+      badge:{
+        textBadge: props.cartProducts.length
+      }
     },
     {
       name: 'Account',
@@ -64,4 +68,8 @@ function AppStack() {
   );
 }
 
-export default AppStack
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+export default connect(mapStateToProps)(AppStack)
