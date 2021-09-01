@@ -4,19 +4,16 @@ import {
   Dimensions,
   ScrollView,
   View,
-  ImageBackground,
   TouchableOpacity,
   SafeAreaView,
-  Clipboard
+  Clipboard,
 } from 'react-native';
 import { Block, theme, Text, Input } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { Card, Button } from '@components';
-import { Notification } from '@components';
-import { nowTheme, Images } from '@constants';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Button } from '@components';
+import { nowTheme } from '@constants';
+import { MaterialIcons } from '@expo/vector-icons';
 import GrayLine from '@components/GrayLine';
-import Icon from '@components/Icon';
 import FilterButton from '@components/FilterButton';
 import RadioGroup from 'react-native-radio-buttons-group';
 import ActionSheet from 'react-native-actions-sheet';
@@ -28,9 +25,8 @@ import ListInvoices from '@custom-sections/ListInvoices';
 import LiveBalance from '@custom-sections/LiveBalance';
 import Balance from '@custom-sections/Balance';
 import ListStatement from '@custom-sections/ListStatement';
+import ListData from '@custom-sections/ListData';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-
-
 
 import { getStatements } from '@core/module/store/statements/statements';
 import { getBalance } from '@core/module/store/balance/liveBalance';
@@ -46,7 +42,6 @@ const pickerOptions = [
   { label: 'Pay Overdue', value: 'overdue' },
   { label: 'Pay 30 Day and Overdue', value: 'nowAndOver' },
 ];
-
 
 const radioButtonsHour = [
   {
@@ -70,7 +65,6 @@ const radioButtonsHour = [
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
-
 ];
 
 class Account extends React.Component {
@@ -79,27 +73,25 @@ class Account extends React.Component {
 
     this.state = {
       isDateTimePickerVisible: false,
-      isTypePickerVisible:false,
+      isTypePickerVisible: false,
       customStyleIndex: 0,
-      clipboardText: "",
-      textInputText: ""
-      
+      clipboardText: '',
+      textInputText: '',
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
   setBsbClipboard = async () => {
     await Clipboard.setString('083125');
-  }
+  };
 
   setAccountClipboard = async () => {
     await Clipboard.setString('048284743');
-  }
+  };
 
   showDateTimePicker = () => {
     this.setState({ isDateTimePickerVisible: true });
   };
-
 
   hideDateTimePicker = () => {
     this.setState({ isDateTimePickerVisible: false });
@@ -110,12 +102,9 @@ class Account extends React.Component {
     this.hideDateTimePicker();
   };
 
-
   onPressRadioButton() {
     actionSheetType.current?.setModalVisible(false);
   }
-
-  
 
   async componentDidMount() {
     if (!!this.props.route.params) {
@@ -123,7 +112,6 @@ class Account extends React.Component {
         customStyleIndex: this.props.route.params.tabIndexSelected,
       });
     }
-    await this.getDataPetition.getInfoStatements(endPoints.statements, this.props.getStatements);
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
   }
 
@@ -132,17 +120,68 @@ class Account extends React.Component {
   };
 
   renderBalance = () => {
-    const { customStyleIndex } = this.state;
     return (
-      <Block style={{ padding: theme.SIZES.BASE, top: '0.5%' }}>
-        <Text style={{ paddingBottom: 15 }} size={16}>
-          Payment Details
-        </Text>
-        <Block row style={{ paddingBottom: 15 }}>
-          <Block row flex center justifyContent={'space-between'}>
-            <Block>
+      <>
+        <Block style={{ padding: theme.SIZES.BASE, top: '0.5%' }}>
+          <Text style={{ paddingBottom: 15 }} size={16}>
+            Payment Details
+          </Text>
+          <Block row style={{ paddingBottom: 15 }}>
+            <Block row flex center justifyContent={'space-between'}>
+              <Block>
+                <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                  BSB
+                </Text>
+                <Text
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 14
+                        : 16
+                      : Dimensions.get('window').height < 870
+                      ? 14
+                      : 16
+                  }
+                >
+                  O83-125
+                </Text>
+              </Block>
+              <Block center flex>
+                <TouchableOpacity onPress={this.setBsbClipboard}>
+                  <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+                </TouchableOpacity>
+              </Block>
+            </Block>
+            <Block row flex center justifyContent={'space-between'}>
+              <Block>
+                <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                  Account
+                </Text>
+                <Text
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 14
+                        : 16
+                      : Dimensions.get('window').height < 870
+                      ? 14
+                      : 16
+                  }
+                >
+                  04-828-4743
+                </Text>
+              </Block>
+              <Block>
+                <TouchableOpacity onPress={this.setAccountClipboard}>
+                  <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+                </TouchableOpacity>
+              </Block>
+            </Block>
+          </Block>
+          <Block row style={{ paddingBottom: 15 }}>
+            <Block flex>
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                BSB
+                Reference
               </Text>
               <Text
                 size={
@@ -155,99 +194,43 @@ class Account extends React.Component {
                     : 16
                 }
               >
-                O83-125
+                {this.props.liveBalance.client_number}
               </Text>
-            </Block>
-            <Block center flex>
-              <TouchableOpacity onPress={this.setBsbClipboard}>
-                <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
-              </TouchableOpacity>
             </Block>
           </Block>
-          <Block row flex center justifyContent={'space-between'}>
-            <Block>
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                Account
-              </Text>
-              <Text
-                size={
-                  Platform.OS === 'ios'
-                    ? Dimensions.get('window').height < 670
-                      ? 14
-                      : 16
-                    : Dimensions.get('window').height < 870
-                    ? 14
-                    : 16
-                }
-              >
-                04-828-4743
-              </Text>
-            </Block>
-            <Block>
-              <TouchableOpacity onPress={this.setAccountClipboard}>
-                <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
-              </TouchableOpacity>
-            </Block>
-          </Block>
-        </Block>
-        <Block row style={{ paddingBottom: 15 }}>
-          <Block flex>
-            <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-              Reference
-            </Text>
-            <Text
-              size={
-                Platform.OS === 'ios'
-                  ? Dimensions.get('window').height < 670
-                    ? 14
-                    : 16
-                  : Dimensions.get('window').height < 870
-                  ? 14
-                  : 16
-              }
+          <Block row style={{ justifyContent: 'center' }}>
+            <Button
+              color="info"
+              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+              style={styles.button}
+              onPress={() => actionSheetRef.current?.setModalVisible()}
             >
-             {this.props.liveBalance.client_number}
-            </Text>
+              Pay via Credit Card
+            </Button>
           </Block>
-        </Block>
-        <Block row style={{ justifyContent: 'center' }}>
-          <Button
-            color="info"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-            style={styles.button}
-            onPress={() => actionSheetRef.current?.setModalVisible()}
-          >
-            Pay via Credit Card
-          </Button>
-        </Block>
-        <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
+          <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
 
-        <Balance />
-        
-              <Block style={{top:'-3.3%'}}>
-        <ListStatement  data={this.props.statements} />
+          <Balance />
         </Block>
-     
-        
-      </Block>
+        <Block style={{ top: '-3.3%' }}>
+          <ListData
+            endpoint={endPoints.statements}
+            children={<ListStatement />}
+            actionData={this.props.getStatements}
+          />
+        </Block>
+      </>
     );
   };
 
-  
   renderStatements = () => {
     return (
-      <Block flex  backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }} >
-       
-       <Block style={{ top: 5 }}>
-       {this.renderFilters()}
-       
-         </Block>
+      <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
+        <Block style={{ top: 5 }}>{this.renderFilters()}</Block>
 
         <Block flex center style={styles.home}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-              <ListInvoices data={this.props.invoices} title={false} />
-             
-             
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+            <ListInvoices data={this.props.invoices} title={false} />
           </ScrollView>
         </Block>
       </Block>
@@ -256,35 +239,36 @@ class Account extends React.Component {
 
   renderFilters = () => {
     return (
+      <Block
+        row
+        space={'evenly'}
+        width={'60%'}
+        style={{ justifyContent: 'space-evenly', marginLeft: '-2%' }}
+      >
+        <>
+          <FilterButton
+            text={'By Date'}
+            icon={require('@assets/imgs/img/calendar.png')}
+            onPress={this.showDateTimePicker}
+          />
 
-      <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}>
+          <DateTimePicker
+            isVisible={this.state.isDateTimePickerVisible}
+            onConfirm={this.handleDatePicked}
+            onCancel={this.hideDateTimePicker}
+          />
+        </>
 
-<>
-          <FilterButton text={'By Date'} icon={require('@assets/imgs/img/calendar.png')}  onPress={this.showDateTimePicker} />
-
-            <DateTimePicker
-              isVisible={this.state.isDateTimePickerVisible}
-              onConfirm={this.handleDatePicked}
-              onCancel={this.hideDateTimePicker}
-            />
-          </>
-
-
-      
-        <FilterButton 
-          text={'For Type'} 
+        <FilterButton
+          text={'For Type'}
           // onPress={() => actionSheetType.current?.setModalVisible()}
 
-           onPress={() => {
+          onPress={() => {
             this.setState({ radioButtonsData: radioButtonsHour });
             actionSheetType.current?.setModalVisible();
           }}
         />
-
-
-           
-     </Block>
-
+      </Block>
     );
   };
 
@@ -295,29 +279,29 @@ class Account extends React.Component {
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
           <LiveBalance />
-          <Block  style={{top:10}}>
-          <SegmentedControlTab
-            values={['Statements', 'Invoices']}
-            selectedIndex={customStyleIndex}
-            onTabPress={this.handleCustomIndexSelect}
-            borderRadius={0}
-            tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
-            tabStyle={{
-              backgroundColor: '#FFFFFF',
-              borderWidth: 0,
-              borderColor: 'transparent',
-              borderBottomWidth: 2,
-              borderBottomColor: '#D2D2D2',
-            }}
-            activeTabStyle={{
-              backgroundColor: nowTheme.COLORS.BACKGROUND,
-              marginTop: 2,
-              borderBottomWidth: 2,
-              borderBottomColor: nowTheme.COLORS.INFO,
-            }}
-            tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
-            activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
-          />
+          <Block style={{ top: 10 }}>
+            <SegmentedControlTab
+              values={['Statements', 'Invoices']}
+              selectedIndex={customStyleIndex}
+              onTabPress={this.handleCustomIndexSelect}
+              borderRadius={0}
+              tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
+              tabStyle={{
+                backgroundColor: '#FFFFFF',
+                borderWidth: 0,
+                borderColor: 'transparent',
+                borderBottomWidth: 2,
+                borderBottomColor: '#D2D2D2',
+              }}
+              activeTabStyle={{
+                backgroundColor: nowTheme.COLORS.BACKGROUND,
+                marginTop: 2,
+                borderBottomWidth: 2,
+                borderBottomColor: nowTheme.COLORS.INFO,
+              }}
+              tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
+              activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
+            />
           </Block>
           {customStyleIndex === 0 && this.renderBalance()}
           {customStyleIndex === 1 && this.renderStatements()}
@@ -373,26 +357,20 @@ class Account extends React.Component {
               >
                 Cancel
               </Button>
-              
             </View>
           </Block>
         </ActionSheet>
 
-
-
         <ActionSheet ref={actionSheetType} headerAlwaysVisible>
           <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
-          <RadioGroup
-                radioButtons={this.state.radioButtonsData}
-                color={nowTheme.COLORS.INFO}
-                onPress={() => this.onPressRadioButton()}
-                containerStyle={{alignItems: 'left'}}
-              />
-            
-          
+            <RadioGroup
+              radioButtons={this.state.radioButtonsData}
+              color={nowTheme.COLORS.INFO}
+              onPress={() => this.onPressRadioButton()}
+              containerStyle={{ alignItems: 'left' }}
+            />
           </Block>
         </ActionSheet>
-
       </SafeAreaView>
     );
   }
@@ -400,9 +378,8 @@ class Account extends React.Component {
 
 const styles = StyleSheet.create({
   home: {
-   
     width: width,
-    top:-10
+    top: -10,
   },
   articles: {
     width: width - theme.SIZES.BASE * 0.1,
@@ -500,8 +477,6 @@ const styles = StyleSheet.create({
   pickerText: {
     color: nowTheme.COLORS.PICKERTEXT,
   },
-
-
 });
 
 const mapStateToProps = (state) => ({

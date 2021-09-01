@@ -28,7 +28,7 @@ const ListStatement = (props) => {
       <Block style={styles.newStatementsTitle}>
         <Text
           size={18}
-          style={{ fontFamily: 'montserrat-bold', marginLeft: '1%' , top:12 }}
+          style={{ fontFamily: 'montserrat-bold' }}
           color={'#363C4A'}
         >
           All Statements
@@ -43,9 +43,8 @@ const styles = StyleSheet.create({
   newStatementsTitle: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     paddingHorizontal: 15,
-    height:'4%',
-    marginLeft: -15,
     width: width,
+    paddingVertical: '4%'
   },
 });
 
