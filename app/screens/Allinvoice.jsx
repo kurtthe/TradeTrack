@@ -61,7 +61,7 @@ class Allinvoice extends React.Component {
         </Block>
         <ScrollView>
           <Block flex>
-            <ListInvoices invoices={this.props.invoices} />
+            <ListInvoices data={this.props.invoices} />
             <Block center style={{ paddingVertical: 5 }}>
               <Button
                 color="info"
