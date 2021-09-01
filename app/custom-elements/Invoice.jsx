@@ -22,7 +22,7 @@ const Invoice = (props) => {
       <TouchableWithoutFeedback onPress={() => handleShowDetails()}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <Block row space="between" style={{ height: 40, paddingTop: 10 }}>
+            <Block row space="between" style={{ height: 20,  }}>
               <Block row>
                 <Text
                   color={nowTheme.COLORS.DEFAULT}
@@ -53,11 +53,11 @@ const Invoice = (props) => {
               </Block>
             </Block>
 
-            <Block row justifyContent="space-between">
+            <Block row  justifyContent="space-between" style={{top:8}}>
               <Text
                 color={nowTheme.COLORS.HEADER}
                 size={13}
-                style={{ fontFamily: nowTheme.FONT.primaryRegular, marginTop: 0 }}
+                style={{ fontFamily: nowTheme.FONT.primaryRegular,  }}
               >
                 {props.invoice.description}
               </Text>
@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignContent: 'center',
+    left:-1
   },
   bg_purple: {
     width: wp('20%'),
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignContent: 'center',
+    left:-1
   },
 });
 

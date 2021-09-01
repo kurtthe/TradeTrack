@@ -43,8 +43,9 @@ const styles = StyleSheet.create({
   newStatementsTitle: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     paddingHorizontal: 15,
-    height:'4%',
-    marginLeft: -15,
+    height:'5%',
+    marginLeft: -22,
+    paddingTop:7.5,
     width: width,
   },
 });

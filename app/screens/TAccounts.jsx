@@ -16,7 +16,7 @@ import { Notification } from '@components';
 import { nowTheme, Images } from '@constants';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import GrayLine from '@components/GrayLine';
-import Icon from '@components/Icon';
+//import { Icon, Input } from '@components';
 import FilterButton from '@components/FilterButton';
 import RadioGroup from 'react-native-radio-buttons-group';
 import ActionSheet from 'react-native-actions-sheet';
@@ -94,6 +94,10 @@ class Account extends React.Component {
 
   setAccountClipboard = async () => {
     await Clipboard.setString('048284743');
+  }
+
+  setReferenceClipboard = async () => {
+    await Clipboard.setString('63673');
   }
 
   showDateTimePicker = () => {
@@ -190,24 +194,55 @@ class Account extends React.Component {
             </Block>
           </Block>
         </Block>
+       
         <Block row style={{ paddingBottom: 15 }}>
-          <Block flex>
-            <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-              Reference
-            </Text>
-            <Text
-              size={
-                Platform.OS === 'ios'
-                  ? Dimensions.get('window').height < 670
+          <Block row flex center justifyContent={'space-between'}>
+            <Block>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                Reference
+              </Text>
+              <Text
+                size={
+                  Platform.OS === 'ios'
+                    ? Dimensions.get('window').height < 670
+                      ? 14
+                      : 16
+                    : Dimensions.get('window').height < 870
                     ? 14
                     : 16
-                  : Dimensions.get('window').height < 870
-                  ? 14
-                  : 16
-              }
-            >
-             {this.props.liveBalance.client_number}
-            </Text>
+                }
+              >
+                {this.props.liveBalance.client_number}
+              </Text>
+            </Block>
+            <Block center flex>
+              <TouchableOpacity onPress={this.setReferenceClipboard}>
+                <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+              </TouchableOpacity>
+            </Block>
+          </Block>
+          <Block row flex center justifyContent={'space-between'}>
+            <Block>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+               
+              </Text>
+              <Text
+                size={
+                  Platform.OS === 'ios'
+                    ? Dimensions.get('window').height < 670
+                      ? 14
+                      : 16
+                    : Dimensions.get('window').height < 870
+                    ? 14
+                    : 16
+                }
+              >
+                
+              </Text>
+            </Block>
+            <Block>
+              
+            </Block>
           </Block>
         </Block>
         <Block row style={{ justifyContent: 'center' }}>
@@ -220,9 +255,14 @@ class Account extends React.Component {
             Pay via Credit Card
           </Button>
         </Block>
-        <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
 
-        <Balance />
+      
+
+          <GrayLine style={{ width: '100%', alignSelf: 'center', bottom:15 }} />
+
+          <Balance />
+    
+        
         
               <Block style={{top:'-3.3%'}}>
         <ListStatement  statements={this.props.statements} />
@@ -257,33 +297,67 @@ class Account extends React.Component {
   renderFilters = () => {
     return (
 
-      <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}>
+      <Block >
 
-<>
-          <FilterButton text={'By Date'} icon={require('@assets/imgs/img/calendar.png')}  onPress={this.showDateTimePicker} />
+        <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}  >
+
+        <>
+        <Text style={{ fontWeight: 'bold', paddingTop: 10 , left:1.5}}>By Date</Text>
+          </>
+          <FilterButton text={'Start Date'} icon={require('@assets/imgs/img/calendar.png')}  onPress={this.showDateTimePicker} />
 
             <DateTimePicker
               isVisible={this.state.isDateTimePickerVisible}
               onConfirm={this.handleDatePicked}
               onCancel={this.hideDateTimePicker}
             />
-          </>
+
+            <FilterButton text={'End Date'} icon={require('@assets/imgs/img/calendar.png')}  onPress={this.showDateTimePicker} />
+
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this.handleDatePicked}
+              onCancel={this.hideDateTimePicker}
+            />
+        </Block>
 
 
-      
-        <FilterButton 
-          text={'For Type'} 
-          // onPress={() => actionSheetType.current?.setModalVisible()}
+        <Block row space={'evenly'} width={'50%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}  >
 
-           onPress={() => {
-            this.setState({ radioButtonsData: radioButtonsHour });
-            actionSheetType.current?.setModalVisible();
-          }}
-        />
+            <>
+            <Text style={{ fontWeight: 'bold', paddingTop: 10 , left:-1.5}}>By Type</Text>
+              </>
+            <FilterButton 
+              text={'Select'} 
+              // onPress={() => actionSheetType.current?.setModalVisible()}
 
+              onPress={() => {
+                this.setState({ radioButtonsData: radioButtonsHour });
+                actionSheetType.current?.setModalVisible();
+              }}
+            />
 
-           
+            </Block>
+
+            <Block row space={'evenly'} width={'90%'} style={{justifyContent: 'space-evenly', marginLeft: '-2%'}}  >
+                    <Input
+                right
+                color="black"
+                autoFocus={true}
+                autoCorrect={false}
+                autoCapitalize="none"
+                //iconContent={iconSearch}
+                //defaultValue={search}
+                style={styles.search}
+                placeholder="by description or invoice number?"
+               // onFocus={() => this.setState({ active: true })}
+               // onBlur={() => this.setState({ active: false })}
+               // onChangeText={(text) => this.handleSearchChange(text)}
+              />
+           </Block>
      </Block>
+
+     
 
     );
   };
@@ -324,7 +398,7 @@ class Account extends React.Component {
         </ScrollView>
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
-            <Text style={{ fontWeight: 'bold' }}>Payment via Credit Card</Text>
+            <Text style={{ fontWeight: 'bold', paddingBottom: 5, left:1.5 }}>Balance to Pay</Text>
             <RNPickerSelect
               placeholder={{ label: 'Select an option' }}
               textInputProps={{ color: '#8898AA' }}
@@ -336,16 +410,16 @@ class Account extends React.Component {
               onValueChange={(value) => console.log(value)}
               items={pickerOptions}
             />
-            <Text style={{ fontWeight: 'bold' }}>Amount</Text>
+            <Text style={{ fontWeight: 'bold', paddingTop: 10 , left:1.5}}>Amount</Text>
             <Input
               right
               color="black"
               style={styles.search}
-              placeholder="$00,00"
+              placeholder="$0.00"
               placeholderTextColor={'#8898AA'}
             />
             <Block row style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
-              <Text size={15}>Your Balance</Text>
+              <Text size={15} style={{left:1.5}}>Your Balance</Text>
               <Text
                 size={16}
                 color={nowTheme.COLORS.INFO}
@@ -362,17 +436,7 @@ class Account extends React.Component {
               >
                 Continue
               </Button>
-              <Button
-                color="eeeee4"
-                textStyle={{
-                  color: nowTheme.COLORS.LIGHTGRAY,
-                  fontFamily: 'montserrat-bold',
-                  fontSize: 16,
-                }}
-                style={(styles.buttonGrayAS, styles.buttonAS)}
-              >
-                Cancel
-              </Button>
+              
               
             </View>
           </Block>
@@ -399,6 +463,11 @@ class Account extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  searchContainer: {
+    width: 90,
+    //paddingHorizontal: theme.SIZES.BASE,
+  },
   home: {
    
     width: width,
@@ -500,6 +569,8 @@ const styles = StyleSheet.create({
   pickerText: {
     color: nowTheme.COLORS.PICKERTEXT,
   },
+
+
 
 
 });
