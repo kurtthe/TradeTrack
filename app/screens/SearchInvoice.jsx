@@ -132,7 +132,7 @@ class SearchInvoice extends React.Component {
               {this.state.notFound ? (
                 this.renderNotFound()
               ) : (
-                <ListInvoices invoices={this.state.invoicesFilter} />
+                <ListInvoices data={this.state.invoicesFilter} />
               )}
             </Block>
           )}
