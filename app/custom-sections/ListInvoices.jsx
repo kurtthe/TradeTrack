@@ -10,7 +10,7 @@ import { withNavigation } from '@react-navigation/compat';
 
 const ListInvoices = (props) => {
   const putContent = () => {
-    if (props.invoices.length === 0) {
+    if (props.data.length === 0) {
       return (
         <>
           <InvoicesSkeleton />
@@ -20,7 +20,7 @@ const ListInvoices = (props) => {
       );
     }
 
-    return props.invoices.map((item, index) => <Invoice key={index} invoice={item} />);
+    return props.data.map((item, index) => <Invoice key={index} invoice={item} />);
   };
 
   const handleRedirectAllInvoices = () => {
