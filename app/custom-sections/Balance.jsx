@@ -39,7 +39,7 @@ const Balance = () => {
 
     return orders.map((orders, index) => {
       return (
-      <Block style={{top:-15}}>
+      <Block style={{top:-25}}>
       <BalanceDetail key={index} item={orders} />
       </Block>
       );
@@ -47,14 +47,14 @@ const Balance = () => {
   };
 
   return (
-    <Block>
+    <Block style={{ height: '15.5%',}}>
       <View style={styles.detailOrders}>
         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Balance Details</Text>
       </View>
 
       {renderDetailOrdersAS()}
-      <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-10 }} />
-      <Block row style={{ justifyContent: 'space-between', margin: 5 }}>
+      <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-30 }} />
+      <Block row style={{ justifyContent: 'space-between', bottom:15}}>
         <Text size={15}>Total Due</Text>
         <Text
           size={16}
@@ -75,8 +75,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width,
-    height: '5%',
-    marginVertical: theme.SIZES.BASE * 0.7,
+    height: 'auto',
+    marginVertical: theme.SIZES.BASE * 0.3,
+    top:-10,
+    
   },
   receiptText: {
     fontSize: 13,
