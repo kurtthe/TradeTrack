@@ -4,17 +4,15 @@ import {
   Dimensions,
   ScrollView,
   View,
-  ImageBackground,
   TouchableOpacity,
   SafeAreaView,
   Clipboard
 } from 'react-native';
 import { Block, theme, Text, Input } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
-import { Card, Button } from '@components';
-import { Notification } from '@components';
-import { nowTheme, Images } from '@constants';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import {  Button } from '@components';
+import { nowTheme } from '@constants';
+import { MaterialIcons } from '@expo/vector-icons';
 import GrayLine from '@components/GrayLine';
 //import { Icon, Input } from '@components';
 import FilterButton from '@components/FilterButton';
@@ -58,8 +56,8 @@ const radioButtonsHour = [
   },
   {
     id: '2',
-    label: 'CREDIT NOTES',
-    value: 'CREDIT NOTES',
+    label: 'CREDIT NOTE',
+    value: 'CREDIT NOTE',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
@@ -79,10 +77,10 @@ class Account extends React.Component {
 
     this.state = {
       isDateTimePickerVisible: false,
-      isTypePickerVisible:false,
+      isTypePickerVisible: false,
       customStyleIndex: 0,
-      clipboardText: "",
-      textInputText: ""
+      clipboardText: '',
+      textInputText: '',
       
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -90,15 +88,15 @@ class Account extends React.Component {
 
   setBsbClipboard = async () => {
     await Clipboard.setString('083125');
-  }
+  };
 
   setAccountClipboard = async () => {
     await Clipboard.setString('048284743');
-  }
+  };
 
   setReferenceClipboard = async () => {
     await Clipboard.setString('63673');
-  }
+  };
 
   showDateTimePicker = () => {
     this.setState({ isDateTimePickerVisible: true });
@@ -120,24 +118,24 @@ class Account extends React.Component {
   }
 
   
-
   async componentDidMount() {
     if (!!this.props.route.params) {
       this.setState({
         customStyleIndex: this.props.route.params.tabIndexSelected,
       });
     }
-    await this.getDataPetition.getInfoStatements(endPoints.statements, this.props.getStatements);
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
   }
+
 
   handleCustomIndexSelect = (index) => {
     this.setState((prevState) => ({ ...prevState, customStyleIndex: index }));
   };
 
   renderBalance = () => {
-    const { customStyleIndex } = this.state;
+    
     return (
+    <>
       <Block style={{ padding: theme.SIZES.BASE, top: '0.5%' }}>
         <Text style={{ paddingBottom: 15 }} size={16}>
           Payment Details
@@ -270,6 +268,7 @@ class Account extends React.Component {
      
         
       </Block>
+      </>
     );
   };
 
@@ -278,16 +277,11 @@ class Account extends React.Component {
     return (
       <Block flex  backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }} >
        
-       <Block style={{ top: 5 }}>
-       {this.renderFilters()}
-       
-         </Block>
+       <Block style={{ top: 5 }}>{this.renderFilters()}</Block>
 
-        <Block flex center style={styles.home}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-              <ListInvoices invoices={this.props.invoices} title={false} />
-             
-             
+       <Block flex center style={styles.home}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+            <ListInvoices data={this.props.invoices} title={false} />
           </ScrollView>
         </Block>
       </Block>
