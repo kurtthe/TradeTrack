@@ -225,7 +225,7 @@ class Account extends React.Component {
         <Balance />
         
               <Block style={{top:'-3.3%'}}>
-        <ListStatement  statements={this.props.statements} />
+        <ListStatement  data={this.props.statements} />
         </Block>
      
         
@@ -245,7 +245,7 @@ class Account extends React.Component {
 
         <Block flex center style={styles.home}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
-              <ListInvoices invoices={this.props.invoices} title={false} />
+              <ListInvoices data={this.props.invoices} title={false} />
              
              
           </ScrollView>

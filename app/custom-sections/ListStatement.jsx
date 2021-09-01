@@ -10,7 +10,7 @@ const { width } = Dimensions.get('screen');
 
 const ListStatement = (props) => {
   const renderStatements = () => {
-    if (props.statements.length === 0) {
+    if (props.data.length === 0) {
       return (
         <>
           <InvoicesSkeleton />
@@ -20,7 +20,7 @@ const ListStatement = (props) => {
       );
     }
 
-    return props.statements.map((item, index) => <Statement key={index} statement={item} />);
+    return props.data.map((item, index) => <Statement key={index} statement={item} />);
   };
 
   return (
