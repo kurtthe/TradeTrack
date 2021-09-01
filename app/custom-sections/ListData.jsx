@@ -72,8 +72,7 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
-    top: 5,
-  },
+  }
 });
 
 export default ListData;
