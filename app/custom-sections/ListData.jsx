@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
-import { StyleSheet, Dimensions, ScrollView } from 'react-native';
-import { Block, theme } from 'galio-framework';
+import { StyleSheet, Dimensions, ScrollView, View } from 'react-native';
+import { theme } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
 
@@ -54,25 +54,45 @@ class ListData extends React.Component {
 
     return (
       <ScrollView>
-        {cloneElement(children, { data: this.state.data })}
-        <Button
-          onPress={() => this.handleLoadMore()}
-          color="info"
-          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-          style={styles.button}
-        >
-          Load More...
-        </Button>
+        <View style={styles.container}>
+
+        <View style={styles.contentInfo}>
+          {cloneElement(children, { data: this.state.data })}
+        </View>
+        <View style={styles.contentButton}>
+          <Button
+            onPress={() => this.handleLoadMore()}
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+          >
+            Load More...
+          </Button>
+        </View>
+        </View>
       </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  contentInfo:{
+    backgroundColor:'green',
+  },
+  contentButton:{
+    backgroundColor: 'red',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {
-    marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
-  }
+    textAlign: 'center',
+  },
 });
 
 export default ListData;
