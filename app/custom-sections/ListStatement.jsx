@@ -19,7 +19,6 @@ const ListStatement = (props) => {
         </>
       );
     }
-
     return props.data.map((item, index) => <Statement key={index} statement={item} />);
   };
 
