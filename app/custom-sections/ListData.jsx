@@ -55,20 +55,17 @@ class ListData extends React.Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-
-        <View style={styles.contentInfo}>
-          {cloneElement(children, { data: this.state.data })}
-        </View>
-        <View style={styles.contentButton}>
-          <Button
-            onPress={() => this.handleLoadMore()}
-            color="info"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-            style={styles.button}
-          >
-            Load More...
-          </Button>
-        </View>
+          <View>{cloneElement(children, { data: this.state.data })}</View>
+          <View style={styles.contentButton}>
+            <Button
+              onPress={() => this.handleLoadMore()}
+              color="info"
+              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+              style={styles.button}
+            >
+              Load More...
+            </Button>
+          </View>
         </View>
       </ScrollView>
     );
@@ -76,15 +73,11 @@ class ListData extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
-  contentInfo:{
-    backgroundColor:'green',
-  },
-  contentButton:{
-    backgroundColor: 'red',
+  contentButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
