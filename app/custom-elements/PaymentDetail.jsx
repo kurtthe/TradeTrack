@@ -12,7 +12,7 @@ const actionSheetRef = createRef();
 const { width } = Dimensions.get('screen');
 
 const PaymentDetail = (props) => {
-  const balance = useSelector((state) => state.liveBalanceReducer);
+  const balanceLive = useSelector((state) => state.liveBalanceReducer);
 
   const setBsbClipboard = async () => {
     await Clipboard.setString('083125');
@@ -59,7 +59,7 @@ const PaymentDetail = (props) => {
         <Block flex>
           <Text color={nowTheme.COLORS.LIGHTGRAY}>Reference</Text>
           <Text>
-            {balance.client_number}
+            {balanceLive.client_number}
           </Text>
         </Block>
       </Block>

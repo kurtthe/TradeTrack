@@ -12,6 +12,7 @@ import PaymentDetail from '@custom-elements/PaymentDetail';
 import ListStatement from '@custom-sections/ListStatement';
 import ListData from '@custom-sections/ListData';
 import Balance from '@custom-sections/Balance';
+import Tabs from '@custom-elements/Tabs';
 
 import { getStatements } from '@core/module/store/statements/statements';
 import { getBalance } from '@core/module/store/balance/liveBalance';
@@ -37,68 +38,44 @@ class Account extends React.Component {
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
   }
 
-  handleCustomIndexSelect = (index) => {
-    this.setState((prevState) => ({ ...prevState, customStyleIndex: index }));
-  };
+  renderAccountDetails = () => (
+    <>
+      <PaymentDetail />
+      <Balance />
 
-  renderAccountDetails = () => {
-    return (
-      <>
-        <PaymentDetail />
-        <Balance />
+      <ListData
+        endpoint={endPoints.statements}
+        children={<ListStatement />}
+        actionData={this.props.getStatements}
+      />
+    </>
+  );
 
-          <ListData
-            endpoint={endPoints.statements}
-            children={<ListStatement />}
-            actionData={this.props.getStatements}
-          />
-      </>
-    );
-  };
-
-  renderInvoices = () => {
-    return (
-      <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
-        <Block flex center>
-          <ListInvoices data={this.props.invoices} title={false} />
-        </Block>
+  renderInvoices = () => (
+    <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
+      <Block flex center>
+        <ListInvoices data={this.props.invoices} title={false} />
       </Block>
-    );
-  };
+    </Block>
+  );
 
   render() {
-    const { customStyleIndex, radioButtonsData } = this.state;
-
     return (
       <SafeAreaView>
         <ScrollView>
           <LiveBalance />
-          <Block style={{ top: 10 }}>
-            <SegmentedControlTab
-              values={['Statements', 'Invoices']}
-              selectedIndex={customStyleIndex}
-              onTabPress={this.handleCustomIndexSelect}
-              borderRadius={0}
-              tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
-              tabStyle={{
-                backgroundColor: '#FFFFFF',
-                borderWidth: 0,
-                borderColor: 'transparent',
-                borderBottomWidth: 2,
-                borderBottomColor: '#D2D2D2',
-              }}
-              activeTabStyle={{
-                backgroundColor: nowTheme.COLORS.BACKGROUND,
-                marginTop: 2,
-                borderBottomWidth: 2,
-                borderBottomColor: nowTheme.COLORS.INFO,
-              }}
-              tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
-              activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
-            />
-          </Block>
-          {customStyleIndex === 0 && this.renderAccountDetails()}
-          {customStyleIndex === 1 && this.renderInvoices()}
+          <Tabs
+            optionsTabsRender={[
+              {
+                labelTab: 'Statements',
+                component: this.renderAccountDetails(),
+              },
+              {
+                labelTab: 'Invoices',
+                component: this.renderInvoices(),
+              },
+            ]}
+          />
         </ScrollView>
       </SafeAreaView>
     );
