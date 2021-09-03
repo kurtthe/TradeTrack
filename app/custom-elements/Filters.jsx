@@ -113,7 +113,7 @@ const Filters = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 5,
+    paddingTop: 5,
     paddingHorizontal: 10,
     flexDirection: 'column',
   },
@@ -123,10 +123,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search:{
-    height: 48,
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
-    marginBottom: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,
   }

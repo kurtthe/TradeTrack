@@ -5,6 +5,7 @@ import Loading from '@custom-elements/Loading';
 const WebViewComponent = (props) => {
   return (
     <WebView
+      style={props.style}
       originWhitelist={['*']}
       source={{ uri: props.url }}
       startInLoadingState={true}
