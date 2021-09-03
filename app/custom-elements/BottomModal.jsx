@@ -24,7 +24,7 @@ const BottomModal = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
-              <Icon name="chevron-left" family="evilicon" size={35} />
+              <Icon name="share" family="evilicon" size={30} />
             </TouchableOpacity>
 
           </View>
