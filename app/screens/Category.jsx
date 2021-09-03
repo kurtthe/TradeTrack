@@ -150,7 +150,22 @@ class Category extends React.Component {
   }
 
   onAddPressed(item) {
-    this.props.updateProducts([...this.props.cartProducts, item])
+    let itemQ = ({...item, quantity: 1})
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === item.id
+    ))
+    if (index !== -1) {
+      this.props.updateProducts([
+        ...this.props.cartProducts.slice(0, index),
+        {
+          ...this.props.cartProducts[index],
+          quantity: this.props.cartProducts[index].quantity + 1
+        },
+        ...this.props.cartProducts.slice(index+1)
+      ]) 
+    } else {
+      this.props.updateProducts([...this.props.cartProducts, itemQ])
+    }
     //this.props.navigation.navigate("Cart")
   }
 

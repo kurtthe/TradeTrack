@@ -11,9 +11,8 @@ const QuantityCounter = props => {
     const [disabledMinus, setDisabledMinus] = useState(false)
 
     useEffect(() => {
-        let initialQuantity = props.quantity
-        if (initialQuantity != 1) setNoButtons(true)
-    }, [])
+        setQuantity(props.quantity)
+    }, [props.quantity])
 
     useEffect (() => {
         if (quantity == 0) {
@@ -29,7 +28,7 @@ const QuantityCounter = props => {
         if (quantity1 != 100) {
         const plus = quantity1 + 1 
         setQuantity(plus)
-        //props.personsHandler(plus)
+        props.quantityHandler(plus)
         }
     }
 
@@ -38,7 +37,7 @@ const QuantityCounter = props => {
         if (quantity1 != 0) {
         const minus = quantity1 - 1 
         setQuantity(minus)
-        //props.personsHandler(minus)
+        props.quantityHandler(minus)
         }
     }
 
