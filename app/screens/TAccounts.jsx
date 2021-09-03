@@ -53,9 +53,11 @@ class Account extends React.Component {
 
   renderInvoices = () => (
     <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
-      <Block flex center>
-        <ListInvoices data={this.props.invoices} title={false} />
-      </Block>
+      <ListData
+        filters={true}
+        endpoint={endPoints.invoices}
+        children={<ListInvoices data={this.props.invoices} title={false} />}
+      />
     </Block>
   );
 
