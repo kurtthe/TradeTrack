@@ -14,6 +14,7 @@ class ListData extends React.Component {
     this.state = {
       data: [],
       perPageData: 20,
+      valuesFilters: {}
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -50,13 +51,28 @@ class ListData extends React.Component {
     this.setState({ perPageData: oldData + 20 });
   };
 
+  getValuesFilters = (values)=>{
+    this.setState({ valuesFilters: values });
+    this.setParamsEndPoint()
+  }
+
+  setParamsEndPoint = () =>{
+    const {valuesFilters} = this.state
+    const linkPetition = `${this.props.endpoint}?`
+
+    Object.keys(valuesFilters).forEach((item)=>{
+      console.log("=>key",item)
+    })
+    console.log("==>set params =>", this.state.valuesFilters);
+  }
+  
   renderFilter = () => {
     if (!this.props.filters){
       return null;
     }
 
     return(
-      <Filters />
+      <Filters getValues={(values)=> this.getValuesFilters(values)} />
     )
     
   };
