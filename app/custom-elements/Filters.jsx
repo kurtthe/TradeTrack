@@ -81,13 +81,14 @@ const Filters = (props) => {
 
   const getDataFilters = () => {
     const data = {
-      dateStart: dateStartValue,
-      dateEnd: dateEndValue,
+      start_date: dateStartValue,
+      end_date: dateEndValue,
       type: type,
-      text: textSearch,
+      search: textSearch,
     };
-
-    props.getValues && props.getValues(data);
+    setTimeout(() => {
+      props.getValues && props.getValues(data);
+    }, 500);
   };
 
   const onPressRadioButton = () => {

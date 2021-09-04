@@ -1,9 +1,10 @@
 import React, { cloneElement } from 'react';
 import { StyleSheet, Dimensions, ScrollView, View } from 'react-native';
-import { theme } from 'galio-framework';
+import { theme, Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
-import Filters from '@custom-elements/Filters'
+import Filters from '@custom-elements/Filters';
+import nowTheme from '@constants/Theme';
 
 const { width } = Dimensions.get('screen');
 
@@ -14,7 +15,8 @@ class ListData extends React.Component {
     this.state = {
       data: [],
       perPageData: 20,
-      valuesFilters: {}
+      valuesFilters: {},
+      notFound: true,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -39,9 +41,16 @@ class ListData extends React.Component {
   };
 
   loadData = (data) => {
-    this.setState({
-      data: data,
-    });
+    if (data.length > 0) {
+      this.setState({
+        data: data,
+        notFound: false,
+      });
+    } else {
+      this.setState({
+        notFound: true,
+      });
+    }
 
     this.props.actionData && this.props.actionData(data);
   };
@@ -51,30 +60,49 @@ class ListData extends React.Component {
     this.setState({ perPageData: oldData + 20 });
   };
 
-  getValuesFilters = (values)=>{
+  getValuesFilters = (values) => {
     this.setState({ valuesFilters: values });
-    this.setParamsEndPoint()
-  }
+    this.setParamsEndPoint();
+  };
 
-  setParamsEndPoint = () =>{
-    const {valuesFilters} = this.state
-    const linkPetition = `${this.props.endpoint}?`
+  setParamsEndPoint = async () => {
+    const { valuesFilters } = this.state;
+    let linkPetition = `${this.props.endpoint}?`;
 
-    Object.keys(valuesFilters).forEach((item)=>{
-      console.log("=>key",item)
-    })
-    console.log("==>set params =>", this.state.valuesFilters);
-  }
-  
+    Object.keys(valuesFilters).forEach((item) => {
+      linkPetition += `${item}=${valuesFilters[item]}&`;
+    });
+
+    await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
+  };
+
   renderFilter = () => {
-    if (!this.props.filters){
+    if (!this.props.filters) {
       return null;
     }
 
-    return(
-      <Filters getValues={(values)=> this.getValuesFilters(values)} />
-    )
-    
+    return <Filters getValues={(values) => this.getValuesFilters(values)} />;
+  };
+
+  renderNotFound = () => {
+    return (
+      <View style={styles.notfound}>
+        <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
+          We didn’t find "<Text bold>{this.state.search}</Text>" in the Data Base.
+        </Text>
+
+        <Text
+          size={18}
+          style={{
+            marginTop: theme.SIZES.BASE,
+            fontFamily: 'montserrat-regular',
+          }}
+          color={nowTheme.COLORS.TEXT}
+        >
+          You can see more Invoices in your Account.
+        </Text>
+      </View>
+    );
   };
 
   render() {
@@ -85,17 +113,23 @@ class ListData extends React.Component {
         <View style={styles.container}>
           <View>{this.renderFilter()}</View>
           <View>
-            <View>{cloneElement(children, { data: this.state.data })}</View>
-            <View style={styles.contentButton}>
-              <Button
-                onPress={() => this.handleLoadMore()}
-                color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                style={styles.button}
-              >
-                Load More...
-              </Button>
-            </View>
+            {this.state.notFound ? (
+              this.renderNotFound()
+            ) : (
+              <>
+                <View>{cloneElement(children, { data: this.state.data })}</View>
+                <View style={styles.contentButton}>
+                  <Button
+                    onPress={() => this.handleLoadMore()}
+                    color="info"
+                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                    style={styles.button}
+                  >
+                    Load More...
+                  </Button>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -116,6 +150,10 @@ const styles = StyleSheet.create({
   button: {
     width: width - theme.SIZES.BASE * 2,
     textAlign: 'center',
+  },
+  notfound: {
+    padding: 15,
+    marginVertical: theme.SIZES.BASE * 2,
   },
 });
 
