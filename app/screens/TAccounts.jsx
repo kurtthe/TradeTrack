@@ -55,7 +55,7 @@ class Account extends React.Component {
     <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
       <ListData
         filters={true}
-        endpoint={endPoints.invoices}
+        endpoint={endPoints.searchInvoices}
         children={<ListInvoices data={this.props.invoices} title={false} />}
       />
     </Block>
