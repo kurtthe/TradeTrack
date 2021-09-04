@@ -1,5 +1,5 @@
 import React, { useState, createRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
@@ -11,6 +11,7 @@ import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
 import nowTheme from '@constants/Theme';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const iconSearch = (
   <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
@@ -123,6 +124,9 @@ const Filters = (props) => {
               onPress={() => handleOpenDatePicker(false)}
             />
           </Block>
+          <TouchableOpacity >
+              <MaterialIcons name="check-box-outline-blank" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+            </TouchableOpacity>
         </Block>
         <DateTimePicker
           isVisible={showDatePicker}
@@ -143,6 +147,9 @@ const Filters = (props) => {
           <Block>
             <FilterButton text={'Select'} onPress={() => onPressRadioButton()} />
           </Block>
+          <TouchableOpacity >
+              <MaterialIcons name="check-box" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+            </TouchableOpacity>
         </Block>
         <ActionSheet ref={actionSheetRef}>
           <Block style={{ padding: 15, paddingBottom: 30 }}>
@@ -151,6 +158,7 @@ const Filters = (props) => {
               color={nowTheme.COLORS.INFO}
               onPress={(option) => selectedOptionRadio(option)}
             />
+            
           </Block>
         </ActionSheet>
       </>
