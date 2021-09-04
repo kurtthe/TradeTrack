@@ -17,6 +17,7 @@ const iconSearch = (
 );
 const { width } = Dimensions.get('screen');
 const alertService = new AlertService();
+const actionSheetRef = createRef();
 
 const Filters = (props) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -25,7 +26,7 @@ const Filters = (props) => {
   const [dateEndValue, setDateEndValue] = useState('');
   const [type, setType] = useState('');
   const [textSearch, setTextSearch] = useState('');
-  const actionSheetType = createRef();
+  let actionSheet;
 
   const handleDatePicked = (date) => {
     const valueDate = moment(date).format('YYYY-MM-DD');
@@ -69,6 +70,7 @@ const Filters = (props) => {
   changeValuesFilters = (whoChange, value) => {
     if (whoChange === 'type') {
       setType(value);
+      actionSheetRef.current?.setModalVisible(false);
     }
     if (whoChange === 'date') {
       handleDatePicked(value);
@@ -86,14 +88,21 @@ const Filters = (props) => {
       type: type,
       search: textSearch,
     };
+
     setTimeout(() => {
       props.getValues && props.getValues(data);
     }, 500);
   };
 
   const onPressRadioButton = () => {
-    actionSheetType.current?.setModalVisible(false);
+    actionSheetRef.current?.setModalVisible();
   };
+  
+  const selectedOptionRadio = (options)=> {
+    const optionSelected = options.filter((item)=> item.selected)
+    const valueOption = optionSelected[0].value;
+    changeValuesFilters('type', valueOption)
+  }
 
   const rangeDate = () => {
     return (
@@ -135,12 +144,12 @@ const Filters = (props) => {
             <FilterButton text={'Select'} onPress={() => onPressRadioButton()} />
           </Block>
         </Block>
-        <ActionSheet ref={actionSheetType} headerAlwaysVisible>
-          <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
+        <ActionSheet ref={actionSheetRef}>
+          <Block style={{ padding: 15, paddingBottom: 30 }}>
             <RadioGroup
               radioButtons={radioButtonsHour}
               color={nowTheme.COLORS.INFO}
-              onPress={(option) => changeValuesFilters('type', option)}
+              onPress={(option) => selectedOptionRadio(option)}
             />
           </Block>
         </ActionSheet>
