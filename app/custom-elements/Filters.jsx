@@ -124,9 +124,7 @@ const Filters = (props) => {
               onPress={() => handleOpenDatePicker(false)}
             />
           </Block>
-          <TouchableOpacity >
-              <MaterialIcons name="check-box-outline-blank" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
-            </TouchableOpacity>
+         
         </Block>
         <DateTimePicker
           isVisible={showDatePicker}
@@ -147,9 +145,7 @@ const Filters = (props) => {
           <Block>
             <FilterButton text={'Select'} onPress={() => onPressRadioButton()} />
           </Block>
-          <TouchableOpacity >
-              <MaterialIcons name="check-box" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
-            </TouchableOpacity>
+         
         </Block>
         <ActionSheet ref={actionSheetRef}>
           <Block style={{ padding: 15, paddingBottom: 30 }}>
