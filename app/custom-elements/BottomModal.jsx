@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import Icon from '@components/Icon';
 
@@ -24,7 +25,7 @@ const BottomModal = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
-              <Icon name="share" family="evilicon" size={30} />
+            <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
             </TouchableOpacity>
 
           </View>
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
   },
   btnClose: {
     padding: 8,
+    paddingHorizontal:15
   },
 });
 export default BottomModal;

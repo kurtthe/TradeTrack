@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bubble: {
-    width: 140,
+    width: 240,
     flexDirection: 'row',
     alignSelf: 'flex-start',
-    backgroundColor: '#4da2ab',
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 6,
-    borderColor: '#007a87',
-    borderWidth: 0.5,
+    borderColor: '#e7e6e6',
+    borderWidth: 0.9,
   },
   amount: {
     flex: 1,
@@ -47,9 +47,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: 16,
     borderColor: 'transparent',
-    borderTopColor: '#4da2ab',
+    borderTopColor: 'white',
     alignSelf: 'center',
     marginTop: -32,
+    marginLeft:-85,
   },
   arrowBorder: {
     backgroundColor: 'transparent',
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#007a87',
     alignSelf: 'center',
     marginTop: -0.5,
+    marginLeft:-85,
   },
 });
 
