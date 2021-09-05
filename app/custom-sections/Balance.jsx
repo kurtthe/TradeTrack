@@ -47,9 +47,9 @@ const Balance = () => {
   };
 
   return (
-    <Block style={{ height: '15.5%',}}>
+    <Block style={{ height: 'auto', paddingHorizontal:15}}>
       <View style={styles.detailOrders}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Balance Details</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, top:-5 }}>Balance Details</Text>
       </View>
       {renderDetailOrdersAS()}
       <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-30 }} />
