@@ -14,7 +14,7 @@ class ListData extends React.Component {
 
     this.state = {
       data: [],
-      perPageData: 20,
+      perPageData: 12,
       valuesFilters: {},
       notFound: true,
     };
