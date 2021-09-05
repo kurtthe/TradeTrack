@@ -22,9 +22,13 @@ const PaymentDetail = (props) => {
     await Clipboard.setString('048284743');
   };
 
+  const setReferenceClipboard = async () => {
+    await Clipboard.setString('63673');
+  };
+
   return (
-    <Block style={{ padding: theme.SIZES.BASE }}>
-      <Text style={{ marginBottom: 15 }} size={16}>
+    <Block style={{ padding: theme.SIZES.BASE, top:10 }}>
+      <Text style={{ marginBottom: 15,  }} size={16}>
         Payment Details
       </Text>
       <Block row style={{ paddingBottom: 15 }}>
@@ -56,13 +60,55 @@ const PaymentDetail = (props) => {
         </Block>
       </Block>
       <Block row style={{ paddingBottom: 15 }}>
-        <Block flex>
-          <Text color={nowTheme.COLORS.LIGHTGRAY}>Reference</Text>
-          <Text>
-            {balanceLive.client_number}
-          </Text>
+          <Block row flex center justifyContent={'space-between'}>
+            <Block>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                Reference
+              </Text>
+              <Text
+                size={
+                  Platform.OS === 'ios'
+                    ? Dimensions.get('window').height < 670
+                      ? 14
+                      : 16
+                    : Dimensions.get('window').height < 870
+                    ? 14
+                    : 16
+                }
+              >
+                  {balanceLive.client_number}
+              </Text>
+            </Block>
+            <Block center flex>
+              <TouchableOpacity onPress={setReferenceClipboard}>
+                <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+              </TouchableOpacity>
+            </Block>
+          </Block>
+          <Block row flex center justifyContent={'space-between'}>
+            <Block>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+               
+              </Text>
+              <Text
+                size={
+                  Platform.OS === 'ios'
+                    ? Dimensions.get('window').height < 670
+                      ? 14
+                      : 16
+                    : Dimensions.get('window').height < 870
+                    ? 14
+                    : 16
+                }
+              >
+                
+              </Text>
+            </Block>
+            <Block>
+              
+            </Block>
+          </Block>
         </Block>
-      </Block>
       <Block row style={{ justifyContent: 'center' }}>
         <Button
           color="info"
@@ -73,8 +119,12 @@ const PaymentDetail = (props) => {
           Pay via Credit Card
         </Button>
       </Block>
-      <GrayLine style={{ width: '100%', alignSelf: 'center' }} />
+      <GrayLine style={{ width: '100%', alignSelf: 'center' , bottom:15}} />
+
+      
     </Block>
+
+    
   );
 };
 
