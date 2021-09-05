@@ -10,7 +10,7 @@ const { width } = Dimensions.get('screen');
 
 const ListStatement = (props) => {
   const renderStatements = () => {
-    if (props.data.length === 0) {
+    if (props.statements.length === 0) {
       return (
         <>
           <InvoicesSkeleton />
@@ -19,13 +19,21 @@ const ListStatement = (props) => {
         </>
       );
     }
+
     return props.data.map((item, index) => <Statement key={index} statement={item} />);
+
+
+
   };
 
   return (
     <Block style={styles.container}>
       <Block style={styles.newStatementsTitle}>
-        <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
+        <Text
+          size={18}
+          style={{ fontFamily: 'montserrat-bold', marginLeft: '1%' , top:12 }}
+          color={'#363C4A'}
+        >
           All Statements
         </Text>
       </Block>
@@ -38,8 +46,10 @@ const styles = StyleSheet.create({
   newStatementsTitle: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     paddingHorizontal: 15,
+    height:'5%',
+    marginLeft: -22,
+    paddingTop:7.5,
     width: width,
-    paddingVertical: '4%',
   },
 });
 

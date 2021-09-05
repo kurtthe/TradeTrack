@@ -93,3 +93,4 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = { getStatements, getBalance };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
+
