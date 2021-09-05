@@ -20,11 +20,14 @@ const ListStatement = (props) => {
       );
     }
 
-    return props.statements.map((item, index) => <Statement key={index} statement={item} />);
+    return props.data.map((item, index) => <Statement key={index} statement={item} />);
+
+
+
   };
 
   return (
-    <>
+    <Block style={styles.container}>
       <Block style={styles.newStatementsTitle}>
         <Text
           size={18}
@@ -34,8 +37,8 @@ const ListStatement = (props) => {
           All Statements
         </Text>
       </Block>
-      <Block center style={{ paddingBottom: '5%',  }}>{renderStatements()}</Block>
-    </>
+      <Block center>{renderStatements()}</Block>
+    </Block>
   );
 };
 
