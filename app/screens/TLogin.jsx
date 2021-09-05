@@ -145,19 +145,9 @@ class Login extends React.Component {
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
-                      <Block
-                        flex={
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 0.255
-                              : 0.15
-                            : Dimensions.get('window').height < 870
-                            ? 0.255
-                            : 0.15
-                        }
-                        style={{ marginTop: 15 }}
-                      >
-                        <Text
+                      
+                      <Block width={width * 0.9} style={{paddingTop:20}}>
+                      <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
                           row
@@ -174,8 +164,6 @@ class Login extends React.Component {
                         >
                           Email
                         </Text>
-                      </Block>
-                      <Block width={width * 0.9}>
                         <Input
                           right
                           placeholder="Enter your email here"
@@ -185,14 +173,13 @@ class Login extends React.Component {
                           onChangeText={(event)=>this.handleChangeEmail(event)}
                           autoCapitalize='none'
                         />
-                      </Block>
-                      <Block flex={0.2} style={{ marginTop: 15 }}>
-                        <Text
+                         <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{
                             marginLeft: 0,
                             fontFamily: 'montserrat-regular',
                             fontFamily: 'montserrat-regular',
+                            top:10
                           }}
                           row
                           muted
@@ -209,7 +196,8 @@ class Login extends React.Component {
                           Password
                         </Text>
                       </Block>
-                      <Block width={width * 0.9}>
+                     
+                      <Block width={width * 0.9} style={{paddingTop:10}}>
                         <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
@@ -236,9 +224,9 @@ class Login extends React.Component {
                         Platform.OS === 'ios'
                           ? Dimensions.get('window').height < 670
                             ? 0.8
-                            : 0.45
+                            : 0.55
                           : Dimensions.get('window').height < 870
-                          ? 1
+                          ? 0.8
                           : 0.4
                       }
                       center
@@ -340,7 +328,7 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     right: 10,
-    top: 20,
+    top: 30,
   },
 });
 const mapStateToProps = (state) => ({

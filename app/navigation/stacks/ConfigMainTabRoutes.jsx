@@ -17,7 +17,7 @@ export const ConfigRouteMain = (MainTab, screens) => {
       options={{
         tabBarLabel: title,
         tabBarIcon: ({ color, size }) => putIcon(color, size, typeIcon, icon),
-        tabBarBadge: (!badge)? null: badge.textBadge
+        tabBarBadge: badge && badge.textBadge !== 0 ? badge.textBadge : null
       }}
     />
   ));

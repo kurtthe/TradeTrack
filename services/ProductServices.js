@@ -51,7 +51,6 @@ export const getCategories = async () => {
 			}
 		});
         let res = await result.json();
-		console.log(' REEES', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err);
@@ -68,7 +67,6 @@ export const loadMoreProducts = async (ppage) => {
 			}
 		});
         let res = await result.json();
-		console.log(' REEEESSSS', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err)
@@ -85,7 +83,6 @@ export const searchCategories = async (query) => {
 			}
 		});
         let res = await result.json();
-		console.log(' REEEESSSS', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err)

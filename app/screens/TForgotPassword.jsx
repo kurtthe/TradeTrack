@@ -83,8 +83,7 @@ class ForgotPassword extends React.Component {
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
                       <Block>
-                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.15) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
-                          <Text
+                      <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
@@ -95,9 +94,9 @@ class ForgotPassword extends React.Component {
                           >
                          Enter the form to send you an email{"\n"}for changes the password
                           </Text>
-                        </Block>
-                        <Block flex={0.2} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 40 :40) :  (Dimensions.get('window').height < 870) ? 50: 80, }} >
-                          <Text
+                       
+                        <Block width={width * 0.9} style={{paddingTop:40}}>
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
@@ -106,8 +105,6 @@ class ForgotPassword extends React.Component {
                           >
                           Email
                           </Text>
-                        </Block>
-                        <Block width={width * 0.9}>
                           <Input
                             right
                             placeholder="Enter your email here"
