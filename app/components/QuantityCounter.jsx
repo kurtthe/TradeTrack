@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Block, Text, Button } from "galio-framework";
 import { nowTheme } from "@constants/";
 
@@ -16,12 +16,29 @@ const QuantityCounter = props => {
 
     useEffect (() => {
         if (quantity == 0) {
-            setDisabledMinus(true);
-            deleteItem()
+            Alert.alert(
+                "Are you sure?",
+                      "",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "OK", onPress: () => {
+                      setDisabledMinus(true);
+                      deleteItem()
+                          }}
+                ],
+                { cancelable: false }
+              );
         } else setDisabledMinus(false)
         if (quantity == 100) setDisabledPlus(true)
         else setDisabledPlus(false)
     }, [quantity])
+
+
+    
 
     const plusCounter = () => {
         const quantity1 = quantity

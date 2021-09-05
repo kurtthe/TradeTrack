@@ -261,7 +261,15 @@ class Cart extends React.Component {
   }
 
   renderEmpty() {
-    return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
+    return (
+     <Block style={styles.container_empty}>
+
+<Ionicons name="cart" color={'#828489'} size={60} />
+    <Text style={{ fontFamily: 'montserrat-regular', fontSize:24 }} color={'#000'}>Your cart is empty!</Text>
+
+    
+    </Block>
+    );
   }
 
   render() {
@@ -362,6 +370,13 @@ const styles = StyleSheet.create({
   //   width: width,
   //   backgroundColor: nowTheme.COLORS.BACKGROUND
   // },
+  container_empty: {
+    flex: 1,
+    flexDirection: 'column',
+   // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+},
   header: {
     paddingVertical: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE
