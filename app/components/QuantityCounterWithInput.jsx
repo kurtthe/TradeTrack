@@ -31,7 +31,7 @@ const QuantityCounterWithInput = props => {
         if (quantity1 != 100) {
         const plus = quantity1 + 1 
         setQuantity(plus)
-        //props.personsHandler(plus)
+        props.quantityHandler(plus)
         }
     }
 
@@ -40,7 +40,7 @@ const QuantityCounterWithInput = props => {
         if (quantity1 != 1) {
         const minus = quantity1 - 1 
         setQuantity(minus)
-        //props.personsHandler(minus)
+        props.quantityHandler(minus)
         }
     }
 
