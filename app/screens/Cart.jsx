@@ -62,6 +62,20 @@ class Cart extends React.Component {
     this.setState({ cart });
   };
 
+  handleUpdateQuantity = (item, q) => {
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === item.id
+    ))
+    this.props.updateProducts([
+      ...this.props.cartProducts.slice(0, index),
+      {
+        ...this.props.cartProducts[index],
+        quantity: q
+      },
+      ...this.props.cartProducts.slice(index+1)
+    ])
+  }
+
   numberWithDecimals(number) {
     return `$${(Math.round(number * 100) / 100).toFixed(2)}`
   }
@@ -72,10 +86,10 @@ class Cart extends React.Component {
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.cost_price
+      return p.cost_price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `$${prices.reduce(reducer, 0)}`
+    return `$${prices.reduce(reducer, 0).toFixed(2)}`
   }
 
   renderProduct = ({ item }) => {
@@ -119,7 +133,8 @@ class Cart extends React.Component {
               </Block>
               <QuantityCounter 
                 delete={() => this.handleDelete(item.id)} 
-                quantity={1}
+                quantity={item.quantity}
+                quantityHandler={(q) => this.handleUpdateQuantity(item, q)}
               />
               {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
                 <Ionicons name="trash-sharp" color={'red'}  size={20} />
@@ -246,7 +261,15 @@ class Cart extends React.Component {
   }
 
   renderEmpty() {
-    return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
+    return (
+     <Block style={styles.container_empty}>
+
+<Ionicons name="cart" color={'#828489'} size={60} />
+    <Text style={{ fontFamily: 'montserrat-regular', fontSize:24 }} color={'#000'}>Your cart is empty!</Text>
+
+    
+    </Block>
+    );
   }
 
   render() {
@@ -347,6 +370,13 @@ const styles = StyleSheet.create({
   //   width: width,
   //   backgroundColor: nowTheme.COLORS.BACKGROUND
   // },
+  container_empty: {
+    flex: 1,
+    flexDirection: 'column',
+   // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+},
   header: {
     paddingVertical: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE
