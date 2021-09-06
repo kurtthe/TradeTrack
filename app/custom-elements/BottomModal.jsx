@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, StyleSheet, TouchableOpacity, } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
@@ -15,6 +15,26 @@ const BottomModal = (props) => {
     return null;
   }
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'Invoice 415254.pdf',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <Portal>
       <View style={styles.modal}>
@@ -24,7 +44,7 @@ const BottomModal = (props) => {
               <Icon name="chevron-left" family="evilicon" size={35} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
+            <TouchableOpacity onPress={onShare}  style={styles.btnClose}>
             <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
             </TouchableOpacity>
 
@@ -50,7 +70,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   body: {
-    backgroundColor: 'red',
+    //backgroundColor: 'red',
     height: '100%'
   },
   header: {

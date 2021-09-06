@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bubble: {
-    width: 240,
+    width: 280,
     flexDirection: 'row',
     alignSelf: 'flex-start',
     backgroundColor: 'white',

@@ -142,7 +142,7 @@ class InvoiceDetails extends React.Component {
                 borderColor: '#E8E8E8',
               }}
             />
-            <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
+            <Block row style={{ justifyContent: 'space-between', paddingBottom: 10, top: 5 }}>
               <Text size={14}>Total</Text>
               <Text
                 size={16}
