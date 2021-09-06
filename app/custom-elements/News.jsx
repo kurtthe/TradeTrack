@@ -102,7 +102,7 @@ const News = (props) => {
       {putContent()}
 
       <BottomModal show={showModal} close={() => setShowModal(false)}>
-        <View style={{ height: hp('85%') }}>
+        <View style={{ height: hp('80%') }}>
           <WebView url={props.news.link} />
         </View>
       </BottomModal>
