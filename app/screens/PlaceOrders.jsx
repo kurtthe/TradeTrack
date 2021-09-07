@@ -9,85 +9,11 @@ import PickerButton from '@components/PickerButton';
 import RadioGroup from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Icon from '@components/Icon';
+import { getStores, getJobs } from '../../services/PlaceOrdersServices';
+import { connect  } from 'react-redux';
 
 const { width } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
-
-const radioButtonsWithSearch = [
-  {
-    id: '1',
-    label: 'Job Name -',
-    value: 'Job Name ',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '2',
-    label: 'Job Name -',
-    value: 'Job Name',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '3',
-    label: 'Job Name -',
-    value: 'Job Name',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '4',
-    label: 'Job Name -',
-    value: 'Job Name',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-];
-
-const radioButtonsHour = [
-  {
-    id: '1',
-    label: '6 AM',
-    value: '6 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '2',
-    label: '7 AM',
-    value: '7 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '3',
-    label: '8 AM',
-    value: '8 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '4',
-    label: '9 AM',
-    value: '9 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '5',
-    label: '10 AM',
-    value: '10 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '6',
-    label: '11 AM',
-    value: '11 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-];
 
 const radioButtonsDelivery = [
   {
@@ -106,50 +32,76 @@ const radioButtonsDelivery = [
   },
 ];
 
-const radioButtonsStore = [
-  {
-    id: '1',
-    label: 'Store 1',
-    value: 'Store 1',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-  {
-    id: '2',
-    label: 'Store 2',
-    value: 'Store 2',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-  },
-];
-
-export default class PlaceOrders extends React.Component {
+class PlaceOrders extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDateTimePickerVisible: false,
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
-      radioButtons: radioButtonsWithSearch,
+      radioButtons: [],
       date: new Date(),
+      radioButtonsJobs: [],
+      radioButtonsStore: [],
+      store: ''
     };
+  }
+
+  async componentDidMount() {
+    try{
+      let stores = await getStores()
+      let jobs = await getJobs()
+      let storesAsRadioButtons = this.setRadioButtons(stores)
+      let jobsAsRadioButtons = this.setRadioButtons(jobs)
+      this.setState({
+        radioButtonsStore: storesAsRadioButtons,
+        radioButtonsJobs: jobsAsRadioButtons
+      })
+    } catch (e){
+      console.log(e)
+    }
+  }
+
+  setRadioButtons(stores) {
+    let radioButtonsValues = stores.map(c => ({
+      ...c, 
+      color: nowTheme.COLORS.INFO,
+      labelStyle: {fontWeight: 'bold'},
+      label: c.name,
+      value: c.name
+    }))
+    return radioButtonsValues;
   }
 
   onPressRadioButton() {
     actionSheetRadioButtonRef.current?.setModalVisible(false);
   }
 
-  showDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: true });
+  showDatePicker = () => {
+    this.setState({ isDatePickerVisible: true });
   };
 
-  hideDateTimePicker = () => {
-    this.setState({ isDateTimePickerVisible: false });
+  hideDatePicker = () => {
+    this.setState({ isDatePickerVisible: false });
   };
 
   handleDatePicked = (date) => {
     console.log('A date has been picked: ', date);
-    this.hideDateTimePicker();
+    this.hideDatePicker();
+  };
+
+  showTimePicker = () => {
+    this.setState({ isTimePickerVisible: true });
+  };
+
+  hideTimePicker = () => {
+    this.setState({ isTimePickerVisible: false });
+  };
+
+  handleTimePicked = (time) => {
+    console.log('A date has been picked: ', time);
+    this.hideTimePicker();
   };
 
   handleQuantity = (id, qty) => {
@@ -167,19 +119,6 @@ export default class PlaceOrders extends React.Component {
     const { cart } = this.state;
     const updatedCart = cart.filter((product) => product.id !== id);
     this.setState({ cart: updatedCart });
-  };
-
-  handleAdd = (item) => {
-    const { cart } = this.state;
-
-    cart.push({
-      ...item,
-      id: cart.length + 1,
-      stock: true,
-      qty: 1,
-    });
-
-    this.setState({ cart });
   };
 
   /*     renderProduct = ({ item }) => {
@@ -229,6 +168,14 @@ export default class PlaceOrders extends React.Component {
         );
     }; */
 
+  orderTotal() {
+    let prices = this.props.cartProducts.map((p) => {
+      return p.cost_price*p.quantity
+    })
+    const reducer = (accumulator, curr) => accumulator + curr;
+    return `$${prices.reduce(reducer, 0).toFixed(2)}`
+  }
+
   renderOptions = () => {
     return (
       <Block center>
@@ -247,7 +194,7 @@ export default class PlaceOrders extends React.Component {
             placeholder="Select or search job"
             icon
             onPress={() => {
-              this.setState({ radioButtonsData: radioButtonsWithSearch });
+              this.setState({ radioButtonsData: this.state.radioButtonsJobs });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
@@ -288,23 +235,28 @@ export default class PlaceOrders extends React.Component {
               icon
               iconName={'calendar-today'}
               size={25}
-              onPress={this.showDateTimePicker}
+              onPress={this.showDatePicker}
             />
 
             <DateTimePicker
-              isVisible={this.state.isDateTimePickerVisible}
+              isVisible={this.state.isDatePickerVisible}
               onConfirm={this.handleDatePicked}
-              onCancel={this.hideDateTimePicker}
+              onCancel={this.hideDatePicker}
             />
           </>
           <PickerButton
             text="Preferred Delivery Time"
             placeholder="Select time"
             icon
-            onPress={() => {
-              this.setState({ radioButtonsData: radioButtonsHour });
-              actionSheetRadioButtonRef.current?.setModalVisible();
-            }}
+            iconName={'lock-clock'}
+            size={25}
+            onPress={this.showTimePicker}
+          />
+          <DateTimePicker
+            mode="time"
+            isVisible={this.state.isTimePickerVisible}
+            onConfirm={this.handleTimePicked}
+            onCancel={this.hideTimePicker}
           />
         </Block>
         <Block
@@ -318,11 +270,11 @@ export default class PlaceOrders extends React.Component {
         >
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
-            text="Store Name"
+            text={this.state.store}
             placeholder="Select store"
             icon
             onPress={() => {
-              this.setState({ radioButtonsData: radioButtonsStore });
+              this.setState({ radioButtonsData: this.state.radioButtonsStore });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
@@ -361,7 +313,7 @@ export default class PlaceOrders extends React.Component {
                 color={nowTheme.COLORS.ORANGE}
                 style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
               >
-                $224.99
+                {this.orderTotal()}
               </Text>
             </Block>
             <Block center style={{ position: 'relative', bottom: 0, paddingHorizontal: 20 }}>
@@ -381,20 +333,7 @@ export default class PlaceOrders extends React.Component {
   };
 
   renderDetailOrdersAS = () => {
-    const orders = [
-      {
-        title: '1x Kaya Basin/Bath Wall Mixer 160mm..',
-        price: '$375',
-      },
-      {
-        title: '1x Di Lusso 60cm Th601Ss Telescopi..',
-        price: '$244.99',
-      },
-      {
-        title: '1x Lillian Basin Set 1/4 Turn Ceramic..',
-        price: '$225.99',
-      },
-    ];
+    const orders = this.props.cartProducts
 
     return orders.map((orders) => {
       return (
@@ -405,8 +344,8 @@ export default class PlaceOrders extends React.Component {
           row
           style={{ justifyContent: 'space-between', paddingBottom: 7 }}
         >
-          <Text style={styles.receiptText}>{orders.title}</Text>
-          <Text style={styles.receiptPrice}>{orders.price}</Text>
+          <Text style={styles.receiptText}>{orders.quantity}x {orders.name}</Text>
+          <Text style={styles.receiptPrice}>${(orders.cost_price*orders.quantity).toFixed(2)}</Text>
         </Block>
       );
     });
@@ -453,7 +392,7 @@ export default class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
           <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
-            {radioButtonsData !== radioButtonsWithSearch ? (
+            {radioButtonsData !== this.state.radioButtonsJobs ? (
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
@@ -496,10 +435,6 @@ export default class PlaceOrders extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // cart: {
-  //     width: width,
-  //     backgroundColor: nowTheme.COLORS.BACKGROUND
-  // },
   header: {
     paddingVertical: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE,
@@ -628,3 +563,10 @@ const styles = StyleSheet.create({
     borderColor: nowTheme.COLORS.BORDER,
   },
 });
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products
+});
+
+
+export default connect(mapStateToProps, {})(PlaceOrders);
