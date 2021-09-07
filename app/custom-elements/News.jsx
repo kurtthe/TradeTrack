@@ -101,7 +101,7 @@ const News = (props) => {
     <>
       {putContent()}
 
-      <BottomModal show={showModal} close={() => setShowModal(false)}>
+      <BottomModal show={showModal} close={() => setShowModal(false)} sharedMessage={`Shared All the latest news- ${props.news.preview.title} read more ${props.news.link} `}>
         <View style={{ height: hp('80%') }}>
           <WebView url={props.news.link} />
         </View>
