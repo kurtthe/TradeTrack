@@ -22,18 +22,18 @@ import {
 } from 'react-native-responsive-screen';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import {GeneralRequestService} from '@core/services/general-request.service';
-import {endPoints} from '@shared/dictionaries/end-points';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
 
-import { connect  } from 'react-redux';
+import { connect } from 'react-redux';
 import { sign } from '@core/module/store/auth/reducers/login';
-import * as SecureStore from "expo-secure-store";
+import * as SecureStore from 'expo-secure-store';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 class Login extends React.Component {
-  generalRequest
+  generalRequest;
 
   constructor(props) {
     super(props);
@@ -42,8 +42,9 @@ class Login extends React.Component {
       email: '',
       password: '',
       hidePass: true,
-      inputEmailError:true,
-      inputPasswordError:true,
+      inputEmailError: true,
+      inputPasswordError: true,
+      token_storage: '',
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -51,38 +52,49 @@ class Login extends React.Component {
 
   async componentDidMount() {
     await this.redirectLogin();
+    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
+    console.log('=>tokenStorageExist', tokenStorageExist);
+    this.setState({
+      token_storage: tokenStorageExist,
+    });
   }
 
-  async redirectLogin(){
-    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
-    if(this.props.token_login !== null && !!tokenStorageExist){
-      this.props.navigation.navigate("AppStack");
+  async componentDidUpdate() {
+    if (this.state.token_storage !== '') {
+      this.props.sign({
+        api_key: this.state.token_storage,
+      });
+      await this.redirectLogin();
     }
   }
 
-  handleLogin = async ()=> {
+  async redirectLogin() {
+    if (this.props.token_login && this.state.token_storage) {
+      this.props.navigation.navigate('AppStack');
+    }
+  }
+
+  handleLogin = async () => {
     const dataLogin = {
       username: this.state.email,
-      password: this.state.password
-    }
+      password: this.state.password,
+    };
 
     const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
-    if(!!resLogin){
+    if (!!resLogin) {
       await SecureStore.setItemAsync('api_key', resLogin.api_key);
       this.props.sign(resLogin);
-      await this.redirectLogin()
+      await this.redirectLogin();
     }
-  }
+  };
 
-  handleChangeEmail= (text)=>{
+  handleChangeEmail = (text) => {
+    this.setState({ email: text });
+  };
 
-    this.setState({email: text})
-  }
-
-  handleChangePassword= (text)=>{
-    this.setState({password: text})
-
-  }
+  handleChangePassword = (text) => {
+    this.setState({ password: text });
+  };
 
   render() {
     const { navigation } = this.props;
@@ -93,7 +105,7 @@ class Login extends React.Component {
         style={styles.container}
       >
         <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff',  }}>
+          <Block flex middle style={{ backgroundColor: '#fff' }}>
             <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
                 <Block
@@ -118,7 +130,6 @@ class Login extends React.Component {
                 </Block>
                 <Block flex={3} top middle>
                   <Text
-                  
                     style={{
                       fontFamily: 'montserrat-bold',
                       textAlign: 'left',
@@ -182,8 +193,8 @@ class Login extends React.Component {
                           iconContent={<Block />}
                           shadowless
                           keyboardType={'email-address'}
-                          onChangeText={(event)=>this.handleChangeEmail(event)}
-                          autoCapitalize='none'
+                          onChangeText={(event) => this.handleChangeEmail(event)}
+                          autoCapitalize="none"
                         />
                       </Block>
                       <Block flex={0.2} style={{ marginTop: 15 }}>
@@ -215,7 +226,7 @@ class Login extends React.Component {
                           iconContent={<Block />}
                           placeholder="Enter your correct password"
                           secureTextEntry={this.state.hidePass}
-                          onChangeText={(event)=>this.handleChangePassword(event)}
+                          onChangeText={(event) => this.handleChangePassword(event)}
                         />
                         <MaterialIcons
                           style={styles.icon}
@@ -297,7 +308,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    
   },
   inner: {
     padding: 24,
@@ -344,7 +354,7 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key
+  token_login: state.loginReducer.api_key,
 });
 
 const mapDispatchToProps = { sign };
