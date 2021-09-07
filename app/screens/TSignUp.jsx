@@ -81,11 +81,9 @@ class SignUp extends React.Component {
                 <Block flex={2}  space="between"  style={{backgroundColor:'transparent', marginHorizontal:20}}>
                   <Block center flex={0.9}>
                     <Block flex space="between" middle> 
-                      <Block>
+                      <Block style={{paddingTop:30}}>
                     
-                      <Block flex={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0.3 :0.25) :  (Dimensions.get('window').height < 870) ? 0.255: 0.15} style={{marginTop:15, }} >
-
-                          <Text
+                      <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
                             row
@@ -96,8 +94,7 @@ class SignUp extends React.Component {
                           >
                           To access the Burdens Portal, please contact via:
                           </Text>
-                        </Block>
-                      <Block flex={0.15} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 40 :40) :  (Dimensions.get('window').height < 870) ? 40: 80, }} >
+                      <Block flex={0.20} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 40 :40) :  (Dimensions.get('window').height < 870) ? 40: 80, }} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
@@ -121,7 +118,7 @@ class SignUp extends React.Component {
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
-                        <Block flex={0.15} style={{marginTop:30}} >
+                        <Block flex={0.22} style={{marginTop:30}} >
                           <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{  marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}

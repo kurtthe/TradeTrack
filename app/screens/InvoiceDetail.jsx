@@ -170,10 +170,10 @@ class InvoiceDetails extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // cart: {
-  //   width: width,
-  //   backgroundColor: nowTheme.COLORS.BACKGROUND,
-  // },
+  cart: {
+    width: width,
+    backgroundColor: nowTheme.COLORS.BACKGROUND,
+  },
   text: {
     fontSize: 11.5,
     paddingTop: 10,
@@ -206,7 +206,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   lastCard: {
-    borderRadius: 20,
+    borderRadius: 0,
+  },
+  detailOrdersBlock: {
+    height: 'auto',
+    alignContent:'center',
+    justifyContent:'center',
+   
+
+    
   },
 });
 
