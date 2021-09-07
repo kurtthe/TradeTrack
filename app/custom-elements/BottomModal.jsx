@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, StyleSheet, TouchableOpacity, } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
@@ -14,6 +14,26 @@ const BottomModal = (props) => {
     return null;
   }
 
+  const handleShared = async () => {
+    if (!props.sharedMessage) {
+      return;
+    }
+
+    const result = await Share.share({
+      message: props.sharedMessage,
+    });
+
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  };
+
   return (
     <Portal>
       <View style={styles.modal}>
@@ -23,10 +43,9 @@ const BottomModal = (props) => {
               <Icon name="chevron-left" family="evilicon" size={35} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
+            <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
               <Icon name="share" family="evilicon" size={30} />
             </TouchableOpacity>
-
           </View>
           <View style={styles.body}>{props.children}</View>
         </View>
@@ -49,8 +68,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   body: {
-    backgroundColor: 'red',
-    height: '100%'
+    height: '100%',
   },
   header: {
     backgroundColor: '#fff',
@@ -59,7 +77,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: '#CCCCCC',
     borderBottomWidth: 1,
-    
   },
   btnClose: {
     padding: 8,
