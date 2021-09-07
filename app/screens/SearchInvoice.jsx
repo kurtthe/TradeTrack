@@ -12,7 +12,7 @@ import { Icon, Input } from '@components';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListInvoices from '@custom-sections/ListInvoices';
-import { nowTheme } from "@constants/";
+import { nowTheme } from '@constants/';
 
 const { width } = Dimensions.get('screen');
 
@@ -22,15 +22,11 @@ class SearchInvoice extends React.Component {
 
     this.state = {
       invoicesFilter: [],
-      search: '',
+      search: null,
       active: false,
       notFound: false,
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
-  }
-
-  async componentDidMount() {
-    await this.handlePetitionInvoices();
   }
 
   animatedValue = new Animated.Value(0);
@@ -52,7 +48,6 @@ class SearchInvoice extends React.Component {
   };
 
   handleDataInvoices = (data) => {
-
     if (data.length > 0) {
       this.setState({
         invoicesFilter: data,
@@ -66,6 +61,8 @@ class SearchInvoice extends React.Component {
   };
 
   handleSearchChange = (text) => {
+    this.setState({ search: text })
+
     setTimeout(() => {}, 1000);
     this.handlePetitionInvoices(text);
     this.animate();
@@ -128,13 +125,17 @@ class SearchInvoice extends React.Component {
         </Block>
 
         <ScrollView>
-          <Block flex>
-            {this.state.notFound ? (
-              this.renderNotFound()
-            ) : (
-              <ListInvoices invoices={this.state.invoicesFilter} />
-            )}
-          </Block>
+          {this.state.search === null ? (
+            <></>
+          ) : (
+            <Block flex>
+              {this.state.notFound ? (
+                this.renderNotFound()
+              ) : (
+                <ListInvoices data={this.state.invoicesFilter} />
+              )}
+            </Block>
+          )}
         </ScrollView>
       </Block>
     );

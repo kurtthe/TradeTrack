@@ -42,10 +42,10 @@ class InvoiceDetails extends React.Component {
   renderDetailProducts = () => {
 
     return this.state.invoiceDetail.structure.items.map((orders, index) => (
-        <Block key ={index}>
+        <Block key ={index} style={{top: 5, }} >
           <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
           <Text  numberOfLines={2} style={styles.receiptText}>{orders.description}</Text>
-          <Block row style={{ justifyContent: 'space-between', paddingBottom: 7 }}>
+          <Block row style={{ justifyContent: 'space-between',  }}>
             <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
             <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
           </Block>
@@ -62,11 +62,13 @@ class InvoiceDetails extends React.Component {
             card
             backgroundColor={'white'}
             width={width}
-            paddingTop={10}
+            paddingTop={0}
             paddingHorizontal={20}
-            paddingBottom={20}
-            marginTop={15}
-            marginBottom={5}
+            paddingBottom={10}
+            marginBottom={7}
+            style={styles.lastCard}
+            marginTop={7}
+           
           >
             <Text style={styles.text}>Customer</Text>
             <Text>Skilled PGF Maintance P/L</Text>
@@ -79,10 +81,11 @@ class InvoiceDetails extends React.Component {
             card
             backgroundColor={'white'}
             width={width}
-            paddingTop={10}
+            paddingTop={0}
             paddingHorizontal={20}
-            paddingBottom={20}
-            marginBottom={5}
+            paddingBottom={10}
+            marginBottom={7}
+            style={styles.lastCard}
           >
             <Block row>
               <Block flex>
@@ -102,10 +105,11 @@ class InvoiceDetails extends React.Component {
             card
             backgroundColor={'white'}
             width={width}
-            paddingTop={10}
+            paddingTop={0}
             paddingHorizontal={20}
-            paddingBottom={20}
-            marginBottom={5}
+            paddingBottom={10}
+            marginBottom={7}
+            style={styles.lastCard}
           >
             <Block style={styles.detailOrdersBlock}>{this.renderDetailProducts()}</Block>
           </Block>
@@ -113,9 +117,9 @@ class InvoiceDetails extends React.Component {
             card
             backgroundColor={'white'}
             width={width}
-            paddingTop={20}
+            paddingTop={10}
             paddingHorizontal={20}
-            paddingBottom={20}
+            paddingBottom={10}
             style={styles.lastCard}
           >
             <Block row style={styles.totalPrices}>
@@ -138,7 +142,7 @@ class InvoiceDetails extends React.Component {
                 borderColor: '#E8E8E8',
               }}
             />
-            <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
+            <Block row style={{ justifyContent: 'space-between', paddingBottom: 10, top: 5 }}>
               <Text size={14}>Total</Text>
               <Text
                 size={16}
@@ -160,10 +164,10 @@ class InvoiceDetails extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // cart: {
-  //   width: width,
-  //   backgroundColor: nowTheme.COLORS.BACKGROUND,
-  // },
+  cart: {
+    width: width,
+    backgroundColor: nowTheme.COLORS.BACKGROUND,
+  },
   text: {
     fontSize: 11.5,
     paddingTop: 10,
@@ -197,7 +201,15 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   lastCard: {
-    borderRadius: 20,
+    borderRadius: 0,
+  },
+  detailOrdersBlock: {
+    height: 'auto',
+    alignContent:'center',
+    justifyContent:'center',
+   
+
+    
   },
 });
 
