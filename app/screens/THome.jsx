@@ -41,7 +41,7 @@ class Home extends React.Component {
       <Block flex center style={styles.home}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
           <LiveBalance button={true} />
-          <ListInvoices invoices={this.props.invoices} title={true} />
+          <ListInvoices data={this.props.invoices} title={true} />
           
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>

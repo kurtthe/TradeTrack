@@ -10,7 +10,7 @@ import SkeletonNews from '@custom-elements/skeletons/NewsVertical'
 
 const ListNews = (props) => {
   const putNews = ()=>{
-    if(props.news.length === 0){
+    if(props.data.length === 0){
       return(
         <>
           <SkeletonNews />
@@ -20,7 +20,7 @@ const ListNews = (props) => {
       )
     }
     
-    return props.news.map((item, index)=>(
+    return props.data.map((item, index)=>(
       <News key={index} news={item} vertical={true} />
     ))
   }

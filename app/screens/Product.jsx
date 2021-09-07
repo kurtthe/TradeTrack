@@ -77,9 +77,37 @@ class Product extends React.Component {
     return `$${(Math.round(number * 100) / 100).toFixed(2)}`
   }
 
+  handleUpdateQuantity = (item, q) => {
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === item.id
+    ))
+    this.props.updateProducts([
+      ...this.props.cartProducts.slice(0, index),
+      {
+        ...this.props.cartProducts[index],
+        quantity: q
+      },
+      ...this.props.cartProducts.slice(index+1)
+    ])
+  }
+
   onAddCartPressed(product) {
-    this.props.updateProducts([...this.props.cartProducts, product])
-    alert(`${product.name} added to cart`)
+    let itemQ = ({...product, quantity: 1})
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === product.id
+    ))
+    if (index !== -1) {
+      this.props.updateProducts([
+        ...this.props.cartProducts.slice(0, index),
+        {
+          ...this.props.cartProducts[index],
+          quantity: this.props.cartProducts[index].quantity + 1
+        },
+        ...this.props.cartProducts.slice(index+1)
+      ]) 
+    } else {
+      this.props.updateProducts([...this.props.cartProducts, itemQ])
+    }
     //navigation.navigate("Cart")
   }
 
@@ -194,7 +222,10 @@ class Product extends React.Component {
           </Block> 
           </ScrollView>
           <View style={styles.quantityBar}>
-            <QuantityCounterWithInput quantity={1}/>
+            <QuantityCounterWithInput 
+              quantity={product.quantity ? product.quantity : 1}
+              quantityHandler={(q) => this.handleUpdateQuantity(product, q)}
+            />
               <Button
                 shadowless
                 style={styles.addToCart}
