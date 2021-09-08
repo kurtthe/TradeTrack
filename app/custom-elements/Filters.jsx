@@ -165,6 +165,11 @@ class Filters extends Component {
           <Block>
             <FilterButton text={'Select'} onPress={() => this.onPressRadioButton()} />
           </Block>
+          <Block>
+          {this.inputText()}
+          </Block>
+
+        
         </Block>
         <ActionSheet ref={actionSheetRef}>
           <Block style={{ padding: 15, paddingBottom: 30 }}>
@@ -197,16 +202,30 @@ class Filters extends Component {
 
   btnClearFilter = () => {
     return (
-      <View style={styles.cleanFilter}>
-        <Button
-          mode="outlined"
-          onPress={() => this.changeValuesFilters()}
-          labelStyle={styles.labelCleanFilter}
-          style={styles.btnClean}
-        >
-          Clear filter
-        </Button>
+
+      <Block style={styles.contentFilterBtn}>
+      <View style={{ marginRight: 20 }}>
+        <Text style={{ fontWeight: 'bold' }}>Search</Text>
       </View>
+      <Block>
+      <View style={styles.cleanFilter}>
+      
+      
+      <Button
+        mode="outlined"
+        onPress={() => this.changeValuesFilters()}
+        labelStyle={styles.labelCleanFilter}
+        style={styles.btnClean}
+      >
+        Clear 
+      </Button>
+
+
+
+     
+    </View>
+      </Block>
+    </Block>
     );
   };
 
@@ -214,10 +233,10 @@ class Filters extends Component {
     return (
       <>
         <Block style={styles.container}>
+        {this.btnClearFilter()}
           {this.rangeDate()}
           {this.typeSearch()}
-          {this.inputText()}
-          {this.btnClearFilter()}
+        
         </Block>
       </>
     );
@@ -236,7 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search: {
-    width: width - 32,
+    width: width * 0.5 ,
     marginHorizontal: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,
@@ -246,6 +265,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
+   // backgroundColor:'red',
+    left:'600%'
+    
   },
   labelCleanFilter: {
     fontSize: 13,
