@@ -36,7 +36,7 @@ const PaymentDetail = (props) => {
           <Block>
             <Text color={nowTheme.COLORS.LIGHTGRAY}>BSB</Text>
             <Text >
-              O83-125
+              083-125
             </Text>
           </Block>
           <Block center flex>
