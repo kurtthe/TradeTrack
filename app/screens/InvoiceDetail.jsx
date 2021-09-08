@@ -131,48 +131,11 @@ class InvoiceDetails extends React.Component {
               {this.formatMoney.format(this.state.invoiceDetail.delivery_charge || 0)}
             </Text>
           </Block>
-
-          <Block
-            card
-            backgroundColor={'white'}
-            width={width}
-            paddingTop={10}
-            paddingHorizontal={20}
-            paddingBottom={10}
-            style={styles.lastCard}
-          >
-            <Block row style={styles.totalPrices}>
-              <Text size={12}>Delivery Fee</Text>
-              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.delivery_charge || 0)}</Text>
-            </Block>
-            <Block row style={styles.totalPrices}>
+          <Block row style={styles.totalPrices}>
               <Text size={12}>Total ex-GST</Text>
               <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst)}</Text>
             </Block>
-            <Block row style={styles.totalPrices}>
-              <Text size={12}>GST</Text>
-              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.gst)}</Text>
-            </Block>
-            <View
-              style={{
-                borderWidth: 0.7,
-                marginVertical: 5,
-                backgroundColor: '#E8E8E8',
-                borderColor: '#E8E8E8',
-              }}
-            />
-            <Block row style={{ justifyContent: 'space-between', paddingBottom: 10, top: 5 }}>
-              <Text size={14}>Total</Text>
-              <Text
-                size={16}
-                color={nowTheme.COLORS.INFO}
-                style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
-              >
-                {this.formatMoney.format(this.state.invoiceDetail.total_amount)}
-              </Text>
-            </Block>
-
-          </Block>
+        
           <Block row style={styles.totalPrices}>
             <Text size={12}>GST</Text>
             <Text style={styles.receiptPrice}>
