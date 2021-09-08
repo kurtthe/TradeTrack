@@ -8,6 +8,8 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
+import moment from 'moment';
+import { validateEmptyField } from '@core/utils/validate-empty-field';
 
 const { width } = Dimensions.get('screen');
 
@@ -17,7 +19,12 @@ const Statement = (props) => {
   const [showModal, setShowModal] = useState(false);
 
   const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
-  const dateStatement = `${props.statement.created_date}`.split(' ');
+
+  let dateStatement = validateEmptyField(props.statement.created_date);
+
+  if(dateStatement !== 'N/A'){ 
+    dateStatement = moment(dateStatement).format('YYYY-MM-DD');
+  }
 
   return (
     <>
@@ -45,7 +52,7 @@ const Statement = (props) => {
                   }}
                   size={14}
                 >
-                  {dateStatement[0]}
+                  {dateStatement}
                 </Text>
               </Block>
             </Block>

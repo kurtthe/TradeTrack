@@ -15,23 +15,24 @@ const BottomModal = (props) => {
     return null;
   }
 
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message:
-          'Invoice 415254.pdf',
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
+  const handleShared = async () => {
+    if (!props.sharedMessage) {
+      return;
+    }
+
+    const result = await Share.share({
+      message: props.sharedMessage,
+    });
+
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
       }
-    } catch (error) {
-      alert(error.message);
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+
     }
   };
 
@@ -44,10 +45,12 @@ const BottomModal = (props) => {
               <Icon name="chevron-left" family="evilicon" size={35} />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onShare}  style={styles.btnClose}>
-            <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
-            </TouchableOpacity>
 
+            <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
+               <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+
+        
+            </TouchableOpacity>
           </View>
           <View style={styles.body}>{props.children}</View>
         </View>
@@ -70,8 +73,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   body: {
-    //backgroundColor: 'red',
-    height: '100%'
+
+    height: '100%',
+
   },
   header: {
     backgroundColor: '#fff',
@@ -80,7 +84,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomColor: '#CCCCCC',
     borderBottomWidth: 1,
-    
   },
   btnClose: {
     padding: 8,
