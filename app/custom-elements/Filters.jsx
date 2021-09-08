@@ -1,5 +1,5 @@
-import React, { useState, createRef } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import React, { Component, createRef } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
@@ -11,7 +11,7 @@ import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
 import nowTheme from '@constants/Theme';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Button } from 'react-native-paper';
 
 const iconSearch = (
   <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
@@ -20,35 +20,42 @@ const { width } = Dimensions.get('screen');
 const alertService = new AlertService();
 const actionSheetRef = createRef();
 
-const Filters = (props) => {
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [dateStart, setDateStart] = useState(true);
-  const [dateStartValue, setDateStartValue] = useState('');
-  const [dateEndValue, setDateEndValue] = useState('');
-  const [type, setType] = useState('');
-  const [textSearch, setTextSearch] = useState('');
-  let actionSheet;
+class Filters extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDatePicker: false,
+      dateStart: true,
+      dateStartValue: '',
+      dateEndValue: '',
+      type: '',
+      textSearch: '',
+    };
+  }
 
-  const handleDatePicked = (date) => {
+  handleDatePicked = (date) => {
     const valueDate = moment(date).format('YYYY-MM-DD');
 
-    if (dateStart) {
-      setDateStartValue(valueDate);
+    if (this.state.dateStart) {
+      this.setState({
+        dateStartValue: valueDate,
+      });
     } else {
-      if (validDateEnd(valueDate)) {
-        console.log('set dateend');
-        setDateEndValue(valueDate);
+      if (this.validDateEnd(valueDate)) {
+        this.setState({
+          dateEndValue: valueDate,
+        });
       }
     }
-    hideDateTimePicker();
+    this.hideDateTimePicker();
   };
 
-  const validDateEnd = (date) => {
-    if (dateStartValue === '') {
+  validDateEnd = (date) => {
+    if (this.state.dateStartValue === '') {
       return false;
     }
 
-    const startDate = moment(dateStartValue);
+    const startDate = moment(this.state.dateStartValue);
     const endDate = moment(date);
     const diffDate = endDate.diff(startDate, 'days', true);
 
@@ -59,53 +66,67 @@ const Filters = (props) => {
     return true;
   };
 
-  const hideDateTimePicker = () => {
-    setShowDatePicker(false);
+  hideDateTimePicker = () => {
+    this.setState({ showDatePicker: false });
   };
 
-  const handleOpenDatePicker = (isDateStart) => {
-    setDateStart(isDateStart);
-    setShowDatePicker(true);
+  handleOpenDatePicker = (isDateStart) => {
+    this.setState({
+      dateStart: isDateStart,
+      showDatePicker: true,
+    });
   };
 
-  changeValuesFilters = (whoChange, value) => {
+  changeValuesFilters = (whoChange = false, value) => {
     if (whoChange === 'type') {
-      setType(value);
+      this.setState({
+        type: value,
+      });
       actionSheetRef.current?.setModalVisible(false);
     }
     if (whoChange === 'date') {
-      handleDatePicked(value);
+      this.handleDatePicked(value);
     }
     if (whoChange === 'text') {
-      setTextSearch(value);
+      this.setState({ textSearch: value });
     }
-    getDataFilters();
+    if (!whoChange) {
+      this.setState({
+        dateStartValue: '',
+        dateEndValue: '',
+        type: '',
+        textSearch: '',
+      });
+    }
+
+    setTimeout(() => {
+      this.getDataFilters();
+    }, 200);
   };
 
-  const getDataFilters = () => {
+  getDataFilters = () => {
+    const { dateStartValue, dateEndValue, type, textSearch } = this.state;
+
     const data = {
       start_date: dateStartValue,
       end_date: dateEndValue,
-      type: type,
+      type,
       search: textSearch,
     };
-
-    setTimeout(() => {
-      props.getValues && props.getValues(data);
-    }, 500);
+    this.props.getValues && this.props.getValues(data);
   };
 
-  const onPressRadioButton = () => {
+  onPressRadioButton = () => {
     actionSheetRef.current?.setModalVisible();
   };
-  
-  const selectedOptionRadio = (options)=> {
-    const optionSelected = options.filter((item)=> item.selected)
-    const valueOption = optionSelected[0].value;
-    changeValuesFilters('type', valueOption)
-  }
 
-  const rangeDate = () => {
+  selectedOptionRadio = (options) => {
+    const optionSelected = options.filter((item) => item.selected);
+    const valueOption = optionSelected[0].value;
+    this.changeValuesFilters('type', valueOption);
+  };
+
+  rangeDate = () => {
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -114,28 +135,27 @@ const Filters = (props) => {
           </View>
           <Block row center space="around">
             <FilterButton
-              text={dateStartValue === '' ? 'Start date' : dateStartValue}
+              text={this.state.dateStartValue === '' ? 'Start date' : this.state.dateStartValue}
               icon={require('@assets/imgs/img/calendar.png')}
-              onPress={() => handleOpenDatePicker(true)}
+              onPress={() => this.handleOpenDatePicker(true)}
             />
             <FilterButton
-              text={dateEndValue === '' ? 'End date' : dateEndValue}
+              text={this.state.dateEndValue === '' ? 'End date' : this.state.dateEndValue}
               icon={require('@assets/imgs/img/calendar.png')}
-              onPress={() => handleOpenDatePicker(false)}
+              onPress={() => this.handleOpenDatePicker(false)}
             />
           </Block>
-         
         </Block>
         <DateTimePicker
-          isVisible={showDatePicker}
-          onConfirm={(date) => changeValuesFilters('date', date)}
-          onCancel={hideDateTimePicker}
+          isVisible={this.state.showDatePicker}
+          onConfirm={(date) => this.changeValuesFilters('date', date)}
+          onCancel={this.hideDateTimePicker}
         />
       </>
     );
   };
 
-  const typeSearch = () => {
+  typeSearch = () => {
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -143,30 +163,33 @@ const Filters = (props) => {
             <Text style={{ fontWeight: 'bold' }}>By Type</Text>
           </View>
           <Block>
-            <FilterButton text={'Select'} onPress={() => onPressRadioButton()} />
+            <FilterButton text={'Select'} onPress={() => this.onPressRadioButton()} />
           </Block>
-         
+          <Block>
+          {this.inputText()}
+          </Block>
+
+        
         </Block>
         <ActionSheet ref={actionSheetRef}>
           <Block style={{ padding: 15, paddingBottom: 30 }}>
             <RadioGroup
               radioButtons={radioButtonsHour}
               color={nowTheme.COLORS.INFO}
-              onPress={(option) => selectedOptionRadio(option)}
+              onPress={(option) => this.selectedOptionRadio(option)}
             />
-            
           </Block>
         </ActionSheet>
       </>
     );
   };
 
-  const inputText = () => {
+  inputText = () => {
     return (
       <Input
         right
         color="black"
-        autoFocus={true}
+        autoFocus={false}
         autoCorrect={false}
         autoCapitalize="none"
         iconContent={iconSearch}
@@ -177,16 +200,48 @@ const Filters = (props) => {
     );
   };
 
-  return (
-    <>
-      <Block style={styles.container}>
-        {rangeDate()}
-        {typeSearch()}
-        {inputText()}
+  btnClearFilter = () => {
+    return (
+
+      <Block style={styles.contentFilterBtn}>
+      <View style={{ marginRight: 20 }}>
+        <Text style={{ fontWeight: 'bold' }}>Search</Text>
+      </View>
+      <Block>
+      <View style={styles.cleanFilter}>
+      
+      
+      <Button
+        mode="outlined"
+        onPress={() => this.changeValuesFilters()}
+        labelStyle={styles.labelCleanFilter}
+        style={styles.btnClean}
+      >
+        Clear 
+      </Button>
+
+
+
+     
+    </View>
       </Block>
-    </>
-  );
-};
+    </Block>
+    );
+  };
+
+  render() {
+    return (
+      <>
+        <Block style={styles.container}>
+        {this.btnClearFilter()}
+          {this.rangeDate()}
+          {this.typeSearch()}
+        
+        </Block>
+      </>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -200,10 +255,26 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search: {
-    width: width - 32,
+    width: width * 0.5 ,
     marginHorizontal: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,
+  },
+  cleanFilter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 10,
+   // backgroundColor:'red',
+    left:'600%'
+    
+  },
+  labelCleanFilter: {
+    fontSize: 13,
+    color: '#000',
+  },
+  btnClean: {
+    backgroundColor: '#fff',
   },
 });
 
