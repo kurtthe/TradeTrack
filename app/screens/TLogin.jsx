@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  ScrollView
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
@@ -88,11 +89,11 @@ class Login extends React.Component {
     const { navigation } = this.props;
 
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <DismissKeyboard>
+      // <KeyboardAvoidingView
+      //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      //   style={styles.container}
+      // >
+     <DismissKeyboard>
           <Block flex middle style={{ backgroundColor: '#fff',  }}>
             <Block flex space="evenly">
               <Block flex middle style={styles.socialConnect}>
@@ -141,7 +142,12 @@ class Login extends React.Component {
                 </Block>
               </Block>
 
-              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+              <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ height:300 }}
+        >
+
+              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent', height: 500 }}>
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
@@ -220,15 +226,15 @@ class Login extends React.Component {
                       </Block>
                     </Block>
                     <Block
-                      flex={
+                      style={{ top:
                         Platform.OS === 'ios'
                           ? Dimensions.get('window').height < 670
-                            ? 0.8
-                            : 0.55
+                            ? 200
+                            : 200
                           : Dimensions.get('window').height < 870
                           ? 0.8
                           : 0.4
-                      }
+                      }}
                       center
                     >
                       <Button
@@ -258,15 +264,17 @@ class Login extends React.Component {
                   </Block>
                 </Block>
               </Block>
+              </ScrollView>
             </Block>
           </Block>
         </DismissKeyboard>
-      </KeyboardAvoidingView>
+      // </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  
   registerContainer: {
     marginTop: 55,
     width: width * 1,
