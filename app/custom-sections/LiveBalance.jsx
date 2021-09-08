@@ -32,7 +32,7 @@ const LiveBalance = (props) => {
             style={{ fontFamily: 'montserrat-bold', paddingLeft: 0 }}
             size={14}
           >
-            Current Balance
+            Balance
           </Text>
           <Block
             row
@@ -41,7 +41,7 @@ const LiveBalance = (props) => {
             style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
           >
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {formatMoney.format(balance.current)}
+              {formatMoney.format(balance.total)}
             </Text>
             {props.button ? (
               <TouchableOpacity
