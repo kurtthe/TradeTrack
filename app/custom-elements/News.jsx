@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { StyleSheet, Image, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 import BottomModal from '@custom-elements/BottomModal';
