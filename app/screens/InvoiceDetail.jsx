@@ -57,7 +57,7 @@ class InvoiceDetails extends React.Component {
 
   render() {
     
-    if (this.state.invoiceDetail === null) {
+    if (this.state.invoiceDetail === null || this.state.invoiceDetail === undefined) {
       return <SkeletonInvoiceDetail />;
     }
     
