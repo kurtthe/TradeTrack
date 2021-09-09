@@ -163,16 +163,15 @@ class Filters extends Component {
             <Text style={{ fontWeight: 'bold' }}>By Type</Text>
           </View>
           <Block>
-            <FilterButton text={'Select'} onPress={() => this.onPressRadioButton()} />
+            <FilterButton
+              text={this.state.type === '' ? 'Select' : this.state.type}
+              onPress={() => this.onPressRadioButton()}
+            />
           </Block>
-          <Block>
-          {this.inputText()}
-          </Block>
-
-        
+          <Block>{this.inputText()}</Block>
         </Block>
         <ActionSheet ref={actionSheetRef}>
-          <Block style={{ padding: 15, paddingBottom: 30 }}>
+          <Block style={{ paddingVertical: 15}}>
             <RadioGroup
               radioButtons={radioButtonsHour}
               color={nowTheme.COLORS.INFO}
@@ -202,30 +201,23 @@ class Filters extends Component {
 
   btnClearFilter = () => {
     return (
-
       <Block style={styles.contentFilterBtn}>
-      <View style={{ marginRight: 20 }}>
-        <Text style={{ fontWeight: 'bold' }}>Search</Text>
-      </View>
-      <Block>
-      <View style={styles.cleanFilter}>
-      
-      
-      <Button
-        mode="outlined"
-        onPress={() => this.changeValuesFilters()}
-        labelStyle={styles.labelCleanFilter}
-        style={styles.btnClean}
-      >
-        Clear 
-      </Button>
-
-
-
-     
-    </View>
+        <View style={{ marginRight: 20 }}>
+          <Text style={{ fontWeight: 'bold' }}>Search</Text>
+        </View>
+        <Block>
+          <View style={styles.cleanFilter}>
+            <Button
+              mode="outlined"
+              onPress={() => this.changeValuesFilters()}
+              labelStyle={styles.labelCleanFilter}
+              style={styles.btnClean}
+            >
+              Clear
+            </Button>
+          </View>
+        </Block>
       </Block>
-    </Block>
     );
   };
 
@@ -233,10 +225,9 @@ class Filters extends Component {
     return (
       <>
         <Block style={styles.container}>
-        {this.btnClearFilter()}
+          {this.btnClearFilter()}
           {this.rangeDate()}
           {this.typeSearch()}
-        
         </Block>
       </>
     );
@@ -255,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search: {
-    width: width * 0.5 ,
+    width: width * 0.5,
     marginHorizontal: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,
@@ -265,9 +256,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
-   // backgroundColor:'red',
-    left:'600%'
-    
+    // backgroundColor:'red',
+    left: '600%',
   },
   labelCleanFilter: {
     fontSize: 13,
