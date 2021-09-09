@@ -31,10 +31,10 @@ const SearchHome = ({ isWhite, style, navigation }) => (
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
       Keyboard.dismiss();
-      navigation.navigate('SearchHome');
+      navigation.navigate('Login');
     }}
   >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+    <Ionicons name="log-out-outline" color={'#828489'} size={28} />
   </TouchableOpacity>
 );
 

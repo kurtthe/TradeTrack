@@ -132,13 +132,10 @@ class InvoiceDetails extends React.Component {
             </Text>
           </Block>
           <Block row style={styles.totalPrices}>
-            <Text size={12}>Total ex-GST</Text>
-            <Text style={styles.receiptPrice}>
-              {this.formatMoney.format(
-                this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst,
-              )}
-            </Text>
-          </Block>
+              <Text size={12}>Total ex-GST</Text>
+              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst)}</Text>
+            </Block>
+        
           <Block row style={styles.totalPrices}>
             <Text size={12}>GST</Text>
             <Text style={styles.receiptPrice}>
