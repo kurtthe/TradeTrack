@@ -117,7 +117,7 @@ class Login extends React.Component {
                     source={require('@assets/imgs/img/logo.png')}
                   />
                 </Block>
-                <Block flex={3} top middle>
+                <Block flex={3} top  middle>
                   <Text
                   
                     style={{
@@ -141,13 +141,14 @@ class Login extends React.Component {
                   </Text>
                 </Block>
               </Block>
-
+           
               <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ height:300 }}
+          style={styles.body}
+								contentContainerStyle={styles.scrollChild, {paddingBottom:400}}
         >
 
-              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent', height: 500 }}>
+              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
@@ -229,11 +230,11 @@ class Login extends React.Component {
                       style={{ top:
                         Platform.OS === 'ios'
                           ? Dimensions.get('window').height < 670
-                            ? 200
-                            : 200
+                            ? 70
+                            : 100
                           : Dimensions.get('window').height < 870
-                          ? 0.8
-                          : 0.4
+                          ? 30
+                          : 90
                       }}
                       center
                     >
@@ -265,6 +266,7 @@ class Login extends React.Component {
                 </Block>
               </Block>
               </ScrollView>
+             
             </Block>
           </Block>
         </DismissKeyboard>
@@ -274,6 +276,23 @@ class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  body: {
+		width: "100%",
+    flex: 1,
+  paddingBottom:200
+	},
+
+
+    scrollChild: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height:hp('50%'),
+      //height : (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('95%') : hp('95%')) :  ((Dimensions.get('window').height < 595) ? hp('250%') : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? hp('220%'):hp('170%'))),
+
+	 
+    },
   
   registerContainer: {
     marginTop: 55,
