@@ -14,7 +14,7 @@ const PdfViewer = (props) => {
   
   return (
     <View style={styles.container}>
-      <PDFReader url={'http://zoada-au.com/123456.pdf'} />
+      <PDFReader url={props.url} />
     </View>
   );
 };

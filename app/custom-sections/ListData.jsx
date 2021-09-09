@@ -16,7 +16,7 @@ class ListData extends React.Component {
       data: [],
       perPageData: 12,
       valuesFilters: {},
-      notFound: true,
+      notFound: false
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();

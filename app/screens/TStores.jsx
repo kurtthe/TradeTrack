@@ -300,7 +300,7 @@ class Callouts extends React.Component {
             </Callout>
           </Marker>
 
-
+{/* 
           <Marker
             coordinate={markers[1].coordinate}
            
@@ -1211,7 +1211,7 @@ class Callouts extends React.Component {
              
               </CustomCallout>
             </Callout>
-          </Marker>
+          </Marker> */}
 
  
 
