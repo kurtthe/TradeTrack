@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import Icon from '@components/Icon';
 
@@ -31,6 +32,7 @@ const BottomModal = (props) => {
       }
     } else if (result.action === Share.dismissedAction) {
       // dismissed
+
     }
   };
 
@@ -43,8 +45,11 @@ const BottomModal = (props) => {
               <Icon name="chevron-left" family="evilicon" size={35} />
             </TouchableOpacity>
 
+
             <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
-              <Icon name="share" family="evilicon" size={30} />
+               <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+
+        
             </TouchableOpacity>
           </View>
           <View style={styles.body}>{props.children}</View>
@@ -68,7 +73,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   body: {
+
     height: '100%',
+
   },
   header: {
     backgroundColor: '#fff',
@@ -80,6 +87,7 @@ const styles = StyleSheet.create({
   },
   btnClose: {
     padding: 8,
+    paddingHorizontal:15
   },
 });
 export default BottomModal;
