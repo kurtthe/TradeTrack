@@ -103,13 +103,11 @@ class Header extends React.Component {
 
   handleDownloadFile = async () => {
     const { urlDownloadFile } = this.props.scene.route.params;
-
     const result = await this.generalRequestService.get(urlDownloadFile)
-    console.log("==>result",result)
-    // this.setState({
-    //   urlFilePdf: urlDownloadFile,
-    //   showModalBottom: true,
-    // });
+    this.setState({
+      urlFilePdf: result,
+      showModalBottom: true,
+    });
   };
   openViewerPdf = () => {
     const { urlDownloadFile } = this.props.scene.route.params;
