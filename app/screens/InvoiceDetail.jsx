@@ -117,9 +117,9 @@ class InvoiceDetails extends React.Component {
           card
           backgroundColor={'white'}
           width={width}
-          paddingTop={20}
+          paddingTop={10}
           paddingHorizontal={20}
-          paddingBottom={20}
+          paddingBottom={10}
           style={styles.lastCard}
         >
           <Block row style={styles.totalPrices}>
@@ -142,12 +142,12 @@ class InvoiceDetails extends React.Component {
           <View
             style={{
               borderWidth: 0.7,
-              marginVertical: 5,
+              marginVertical: 2,
               backgroundColor: '#E8E8E8',
               borderColor: '#E8E8E8',
             }}
           />
-          <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
+          <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 4 }}>
             <Text size={14}>Total</Text>
             <Text
               size={16}
