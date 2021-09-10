@@ -42,20 +42,17 @@ class InvoiceDetails extends React.Component {
   }
 
   renderDetailProducts = () => {
+
     return this.state.invoiceDetail.structure.items.map((orders, index) => (
-      <Block key={index}>
-        <Text style={styles.grayTextSKU}> SKU {validateEmptyField(orders.sku)}</Text>
-        <Text numberOfLines={2} style={styles.receiptText}>
-          {validateEmptyField(orders.description)}
-        </Text>
-        <Block row style={{ justifyContent: 'space-between', paddingBottom: 7 }}>
-          <Text style={styles.grayText}>
-            {orders.quantity || 1} x {this.formatMoney.format(orders.unit_price)}
-          </Text>
-          <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
+        <Block key ={index} style={{top: 5, }} >
+          <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
+          <Text  numberOfLines={2} style={styles.receiptText}>{orders.description}</Text>
+          <Block row style={{ justifyContent: 'space-between',  }}>
+            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
+          </Block>
         </Block>
-      </Block>
-    ));
+      ));
   };
 
   render() {
