@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
@@ -44,7 +45,7 @@ class Login extends React.Component {
       hidePass: true,
       inputEmailError: true,
       inputPasswordError: true,
-      loading:false
+      loading: false,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -56,8 +57,8 @@ class Login extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if(this.props.token_login === prevProps.token_login && !!this.props.token_login){
-      this.redirectLogin()
+    if (this.props.token_login === prevProps.token_login && !!this.props.token_login) {
+      this.redirectLogin();
     }
   }
 
@@ -69,7 +70,7 @@ class Login extends React.Component {
 
   handleLogin = async () => {
     this.setState({ loading: true });
-    
+
     const dataLogin = {
       username: this.state.email,
       password: this.state.password,
@@ -95,59 +96,63 @@ class Login extends React.Component {
     const { navigation } = this.props;
 
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff' }}>
-            <Block flex space="evenly">
-              <Block flex middle style={styles.socialConnect}>
-                <Block
-                  flex={3}
-                  top
-                  middle
-                  style={{
-                    top:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 15
-                          : 30
-                        : Dimensions.get('window').height < 870
+      <DismissKeyboard>
+        <Block flex middle style={{ backgroundColor: '#fff' }}>
+          <Block flex space="evenly">
+            <Block flex middle style={styles.socialConnect}>
+              <Block
+                flex={3}
+                top
+                middle
+                style={{
+                  top:
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
                         ? 15
-                        : 40,
-                  }}
-                >
-                  <Image
-                    style={styles.introImageStyle}
-                    source={require('@assets/imgs/img/logo.png')}
-                  />
-                </Block>
-                <Block flex={3} top middle>
-                  <Text
-                    style={{
-                      fontFamily: 'montserrat-bold',
-                      textAlign: 'left',
-                    }}
-                    color="#2E2F33"
-                    size={
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 20
-                          : 22
-                        : Dimensions.get('window').height < 870
-                        ? 20
-                        : 26
-                    }
-                    //size={20}
-                  >
-                    Welcome Back,{'\n'}
-                    Please sign in with your account
-                  </Text>
-                </Block>
+                        : 30
+                      : Dimensions.get('window').height < 870
+                      ? 15
+                      : 40,
+                }}
+              >
+                <Image
+                  style={styles.introImageStyle}
+                  source={require('@assets/imgs/img/logo.png')}
+                />
               </Block>
+              <Block flex={3} top middle>
+                <Text
+                  style={{
+                    fontFamily: 'montserrat-bold',
+                    textAlign: 'left',
+                  }}
+                  color="#2E2F33"
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 20
+                        : 22
+                      : Dimensions.get('window').height < 870
+                      ? 20
+                      : 26
+                  }
+                  //size={20}
+                >
+                  Welcome Back,{'\n'}
+                  Please sign in with your account
+                </Text>
+              </Block>
+            </Block>
 
-              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ height: 300 }}
+            >
+              <Block
+                flex={2.5}
+                space="between"
+                style={{ backgroundColor: 'transparent', height: 500 }}
+              >
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
@@ -225,15 +230,16 @@ class Login extends React.Component {
                       </Block>
                     </Block>
                     <Block
-                      flex={
-                        Platform.OS === 'ios'
-                          ? Dimensions.get('window').height < 670
+                      style={{
+                        top:
+                          Platform.OS === 'ios'
+                            ? Dimensions.get('window').height < 670
+                              ? 200
+                              : 200
+                            : Dimensions.get('window').height < 870
                             ? 0.8
-                            : 0.55
-                          : Dimensions.get('window').height < 870
-                          ? 0.8
-                          : 0.4
-                      }
+                            : 0.4,
+                      }}
                       center
                     >
                       <Button
@@ -264,10 +270,11 @@ class Login extends React.Component {
                   </Block>
                 </Block>
               </Block>
-            </Block>
+            </ScrollView>
           </Block>
-        </DismissKeyboard>
-      </KeyboardAvoidingView>
+        </Block>
+      </DismissKeyboard>
+      // </KeyboardAvoidingView>
     );
   }
 }

@@ -41,6 +41,7 @@ const PaymentDetail = (props) => {
   };
 
   return (
+
     <>
       <Block style={{ padding: theme.SIZES.BASE, top: 10 }}>
         <Text style={{ marginBottom: 15 }} size={16}>
@@ -50,13 +51,14 @@ const PaymentDetail = (props) => {
           <Block row flex center justifyContent={'space-between'}>
             <Block>
               <Text color={nowTheme.COLORS.LIGHTGRAY}>BSB</Text>
-              <Text>O83-125</Text>
+              <Text>083-125</Text>
             </Block>
             <Block center flex>
               <TouchableOpacity onPress={setBsbClipboard}>
                 <MaterialIcons name="content-copy" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
               </TouchableOpacity>
             </Block>
+
           </Block>
           <Block row flex center justifyContent={'space-between'}>
             <Block>
