@@ -21,6 +21,7 @@ import { DownloadFile } from '@core/services/download-file.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import * as SecureStore from 'expo-secure-store';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -163,7 +164,9 @@ class Header extends React.Component {
               show={this.state.showModalBottom}
               close={() => this.setState({ showModalBottom: false })}
             >
+              <View style={{ height: hp('80%') }}>
               <PdfViewer url={this.state.urlFilePdf} />
+              </View>
             </BottomModal>
           </View>,
         ];
