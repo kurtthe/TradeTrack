@@ -43,149 +43,184 @@ class Callouts extends React.Component {
 
       markers: [
         {
-          coordinate: {
-            latitude: -38.0393841  ,
-            longitude: 145.3412336  ,
-          },
-          name:'Berwick VIC 3806',
-          address: "51 Clyde Rd Berwick, VIC Australia 3806",
-          phone_number: "(03) 9707 4488",
-          email: "berwick@burdens.com.au",
-          manager: "Natalie Rumble",
+            id: 1,
+            
+            name: "Berwick VIC 3806",
+            coordinate: {
+                          latitude: "-38.0393841" ,
+                          longitude: "145.3412336" ,
+                      },
+            address: "51 Clyde Rd Berwick, VIC Australia 3806",
+            phone_number: "(03) 9707 4488",
+            email: "berwick@burdens.com.au",
+            manager: "Natalie Rumble",
+            manager_email: "natalie.rumble@burdens.com.au",
+            
         },
         {
+            id: 2,
+            
+            name: "Thomastown VIC 3074",
             coordinate: {
-                latitude: -38.161985 ,
-                longitude:  145.938047 ,
-              },
-              name: "Thomastown VIC 3074",
-            lat_lng: "-37.6912349,145.0022803",
+              latitude: "-37.6912349" ,
+              longitude: "145.0022803" ,
+          },
             address: "1 Chaffey St Thomastown, VIC Australia 3074",
             phone_number: "(03) 9462 3490",
             email: "thomastown@burdens.com.au",
             manager: "Dylan Jacobsen",
+            manager_email: "dylan.jacobsen@burdens.com.au",
         },
         {
+            id: 3,
+            
+            name: "Warragul VIC 3820",
             coordinate: {
-                latitude: -37.8108037 ,
-                longitude: 145.0643341 ,
-              },
-              name: "Warragul VIC 3820",
-              lat_lng: "-38.161985,145.938047",
-              address: "118 Albert St Warragul, VIC Australia 3820",
-              phone_number: "(03) 5623 4511",
-              email: "warragul@burdens.com.au",
-              manager: "Jimmy Lambeth",
+              latitude: "-38.161985" ,
+              longitude: "145.938047" ,
+          },
+            address: "118 Albert St Warragul, VIC Australia 3820",
+            phone_number: "(03) 5623 4511",
+            email: "warragul@burdens.com.au",
+            manager: "Jimmy Lambeth",
+            manager_email: "jimmy.lambeth@burdens.com.au",
         },
         {
-            coordinate: {
-                latitude: -37.7569496 ,
-                longitude: 145.3410173 ,
-              },
+            id: 4,
+            
             name: "Balwyn VIC 3103",
-            lat_lng: "-37.8108037,145.0643341",
+            coordinate: {
+              latitude: "-37.8108037" ,
+              longitude: "145.0643341" ,
+          },
             address: "101 Whitehorse Rd Balwyn , VIC Australia 3103",
             phone_number: "(03) 9817 4521",
             email: "balwyn@burdens.com.au",
             manager: "Cal Peake",
+            manager_email: "callan.peake@burdens.com.au",
         },
         {
+            id: 5,
+            
+            name: "Lilydale VIC 3140",
             coordinate: {
-                latitude: -37.7967096 ,
-                longitude: 145.2498949 ,
-              },
-             name: "Lilydale VIC 3140",
-              lat_lng: "-37.7569496,145.3410173",
-             address: "3 John St Lilydale, VIC Australia 3140",
-             phone_number: "(03) 9739 6900",
-              email: "lilydale@burdens.com.au",
-              manager: "Lyndall Parsons",
+              latitude: "-37.7569496" ,
+              longitude: "145.3410173" ,
+          },
+            address: "3 John St Lilydale, VIC Australia 3140",
+            phone_number: "(03) 9739 6900",
+            email: "lilydale@burdens.com.au",
+            manager: "Lyndall Parsons",
+            manager_email: "lyndall.parsons@burdens.com.au",
+            
         },
         {
+            id: 6,
+            name: "Ringwood VIC 3134",
             coordinate: {
-                latitude:  -37.8876276 ,
-                longitude:  145.1627565 ,
-              },
-              name: "Ringwood VIC 3134",
-              lat_lng: "-37.7967096,145.2498949",
-              address: "13 Oban Rd Ringwood, VIC Australia 3134",
-              phone_number: "(03) 9870 6422",
-              email: "ringwood@burdens.com.au",
-              manager: "Andrew Gunsser",
+              latitude: "-37.7967096" ,
+              longitude: "145.2498949" ,
+          },
+            address: "13 Oban Rd Ringwood, VIC Australia 3134",
+            phone_number: "(03) 9870 6422",
+            email: "ringwood@burdens.com.au",
+            manager: "Andrew Gunsser",
+            manager_email: "andrew.gunsser@burdens.com.au",
         },
         {
+            id: 7,
+            name: "Glen Waverley VIC 3150",
             coordinate: {
-                latitude: -37.6912349 ,
-                longitude: 145.0022803 ,
-              },
-              name: "Glen Waverley VIC 3150",
-              lat_lng: "-37.8876276,145.1627565",
-              address: "350 Springvale Rd Glen Waverley, VIC Australia 3150",
-              phone_number: "(03) 8562 3500",
-              email: "glenwaverley@burdens.com.au",
-              manager: "Chris Mifsud",
+              latitude: "-37.8876276" ,
+              longitude: "145.1627565" ,
+          },
+            address: "350 Springvale Rd Glen Waverley, VIC Australia 3150",
+            phone_number: "(03) 8562 3500",
+            email: "glenwaverley@burdens.com.au",
+            manager: "Chris Mifsud",
+            manager_email: "chris.mifsud@burdens.com.au",
         },
         {
+            id: 8,
+            name: "Ferntree Gully VIC 3156",
             coordinate: {
-                latitude: -37.9865914 ,
-                longitude:  145.1124195,
-              },
-             name: "Ferntree Gully VIC 3156",
-            lat_lng: "-37.6912349,145.0022803",
+              latitude: "--37.6912349" ,
+              longitude: "145.0022803" ,
+          },
             address: "1825 Ferntree Gully Rd Ferntree Gully, VIC Australia 3156",
             phone_number: "(03) 9730 5500",
             email: "ferntreegully@burdens.com.au",
             manager: "Matt Lazones",
+            manager_email: "matt.lazones@burdens.com.au",
         },
         {
-            coordinate: {
-                latitude:  -38.0199584 ,
-                longitude:  145.2130819,
-              },
+            id: 9,
             name: "Braeside VIC 3195",
-           lat_lng: "-37.9865914,145.1124195",
-           address: "407 Lower Dandenong Rd Braeside, VIC Australia 3195",
+            coordinate: {
+              latitude: "-37.9865914" ,
+              longitude: "145.1124195" ,
+          },
+            address: "407 Lower Dandenong Rd Braeside, VIC Australia 3195",
             phone_number: "(03) 9262 2111",
             email: "braeside@burdens.com.au",
             manager: "Paul Sheridan",
+            manager_email: "paul.sheridan@burdens.com.au",
         },
         {
+            id: 10,
+            
+            name: "Dandenong South VIC 3175",
             coordinate: {
-                latitude:  -38.0864102,
-                longitude: 145.4959953 ,
-              },
-             name: "Dandenong South VIC 3175",
-             lat_lng: "-38.0199584,145.2130819",
-             address: "203 Frankston - Dandenong Rd Dandenong South, VIC Australia 3175",
-             phone_number: "(03) 9703 8484",
-              email: "dandenong@burdens.com.au",
-             manager: "Brent Murdoch",
+              latitude: "-38.0199584" ,
+              longitude: "145.2130819" ,
+          },
+            address: "203 Frankston - Dandenong Rd Dandenong South, VIC Australia 3175",
+            phone_number: "(03) 9703 8484",
+            email: "dandenong@burdens.com.au",
+            manager: "Brent Murdoch",
+            manager_email: "brent.murdoch@burdens.com.au",
         },
         {
+            id: 11,
+            name: "Pakenham VIC 3810",
             coordinate: {
-                latitude:  -38.108242 ,
-                longitude:  145.283722 ,
-              },
-              name: "Pakenham VIC 3810",
-             lat_lng: "-38.0864102,145.4959953",
-             address: "Cnr Bald Hill Rd & Embrey Ct Pakenham, VIC Australia 3810",
-              phone_number: "(03) 5945 6800",
-              email: "pakenham@burdens.com.au",
-              manager: "John Batty",
+              latitude: "-38.0864102" ,
+              longitude: "145.4959953" ,
+          },
+            address: "Cnr Bald Hill Rd & Embrey Ct Pakenham, VIC Australia 3810",
+            phone_number: "(03) 5945 6800",
+            email: "pakenham@burdens.com.au",
+            manager: "John Batty",
+            manager_email: "johnbatty@burdens.com.au",
         },
         {
+            id: 13,
+
+            name: "Somerville VIC 3912",
             coordinate: {
-                latitude: -38.218677 ,
-                longitude: 145.177292 ,
-              },
-              name: "Somerville VIC 3912",
-            lat_lng: "-38.108242,145.283722",
+              latitude: "-38.108242" ,
+              longitude: "145.283722" ,
+          },
             address: "89 Grant Rd Somerville VIC 3912",
             phone_number: "(03) 5973 6499",
-           email: "somerville@burdens.com.au",
+            email: "somerville@burdens.com.au",
             manager: "Michael Ligocki",
+            manager_email: "michael.ligocki@burdens.com.au",
         },
-      ],
+        {
+            id: 14,
+            name: "Cranbourne VIC 3977",
+            coordinate: {
+              latitude: "-38.218677" ,
+              longitude: "145.177292" ,
+          },
+            address: "1/1441 South Gippsland Highway Cranbourne VIC 3977",
+            phone_number: "(03) 5973 4510",
+            email: "cranbourne@burdens.com.au",
+            manager: "Steve Anderton",
+            manager_email: "steve.anderton@burdens.com.au",
+        }
+    ]
     };
   }
 
@@ -248,7 +283,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[0].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[0].phone_number}
               </Text>
               </CalloutSubview>
@@ -261,7 +296,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[0].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[0].email}
               </Text>
               </CalloutSubview>
@@ -300,7 +335,7 @@ class Callouts extends React.Component {
             </Callout>
           </Marker>
 
-{/* 
+
           <Marker
             coordinate={markers[1].coordinate}
            
@@ -331,7 +366,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[1].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[1].phone_number}
               </Text>
               </CalloutSubview>
@@ -344,7 +379,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[1].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[1].email}
               </Text>
               </CalloutSubview>
@@ -414,7 +449,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[2].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[2].phone_number}
               </Text>
               </CalloutSubview>
@@ -427,7 +462,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[2].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[2].email}
               </Text>
               </CalloutSubview>
@@ -497,7 +532,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[3].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[3].phone_number}
               </Text>
               </CalloutSubview>
@@ -510,7 +545,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[3].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[3].email}
               </Text>
               </CalloutSubview>
@@ -580,7 +615,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[4].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[4].phone_number}
               </Text>
               </CalloutSubview>
@@ -593,7 +628,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[4].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[4].email}
               </Text>
               </CalloutSubview>
@@ -663,7 +698,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[5].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[5].phone_number}
               </Text>
               </CalloutSubview>
@@ -676,7 +711,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[5].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[5].email}
               </Text>
               </CalloutSubview>
@@ -746,7 +781,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[6].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[6].phone_number}
               </Text>
               </CalloutSubview>
@@ -759,7 +794,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[6].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[6].email}
               </Text>
               </CalloutSubview>
@@ -829,7 +864,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[7].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[7].phone_number}
               </Text>
               </CalloutSubview>
@@ -842,7 +877,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[7].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[7].email}
               </Text>
               </CalloutSubview>
@@ -912,7 +947,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[8].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[8].phone_number}
               </Text>
               </CalloutSubview>
@@ -925,7 +960,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[8].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[8].email}
               </Text>
               </CalloutSubview>
@@ -995,7 +1030,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[9].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[9].phone_number}
               </Text>
               </CalloutSubview>
@@ -1008,7 +1043,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[9].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[9].email}
               </Text>
               </CalloutSubview>
@@ -1078,7 +1113,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[10].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[10].phone_number}
               </Text>
               </CalloutSubview>
@@ -1091,7 +1126,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[10].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[10].email}
               </Text>
               </CalloutSubview>
@@ -1161,7 +1196,7 @@ class Callouts extends React.Component {
                 <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
               <CalloutSubview  onPress={()=>{this.dialCall(markers[11].phone_number)}}>
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[11].phone_number}
               </Text>
               </CalloutSubview>
@@ -1174,7 +1209,7 @@ class Callouts extends React.Component {
            
 
               <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[11].email}?subject= Burdens App &body=Hi There`) } >
-              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
               {markers[11].email}
               </Text>
               </CalloutSubview>
@@ -1211,7 +1246,7 @@ class Callouts extends React.Component {
              
               </CustomCallout>
             </Callout>
-          </Marker> */}
+          </Marker>
 
  
 
@@ -1245,6 +1280,14 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     fontSize: 14,
     top:4
+  },
+  MapsText_: {
+    paddingLeft: 12,
+    fontSize: 14,
+    top:4,
+    fontWeight: '400',
+    
+    textDecorationLine: 'underline',
   },
   customView: {
     width: 140,
