@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Dimensions, TextInput } from 'react-native';
+import { StyleSheet, Dimensions, TextInput, Alert } from 'react-native';
 import { Block, Text, Button } from "galio-framework";
 import { nowTheme } from "@constants/";
 
@@ -20,8 +20,24 @@ const QuantityCounterWithInput = props => {
     }, [])
 
     useEffect (() => {
-        if (quantity == 1) setDisabledMinus(true)
-        else setDisabledMinus(false)
+        if (quantity == 0 && !props.product) {
+            Alert.alert(
+                "Are you sure you want to remove the product for your cart?",
+                      "",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "OK", onPress: () => {
+                      setDisabledMinus(true);
+                      deleteItem()
+                          }}
+                ],
+                { cancelable: false }
+              );
+        } else setDisabledMinus(false)
         if (quantity == 100) setDisabledPlus(true)
         else setDisabledPlus(false)
     }, [quantity])
@@ -29,19 +45,24 @@ const QuantityCounterWithInput = props => {
     const plusCounter = () => {
         const quantity1 = quantity
         if (quantity1 != 100) {
-        const plus = quantity1 + 1 
-        setQuantity(plus)
-        props.quantityHandler(plus)
+            const plus = quantity1 + 1 
+            setQuantity(plus)
+            props.quantityHandler(plus)
         }
     }
 
     const minusCounter = () => {
         const quantity1 = quantity
-        if (quantity1 != 1) {
-        const minus = quantity1 - 1 
-        setQuantity(minus)
-        props.quantityHandler(minus)
+        const minVal = props.product ? 1 : 0
+        if (quantity1 != minVal) {
+            const minus = quantity1 - 1 
+            setQuantity(minus)
+            props.quantityHandler(minus)
         }
+    }
+
+    const deleteItem = () => {
+        props.delete()
     }
 
     return (

@@ -8,9 +8,10 @@ import ActionSheet from 'react-native-actions-sheet';
 import PickerButton from '@components/PickerButton';
 import RadioGroup from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import Icon from '@components/Icon';
-import { getStores, getJobs } from '../../services/PlaceOrdersServices';
+import { getStores, getJobs, searchJobs } from '../../services/PlaceOrdersServices';
 import { connect  } from 'react-redux';
+import { FormatMoneyService } from '@core/services/format-money.service';
+import { Searchbar } from 'react-native-paper';
 
 const { width } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -32,19 +33,96 @@ const radioButtonsDelivery = [
   },
 ];
 
+const radioButtonsHour = [
+  {
+    id: '1',
+    label: '7 AM',
+    value: '7 AM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '2',
+    label: '8 AM',
+    value: '8 AM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '3',
+    label: '9 AM',
+    value: '9 AM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '4',
+    label: '10 AM',
+    value: '10 AM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '5',
+    label: '11 AM',
+    value: '11 AM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '6',
+    label: '12 PM',
+    value: '12 PM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '7',
+    label: '1 PM',
+    value: '1 PM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '8',
+    label: '2 PM',
+    value: '2 PM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '9',
+    label: '3 PM',
+    value: '3 PM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
+    id: '10',
+    label: '4 PM',
+    value: '4 PM',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+];
+
 class PlaceOrders extends React.Component {
   constructor(props) {
     super(props);
+    this.formatMoney = FormatMoneyService.getInstance();
     this.state = {
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
-      date: new Date(),
+      date: '',
       radioButtonsJobs: [],
       radioButtonsStore: [],
-      store: ''
+      store: '',
+      job: '',
+      delivery: '',
+      time: ''
     };
   }
 
@@ -74,7 +152,25 @@ class PlaceOrders extends React.Component {
     return radioButtonsValues;
   }
 
-  onPressRadioButton() {
+  onPressRadioButton(items) {
+    let selected = items.find(i => i.selected)
+    if (this.state.radioButtonsData == radioButtonsDelivery)
+      this.setState({
+        delivery: selected.value
+      })
+    else if (this.state.radioButtonsData == radioButtonsHour)
+      this.setState({
+        time: selected.value
+      })
+    else if (this.state.radioButtonsData == this.state.radioButtonsStore)
+      this.setState({
+        store: selected.value
+      })
+    else if (this.state.radioButtonsData == this.state.radioButtonsJobs)
+      this.setState({
+        job: selected.value
+      })
+    
     actionSheetRadioButtonRef.current?.setModalVisible(false);
   }
 
@@ -87,93 +183,43 @@ class PlaceOrders extends React.Component {
   };
 
   handleDatePicked = (date) => {
-    console.log('A date has been picked: ', date);
+    this.setState({
+      date: date
+    })
     this.hideDatePicker();
   };
 
-  showTimePicker = () => {
-    this.setState({ isTimePickerVisible: true });
-  };
+  // showTimePicker = () => {
+  //   this.setState({ isTimePickerVisible: true });
+  // };
 
-  hideTimePicker = () => {
-    this.setState({ isTimePickerVisible: false });
-  };
+  // hideTimePicker = () => {
+  //   this.setState({ isTimePickerVisible: false });
+  // };
 
-  handleTimePicked = (time) => {
-    console.log('A date has been picked: ', time);
-    this.hideTimePicker();
-  };
+  // handleTimePicked = (time) => {
+  //   console.log('A date has been picked: ', time);
+  //   this.hideTimePicker();
+  // };
 
-  handleQuantity = (id, qty) => {
-    const { cart } = this.state;
-
-    const updatedCart = cart.map((product) => {
-      if (product.id === id) product.qty = qty;
-      return product;
-    });
-
-    this.setState({ cart: updatedCart });
-  };
-
-  handleDelete = (id) => {
-    const { cart } = this.state;
-    const updatedCart = cart.filter((product) => product.id !== id);
-    this.setState({ cart: updatedCart });
-  };
-
-  /*     renderProduct = ({ item }) => {
-        const { navigation } = this.props;
-
-        return (
-        <Block card shadow style={styles.product}>
-            <Block flex row>
-                <TouchableWithoutFeedback
-                    //  onPress={() => navigation.navigate("Product", { product: item })}
-                >
-                    <Image
-                    source={{ uri: item.image }}
-                    style={styles.imageHorizontal}
-                    />
-                </TouchableWithoutFeedback>
-                <Block flex style={styles.productDescription}>
-                    <Block row>
-                        <Text color={nowTheme.COLORS.LIGHTGRAY}>
-                            SKU:
-                        </Text>
-                        <Text color={nowTheme.COLORS.INFO}>
-                            FIE228106B
-                        </Text>
-                    </Block>
-                    <TouchableWithoutFeedback
-                        //onPress={() =>  navigation.navigate("Product", { product: item }) }
-                        >
-                        <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-                            {item.title}
-                        </Text>
-                    </TouchableWithoutFeedback>
-                    <Block flex left row space="between">
-                        <Text
-                            style={{ fontWeight:'bold', marginTop:10}}
-                            color={nowTheme.COLORS.ORANGE} size={20}
-                        >
-                            ${item.price * item.qty}
-                        </Text>
-                    </Block>
-                </Block>
-            </Block>
-            <Block right>
-                <QuantityCounter quantity={1}/>
-            </Block>
-        </Block>
-        );
-    }; */
+  onChangeSearch = async (query) => {
+    try {
+      let searchResult = await searchJobs(query);
+      let categories = this.setRadioButtons(searchResult);
+      this.setState({
+        radioButtonsJobs: categories
+      })
+    } catch (e) {
+      console.log('search error', e)
+    }
+  }
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.cost_price*p.quantity
+      return p.price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `$${prices.reduce(reducer, 0).toFixed(2)}`
+    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
   renderOptions = () => {
@@ -191,7 +237,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Detail Order</Text>
           <PickerButton
             text="Select Job"
-            placeholder="Select or search job"
+            placeholder={this.state.job || "Select or search job"}
             icon
             onPress={() => {
               this.setState({ radioButtonsData: this.state.radioButtonsJobs });
@@ -220,7 +266,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
-            placeholder="Select delivery type"
+            placeholder={this.state.delivery || "Select delivery type"}
             icon
             onPress={() => {
               this.setState({ radioButtonsData: radioButtonsDelivery });
@@ -231,7 +277,7 @@ class PlaceOrders extends React.Component {
           <>
             <PickerButton
               text="Preferred Delivery Date"
-              placeholder="Select date"
+              placeholder={this.state.date?.toString() || "Select date"}
               icon
               iconName={'calendar-today'}
               size={25}
@@ -239,6 +285,7 @@ class PlaceOrders extends React.Component {
             />
 
             <DateTimePicker
+              mode='date'
               isVisible={this.state.isDatePickerVisible}
               onConfirm={this.handleDatePicked}
               onCancel={this.hideDatePicker}
@@ -246,18 +293,21 @@ class PlaceOrders extends React.Component {
           </>
           <PickerButton
             text="Preferred Delivery Time"
-            placeholder="Select time"
+            placeholder={this.state.time || "Select time"}
             icon
             iconName={'lock-clock'}
             size={25}
-            onPress={this.showTimePicker}
+            onPress={ () => {
+              this.setState({ radioButtonsData: radioButtonsHour });
+              actionSheetRadioButtonRef.current?.setModalVisible();
+            }}
           />
-          <DateTimePicker
+          {/* <DateTimePicker
             mode="time"
             isVisible={this.state.isTimePickerVisible}
             onConfirm={this.handleTimePicked}
             onCancel={this.hideTimePicker}
-          />
+          /> */}
         </Block>
         <Block
           card
@@ -270,8 +320,8 @@ class PlaceOrders extends React.Component {
         >
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
-            text={this.state.store}
-            placeholder="Select store"
+            text='Select Store'
+            placeholder={this.state.store || "Select store"}
             icon
             onPress={() => {
               this.setState({ radioButtonsData: this.state.radioButtonsStore });
@@ -337,15 +387,16 @@ class PlaceOrders extends React.Component {
 
     return orders.map((orders) => {
       return (
-        <Block
-          keyExtractor={(i) => {
-            index: i;
-          }}
-          row
-          style={{ justifyContent: 'space-between', paddingBottom: 7 }}
+        <Block 
+          keyExtractor={(i) => { index: i }} 
+          style={{top: 5, }} 
         >
-          <Text style={styles.receiptText}>{orders.quantity}x {orders.name}</Text>
-          <Text style={styles.receiptPrice}>${(orders.cost_price*orders.quantity).toFixed(2)}</Text>
+          <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
+          <Text  numberOfLines={2} style={styles.receiptText}>{orders.name}</Text>
+          <Block row style={{ justifyContent: 'space-between',  }}>
+            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.price)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.price*orders.quantity)}</Text>
+          </Block>
         </Block>
       );
     });
@@ -396,32 +447,22 @@ class PlaceOrders extends React.Component {
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
-                onPress={() => this.onPressRadioButton()}
+                onPress={(items) => this.onPressRadioButton(items)}
                 containerStyle={{alignItems: 'left'}}
               />
             ) : (
               <View>
-                <Input
-                  right
-                  color="black"
-                  style={styles.search}
+                <Searchbar
                   placeholder="Search job"
-                  placeholderTextColor={'#8898AA'}
-                  // onFocus={() => {Keyboard.dismiss(); navigation.navigate('Search');}}
-                  iconContent={
-                    <Icon
-                      size={16}
-                      color={theme.COLORS.MUTED}
-                      name="zoom-bold2x"
-                      family="NowExtra"
-                    />
-                  }
+                  onChangeText={this.onChangeSearch}
+                  style={styles.search}
+                  inputStyle={styles.searchInput}
                 />
                 <Block left style={{ marginHorizontal: 16 }}>
                   <RadioGroup
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO}
-                    onPress={() => this.onPressRadioButton()}
+                    onPress={(items) => this.onPressRadioButton(items)}
                     containerStyle={{alignItems: 'left'}}
                   />
                 </Block>
@@ -492,14 +533,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     width: width - theme.SIZES.BASE * 4,
   },
-  quantityButtons: {
-    width: 25,
-    height: 25,
-  },
-  quantityTexts: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
   button: {
     width: width - theme.SIZES.BASE * 3.1,
     marginTop: theme.SIZES.BASE,
@@ -514,12 +547,6 @@ const styles = StyleSheet.create({
   },
   buttonOrder: {
     width: Platform.OS === 'ios' ? width - 240 : width - 300,
-  },
-  addButton: {
-    width: '25%',
-    height: 40,
-    backgroundColor: 'rgba(14, 58, 144, 0.1)',
-    borderRadius: 5,
   },
   text: {
     paddingTop: 10,
@@ -540,14 +567,22 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   receiptText: {
-    fontSize: 13,
-    width: '60%',
-    color: '#363C4A',
+    paddingVertical: 10,
+    width: '80%',
   },
-  receiptPrice: {
-    fontSize: 14,
-    color: nowTheme.COLORS.INFO,
+  grayText: {
+    color: nowTheme.COLORS.PRETEXT,
+    top: -7,
+  },
+  grayTextSKU: {
+    color: nowTheme.COLORS.PRETEXT,
+    top: 7,
+    left: -3.5,
+    fontSize: 11.5,
+  },
+  detailPrice: {
     fontWeight: Platform.OS == 'android' ? 'bold' : '500',
+    top: -25,
   },
   detailOrdersBlock: {
     height: 'auto',
@@ -555,13 +590,18 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   search: {
-    height: 48,
+    height: 40,
     width: width - 32,
-    marginHorizontal: 16,
+    marginHorizontal: 12,
     borderWidth: 1,
     borderRadius: 30,
     borderColor: nowTheme.COLORS.BORDER,
+    elevation: 0
   },
+  searchInput: {
+    color: 'black',
+    fontSize: 16
+  }
 });
 
 const mapStateToProps = (state) => ({
