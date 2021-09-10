@@ -18,10 +18,12 @@ import nowTheme from '@constants/Theme';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Ionicons } from '@expo/vector-icons';
 import { DownloadFile } from '@core/services/download-file.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -91,6 +93,7 @@ class Header extends React.Component {
       urlFilePdf: '',
     };
     this.downloadFile = DownloadFile.getInstance();
+    this.generalRequestService = GeneralRequestService.getInstance();
   }
 
   handleLeftPress = () => {
@@ -100,12 +103,13 @@ class Header extends React.Component {
 
   handleDownloadFile = async () => {
     const { urlDownloadFile } = this.props.scene.route.params;
-    const urlPdf = await this.downloadFile.download(urlDownloadFile, 'pdf');
 
-    this.setState({
-      urlFilePdf: urlDownloadFile,
-      showModalBottom: true,
-    });
+    const result = await this.generalRequestService.get(urlDownloadFile)
+    console.log("==>result",result)
+    // this.setState({
+    //   urlFilePdf: urlDownloadFile,
+    //   showModalBottom: true,
+    // });
   };
   openViewerPdf = () => {
     const { urlDownloadFile } = this.props.scene.route.params;
