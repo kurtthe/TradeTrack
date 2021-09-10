@@ -44,47 +44,42 @@ class Login extends React.Component {
       hidePass: true,
       inputEmailError: true,
       inputPasswordError: true,
-      token_storage: '',
+      loading:false
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
   async componentDidMount() {
-    await this.redirectLogin();
-    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
-    console.log('=>tokenStorageExist', tokenStorageExist);
-    this.setState({
-      token_storage: tokenStorageExist,
-    });
+    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+    this.props.sign(JSON.parse(tokenStorageExist));
   }
 
-  async componentDidUpdate() {
-    if (this.state.token_storage !== '') {
-      this.props.sign({
-        api_key: this.state.token_storage,
-      });
-      await this.redirectLogin();
+  async componentDidUpdate(prevProps) {
+    if(this.props.token_login === prevProps.token_login && !!this.props.token_login){
+      this.redirectLogin()
     }
   }
 
   async redirectLogin() {
-    if (this.props.token_login && this.state.token_storage) {
+    if (!!this.props.token_login) {
       this.props.navigation.navigate('AppStack');
     }
   }
 
   handleLogin = async () => {
+    this.setState({ loading: true });
+    
     const dataLogin = {
       username: this.state.email,
       password: this.state.password,
     };
 
-    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
+    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin, true);
+
     if (!!resLogin) {
-      await SecureStore.setItemAsync('api_key', resLogin.api_key);
       this.props.sign(resLogin);
-      await this.redirectLogin();
+      this.setState({ loading: false });
     }
   };
 
@@ -156,9 +151,8 @@ class Login extends React.Component {
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
-                      
-                      <Block width={width * 0.9} style={{paddingTop:20}}>
-                      <Text
+                      <Block width={width * 0.9} style={{ paddingTop: 20 }}>
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
                           row
@@ -184,13 +178,13 @@ class Login extends React.Component {
                           onChangeText={(event) => this.handleChangeEmail(event)}
                           autoCapitalize="none"
                         />
-                         <Text
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{
                             marginLeft: 0,
                             fontFamily: 'montserrat-regular',
                             fontFamily: 'montserrat-regular',
-                            top:10
+                            top: 10,
                           }}
                           row
                           muted
@@ -207,8 +201,8 @@ class Login extends React.Component {
                           Password
                         </Text>
                       </Block>
-                     
-                      <Block width={width * 0.9} style={{paddingTop:10}}>
+
+                      <Block width={width * 0.9} style={{ paddingTop: 10 }}>
                         <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
@@ -247,6 +241,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
+                        loading={this.state.loading}
                       >
                         Login
                       </Button>
@@ -305,8 +300,6 @@ const styles = StyleSheet.create({
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
     marginHorizontal: 5,
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: "rgba(136, 152, 170, 0.3)"
   },
 
   button: {
