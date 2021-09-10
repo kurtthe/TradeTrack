@@ -7,7 +7,8 @@ import {
   Image,
   Animated,
   Platform,
-  View
+  View,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { Block, Text, Button, theme } from "galio-framework";
@@ -92,7 +93,8 @@ class Product extends React.Component {
   }
 
   onAddCartPressed(product) {
-    let itemQ = ({...product, quantity: 1})
+    let price = this.state.hideMyPrice ? product.rrp : product.cost_price
+    let itemQ = ({...item, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === product.id
     ))
@@ -101,7 +103,8 @@ class Product extends React.Component {
         ...this.props.cartProducts.slice(0, index),
         {
           ...this.props.cartProducts[index],
-          quantity: this.props.cartProducts[index].quantity + 1
+          quantity: this.props.cartProducts[index].quantity + 1,
+          price: price
         },
         ...this.props.cartProducts.slice(index+1)
       ]) 
@@ -151,7 +154,7 @@ class Product extends React.Component {
     const product = route.params?.product;
 
     return (
-      <Block flex style={styles.product}>
+      <Block style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
           <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 25, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
            
@@ -223,6 +226,7 @@ class Product extends React.Component {
           </ScrollView>
           <View style={styles.quantityBar}>
             <QuantityCounterWithInput 
+              product
               quantity={product.quantity ? product.quantity : 1}
               quantityHandler={(q) => this.handleUpdateQuantity(product, q)}
             />
@@ -242,6 +246,7 @@ class Product extends React.Component {
 
 const styles = StyleSheet.create({
   product: {
+    flex: 1,
     marginTop: 0
   },
   grayLine: {

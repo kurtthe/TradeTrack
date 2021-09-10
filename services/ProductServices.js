@@ -1,5 +1,6 @@
 import * as ServicesResources from "./ServicesResources.js";
 import * as SecureStore from "expo-secure-store";
+import { getAllProductsSuccess } from "../app/core/module/store/cart/cart.js";
 
 // const getUserToken = async () => {
 // 	const user_token = await SecureStore.getItemAsync("token");
@@ -26,7 +27,7 @@ const getSupplierId = async () => {
 	}
 }
 
-export const getProducts = async () => {
+export const getProducts = () => async (dispatch) => {
 	try {
 		let id = await getSupplierId()
 		let result = await fetch(`${ServicesResources.GET_ALL_PRODUCTS}${id}/products`, {
@@ -36,7 +37,8 @@ export const getProducts = async () => {
 			}
 		});
         let res = await result.json();
-		return res;
+		console.log(res)
+		dispatch(getAllProductsSuccess(res))
 	} catch (err) {
 		console.log("ERROR", err);
 	}
