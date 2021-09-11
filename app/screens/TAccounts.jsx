@@ -77,6 +77,7 @@ class Account extends React.Component {
                 component: this.renderInvoices(),
               },
             ]}
+            tabIndexSelected={this.state.customStyleIndex}
           />
         </ScrollView>
       </SafeAreaView>
