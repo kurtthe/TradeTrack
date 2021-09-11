@@ -113,7 +113,6 @@ class Product extends React.Component {
     } else {
       this.props.updateProducts([...this.props.cartProducts, itemQ])
     }
-    //navigation.navigate("Cart")
   }
 
   renderProgress = () => {

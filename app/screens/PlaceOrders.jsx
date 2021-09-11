@@ -184,7 +184,7 @@ class PlaceOrders extends React.Component {
 
   handleDatePicked = (date) => {
     this.setState({
-      date: date
+      date: date.toDateString()
     })
     this.hideDatePicker();
   };
@@ -238,6 +238,7 @@ class PlaceOrders extends React.Component {
           <PickerButton
             text="Select Job"
             placeholder={this.state.job || "Select or search job"}
+            picked={this.state.job !== ''}
             icon
             onPress={() => {
               this.setState({ radioButtonsData: this.state.radioButtonsJobs });
@@ -268,6 +269,7 @@ class PlaceOrders extends React.Component {
             text="Delivery Type"
             placeholder={this.state.delivery || "Select delivery type"}
             icon
+            picked={this.state.delivery !== ''}
             onPress={() => {
               this.setState({ radioButtonsData: radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
@@ -277,8 +279,9 @@ class PlaceOrders extends React.Component {
           <>
             <PickerButton
               text="Preferred Delivery Date"
-              placeholder={this.state.date?.toString() || "Select date"}
+              placeholder={this.state.date || "Select date"}
               icon
+              picked={this.state.date !== ''}
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
@@ -295,6 +298,7 @@ class PlaceOrders extends React.Component {
             text="Preferred Delivery Time"
             placeholder={this.state.time || "Select time"}
             icon
+            picked={this.state.time !== ''}
             iconName={'lock-clock'}
             size={25}
             onPress={ () => {
@@ -322,6 +326,7 @@ class PlaceOrders extends React.Component {
           <PickerButton
             text='Select Store'
             placeholder={this.state.store || "Select store"}
+            picked={this.state.store !== ''}
             icon
             onPress={() => {
               this.setState({ radioButtonsData: this.state.radioButtonsStore });
