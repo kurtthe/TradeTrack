@@ -79,6 +79,7 @@ class Product extends React.Component {
   }
 
   handleUpdateQuantity = (item, q) => {
+    let price = this.state.hideMyPrice ? product.rrp : product.cost_price
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === item.id
     ))
@@ -86,7 +87,8 @@ class Product extends React.Component {
       ...this.props.cartProducts.slice(0, index),
       {
         ...this.props.cartProducts[index],
-        quantity: q
+        quantity: q,
+        price: price
       },
       ...this.props.cartProducts.slice(index+1)
     ])
@@ -94,7 +96,7 @@ class Product extends React.Component {
 
   onAddCartPressed(product) {
     let price = this.state.hideMyPrice ? product.rrp : product.cost_price
-    let itemQ = ({...item, quantity: 1, price: price})
+    let itemQ = ({...product, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === product.id
     ))
@@ -154,7 +156,7 @@ class Product extends React.Component {
     const product = route.params?.product;
 
     return (
-      <Block style={styles.product}>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={120} style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
           <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 25, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
            
@@ -239,7 +241,7 @@ class Product extends React.Component {
                 <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
               </Button>
           </View>
-      </Block>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -307,6 +309,7 @@ const styles = StyleSheet.create({
     backgroundColor: Platform.OS == 'ios' ? 'white': 'transparent',
     flexDirection: 'row',
     position: 'relative',
+    bottom: Platform.OS == 'ios' ? '5%' : '10%',
     width: width,
     alignItems: 'center',
     justifyContent: 'space-evenly',
