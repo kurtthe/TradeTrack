@@ -49,4 +49,16 @@ export class GeneralRequestService {
       this.httpCommonService.handleError(err)
     }
   }
+
+  async put(endpoint, data, options={}) {
+    try {
+      const response =  await this.httpService.put(endpoint, data,{
+        headers: { 'ttrak-key': this.tokeAuth || '' },
+        ...options
+      })
+      return response.data;
+    } catch (err) {
+      this.httpCommonService.handleError(err)
+    }
+  }
 }

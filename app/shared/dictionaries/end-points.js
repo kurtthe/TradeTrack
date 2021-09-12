@@ -11,5 +11,7 @@ export const endPoints = {
   statements: `${environment.api}burdens/statements`,
   downloadStatementDetail: `${environment.api}burdens/statements/:id/download`,
   searchInvoices : `${environment.api}burdens/search`,
-  payment : `${environment.api}burdens/payment`
+  payment : `${environment.api}burdens/payment`,
+  generateOrder: `${environment.api}material-orders`,
+  supplierId: `${environment.api}burdens/supplier`
 }

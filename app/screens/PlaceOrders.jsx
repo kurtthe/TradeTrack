@@ -12,6 +12,8 @@ import { getStores, getJobs, searchJobs } from '../../services/PlaceOrdersServic
 import { connect  } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { Searchbar } from 'react-native-paper';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 const { width } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -109,6 +111,7 @@ const radioButtonsHour = [
 class PlaceOrders extends React.Component {
   constructor(props) {
     super(props);
+    this.generalRequest = GeneralRequestService.getInstance();
     this.formatMoney = FormatMoneyService.getInstance();
     this.state = {
       isDatePickerVisible: false,
@@ -122,7 +125,8 @@ class PlaceOrders extends React.Component {
       store: '',
       job: '',
       delivery: '',
-      time: ''
+      time: '',
+      orderName: '',
     };
   }
 
@@ -222,6 +226,72 @@ class PlaceOrders extends React.Component {
     return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
+  verifyFields() {
+    if (!this.state.orderName) {
+      alert('You must specify a valid name')
+    } 
+    if (!this.state.delivery) {
+      alert('You must pick a Delivery Type')
+    } 
+    if (!this.props.cartProducts) {
+      alert('You must have an order to place')
+    }
+  }
+
+  async placeOrderHandler() {
+    try{
+      let supplierId = await this.generalRequest.get(endPoints.supplierId);
+      let date = new Date();
+      let items = this.props.cartProducts.map(e => {
+        return (
+          {
+            ...e,
+            description: e.name,
+            units: e.quantity,
+            cost: e.price
+          }
+        )
+      })
+      this.verifyFields()
+      let data = {
+        "data": {
+          "name": this.state.orderName,
+          "supplier": supplierId,
+          "job": this.state.job,
+          "issued_on": date.toISOString("2015-05-14").slice(0,10),
+          "description": "A description for this order",
+          "notes": this.state.notes,
+          "tax_exclusive": null,
+          "sections": [
+              {
+                  "items": items,
+                  "name": "Section 1",
+                  "description": "A section description",
+                  "hide_section": false,
+                  "hide_section_price": false,
+                  "hide_section_items": false,
+                  "hide_item_qty": false,
+                  "hide_item_price": false,
+                  "hide_item_subtotal": false,
+                  "hide_item_total": false
+              }
+          ],
+          "delivery_instructions": {
+              "delivery": this.state.delivery,
+              "time": this.state.time
+          }
+        }
+      };
+      let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
+      console.log(placedOrder)
+      if (placedOrder) {
+        this.props.navigation.navigate('OrderPlaced');
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   renderOptions = () => {
     return (
       <Block center>
@@ -251,6 +321,7 @@ class PlaceOrders extends React.Component {
             color="black"
             style={styles.orderName}
             placeholder="Enter your order name"
+            value={this.state.orderName}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
           />
@@ -341,6 +412,7 @@ class PlaceOrders extends React.Component {
             color="black"
             style={styles.notes}
             placeholder="Type notes here"
+            value={this.state.notes}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
             multiline
@@ -376,7 +448,7 @@ class PlaceOrders extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.button}
-                onPress={() => this.props.navigation.navigate('OrderPlaced')}
+                onPress={() => this.placeOrderHandler()}
               >
                 Place Order
               </Button>
