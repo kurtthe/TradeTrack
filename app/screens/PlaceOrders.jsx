@@ -132,9 +132,9 @@ class PlaceOrders extends React.Component {
 
   async componentDidMount() {
     try{
-      let stores = await getStores()
-      let jobs = await getJobs()
-      let storesAsRadioButtons = this.setRadioButtons(stores)
+      let stores = await this.generalRequest.get(endPoints.stores);
+      let jobs = await this.generalRequest.get(endPoints.jobs);
+      let storesAsRadioButtons = this.setRadioButtons(stores.locations)
       let jobsAsRadioButtons = this.setRadioButtons(jobs)
       this.setState({
         radioButtonsStore: storesAsRadioButtons,
