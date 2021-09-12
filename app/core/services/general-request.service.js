@@ -21,16 +21,20 @@ export class GeneralRequestService {
   }
 
   async getToken(){
-    return await SecureStore.getItemAsync('api_key');
+    const data =  await SecureStore.getItemAsync('data_user');
+    const dataParse = JSON.parse(data)
+    return dataParse?.api_key
   }
   
 
-  async post(endpoint, data, options={}) {
+  async post(endpoint, data, saveToken=false) {
     try {
       const response =  await this.httpService.post(endpoint, data,{
-        headers: { 'ttrak-key': this.tokeAuth || '' },
-        ...options
+        headers: { 'ttrak-key': this.tokeAuth || '' }
       })
+      if(saveToken){
+        this.saverToken(response.data)
+      }
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err)
@@ -38,15 +42,24 @@ export class GeneralRequestService {
   }
 
   async get(endpoint, options={}) {
+    console.log("==>this.tokeAut",this.tokeAut)
     try {
       const response = await this.httpService.get(endpoint, {
         headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options
       })
-     // console.log("==>response",response)
       return response.data
     } catch (err) {
       this.httpCommonService.handleError(err)
+    }
+  }
+
+  async saverToken(data){
+    if(!!data) {
+      await SecureStore.setItemAsync('data_user', JSON.stringify(data));
+      this.getToken().then((data)=>{
+        this.tokeAuth = data
+      })
     }
   }
 }

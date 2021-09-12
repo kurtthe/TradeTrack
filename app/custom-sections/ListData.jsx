@@ -118,6 +118,7 @@ class ListData extends React.Component {
             ) : (
               <>
                 <View>{cloneElement(children, { data: this.state.data })}</View>
+                {(this.state.data.length > 10)&& ( 
                 <View style={styles.contentButton}>
                   <Button
                     onPress={() => this.handleLoadMore()}
@@ -128,6 +129,7 @@ class ListData extends React.Component {
                     Load More...
                   </Button>
                 </View>
+                )}
               </>
             )}
           </View>
