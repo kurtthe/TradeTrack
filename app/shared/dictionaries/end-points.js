@@ -13,5 +13,7 @@ export const endPoints = {
   searchInvoices : `${environment.api}burdens/search`,
   payment : `${environment.api}burdens/payment`,
   generateOrder: `${environment.api}material-orders`,
-  supplierId: `${environment.api}burdens/supplier`
+  supplierId: `${environment.api}burdens/supplier`,
+  stores: `${environment.api}burdens/stores`,
+  jobs: `${environment.api}jobs`
 }
