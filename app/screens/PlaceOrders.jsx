@@ -227,15 +227,20 @@ class PlaceOrders extends React.Component {
   }
 
   verifyFields() {
+    let error = false
     if (!this.state.orderName) {
       alert('You must specify a valid name')
+      error = true
     } 
     if (!this.state.delivery) {
       alert('You must pick a Delivery Type')
+      error = true
     } 
     if (!this.props.cartProducts) {
       alert('You must have an order to place')
+      error = true
     }
+    return error
   }
 
   async placeOrderHandler() {
@@ -252,40 +257,42 @@ class PlaceOrders extends React.Component {
           }
         )
       })
-      this.verifyFields()
-      let data = {
-        "data": {
-          "name": this.state.orderName,
-          "supplier": supplierId,
-          "job": this.state.job,
-          "issued_on": date.toISOString("2015-05-14").slice(0,10),
-          "description": "A description for this order",
-          "notes": this.state.notes,
-          "tax_exclusive": null,
-          "sections": [
-              {
-                  "items": items,
-                  "name": "Section 1",
-                  "description": "A section description",
-                  "hide_section": false,
-                  "hide_section_price": false,
-                  "hide_section_items": false,
-                  "hide_item_qty": false,
-                  "hide_item_price": false,
-                  "hide_item_subtotal": false,
-                  "hide_item_total": false
-              }
-          ],
-          "delivery_instructions": {
-              "delivery": this.state.delivery,
-              "time": this.state.time
+      let missingFields = this.verifyFields()
+      if (!missingFields) {
+        let data = {
+          "data": {
+            "name": this.state.orderName,
+            "supplier": supplierId,
+            "job": this.state.job,
+            "issued_on": date.toISOString("2015-05-14").slice(0,10),
+            "description": "A description for this order",
+            "notes": this.state.notes,
+            "tax_exclusive": null,
+            "sections": [
+                {
+                    "items": items,
+                    "name": "Section 1",
+                    "description": "A section description",
+                    "hide_section": false,
+                    "hide_section_price": false,
+                    "hide_section_items": false,
+                    "hide_item_qty": false,
+                    "hide_item_price": false,
+                    "hide_item_subtotal": false,
+                    "hide_item_total": false
+                }
+            ],
+            "delivery_instructions": {
+                "delivery": this.state.delivery,
+                "time": this.state.time
+            }
           }
+        };
+        let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
+        console.log(placedOrder)
+        if (placedOrder) {
+          this.props.navigation.navigate('OrderPlaced');
         }
-      };
-      let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
-      console.log(placedOrder)
-      if (placedOrder) {
-        this.props.navigation.navigate('OrderPlaced');
       }
     } catch (e) {
       console.error(e)
@@ -321,6 +328,7 @@ class PlaceOrders extends React.Component {
             color="black"
             style={styles.orderName}
             placeholder="Enter your order name"
+            onChangeText={t => this.setState({ orderName: t})}
             value={this.state.orderName}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
@@ -413,6 +421,7 @@ class PlaceOrders extends React.Component {
             style={styles.notes}
             placeholder="Type notes here"
             value={this.state.notes}
+            onChangeText={t => this.setState({ notes: t})}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
             multiline
