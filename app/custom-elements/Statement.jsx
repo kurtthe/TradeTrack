@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { Ionicons } from '@expo/vector-icons';
 import { nowTheme } from '@constants';
@@ -10,6 +10,7 @@ import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import moment from 'moment';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { width } = Dimensions.get('screen');
 
@@ -85,7 +86,9 @@ const Statement = (props) => {
         </Block>
       </Block>
       <BottomModal show={showModal} close={() => setShowModal(false)}>
-        <PdfViewer url={urlDownloadFile} />
+        <View style={{ height: hp('80%') }}>
+          <PdfViewer url={urlDownloadFile} />
+        </View>
       </BottomModal>
     </>
   );
