@@ -100,31 +100,19 @@ class Login extends React.Component {
         <Block flex middle style={{ backgroundColor: '#fff' }}>
           <Block flex space="evenly">
             <Block flex middle style={styles.socialConnect}>
-              <Block
-                flex={3}
-                top
-                middle
-                style={{
-                  top:
-                    Platform.OS === 'ios'
-                      ? Dimensions.get('window').height < 670
-                        ? 15
-                        : 30
-                      : Dimensions.get('window').height < 870
-                      ? 15
-                      : 40,
-                }}
-              >
-                <Image
-                  style={styles.introImageStyle}
-                  source={require('@assets/imgs/img/logo.png')}
-                />
-              </Block>
-              <Block flex={3} top middle>
-                <Text
+            <Block
+                  flex={3}
+                  top
+                  middle
                   style={{
-                    fontFamily: 'montserrat-bold',
-                    textAlign: 'left',
+                    top:
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').height < 670
+                          ? 15
+                          : 30
+                        : Dimensions.get('window').height < 870
+                        ? 15
+                        : 40,
                   }}
                 >
                   <Image
@@ -147,16 +135,14 @@ class Login extends React.Component {
                           : 22
                         : Dimensions.get('window').height < 870
                         ? 20
-                        : 22
-                      : Dimensions.get('window').height < 870
-                      ? 20
-                      : 26
-                  }
-                  //size={20}
-                >
-                  Welcome Back,{'\n'}
-                  Please sign in with your account
-                </Text>
+                        : 26
+                    }
+                    //size={20}
+                  >
+                    Welcome Back,{'\n'}
+                    Please sign in with your account
+                  </Text>
+                </Block>
               </Block>
 
            
@@ -278,7 +264,7 @@ class Login extends React.Component {
                         <SimpleButton onPress={() => navigation.navigate('SignUp')}>
                           {' '}
                           Learn how to open
-                        </SimpleButton>
+                          </SimpleButton>
                       </Block>
                     </Block>
                   </Block>
@@ -287,10 +273,8 @@ class Login extends React.Component {
               </ScrollView>
              
             </Block>
-
           </Block>
-        </Block>
-      </DismissKeyboard>
+        </DismissKeyboard>
       // </KeyboardAvoidingView>
     );
   }
