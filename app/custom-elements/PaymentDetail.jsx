@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import { Dimensions, TouchableOpacity, StyleSheet, Clipboard, View } from 'react-native';
-import { Block, theme, Text } from 'galio-framework';
+import { Block, theme, Text, Input } from 'galio-framework';
 import { Button } from '@components';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,14 +13,20 @@ import { useSelector } from 'react-redux';
 
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import ActionSheet from 'react-native-actions-sheet';
+import { FormatMoneyService } from '@core/services/format-money.service';
+
 
 const { width } = Dimensions.get('screen');
 const generalRequestService = GeneralRequestService.getInstance();
+const actionSheetRef = createRef();
+const formatMoney = FormatMoneyService.getInstance();
 
-const PaymentDetail = (props) => {
+const PaymentDetail = () => {
   const balanceLive = useSelector((state) => state.liveBalanceReducer);
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
+  const [valueAmount, setValueAmount] = useState('');
 
   const setBsbClipboard = async () => {
     await Clipboard.setString('083125');
@@ -34,11 +40,16 @@ const PaymentDetail = (props) => {
     await Clipboard.setString('63673');
   };
 
-  const handlePayment = async () => {
-    const {url} = await generalRequestService.get(endPoints.payment);
-    setShowModal(true);
-    setUrlPayment(url)
+  const handlePayment = () => {
+    actionSheetRef.current?.setModalVisible(true);
   };
+
+  const handleShowMethodPayment = async ()=>{
+    const {url} = await generalRequestService.get(`${endPoints.payment}?amount=${valueAmount}`);
+    actionSheetRef.current?.setModalVisible(false);
+    setUrlPayment(url);
+    setShowModal(true);
+  }
 
   return (
 
@@ -128,7 +139,54 @@ const PaymentDetail = (props) => {
         </Block>
         <GrayLine style={{ width: '100%', alignSelf: 'center', bottom: 15 }} />
       </Block>
+      
 
+      <ActionSheet ref={actionSheetRef}>
+          <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
+            <Text style={{ fontWeight: 'bold' }}>Payment via Credit Card</Text>
+            <Text style={{ fontWeight: 'bold' }}>Amount</Text>
+            <Input
+              right
+              color="black"
+              style={styles.search}
+              placeholder={formatMoney.format(balanceLive.total)}
+              placeholderTextColor={'#8898AA'}
+              onChangeText={(value)=>setValueAmount(value)}
+            />
+            <Block row style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
+              <Text size={15}>Your Balance</Text>
+              <Text
+                size={16}
+                color={nowTheme.COLORS.INFO}
+                style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
+              >
+                {formatMoney.format(balanceLive.total)}
+              </Text>
+            </Block>
+            <View>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.buttonAS}
+                onPress={() => handleShowMethodPayment()}
+              >
+                Continue
+              </Button>
+              <Button
+                color="eeeee4"
+                textStyle={{
+                  color: nowTheme.COLORS.LIGHTGRAY,
+                  fontFamily: 'montserrat-bold',
+                  fontSize: 16,
+                }}
+                style={(styles.buttonGrayAS, styles.buttonAS)}
+              >
+                Cancel
+              </Button>
+            </View>
+          </Block>
+        </ActionSheet>
+      
       <BottomModal
         show={showModal}
         close={() => setShowModal(false)}
@@ -146,6 +204,9 @@ const styles = StyleSheet.create({
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
   },
+  buttonAS: {
+    width: width - theme.SIZES.BASE * 2,
+  }
 });
 
 export default PaymentDetail;

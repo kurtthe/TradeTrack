@@ -21,7 +21,10 @@ export const loginSlice = createSlice({
   reducers: {
     sign: (state, action) => {
       const data = action.payload;
-
+      if(data=== null){
+        state.api_key= null
+        return;
+      }
       state.api_key = data.api_key
       state.company_id = data.company_id
       state.created_date = data.created_date

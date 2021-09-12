@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from 'react';
+import React, { useState, cloneElement, useEffect } from 'react';
 import { View } from 'react-native';
 import { Block, Text } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
@@ -7,6 +7,10 @@ import { nowTheme } from '@constants';
 const Tabs = (props) => {
   const [indexSelectedTab, setIndexSelectedTab] = useState(0);
 
+  useEffect(() => {
+    setIndexSelectedTab(props.tabIndexSelected)
+  });
+  
   getLabels = () => {
     return props.optionsTabsRender.map((item) => item.labelTab);
   };
