@@ -10,14 +10,8 @@ const sizeConstant = (Platform.OS === 'ios')
 const QuantityCounterWithInput = props => {
 
     const [quantity, setQuantity] = useState(props.quantity)
-    const [noButtons, setNoButtons] = useState(false)
     const [disabledPlus, setDisabledPlus] = useState(false)
     const [disabledMinus, setDisabledMinus] = useState(false)
-
-    useEffect(() => {
-        let initialQuantity = props.quantity
-        if (initialQuantity != 1) setNoButtons(true)
-    }, [])
 
     useEffect (() => {
         if (quantity == 0 && !props.product) {
@@ -38,11 +32,13 @@ const QuantityCounterWithInput = props => {
                 { cancelable: false }
               );
         } else setDisabledMinus(false)
-        if (quantity == 100) setDisabledPlus(true)
-        else setDisabledPlus(false)
+        props.quantityHandler(quantity)
+        // if (quantity == 100) setDisabledPlus(true)
+        // else setDisabledPlus(false)
     }, [quantity])
 
     const plusCounter = () => {
+        console.log('PLUS', quantity)
         const quantity1 = quantity
         if (quantity1 != 100) {
             const plus = quantity1 + 1 
@@ -52,6 +48,7 @@ const QuantityCounterWithInput = props => {
     }
 
     const minusCounter = () => {
+        console.log('MINUS', quantity)
         const quantity1 = quantity
         const minVal = props.product ? 1 : 0
         if (quantity1 != minVal) {
@@ -67,39 +64,33 @@ const QuantityCounterWithInput = props => {
 
     return (
         <Block row center>
-            {
-                !noButtons &&
-                <Button
-                    shadowless
-                    style={styles.quantityButtons}
-                    color={'#f0f0f0'}
-                    onPress={minusCounter}
-                >
-                    <Text style={styles.quantityTexts}>
-                        -
-                    </Text>
-                </Button>
-            }
+            <Button
+                shadowless
+                style={styles.quantityButtons}
+                color={'#f0f0f0'}
+                onPress={minusCounter}
+            >
+                <Text style={styles.quantityTexts}>
+                    -
+                </Text>
+            </Button>
             <TextInput 
                 textAlign="center" 
                 style={styles.quantityButtons} 
                 keyboardType='number-pad'
+                value={quantity.toString()}
+                onChangeText={(q) => setQuantity(Number(q))}
+            />
+            <Button 
+                shadowless 
+                style={styles.quantityButtons}
+                color={props.product ? nowTheme.COLORS.ORANGE : nowTheme.COLORS.INFO}
+                onPress={plusCounter}
             >
-                {quantity}
-            </TextInput>
-            {
-                !noButtons && 
-                <Button 
-                    shadowless 
-                    style={styles.quantityButtons}
-                    color={nowTheme.COLORS.ORANGE}
-                    onPress={plusCounter}
-                >
-                    <Text color={'white'} style={styles.quantityTexts}>
-                        +
-                    </Text>
-                </Button>
-            }
+                <Text color={'white'} style={styles.quantityTexts}>
+                    +
+                </Text>
+            </Button>
         </Block>
     )
 };
