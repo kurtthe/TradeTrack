@@ -33,7 +33,6 @@ class Cart extends React.Component {
       deleteAction: false
     };
   }
-  
 
   handleCustomIndexSelect = (index) => {
     this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
@@ -100,7 +99,6 @@ class Cart extends React.Component {
 
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
-    console.log(this.props.cartProducts)
     return (
       <Block card shadow style={styles.product}>
         <Block flex row>
@@ -138,7 +136,7 @@ class Cart extends React.Component {
                 </Text>
               </Block>
               <QuantityCounterWithInput 
-                delete={() => this.handleDelete(item.id)} 
+                delete={() => this.handleDelete(item.id)}
                 quantity={item.quantity}
                 quantityHandler={(q) => this.handleUpdateQuantity(item, q)}
               />

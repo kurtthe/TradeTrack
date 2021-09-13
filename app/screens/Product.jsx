@@ -79,19 +79,24 @@ class Product extends React.Component {
   }
 
   handleUpdateQuantity = (item, q) => {
-    let price = this.state.hideMyPrice ? product.rrp : product.cost_price
+    let price = this.state.hideMyPrice ? item.rrp : item.cost_price
+    let itemQ = ({...item, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === item.id
     ))
-    this.props.updateProducts([
-      ...this.props.cartProducts.slice(0, index),
-      {
-        ...this.props.cartProducts[index],
-        quantity: q,
-        price: price
-      },
-      ...this.props.cartProducts.slice(index+1)
-    ])
+    if (index !== -1) {
+      this.props.updateProducts([
+        ...this.props.cartProducts.slice(0, index),
+        {
+          ...this.props.cartProducts[index],
+          quantity: q,
+          price: price
+        },
+        ...this.props.cartProducts.slice(index+1)
+      ])
+    } else {
+      this.props.updateProducts([...this.props.cartProducts, itemQ])
+    }
   }
 
   onAddCartPressed(product) {
