@@ -7,7 +7,8 @@ import {
   Image,
   Animated,
   Platform,
-  View
+  View,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { Block, Text, Button, theme } from "galio-framework";
@@ -78,21 +79,29 @@ class Product extends React.Component {
   }
 
   handleUpdateQuantity = (item, q) => {
+    let price = this.state.hideMyPrice ? item.rrp : item.cost_price
+    let itemQ = ({...item, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === item.id
     ))
-    this.props.updateProducts([
-      ...this.props.cartProducts.slice(0, index),
-      {
-        ...this.props.cartProducts[index],
-        quantity: q
-      },
-      ...this.props.cartProducts.slice(index+1)
-    ])
+    if (index !== -1) {
+      this.props.updateProducts([
+        ...this.props.cartProducts.slice(0, index),
+        {
+          ...this.props.cartProducts[index],
+          quantity: q,
+          price: price
+        },
+        ...this.props.cartProducts.slice(index+1)
+      ])
+    } else {
+      this.props.updateProducts([...this.props.cartProducts, itemQ])
+    }
   }
 
   onAddCartPressed(product) {
-    let itemQ = ({...product, quantity: 1})
+    let price = this.state.hideMyPrice ? product.rrp : product.cost_price
+    let itemQ = ({...product, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === product.id
     ))
@@ -101,14 +110,14 @@ class Product extends React.Component {
         ...this.props.cartProducts.slice(0, index),
         {
           ...this.props.cartProducts[index],
-          quantity: this.props.cartProducts[index].quantity + 1
+          quantity: this.props.cartProducts[index].quantity + 1,
+          price: price
         },
         ...this.props.cartProducts.slice(index+1)
       ]) 
     } else {
       this.props.updateProducts([...this.props.cartProducts, itemQ])
     }
-    //navigation.navigate("Cart")
   }
 
   renderProgress = () => {
@@ -151,7 +160,7 @@ class Product extends React.Component {
     const product = route.params?.product;
 
     return (
-      <Block flex style={styles.product}>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={120} style={styles.product}>
         <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
           <Block row flex style={{backgroundColor: nowTheme.COLORS.BACKGROUND, height: 25, alignItems: 'center', justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly'}}>
            
@@ -223,25 +232,29 @@ class Product extends React.Component {
           </ScrollView>
           <View style={styles.quantityBar}>
             <QuantityCounterWithInput 
+              product
               quantity={product.quantity ? product.quantity : 1}
               quantityHandler={(q) => this.handleUpdateQuantity(product, q)}
             />
-              <Button
-                shadowless
-                style={styles.addToCart}
-                color={nowTheme.COLORS.INFO}
-                onPress={() => this.onAddCartPressed(product)}
-              >
-                <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
-              </Button>
+            <Button
+              shadowless
+              style={styles.addToCart}
+              color={nowTheme.COLORS.INFO}
+              onPress={() => this.onAddCartPressed(product)}
+            >
+              <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
+            </Button>
           </View>
-      </Block>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   product: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 0
   },
   grayLine: {
@@ -301,7 +314,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 0 : 3,
     backgroundColor: Platform.OS == 'ios' ? 'white': 'transparent',
     flexDirection: 'row',
-    position: 'relative',
     width: width,
     alignItems: 'center',
     justifyContent: 'space-evenly',
