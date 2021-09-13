@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
@@ -23,18 +23,18 @@ import {
 } from 'react-native-responsive-screen';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import {GeneralRequestService} from '@core/services/general-request.service';
-import {endPoints} from '@shared/dictionaries/end-points';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
 
-import { connect  } from 'react-redux';
+import { connect } from 'react-redux';
 import { sign } from '@core/module/store/auth/reducers/login';
-import * as SecureStore from "expo-secure-store";
+import * as SecureStore from 'expo-secure-store';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
 );
 class Login extends React.Component {
-  generalRequest
+  generalRequest;
 
   constructor(props) {
     super(props);
@@ -43,61 +43,64 @@ class Login extends React.Component {
       email: '',
       password: '',
       hidePass: true,
-      inputEmailError:true,
-      inputPasswordError:true,
+      inputEmailError: true,
+      inputPasswordError: true,
+      loading: false,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
   async componentDidMount() {
-    await this.redirectLogin();
+    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+    this.props.sign(JSON.parse(tokenStorageExist));
   }
 
-  async redirectLogin(){
-    const tokenStorageExist = await SecureStore.getItemAsync('api_key');
-    if(this.props.token_login !== null && !!tokenStorageExist){
-      this.props.navigation.navigate("AppStack");
+  async componentDidUpdate(prevProps) {
+    if (this.props.token_login === prevProps.token_login && !!this.props.token_login) {
+      this.redirectLogin();
     }
   }
 
-  handleLogin = async ()=> {
+  async redirectLogin() {
+    if (!!this.props.token_login) {
+      this.props.navigation.navigate('AppStack');
+    }
+  }
+
+  handleLogin = async () => {
+    this.setState({ loading: true });
+
     const dataLogin = {
       username: this.state.email,
-      password: this.state.password
-    }
+      password: this.state.password,
+    };
 
-    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin);
-    if(!!resLogin){
-      await SecureStore.setItemAsync('api_key', resLogin.api_key);
+    const resLogin = await this.generalRequest.post(endPoints.auth, dataLogin, true);
+
+    if (!!resLogin) {
       this.props.sign(resLogin);
-      await this.redirectLogin()
+      this.setState({ loading: false });
     }
-  }
+  };
 
-  handleChangeEmail= (text)=>{
+  handleChangeEmail = (text) => {
+    this.setState({ email: text });
+  };
 
-    this.setState({email: text})
-  }
-
-  handleChangePassword= (text)=>{
-    this.setState({password: text})
-
-  }
+  handleChangePassword = (text) => {
+    this.setState({ password: text });
+  };
 
   render() {
     const { navigation } = this.props;
 
     return (
-      // <KeyboardAvoidingView
-      //   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      //   style={styles.container}
-      // >
-     <DismissKeyboard>
-          <Block flex middle style={{ backgroundColor: '#fff',  }}>
-            <Block flex space="evenly">
-              <Block flex middle style={styles.socialConnect}>
-                <Block
+      <DismissKeyboard>
+        <Block flex middle style={{ backgroundColor: '#fff' }}>
+          <Block flex space="evenly">
+            <Block flex middle style={styles.socialConnect}>
+            <Block
                   flex={3}
                   top
                   middle
@@ -117,7 +120,7 @@ class Login extends React.Component {
                     source={require('@assets/imgs/img/logo.png')}
                   />
                 </Block>
-                <Block flex={3} top middle>
+                <Block flex={3} top  middle>
                   <Text
                   
                     style={{
@@ -142,18 +145,20 @@ class Login extends React.Component {
                 </Block>
               </Block>
 
+           
               <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ height:300 }}
+          style={styles.body}
+								contentContainerStyle={styles.scrollChild, {paddingBottom:400}}
         >
 
-              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent', height: 500 }}>
+              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
-                      
-                      <Block width={width * 0.9} style={{paddingTop:20}}>
-                      <Text
+                      <Block width={width * 0.9} style={{ paddingTop: 20 }}>
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
                           row
@@ -176,16 +181,16 @@ class Login extends React.Component {
                           iconContent={<Block />}
                           shadowless
                           keyboardType={'email-address'}
-                          onChangeText={(event)=>this.handleChangeEmail(event)}
-                          autoCapitalize='none'
+                          onChangeText={(event) => this.handleChangeEmail(event)}
+                          autoCapitalize="none"
                         />
-                         <Text
+                        <Text
                           color={nowTheme.COLORS.PRETEXT}
                           style={{
                             marginLeft: 0,
                             fontFamily: 'montserrat-regular',
                             fontFamily: 'montserrat-regular',
-                            top:10
+                            top: 10,
                           }}
                           row
                           muted
@@ -202,14 +207,14 @@ class Login extends React.Component {
                           Password
                         </Text>
                       </Block>
-                     
-                      <Block width={width * 0.9} style={{paddingTop:10}}>
+
+                      <Block width={width * 0.9} style={{ paddingTop: 10 }}>
                         <Input
                           secureTextEntry={true}
                           iconContent={<Block />}
                           placeholder="Enter your correct password"
                           secureTextEntry={this.state.hidePass}
-                          onChangeText={(event)=>this.handleChangePassword(event)}
+                          onChangeText={(event) => this.handleChangePassword(event)}
                         />
                         <MaterialIcons
                           style={styles.icon}
@@ -229,11 +234,11 @@ class Login extends React.Component {
                       style={{ top:
                         Platform.OS === 'ios'
                           ? Dimensions.get('window').height < 670
-                            ? 200
-                            : 200
+                            ? 70
+                            : 100
                           : Dimensions.get('window').height < 870
-                          ? 0.8
-                          : 0.4
+                          ? 30
+                          : 90
                       }}
                       center
                     >
@@ -242,6 +247,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
+                        loading={this.state.loading}
                       >
                         Login
                       </Button>
@@ -258,13 +264,14 @@ class Login extends React.Component {
                         <SimpleButton onPress={() => navigation.navigate('SignUp')}>
                           {' '}
                           Learn how to open
-                        </SimpleButton>
+                          </SimpleButton>
                       </Block>
                     </Block>
                   </Block>
                 </Block>
               </Block>
               </ScrollView>
+             
             </Block>
           </Block>
         </DismissKeyboard>
@@ -274,7 +281,26 @@ class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+
+  body: {
+		width: "100%",
+    flex: 1,
+  paddingBottom:200
+	},
+
+
+    scrollChild: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height:hp('50%'),
+      //height : (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('95%') : hp('95%')) :  ((Dimensions.get('window').height < 595) ? hp('250%') : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? hp('220%'):hp('170%'))),
+
+	 
+    },
   
+
   registerContainer: {
     marginTop: 55,
     width: width * 1,
@@ -293,7 +319,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    
   },
   inner: {
     padding: 24,
@@ -303,8 +328,6 @@ const styles = StyleSheet.create({
   socialConnect: {
     backgroundColor: nowTheme.COLORS.WHITE,
     marginHorizontal: 5,
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: "rgba(136, 152, 170, 0.3)"
   },
 
   button: {
@@ -340,7 +363,7 @@ const styles = StyleSheet.create({
   },
 });
 const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key
+  token_login: state.loginReducer.api_key,
 });
 
 const mapDispatchToProps = { sign };
