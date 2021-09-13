@@ -2,15 +2,11 @@ import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, Text, View } from 'react-native';
 import { MaterialIcons } from "@expo/vector-icons";
 import { Block } from "galio-framework";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-
 import nowTheme from '@constants/Theme';
-import { color } from 'react-native-reanimated';
 
 class PickerButton extends React.Component {
   render() {
-    const {style, placeholder, text, icon, iconName, size, ...props } = this.props;
+    const {style, placeholder, text, icon, iconName, size, picked, ...props } = this.props;
 
     const buttonStyles = [
         styles.button,
@@ -27,7 +23,7 @@ class PickerButton extends React.Component {
                 {...props}
             >
                 <Block row space={'between'} style={styles.container}>
-                    <Text style={styles.placeholder}>
+                    <Text style={[styles.placeholder, picked && styles.pickedPlaceholder]}>
                         {placeholder}
                     </Text>
                     {icon && 
@@ -56,9 +52,12 @@ const styles = StyleSheet.create({
     placeholder: {
         color: nowTheme.COLORS.PICKERTEXT
     },
+    pickedPlaceholder: {
+        color: 'black',
+        fontWeight: 'bold'
+    },
     button: {
-        width: 'auto',
-       
+        width: 'auto'
     },
     container: {
         alignItems: 'center',
