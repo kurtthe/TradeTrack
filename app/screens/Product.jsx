@@ -236,14 +236,14 @@ class Product extends React.Component {
               quantity={product.quantity ? product.quantity : 1}
               quantityHandler={(q) => this.handleUpdateQuantity(product, q)}
             />
-              <Button
-                shadowless
-                style={styles.addToCart}
-                color={nowTheme.COLORS.INFO}
-                onPress={() => this.onAddCartPressed(product)}
-              >
-                <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
-              </Button>
+            <Button
+              shadowless
+              style={styles.addToCart}
+              color={nowTheme.COLORS.INFO}
+              onPress={() => this.onAddCartPressed(product)}
+            >
+              <Text size={18} color={nowTheme.COLORS.WHITE}>Add to Cart</Text>
+            </Button>
           </View>
       </KeyboardAvoidingView>
     );
@@ -253,6 +253,8 @@ class Product extends React.Component {
 const styles = StyleSheet.create({
   product: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 0
   },
   grayLine: {
@@ -312,8 +314,6 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS == 'ios' ? 0 : 3,
     backgroundColor: Platform.OS == 'ios' ? 'white': 'transparent',
     flexDirection: 'row',
-    position: 'relative',
-    bottom: Platform.OS == 'ios' ? '5%' : '10%',
     width: width,
     alignItems: 'center',
     justifyContent: 'space-evenly',
