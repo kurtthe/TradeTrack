@@ -16,22 +16,27 @@ import Input from '@components/Input';
 import Tabs from '@components/Tabs';
 import nowTheme from '@constants/Theme';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { DownloadFile } from '@core/services/download-file.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
+import * as SecureStore from 'expo-secure-store';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
   Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-
 const SearchHome = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
-    onPress={() => {
+    onPress={async () => {
+      await SecureStore.deleteItemAsync('data_user');
       Keyboard.dismiss();
       navigation.navigate('Login');
+
     }}
   >
     <Ionicons name="log-out-outline" color={'#828489'} size={28} />
@@ -50,8 +55,6 @@ const SearchProducts = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-
-
 const SearchAccount = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
@@ -60,7 +63,7 @@ const SearchAccount = ({ isWhite, style, navigation }) => (
       navigation.navigate('Search');
     }}
   >
-     {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
+    {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
   </TouchableOpacity>
 );
 
@@ -90,29 +93,29 @@ class Header extends React.Component {
       urlFilePdf: '',
     };
     this.downloadFile = DownloadFile.getInstance();
+    this.generalRequestService = GeneralRequestService.getInstance();
   }
 
   handleLeftPress = () => {
     const { back, navigation } = this.props;
-    return back && navigation.goBack();
+    return navigation.goBack();
   };
 
   handleDownloadFile = async () => {
     const { urlDownloadFile } = this.props.scene.route.params;
-    const urlPdf =  await this.downloadFile.download(urlDownloadFile, 'pdf');
-
+    const result = await this.generalRequestService.get(urlDownloadFile)
     this.setState({
-      urlFilePdf:urlDownloadFile,
+      urlFilePdf: result,
       showModalBottom: true,
     });
   };
   openViewerPdf = () => {
     const { urlDownloadFile } = this.props.scene.route.params;
 
-    console.log('urlDownloadFile',urlDownloadFile)
-    
+    console.log('urlDownloadFile', urlDownloadFile);
+
     this.setState({
-      urlFilePdf:urlDownloadFile,
+      urlFilePdf: urlDownloadFile,
       showModalBottom: true,
     });
   };
@@ -120,7 +123,6 @@ class Header extends React.Component {
   renderRight = () => {
     const { white, title, navigation } = this.props;
 
-    
     switch (title) {
       case 'Home':
         return [
@@ -128,21 +130,20 @@ class Header extends React.Component {
             <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
           </View>,
         ];
-        case 'Products':
-          return [
-            <View style={{ top: 6.5 }}>
-              <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
-            </View>,
-          ];
+      case 'Products':
+        return [
+          <View style={{ top: 6.5 }}>
+            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
+          </View>,
+        ];
 
-          case 'Account':
-            return [
-              <View style={{ top: 5.5 }}>
-                <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
-              </View>,
-            ];
-  
-     
+      case 'Account':
+        return [
+          <View style={{ top: 5.5 }}>
+            <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
+        ];
+
       case 'Product':
         return [
           <Block row style={{ paddingTop: 17.5, width: 50 }}>
@@ -154,8 +155,8 @@ class Header extends React.Component {
       case 'SearchHome':
         return [<SearchHome key="basket-search" navigation={navigation} isWhite={white} />];
 
-        case 'SearchProducts':
-          return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
+      case 'SearchProducts':
+        return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
 
       case 'Invoice Details':
         return [
@@ -165,7 +166,9 @@ class Header extends React.Component {
               show={this.state.showModalBottom}
               close={() => this.setState({ showModalBottom: false })}
             >
+              <View style={{ height: hp('80%') }}>
               <PdfViewer url={this.state.urlFilePdf} />
+              </View>
             </BottomModal>
           </View>,
         ];

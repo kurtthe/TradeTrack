@@ -1,24 +1,41 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { Ionicons } from '@expo/vector-icons';
 import { nowTheme } from '@constants';
 import { endPoints } from '@shared/dictionaries/end-points';
-
+import { GeneralRequestService } from '@core/services/general-request.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import moment from 'moment';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { width } = Dimensions.get('screen');
 
 const formatMoney = FormatMoneyService.getInstance();
+const generalRequestService = GeneralRequestService.getInstance();
 
 const Statement = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [urlFilePdf, seturlFilePdf] = useState('');
 
-  const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
+
+  const handleDownloadFile = async () => {
+    
+    const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
+    const result = await generalRequestService.get(urlDownloadFile)
+    
+    seturlFilePdf (result);
+    setShowModal(true);
+     
+  
+  };
+
+  //const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
+  const urlDownloadFile = 'http://zoada-au.com/response.pdf';
+
 
   let dateStatement = validateEmptyField(props.statement.created_date);
 
@@ -31,7 +48,7 @@ const Statement = (props) => {
       <Block style={styles.container}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <TouchableOpacity onPress={() => setShowModal(true)}>
+            <TouchableOpacity  onPress={() => handleDownloadFile()}>
               <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
                 <Block row>
                   <Text
@@ -85,7 +102,9 @@ const Statement = (props) => {
         </Block>
       </Block>
       <BottomModal show={showModal} close={() => setShowModal(false)}>
-        <PdfViewer url={urlDownloadFile} />
+        <View style={{ height: hp('80%') }}>
+          <PdfViewer url={urlFilePdf} />
+        </View>
       </BottomModal>
     </>
   );
