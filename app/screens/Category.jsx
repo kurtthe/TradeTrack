@@ -59,11 +59,9 @@ class Category extends React.Component {
     })
     try{
       this.props.getProducts()
-      //let res = await getProducts()
       let rawCategories = await getCategories()
       let categories = this.setCategories(rawCategories)
       this.setState({ 
-        data: this.props.products, 
         radioButtons: categories, 
         hideMyPrice: this.props.route.params.myPrice,
         loading: false
@@ -258,7 +256,7 @@ class Category extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {this.state.loading && this.props.products == []
+          {this.state.loading && this.state.data.length === 0
             ? <ActivityIndicator/>
             : <FlatList
                 contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}

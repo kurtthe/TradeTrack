@@ -37,7 +37,6 @@ export const getProducts = () => async (dispatch) => {
 			}
 		});
         let res = await result.json();
-		console.log(res)
 		dispatch(getAllProductsSuccess(res))
 	} catch (err) {
 		console.log("ERROR", err);
