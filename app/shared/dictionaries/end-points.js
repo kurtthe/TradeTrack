@@ -6,11 +6,14 @@ export const endPoints = {
   burdensBalance: `${environment.api}burdens/balance`,
   invoices: `${environment.api}burdens/invoices`,
   invoicesDetail: `${environment.api}burdens/:id?expand=structure,storeLocation`,
-  downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download?rrp=true&base64=true`,
+  downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download?base64=true`,
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements`,
-  downloadStatementDetail: `${environment.api}burdens/statements/:id/download`,
+  downloadStatementDetail: `${environment.api}burdens/statements/:id/download?base64=true`,
   searchInvoices : `${environment.api}burdens/search`,
   payment : `${environment.api}burdens/payment`,
-  stores : `${environment.api}burdens/stores`
+  generateOrder: `${environment.api}material-orders`,
+  supplierId: `${environment.api}burdens/supplier`,
+  stores: `${environment.api}burdens/stores`,
+  jobs: `${environment.api}jobs`
 }

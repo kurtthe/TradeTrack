@@ -22,11 +22,16 @@ const generalRequestService = GeneralRequestService.getInstance();
 const actionSheetRef = createRef();
 const formatMoney = FormatMoneyService.getInstance();
 
+
 const PaymentDetail = () => {
   const balanceLive = useSelector((state) => state.liveBalanceReducer);
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
   const [valueAmount, setValueAmount] = useState('');
+
+
+
+
 
   const setBsbClipboard = async () => {
     await Clipboard.setString('083125');
@@ -44,12 +49,19 @@ const PaymentDetail = () => {
     actionSheetRef.current?.setModalVisible(true);
   };
 
+  const handlePaymentClose = () => {
+    actionSheetRef.current?.setModalVisible(false);
+  };
+
   const handleShowMethodPayment = async ()=>{
     const {url} = await generalRequestService.get(`${endPoints.payment}?amount=${valueAmount}`);
     actionSheetRef.current?.setModalVisible(false);
     setUrlPayment(url);
     setShowModal(true);
   }
+
+
+
 
   return (
 
@@ -143,17 +155,22 @@ const PaymentDetail = () => {
 
       <ActionSheet ref={actionSheetRef}>
           <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
-            <Text style={{ fontWeight: 'bold' }}>Payment via Credit Card</Text>
+            <Block center style={{paddingBottom:30}}> 
+            <Text style={{ fontWeight: 'bold', fontSize:18 }}>Balance to Pay</Text>
+            </Block>
+            
             <Text style={{ fontWeight: 'bold' }}>Amount</Text>
             <Input
+              name ='nirvana'
               right
               color="black"
               style={styles.search}
-              placeholder={formatMoney.format(balanceLive.total)}
+              placeholder={'$0.00'}
               placeholderTextColor={'#8898AA'}
               onChangeText={(value)=>setValueAmount(value)}
+               keyboardType='numeric'
             />
-            <Block row style={{ justifyContent: 'space-between', paddingBottom: 10 }}>
+            <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top:10 }}>
               <Text size={15}>Your Balance</Text>
               <Text
                 size={16}
@@ -173,6 +190,7 @@ const PaymentDetail = () => {
                 Continue
               </Button>
               <Button
+               onPress={() => handlePaymentClose()}
                 color="eeeee4"
                 textStyle={{
                   color: nowTheme.COLORS.LIGHTGRAY,

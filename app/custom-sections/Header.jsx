@@ -98,7 +98,7 @@ class Header extends React.Component {
 
   handleLeftPress = () => {
     const { back, navigation } = this.props;
-    return back && navigation.goBack();
+    return navigation.goBack();
   };
 
   handleDownloadFile = async () => {
