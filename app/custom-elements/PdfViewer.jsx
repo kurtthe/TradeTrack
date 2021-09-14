@@ -4,6 +4,7 @@ import PDFReader from 'rn-pdf-reader-js';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const PdfViewer = (props) => {
+  console.log('=> pdf',props.url)
   return (
     <View style={styles.container}>
       <PDFReader

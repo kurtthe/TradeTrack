@@ -171,12 +171,14 @@ class Filters extends Component {
           <Block>{this.inputText()}</Block>
         </Block>
         <ActionSheet ref={actionSheetRef}>
-          <Block style={{ paddingVertical: 15}}>
+        <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
             <RadioGroup
               radioButtons={radioButtonsHour}
               color={nowTheme.COLORS.INFO}
               onPress={(option) => this.selectedOptionRadio(option)}
+              containerStyle={{alignItems: 'left'}}
             />
+            
           </Block>
         </ActionSheet>
       </>

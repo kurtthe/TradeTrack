@@ -7,6 +7,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import FilterButton from '@components/FilterButton';
 import ListInvoices from '@custom-sections/ListInvoices';
 import { Button } from '@components';
+import { getProducts } from "../../services/ProductServices";
 
 import { connect } from 'react-redux';
 
@@ -24,6 +25,7 @@ class Allinvoice extends React.Component {
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
+    this.props.getProducts()
   }
 
   renderFilters = () => {
@@ -107,4 +109,6 @@ const mapStateToProps = (state) => ({
   invoices: state.invoicesReducer.invoices,
 });
 
-export default connect(mapStateToProps)(Allinvoice);
+const mapDispatchToProps = { getProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Allinvoice);

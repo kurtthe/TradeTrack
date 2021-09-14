@@ -100,59 +100,60 @@ class Login extends React.Component {
         <Block flex middle style={{ backgroundColor: '#fff' }}>
           <Block flex space="evenly">
             <Block flex middle style={styles.socialConnect}>
-              <Block
-                flex={3}
-                top
-                middle
-                style={{
-                  top:
-                    Platform.OS === 'ios'
-                      ? Dimensions.get('window').height < 670
-                        ? 15
-                        : 30
-                      : Dimensions.get('window').height < 870
-                      ? 15
-                      : 40,
-                }}
-              >
-                <Image
-                  style={styles.introImageStyle}
-                  source={require('@assets/imgs/img/logo.png')}
-                />
-              </Block>
-              <Block flex={3} top middle>
-                <Text
+            <Block
+                  flex={3}
+                  top
+                  middle
                   style={{
-                    fontFamily: 'montserrat-bold',
-                    textAlign: 'left',
+                    top:
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').height < 670
+                          ? 15
+                          : 30
+                        : Dimensions.get('window').height < 870
+                        ? 15
+                        : 40,
                   }}
-                  color="#2E2F33"
-                  size={
-                    Platform.OS === 'ios'
-                      ? Dimensions.get('window').height < 670
-                        ? 20
-                        : 22
-                      : Dimensions.get('window').height < 870
-                      ? 20
-                      : 26
-                  }
-                  //size={20}
                 >
-                  Welcome Back,{'\n'}
-                  Please sign in with your account
-                </Text>
+                  <Image
+                    style={styles.introImageStyle}
+                    source={require('@assets/imgs/img/logo.png')}
+                  />
+                </Block>
+                <Block flex={3} top  middle>
+                  <Text
+                  
+                    style={{
+                      fontFamily: 'montserrat-bold',
+                      textAlign: 'left',
+                    }}
+                    color="#2E2F33"
+                    size={
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('window').height < 670
+                          ? 20
+                          : 22
+                        : Dimensions.get('window').height < 870
+                        ? 20
+                        : 26
+                    }
+                    //size={20}
+                  >
+                    Welcome Back,{'\n'}
+                    Please sign in with your account
+                  </Text>
+                </Block>
               </Block>
-            </Block>
 
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ height: 300 }}
-            >
-              <Block
-                flex={2.5}
-                space="between"
-                style={{ backgroundColor: 'transparent', height: 500 }}
-              >
+           
+              <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.body}
+								contentContainerStyle={styles.scrollChild, {paddingBottom:400}}
+        >
+
+              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+
                 <Block center flex={1}>
                   <Block flex space="between" middle>
                     <Block>
@@ -230,15 +231,14 @@ class Login extends React.Component {
                       </Block>
                     </Block>
                     <Block
-                      style={{
-                        top:
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 200
-                              : 200
-                            : Dimensions.get('window').height < 870
-                            ? 0.8
-                            : 0.4,
+                      style={{ top:
+                        Platform.OS === 'ios'
+                          ? Dimensions.get('window').height < 670
+                            ? 70
+                            : 100
+                          : Dimensions.get('window').height < 870
+                          ? 30
+                          : 90
                       }}
                       center
                     >
@@ -264,22 +264,43 @@ class Login extends React.Component {
                         <SimpleButton onPress={() => navigation.navigate('SignUp')}>
                           {' '}
                           Learn how to open
-                        </SimpleButton>
+                          </SimpleButton>
                       </Block>
                     </Block>
                   </Block>
                 </Block>
               </Block>
-            </ScrollView>
+              </ScrollView>
+             
+            </Block>
           </Block>
-        </Block>
-      </DismissKeyboard>
+        </DismissKeyboard>
       // </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+
+
+  body: {
+		width: "100%",
+    flex: 1,
+  paddingBottom:200
+	},
+
+
+    scrollChild: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height:hp('50%'),
+      //height : (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? hp('95%') : hp('95%')) :  ((Dimensions.get('window').height < 595) ? hp('250%') : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? hp('220%'):hp('170%'))),
+
+	 
+    },
+  
+
   registerContainer: {
     marginTop: 55,
     width: width * 1,

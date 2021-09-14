@@ -5,29 +5,34 @@ import {
   Image,
   FlatList,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   View,
   Platform
 } from "react-native";
 import { Block, Text, theme, Button } from "galio-framework";
 import { nowTheme } from "@constants/index";
 import { cart } from "@constants";
-import FilterButton from "@components/FilterButton";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
-import QuantityCounter from "@components/QuantityCounter";
+import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
 import { connect  } from 'react-redux';
 import { updateProducts, getProducts } from '@core/module/store/cart/cart';
+import { FormatMoneyService } from '@core/services/format-money.service';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
 class Cart extends React.Component {
-  state = {
-    customStyleIndex: 0,
-    deleteAction: false
-  };
+
+  constructor(props) {
+    super(props)
+    this.formatMoney = FormatMoneyService.getInstance();
+
+    this.state = {
+      customStyleIndex: 0,
+      deleteAction: false
+    };
+  }
 
   handleCustomIndexSelect = (index) => {
     this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
@@ -86,15 +91,14 @@ class Cart extends React.Component {
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.cost_price*p.quantity
+      return p.price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `$${prices.reduce(reducer, 0).toFixed(2)}`
+    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
-
     return (
       <Block card shadow style={styles.product}>
         <Block flex row>
@@ -128,11 +132,11 @@ class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  {this.numberWithDecimals(item.cost_price)}
+                  {this.numberWithDecimals(item.price)}
                 </Text>
               </Block>
-              <QuantityCounter 
-                delete={() => this.handleDelete(item.id)} 
+              <QuantityCounterWithInput 
+                delete={() => this.handleDelete(item.id)}
                 quantity={item.quantity}
                 quantityHandler={(q) => this.handleUpdateQuantity(item, q)}
               />

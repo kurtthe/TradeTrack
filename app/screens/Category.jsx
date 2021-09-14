@@ -21,7 +21,7 @@ import categories from "@constants/categories1";
 import { nowTheme } from "@constants";
 import FilterButton from "@components/FilterButton";
 import { getCategories, getProducts, loadMoreProducts, searchCategories } from "../../services/ProductServices";
-import { connect  } from 'react-redux';
+import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
 
 const { width, height } = Dimensions.get("window");
@@ -42,7 +42,7 @@ class Category extends React.Component {
     this.state = {
       radioButtons: [],
       //radioButtons2: radioButtonsData2,
-      data: [],
+      data: this.props.products,
       categoryActive: false, 
       loadingMoreData: false,
       hideMyPrice: true,
@@ -58,11 +58,12 @@ class Category extends React.Component {
       loading: true
     })
     try{
-      let res = await getProducts()
+      this.props.getProducts()
+      //let res = await getProducts()
       let rawCategories = await getCategories()
       let categories = this.setCategories(rawCategories)
       this.setState({ 
-        data: res, 
+        data: this.props.products, 
         radioButtons: categories, 
         hideMyPrice: this.props.route.params.myPrice,
         loading: false
@@ -150,7 +151,8 @@ class Category extends React.Component {
   }
 
   onAddPressed(item) {
-    let itemQ = ({...item, quantity: 1})
+    let price = this.state.hideMyPrice ? item.rrp : item.cost_price
+    let itemQ = ({...item, quantity: 1, price: price})
     const index = this.props.cartProducts.findIndex((element) => (
       element.id === item.id
     ))
@@ -159,7 +161,8 @@ class Category extends React.Component {
         ...this.props.cartProducts.slice(0, index),
         {
           ...this.props.cartProducts[index],
-          quantity: this.props.cartProducts[index].quantity + 1
+          quantity: this.props.cartProducts[index].quantity + 1,
+          price: price
         },
         ...this.props.cartProducts.slice(index+1)
       ]) 
@@ -255,7 +258,7 @@ class Category extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {this.state.loading 
+          {this.state.loading && this.props.products == []
             ? <ActivityIndicator/>
             : <FlatList
                 contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
@@ -370,9 +373,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+  products: state.productsReducer.allProducts,
   cartProducts: state.productsReducer.products
 });
 
-const mapDispatchToProps = { updateProducts };
+const mapDispatchToProps = { updateProducts, getProducts };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);
