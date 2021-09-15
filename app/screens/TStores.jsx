@@ -1,24 +1,13 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-  Linking,
-  TouchableWithoutFeedback,
-  Platform
-} from 'react-native';
-import MapView, {
-  Marker,
-  Callout,
-  CalloutSubview,
-  ProviderPropType,
-} from 'react-native-maps';
+import { StyleSheet, View, Dimensions, Linking, Platform } from 'react-native';
+import MapView, { Marker, Callout, CalloutSubview, ProviderPropType } from 'react-native-maps';
 import CustomCallout from '@components/CustomCallout';
-import { Block, theme, Text, Button } from 'galio-framework';
+import { Block, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
+import MarkerMap from '@custom-elements/MarkerMap'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -26,14 +15,12 @@ const LATITUDE = -37.81308016558449;
 const LONGITUDE = 144.96438183271417;
 const LATITUDE_DELTA = 3;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.01;
-
 class Callouts extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      cnt: 0,
+      loading: true,
+      stores: [],
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -222,29 +209,48 @@ class Callouts extends React.Component {
         }
     ]
     };
+
+    this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  
+  async componentDidMount() {
+    const {locations} = await this.generalRequest.get(endPoints.stores);
 
-  show() {
-    this.marker1.showCallout();
+    this.setState({
+      stores: locations,
+      loading: false
+    });
   }
 
-  hide() {
-    this.marker1.hideCallout();
-  }
+  renderStore = () => {
+    if(this.state.stores.length === 0 ){
+      return;
+    }
 
-  dialCall = (number) => {
-    let phoneNumber = '';
-    if (Platform.OS === 'android') { phoneNumber = `tel:${number}`; }
-    else {phoneNumber = `telprompt:${number}`; }
-    Linking.openURL(phoneNumber);
- };
+    return this.state.stores.map((item, index)=>(
+        <MarkerMap 
+          key={index}
+          marker={item}
+        />
+    ))
+  };
 
- 
+  renderContent = () => {
+    const { region } = this.state;
+
+    return (
+      <MapView
+        provider={this.props.provider}
+        style={styles.map}
+        initialRegion={region}
+        zoomTapEnabled={false}
+      >
+        {this.renderStore()}
+      </MapView>
+    );
+  };
 
   render() {
-    const { region, markers } = this.state;
     return (
       <View style={styles.container}>
         <MapView
@@ -1265,21 +1271,19 @@ const styles = StyleSheet.create({
   buttonOrder: {
     width: '55%',
     height: 30,
-    backgroundColor:'#0E3A90',
+    backgroundColor: '#0E3A90',
     paddingHorizontal: 12,
     alignItems: 'center',
     marginHorizontal: 50,
-    borderRadius:5,
+    borderRadius: 5,
   },
-  row_info:{
-
-    paddingBottom:7.5
-
+  row_info: {
+    paddingBottom: 7.5,
   },
   MapsText: {
     paddingLeft: 12,
     fontSize: 14,
-    top:4
+    top: 4,
   },
   MapsText_: {
     paddingLeft: 12,
