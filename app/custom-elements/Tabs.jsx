@@ -8,15 +8,17 @@ const Tabs = (props) => {
   const [indexSelectedTab, setIndexSelectedTab] = useState(0);
 
   useEffect(() => {
-    setIndexSelectedTab(props.tabIndexSelected)
+    setIndexSelectedTab(props.tabIndexSelected);
   });
-  
+
   getLabels = () => {
     return props.optionsTabsRender.map((item) => item.labelTab);
   };
 
   handleCustomIndexSelect = (index) => {
     setIndexSelectedTab(index);
+
+    props.changeIndexSelected && props.changeIndexSelected(index);
   };
 
   getComponent = () => {
