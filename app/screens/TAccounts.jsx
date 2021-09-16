@@ -78,6 +78,7 @@ class Account extends React.Component {
               },
             ]}
             tabIndexSelected={this.state.customStyleIndex}
+            changeIndexSelected={(index)=>this.setState({customStyleIndex: index})}
           />
         </ScrollView>
       </SafeAreaView>
