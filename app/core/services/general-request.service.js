@@ -23,11 +23,10 @@ export class GeneralRequestService {
   async getToken(){
     const data =  await SecureStore.getItemAsync('data_user');
     const dataParse = JSON.parse(data)
-    return dataParse?.api_key
+    return dataParse.api_key
   }
   
-
-  async post(endpoint, data, saveToken=false) {
+  async post(endpoint, data, saveToken) {
     try {
       const response =  await this.httpService.post(endpoint, data,{
         headers: { 'ttrak-key': this.tokeAuth || '' }
@@ -42,7 +41,7 @@ export class GeneralRequestService {
   }
 
   async get(endpoint, options={}) {
-    console.log("==>this.tokeAut",this.tokeAut)
+    console.log("==>this.tokeAut",this.tokeAuth)
     try {
       const response = await this.httpService.get(endpoint, {
         headers: { 'ttrak-key': this.tokeAuth || '' },
