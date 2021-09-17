@@ -1,14 +1,14 @@
 import nowTheme from '@constants/Theme';
 
 const styleLabel = {
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 };
 const styleContainer = {
   padding: 2,
-  width: '40%',
+  width: '100%',
   flexDirection: 'row',
   alignItems: 'center',
-}
+};
 
 export const radioButtonsHour = [
   {
@@ -17,7 +17,8 @@ export const radioButtonsHour = [
     value: 'Invoice',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
   {
     id: 2,
@@ -25,7 +26,8 @@ export const radioButtonsHour = [
     value: 'Credit Note',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
   {
     id: 3,
@@ -33,7 +35,8 @@ export const radioButtonsHour = [
     value: 'Quote',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
   {
     id: 4,
@@ -41,7 +44,8 @@ export const radioButtonsHour = [
     value: 'Cash Sale',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
   {
     id: 5,
@@ -49,7 +53,8 @@ export const radioButtonsHour = [
     value: 'Cash Refund',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
   {
     id: 6,
@@ -57,6 +62,7 @@ export const radioButtonsHour = [
     value: 'Order',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
-    containerStyle: styleContainer
+    containerStyle: styleContainer,
+    selected: false,
   },
 ];
