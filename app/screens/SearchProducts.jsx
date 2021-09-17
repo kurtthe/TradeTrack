@@ -50,10 +50,10 @@ class SearchHome extends React.Component {
       data: [],
       search: "",
       active: false,
-      loading: false
+      loading: false,
+      hideMyPrice: true,
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
-    
   }
 
   async componentDidMount() {
@@ -62,8 +62,8 @@ class SearchHome extends React.Component {
     })
     try{
       let res = await getProducts()
-      
-      this.setState({ 
+      this.setState({
+        hideMyPrice: this.props.route.params.myPrice,
         data: res, 
         loading: false
       })
@@ -75,8 +75,6 @@ class SearchHome extends React.Component {
       })
     }
   }
-
-
 
   animatedValue = new Animated.Value(0);
 
@@ -109,8 +107,24 @@ class SearchHome extends React.Component {
   }
 
   onAddPressed(item) {
-    this.props.updateProducts([...this.props.cartProducts, item])
-    //this.props.navigation.navigate("Cart")
+    let price = this.state.hideMyPrice ? item.rrp : item.cost_price
+    let itemQ = ({...item, quantity: 1, price: price})
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === item.id
+    ))
+    if (index !== -1) {
+      this.props.updateProducts([
+        ...this.props.cartProducts.slice(0, index),
+        {
+          ...this.props.cartProducts[index],
+          quantity: this.props.cartProducts[index].quantity + 1,
+          price: price
+        },
+        ...this.props.cartProducts.slice(index+1)
+      ]) 
+    } else {
+      this.props.updateProducts([...this.props.cartProducts, itemQ])
+    }
   }
 
   numberWithDecimals(number) {
@@ -187,9 +201,8 @@ class SearchHome extends React.Component {
   onChangeSearch = async (query) => {
     try {
       let searchResult = await searchProducts(query);
-      console.log(searchResult)
       this.setState({
-        data: searchResult
+        data: searchResult || []
       })
     } catch (e) {
       console.log('search error', e)
@@ -215,111 +228,9 @@ class SearchHome extends React.Component {
           size={18}
           color={nowTheme.COLORS.TEXT}
         >
-          We didn’t find "<Text bold>{this.state.search}</Text>" in the Data Base.
-        </Text>
-
-        <Text
-          size={18}
-          style={{
-            marginTop: theme.SIZES.BASE,
-            fontFamily: "montserrat-regular",
-          }}
-          color={nowTheme.COLORS.TEXT}
-        >
-          You can see more products in Products / Filter / Category.
+          No results were found
         </Text>
       </Block>
-    );
-  };
-
-  renderSuggestions = () => {
-    const { navigation } = this.props;
-
-    return (
-      <FlatList
-        data={suggestions}
-        keyExtractor={(item, index) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.suggestion}
-            onPress={() => navigation.navigate("Category", { ...item })}
-          >
-            <Block flex row middle space="between">
-              <Text
-                style={{ fontFamily: "montserrat-regular" }}
-                size={14}
-                color={nowTheme.COLORS.TEXT}
-              >
-                {item.title}
-              </Text>
-              <Icon
-                name="chevron-right"
-                family="evilicon"
-                style={{ paddingRight: 5 }}
-              />
-            </Block>
-          </TouchableOpacity>
-        )}
-      />
-    );
-  };
-
-  renderDeals = () => {
-    return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.dealsContainer}
-      >
-        <Block flex>
-        <Text>put the search result here</Text>
-        </Block>
-      </ScrollView>
-    );
-  };
-
-  renderResult = (result) => {
-    const opacity = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.8, 1],
-      extrapolate: "clamp",
-    });
-
-    return (
-      <Animated.View
-        style={{ width: width - theme.SIZES.BASE * 2, opacity }}
-        key={`result-${result.title}`}
-      >
-        <Card item={result} horizontal />
-      </Animated.View>
-    );
-  };
-
-  renderResults = () => {
-    const { results, search } = this.state;
-
-    if (results.length != 0 && search) {
-      return (
-        <Block style={{ width: width - 40 }}>
-          {this.renderNotFound()}
-          {this.renderSuggestions()}
-          <Text
-            style={{ fontFamily: "montserrat-regular" }}
-            size={18}
-            color={nowTheme.COLORS.TEXT}
-          >
-            Daily Deals
-          </Text>
-          {this.renderDeals()}
-        </Block>
-      );
-    }
-
-    return (
-      <ScrollView>
-        <Block style={{ paddingTop: theme.SIZES.BASE * 2 }}>
-          {results.map((result) => this.renderResult(result))}
-        </Block>
-      </ScrollView>
     );
   };
 
@@ -332,7 +243,6 @@ class SearchHome extends React.Component {
           </Block>
         </Block>
         <Block style={{top:60}}>
-          {this.renderResults()} 
           <Block row backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
             <FlatList
               contentContainerStyle={{alignItems: 'center'}}
@@ -340,6 +250,7 @@ class SearchHome extends React.Component {
               data={this.state.data}
               renderItem={(item) => this.renderCard(item)}
               keyExtractor={item => item.id}
+              ListEmptyComponent={this.renderNotFound()}
             /> 
           </Block>
         </Block>
@@ -440,12 +351,7 @@ const styles = StyleSheet.create({
     fontSize: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 12 :14) :  (Dimensions.get('window').height < 870) ? 11.5: 15,
     color: nowTheme.COLORS.ORANGE
   },
-
-
 });
-
-
-
 
 const mapStateToProps = (state) => ({
   token_login: state.loginReducer.api_key,

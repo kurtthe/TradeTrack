@@ -81,10 +81,6 @@ class Cart extends React.Component {
     ])
   }
 
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
-  }
-
   onCheckoutPressed() {
     this.props.navigation.navigate("PlaceOrders")
   }
@@ -132,7 +128,7 @@ class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  {this.numberWithDecimals(item.price)}
+                  {this.formatMoney.format(item.price)}
                 </Text>
               </Block>
               <QuantityCounterWithInput 

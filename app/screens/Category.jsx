@@ -23,6 +23,7 @@ import FilterButton from "@components/FilterButton";
 import { getCategories, getProducts, loadMoreProducts, searchCategories } from "../../services/ProductServices";
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { FormatMoneyService } from '@core/services/format-money.service';
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -39,6 +40,7 @@ class Category extends React.Component {
 
   constructor(props) {
     super(props);
+    this.formatMoney = FormatMoneyService.getInstance();
     this.state = {
       radioButtons: [],
       //radioButtons2: radioButtonsData2,
@@ -49,13 +51,15 @@ class Category extends React.Component {
       ppage: 40,
       searchValue: '', 
       loading: false,
-      selectedCategory: {}
+      selectedCategory: {},
+      loadingCategories: false,
     };
   }
 
   async componentDidMount() {
     this.setState({
-      loading: true
+      loading: true,
+      loadingCategories: true,
     })
     try{
       this.props.getProducts()
@@ -70,7 +74,8 @@ class Category extends React.Component {
       console.log('err', e)
     } finally {
       this.setState({
-        loading: false
+        loading: false,
+        loadingCategories: false,
       })
     }
   }
@@ -109,10 +114,6 @@ class Category extends React.Component {
     }
   }
 
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
-  }
-
   onPressRadioButton2() {
     actionSheetRef2.current?.setModalVisible(false);
   }
@@ -128,6 +129,9 @@ class Category extends React.Component {
   }
 
   onChangeSearch = async (query) => {
+    this.setState({
+      loadingCategories: true,
+    })
     try {
       let searchResult = await searchCategories(query);
       let categories = this.setCategories(searchResult);
@@ -136,6 +140,10 @@ class Category extends React.Component {
       })
     } catch (e) {
       console.log('search error', e)
+    } finally {
+      this.setState({
+        loadingCategories: false,
+      })
     }
   }
 
@@ -196,7 +204,7 @@ class Category extends React.Component {
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
               <Text style={styles.price}> 
-                {this.numberWithDecimals(item.rrp)}
+                {this.formatMoney.format(item.rrp)}
               </Text>
             </Block>
             {!this.state.hideMyPrice && 
@@ -207,7 +215,7 @@ class Category extends React.Component {
                       My Price
                     </Text>
                     <Text style={styles.price}>
-                      {this.numberWithDecimals(item.cost_price)}
+                      {this.formatMoney.format(item.cost_price)}
                     </Text>
                 </Block>
               </>
@@ -289,14 +297,17 @@ class Category extends React.Component {
           inputStyle={styles.searchInput}
         />
         <Block style={{height: 250, padding: 5, paddingBottom: 40}}>
-          <ScrollView style={{width: width}}>
-            <RadioGroup 
-              radioButtons={this.state.radioButtons}
-              color={nowTheme.COLORS.INFO} 
-              onPress={(pick) => this.onPressRadioButton(pick)}
-              containerStyle={{alignItems: 'left'}}
-            />
-          </ScrollView>
+          {this.state.loadingCategories 
+            ? <ActivityIndicator/>
+            : <ScrollView style={{width: width}}>
+                <RadioGroup 
+                  radioButtons={this.state.radioButtons}
+                  color={nowTheme.COLORS.INFO} 
+                  onPress={(pick) => this.onPressRadioButton(pick)}
+                  containerStyle={{alignItems: 'left'}}
+                />
+              </ScrollView>
+          }
         </Block>
       </ActionSheet>
       <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
