@@ -1,18 +1,15 @@
 import React from "react";
 import {
   View,
-  Animated,
   FlatList,
   Dimensions,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  Image
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import { articles, categories, nowTheme } from "@constants/";
-import { Icon, Card, Input } from "@components";
 import { Searchbar } from 'react-native-paper';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
@@ -23,16 +20,12 @@ import { connect } from 'react-redux';
 import { getProducts, searchProducts } from "../../services/ProductServices";
 import { updateProducts } from '@core/module/store/cart/cart';
 
-
-
 const { width, height } = Dimensions.get("screen");
 const sizeConstant = (Platform.OS === 'ios') 
   ? ((Dimensions.get('window').height < 670) ? 12 : 14) 
   : (Dimensions.get('window').height < 870) ? 11.5 : 15
   const cardWidth = width / 2 *0.87;
 const cardHeight = height * 0.59;
-
-
 
 const suggestions = [
   { id: "NAME", title: "NAME" },
@@ -43,7 +36,6 @@ class SearchHome extends React.Component {
 
   constructor(props) {
     super(props);
-
 
     this.state = {
       results: [],
@@ -56,15 +48,13 @@ class SearchHome extends React.Component {
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.setState({
       loading: true
     })
     try{
-      let res = await getProducts()
       this.setState({
         hideMyPrice: this.props.route.params.myPrice,
-        data: res, 
         loading: false
       })
     } catch(e) {
@@ -75,27 +65,6 @@ class SearchHome extends React.Component {
       })
     }
   }
-
-  animatedValue = new Animated.Value(0);
-
-  animate() {
-    this.animatedValue.setValue(0);
-
-    Animated.timing(this.animatedValue, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }
-
-  handleSearchChange = (search) => {
-    const results = articles.filter(
-      (item) => search && item.title.toLowerCase().includes(search)
-    );
-    this.setState({ results, search });
-    this.animate();
-  };
-
 
   onProductPressed(item) {
     this.props.navigation.navigate('Product', 
@@ -199,13 +168,22 @@ class SearchHome extends React.Component {
   };
 
   onChangeSearch = async (query) => {
+    this.setState({
+      loading: true
+    })
     try {
       let searchResult = await searchProducts(query);
-      this.setState({
-        data: searchResult || []
-      })
+      if (searchResult.length !== 0){
+        this.setState({
+          data: searchResult
+        })
+      }
     } catch (e) {
       console.log('search error', e)
+    } finally {
+      this.setState({
+        loading: false
+      })
     }
   }
 
@@ -243,15 +221,19 @@ class SearchHome extends React.Component {
           </Block>
         </Block>
         <Block style={{top:60}}>
-          <Block row backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
-            <FlatList
-              contentContainerStyle={{alignItems: 'center'}}
-              numColumns={2}
-              data={this.state.data}
-              renderItem={(item) => this.renderCard(item)}
-              keyExtractor={item => item.id}
-              ListEmptyComponent={this.renderNotFound()}
-            /> 
+          <Block backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} >
+            {
+              this.state.loading
+              ? <ActivityIndicator />
+              : <FlatList
+                  contentContainerStyle={{alignItems: 'center'}}
+                  numColumns={2}
+                  data={this.state.data}
+                  renderItem={(item) => this.renderCard(item)}
+                  keyExtractor={(item, index) => 'key'+index}
+                  ListEmptyComponent={this.renderNotFound()}
+                />
+            }
           </Block>
         </Block>
       </View>
