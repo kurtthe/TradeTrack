@@ -97,25 +97,15 @@ class Header extends React.Component {
   }
 
   handleLeftPress = () => {
-    const { back, navigation } = this.props;
+    const { navigation } = this.props;
     return navigation.goBack();
   };
 
-  handleDownloadFile = async () => {
+  openViewerPdf = async () => {
     const { urlDownloadFile } = this.props.scene.route.params;
     const result = await this.generalRequestService.get(urlDownloadFile)
     this.setState({
       urlFilePdf: result,
-      showModalBottom: true,
-    });
-  };
-  openViewerPdf = () => {
-    const { urlDownloadFile } = this.props.scene.route.params;
-
-    console.log('urlDownloadFile', urlDownloadFile);
-
-    this.setState({
-      urlFilePdf: urlDownloadFile,
       showModalBottom: true,
     });
   };
@@ -161,10 +151,13 @@ class Header extends React.Component {
       case 'Invoice Details':
         return [
           <View style={{ top: 7, width: 50 }}>
-            <DownloadButton isWhite={white} onPress={() => this.handleDownloadFile()} />
+            <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
             <BottomModal
               show={this.state.showModalBottom}
               close={() => this.setState({ showModalBottom: false })}
+              downloadShared={{ 
+                url:this.props.scene.route.params?.urlDownloadFile
+              }}
             >
               <View style={{ height: hp('80%') }}>
               <PdfViewer url={this.state.urlFilePdf} />

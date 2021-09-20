@@ -16,7 +16,7 @@ class ListData extends React.Component {
       data: [],
       perPageData: 12,
       valuesFilters: {},
-      notFound: false
+      notFound: false,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -61,7 +61,7 @@ class ListData extends React.Component {
   };
 
   getValuesFilters = (values) => {
-    this.setState({ valuesFilters: values });
+    this.setState({ valuesFilters: values, data: [] });
     this.setParamsEndPoint();
   };
 
@@ -118,17 +118,17 @@ class ListData extends React.Component {
             ) : (
               <>
                 <View>{cloneElement(children, { data: this.state.data })}</View>
-                {(this.state.data.length > 10)&& ( 
-                <View style={styles.contentButton}>
-                  <Button
-                    onPress={() => this.handleLoadMore()}
-                    color="info"
-                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                    style={styles.button}
-                  >
-                    Load More...
-                  </Button>
-                </View>
+                {this.state.data.length > 10 && (
+                  <View style={styles.contentButton}>
+                    <Button
+                      onPress={() => this.handleLoadMore()}
+                      color="info"
+                      textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                      style={styles.button}
+                    >
+                      Load More...
+                    </Button>
+                  </View>
                 )}
               </>
             )}
