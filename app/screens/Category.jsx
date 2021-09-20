@@ -13,7 +13,7 @@ import {
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
 import { Button } from "@components";
-import { Block, Text, theme, Input } from "galio-framework";
+import { Block, Text, theme } from "galio-framework";
 import { Searchbar } from 'react-native-paper';
 
 import categories from "@constants/categories1";
@@ -53,6 +53,7 @@ class Category extends React.Component {
       loading: false,
       selectedCategory: {},
       loadingCategories: false,
+      noCategoriesFound: false
     };
   }
 
@@ -65,7 +66,6 @@ class Category extends React.Component {
       this.props.getProducts()
       let rawCategories = await getCategories()
       let categories = this.setCategories(rawCategories)
-      console.log('prooooodddduuucttt', this.props.products)
       this.setState({ 
         radioButtons: categories, 
         hideMyPrice: this.props.route.params.myPrice,
@@ -88,7 +88,7 @@ class Category extends React.Component {
       labelStyle: {fontWeight: 'bold'},
       label: c.name,
       value: c.name
-    }))
+    })).filter(c => c.products.length !== 0)
     return radioCategories;
   }
 
@@ -106,16 +106,20 @@ class Category extends React.Component {
     }
   }
 
-  onPressRadioButton2() {
+  onPressRadioButton2(pick) {
+    const selected = pick.filter(o => o.selected)
+    this.setState({ 
+      data: selected[0]?.products,
+    })
     actionSheetRef2.current?.setModalVisible(false);
   }
 
   async onPressRadioButton(pick) {
     const selected = pick.filter(o => o.selected) 
-    console.log('THIS IS THE ONE', selected)
     let data = {
       params: {
-        parent_category_id: selected.id
+        parent_category_id: selected.id,
+        expand: 'products'
       }
     }
     let subcategoriesRaw = await this.generalRequest.get(endPoints.subcategories, data);
@@ -135,10 +139,17 @@ class Category extends React.Component {
     })
     try {
       let searchResult = await searchCategories(query);
-      let categories = this.setCategories(searchResult);
-      this.setState({
-        radioButtons: categories
-      })
+      if (searchResult.length !== 0){
+        let categories = this.setCategories(searchResult);
+        this.setState({
+          noCategoriesFound: false,
+          radioButtons: categories
+        })
+      } else {
+        this.setState({
+          noCategoriesFound: true
+        })
+      }
     } catch (e) {
       console.log('search error', e)
     } finally {
@@ -245,7 +256,6 @@ class Category extends React.Component {
     return (
       <>
       <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-       
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
           <Block row space={'evenly'} width={this.state.categoryActive ? '90%' : '60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
@@ -305,14 +315,16 @@ class Category extends React.Component {
         <Block style={{height: 250, padding: 5, paddingBottom: 40}}>
           {this.state.loadingCategories 
             ? <ActivityIndicator/>
-            : <ScrollView style={{width: width}}>
-                <RadioGroup 
-                  radioButtons={this.state.radioButtons}
-                  color={nowTheme.COLORS.INFO} 
-                  onPress={(pick) => this.onPressRadioButton(pick)}
-                  containerStyle={{alignItems: 'left'}}
-                />
-              </ScrollView>
+            : this.state.noCategoriesFound 
+              ? <Text> No categories found </Text>
+              : <ScrollView style={{width: width}}>
+                  <RadioGroup 
+                    radioButtons={this.state.radioButtons}
+                    color={nowTheme.COLORS.INFO} 
+                    onPress={(pick) => this.onPressRadioButton(pick)}
+                    containerStyle={{alignItems: 'left'}}
+                  />
+                </ScrollView>
           }
         </Block>
       </ActionSheet>
@@ -321,7 +333,7 @@ class Category extends React.Component {
           <RadioGroup 
             radioButtons={this.state.radioButtons2}
             color={nowTheme.COLORS.INFO} 
-            onPress={() => this.onPressRadioButton2()}
+            onPress={(pick) => this.onPressRadioButton2(pick)}
             containerStyle={{alignItems: 'left'}}
           />
         </Block>
