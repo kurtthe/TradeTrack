@@ -12,9 +12,8 @@ import {
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
 import RadioGroup from 'react-native-radio-buttons-group';
-import Icon from '@components/Icon';
 import { Button } from "@components";
-import { Block, Text, theme, Input } from "galio-framework";
+import { Block, Text, theme } from "galio-framework";
 import { Searchbar } from 'react-native-paper';
 
 import categories from "@constants/categories1";
@@ -23,6 +22,9 @@ import FilterButton from "@components/FilterButton";
 import { getCategories, getProducts, loadMoreProducts, searchCategories } from "../../services/ProductServices";
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { FormatMoneyService } from '@core/services/format-money.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 const { width, height } = Dimensions.get("window");
 const cardWidth = width / 2 *0.87;
@@ -33,15 +35,15 @@ const sizeConstant = (Platform.OS === 'ios')
 const actionSheetRef = createRef();
 const actionSheetRef2 = createRef();
 
-
-
 class Category extends React.Component {
 
   constructor(props) {
     super(props);
+    this.formatMoney = FormatMoneyService.getInstance();
+    this.generalRequest = GeneralRequestService.getInstance();
     this.state = {
       radioButtons: [],
-      //radioButtons2: radioButtonsData2,
+      radioButtons2: [],
       data: this.props.products,
       categoryActive: false, 
       loadingMoreData: false,
@@ -49,13 +51,16 @@ class Category extends React.Component {
       ppage: 40,
       searchValue: '', 
       loading: false,
-      selectedCategory: {}
+      selectedCategory: {},
+      loadingCategories: false,
+      noCategoriesFound: false
     };
   }
 
   async componentDidMount() {
     this.setState({
-      loading: true
+      loading: true,
+      loadingCategories: true,
     })
     try{
       this.props.getProducts()
@@ -70,19 +75,11 @@ class Category extends React.Component {
       console.log('err', e)
     } finally {
       this.setState({
-        loading: false
+        loading: false,
+        loadingCategories: false,
       })
     }
   }
-
-  // async componentDidUpdate() {
-  //   if (this.state.selectedCategory != {}) {
-  //     let products = await getProductsFiltered(this.state.selectedCategory.id)
-  //     this.setState({
-  //       data: products
-  //     })
-  //   }
-  // }
 
   setCategories(categories) {
     let radioCategories = categories.map(c => ({
@@ -91,7 +88,7 @@ class Category extends React.Component {
       labelStyle: {fontWeight: 'bold'},
       label: c.name,
       value: c.name
-    }))
+    })).filter(c => c.products.length !== 0)
     return radioCategories;
   }
 
@@ -109,33 +106,56 @@ class Category extends React.Component {
     }
   }
 
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
-  }
-
-  onPressRadioButton2() {
+  onPressRadioButton2(pick) {
+    const selected = pick.filter(o => o.selected)
+    this.setState({ 
+      data: selected[0]?.products,
+    })
     actionSheetRef2.current?.setModalVisible(false);
   }
 
-  onPressRadioButton(pick) {
+  async onPressRadioButton(pick) {
     const selected = pick.filter(o => o.selected) 
+    let data = {
+      params: {
+        parent_category_id: selected.id,
+        expand: 'products'
+      }
+    }
+    let subcategoriesRaw = await this.generalRequest.get(endPoints.subcategories, data);
+    let subcategories = this.setCategories(subcategoriesRaw)
     this.setState({ 
       categoryActive: true,
       selectedCategory: selected,
-      data: selected[0]?.products
+      data: selected[0]?.products,
+      radioButtons2: subcategories,
     })
     actionSheetRef.current?.setModalVisible(false);
   }
 
   onChangeSearch = async (query) => {
+    this.setState({
+      loadingCategories: true,
+    })
     try {
       let searchResult = await searchCategories(query);
-      let categories = this.setCategories(searchResult);
-      this.setState({
-        radioButtons: categories
-      })
+      if (searchResult.length !== 0){
+        let categories = this.setCategories(searchResult);
+        this.setState({
+          noCategoriesFound: false,
+          radioButtons: categories
+        })
+      } else {
+        this.setState({
+          noCategoriesFound: true
+        })
+      }
     } catch (e) {
       console.log('search error', e)
+    } finally {
+      this.setState({
+        loadingCategories: false,
+      })
     }
   }
 
@@ -196,7 +216,7 @@ class Category extends React.Component {
             <Block flex >
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
               <Text style={styles.price}> 
-                {this.numberWithDecimals(item.rrp)}
+                {this.formatMoney.format(item.rrp)}
               </Text>
             </Block>
             {!this.state.hideMyPrice && 
@@ -207,7 +227,7 @@ class Category extends React.Component {
                       My Price
                     </Text>
                     <Text style={styles.price}>
-                      {this.numberWithDecimals(item.cost_price)}
+                      {this.formatMoney.format(item.cost_price)}
                     </Text>
                 </Block>
               </>
@@ -236,9 +256,8 @@ class Category extends React.Component {
     return (
       <>
       <Block style={{width: width}} flex center backgroundColor={nowTheme.COLORS.BACKGROUND} >
-       
         <Block row width={width*0.9} style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%'}}>
-          <Block row space={'evenly'} width={'60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
+          <Block row space={'evenly'} width={this.state.categoryActive ? '90%' : '60%'} style={{justifyContent: 'space-evenly', marginLeft: '-3%'}}>
             <FilterButton
               text={'Filters'}
               icon={require('@assets/nuk-icons/png/2x/filter.png')}
@@ -250,12 +269,17 @@ class Category extends React.Component {
               }}
               isActive={this.state.categoryActive}
             />
+            {
+              this.state.categoryActive &&
+              <FilterButton
+                text={'Sub Category'}
+                onPress={() => {
+                  actionSheetRef2.current?.setModalVisible();
+                }}
+              />
+            }
           </Block>
         </Block>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 30 }}
-        >
           {this.state.loading && this.state.data.length === 0
             ? <ActivityIndicator/>
             : <FlatList
@@ -264,22 +288,22 @@ class Category extends React.Component {
                 data={this.state.data}
                 renderItem={(item) => this.renderCard(item)}
                 keyExtractor={item => item.id}
+                ListFooterComponent={
+                  <Block center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+                    {this.state.loadingMoreData 
+                      ? <ActivityIndicator/>
+                      : <Button
+                          color="info"
+                          textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                          style={styles.button}
+                          onPress={() => this.loadMore()}
+                        >
+                          Load more...
+                        </Button>
+                    }
+                  </Block>}
               /> 
           }
-          <Block center backgroundColor={nowTheme.COLORS.BACKGROUND}>
-            {this.state.loadingMoreData 
-              ? <ActivityIndicator/>
-              : <Button
-                  color="info"
-                  textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                  style={styles.button}
-                  onPress={() => this.loadMore()}
-                >
-                  Load more...
-                </Button>
-            }
-          </Block>
-        </ScrollView>
       </Block>
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
         <Searchbar
@@ -289,14 +313,19 @@ class Category extends React.Component {
           inputStyle={styles.searchInput}
         />
         <Block style={{height: 250, padding: 5, paddingBottom: 40}}>
-          <ScrollView style={{width: width}}>
-            <RadioGroup 
-              radioButtons={this.state.radioButtons}
-              color={nowTheme.COLORS.INFO} 
-              onPress={(pick) => this.onPressRadioButton(pick)}
-              containerStyle={{alignItems: 'left'}}
-            />
-          </ScrollView>
+          {this.state.loadingCategories 
+            ? <ActivityIndicator/>
+            : this.state.noCategoriesFound 
+              ? <Text> No categories found </Text>
+              : <ScrollView style={{width: width}}>
+                  <RadioGroup 
+                    radioButtons={this.state.radioButtons}
+                    color={nowTheme.COLORS.INFO} 
+                    onPress={(pick) => this.onPressRadioButton(pick)}
+                    containerStyle={{alignItems: 'left'}}
+                  />
+                </ScrollView>
+          }
         </Block>
       </ActionSheet>
       <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
@@ -304,7 +333,7 @@ class Category extends React.Component {
           <RadioGroup 
             radioButtons={this.state.radioButtons2}
             color={nowTheme.COLORS.INFO} 
-            onPress={() => this.onPressRadioButton2()}
+            onPress={(pick) => this.onPressRadioButton2(pick)}
             containerStyle={{alignItems: 'left'}}
           />
         </Block>
