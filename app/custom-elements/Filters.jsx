@@ -215,7 +215,7 @@ class Filters extends Component {
         iconContent={iconSearch}
         style={styles.search}
         placeholder="By description or invoice number"
-        onChangeText={(text) => changeValuesFilters('text', text)}
+        onChangeText={(text) => this.changeValuesFilters('text', text)}
       />
     );
   };

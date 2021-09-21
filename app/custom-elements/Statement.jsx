@@ -21,23 +21,15 @@ const Statement = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [urlFilePdf, seturlFilePdf] = useState('');
 
-
   const handleDownloadFile = async () => {
-    
     const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
-    const result = await generalRequestService.get(urlDownloadFile)
-    
-    seturlFilePdf (result);
+    const result = await generalRequestService.get(urlDownloadFile);
+
+    seturlFilePdf(result);
     setShowModal(true);
-     
-  
   };
 
-  //const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
-  const urlDownloadFile = 'http://zoada-au.com/response.pdf';
-
-
-  let dateStatement = validateEmptyField(props.statement.created_date);
+  let dateStatement = validateEmptyField(props.statement.date);
 
   if (dateStatement !== 'N/A') {
     dateStatement = moment(dateStatement).format('YYYY-MM-DD');
@@ -48,7 +40,7 @@ const Statement = (props) => {
       <Block style={styles.container}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <TouchableOpacity  onPress={() => handleDownloadFile()}>
+            <TouchableOpacity onPress={() => handleDownloadFile()}>
               <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
                 <Block row>
                   <Text
