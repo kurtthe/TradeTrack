@@ -11,6 +11,7 @@ import PdfViewer from '@custom-elements/PdfViewer';
 import moment from 'moment';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Loading from '@custom-elements/Loading';
 
 const { width } = Dimensions.get('screen');
 
@@ -19,13 +20,17 @@ const generalRequestService = GeneralRequestService.getInstance();
 
 const Statement = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [urlFilePdf, seturlFilePdf] = useState('');
 
   const handleDownloadFile = async () => {
+    setLoading(true);
+
     const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
     const result = await generalRequestService.get(urlDownloadFile);
 
     seturlFilePdf(result);
+    setLoading(false);
     setShowModal(true);
   };
 
@@ -35,65 +40,74 @@ const Statement = (props) => {
     dateStatement = moment(dateStatement).format('YYYY-MM-DD');
   }
 
+  const closeModal = () => {
+    setShowModal(false);
+    setLoading(false);
+  };
+
   return (
     <>
       <Block style={styles.container}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <TouchableOpacity onPress={() => handleDownloadFile()}>
-              <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
-                <Block row>
+            {loading ? (
+              <Loading />
+            ) : (
+              <TouchableOpacity onPress={() => handleDownloadFile()}>
+                <Block row space="between" style={{ height: 20, paddingTop: 0 }}>
+                  <Block row>
+                    <Text
+                      color={nowTheme.COLORS.DEFAULT}
+                      style={{ fontFamily: 'montserrat-bold' }}
+                      size={15.5}
+                    >
+                      Statement
+                    </Text>
+                  </Block>
+                  <Block row>
+                    <Text
+                      color={nowTheme.COLORS.TIME}
+                      style={{
+                        fontFamily: 'montserrat-regular',
+                        paddingRight: 10,
+                      }}
+                      size={14}
+                    >
+                      {dateStatement}
+                    </Text>
+                  </Block>
+                </Block>
+
+                <Block row justifyContent="space-between">
                   <Text
-                    color={nowTheme.COLORS.DEFAULT}
-                    style={{ fontFamily: 'montserrat-bold' }}
-                    size={15.5}
+                    color={nowTheme.COLORS.HEADER}
+                    size={15}
+                    style={{ fontFamily: 'montserrat-regular', marginTop: 20 }}
+                  ></Text>
+
+                  <Ionicons
+                    style={{ left: -10 }}
+                    name="eye"
+                    color={nowTheme.COLORS.LIGHTGRAY}
+                    size={20}
+                  />
+                </Block>
+                <Block row style={{ marginTop: -10 }}></Block>
+                <Block bottom>
+                  <Text
+                    style={{ fontFamily: 'montserrat-bold', marginTop: 0, left: -12 }}
+                    size={theme.SIZES.BASE * 1}
+                    color={nowTheme.COLORS.HEADER}
                   >
-                    Statement
+                    {formatMoney.format(props.statement.new)}
                   </Text>
                 </Block>
-                <Block row>
-                  <Text
-                    color={nowTheme.COLORS.TIME}
-                    style={{
-                      fontFamily: 'montserrat-regular',
-                      paddingRight: 10,
-                    }}
-                    size={14}
-                  >
-                    {dateStatement}
-                  </Text>
-                </Block>
-              </Block>
-
-              <Block row justifyContent="space-between">
-                <Text
-                  color={nowTheme.COLORS.HEADER}
-                  size={15}
-                  style={{ fontFamily: 'montserrat-regular', marginTop: 20 }}
-                ></Text>
-
-                <Ionicons
-                  style={{ left: -10 }}
-                  name="eye"
-                  color={nowTheme.COLORS.LIGHTGRAY}
-                  size={20}
-                />
-              </Block>
-              <Block row style={{ marginTop: -10 }}></Block>
-              <Block bottom>
-                <Text
-                  style={{ fontFamily: 'montserrat-bold', marginTop: 0, left: -12 }}
-                  size={theme.SIZES.BASE * 1}
-                  color={nowTheme.COLORS.HEADER}
-                >
-                  {formatMoney.format(props.statement.new)}
-                </Text>
-              </Block>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            )}
           </Block>
         </Block>
       </Block>
-      <BottomModal show={showModal} close={() => setShowModal(false)}>
+      <BottomModal show={showModal} close={() => closeModal()}>
         <View style={{ height: hp('80%') }}>
           <PdfViewer url={urlFilePdf} />
         </View>

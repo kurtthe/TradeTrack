@@ -23,7 +23,6 @@ import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { endPoints } from '@shared/dictionaries/end-points';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -85,7 +84,7 @@ const DownloadButton = (props) => (
   </TouchableOpacity>
 );
 
-class Header extends React.Component {
+class Header extends React.Component {textSearch
   constructor(props) {
     super(props);
     this.state = {
@@ -98,7 +97,17 @@ class Header extends React.Component {
 
   handleLeftPress = () => {
     const { navigation } = this.props;
-    return navigation.goBack();
+    const { isAccount } = this.props.scene.route.params;
+
+    if(!isAccount){
+      navigation.goBack();
+      return;
+    }
+
+    navigation.navigate('Account', {
+      screen: 'AccountDetails',
+      params: { tabIndexSelected: 1 },
+    });    
   };
 
   openViewerPdf = async () => {
