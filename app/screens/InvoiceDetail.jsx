@@ -29,7 +29,7 @@ class InvoiceDetails extends React.Component {
   }
 
   async componentDidMount() {
-    const { invoice } = this.props.route.params;
+    const { invoice, isAccount} = this.props.route.params;
     const url = endPoints.invoicesDetail.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
@@ -38,6 +38,7 @@ class InvoiceDetails extends React.Component {
 
     this.props.navigation.setParams({
       urlDownloadFile,
+      isAccount
     });
   }
 

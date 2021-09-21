@@ -208,6 +208,7 @@ class Filters extends Component {
     return (
       <Input
         right
+        value={this.state.textSearch}
         color="black"
         autoFocus={false}
         autoCorrect={false}
