@@ -29,8 +29,12 @@ export class FormatMoneyService {
     if(value === undefined || value === null || !value){
       return `$0.00`;
     }
-    
     const valueFormat = this.fm.from(parseFloat(value), { symbol: '$' }, true);
+
+    if(valueFormat.fullAmount === 'NaN'){
+      return `$0.00`;
+    }
+
     return `${valueFormat.symbol}${(parseFloat(value)< 0) ? '-':''}${valueFormat.fullAmount}`
   }
 }
