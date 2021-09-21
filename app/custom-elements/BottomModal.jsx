@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   modalDialog: {
     backgroundColor: '#f3f2f7',
     top: hp('5%'),
-    height: hp('85%'),
+    height: hp('90%'),
     width: wp('100%'),
     shadowColor: '#000',
     elevation: 8,
