@@ -23,6 +23,7 @@ import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Loading from '@custom-elements/Loading';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
@@ -35,7 +36,6 @@ const SearchHome = ({ isWhite, style, navigation }) => (
       await SecureStore.deleteItemAsync('data_user');
       Keyboard.dismiss();
       navigation.navigate('Login');
-
     }}
   >
     <Ionicons name="log-out-outline" color={'#828489'} size={28} />
@@ -84,12 +84,14 @@ const DownloadButton = (props) => (
   </TouchableOpacity>
 );
 
-class Header extends React.Component {textSearch
+class Header extends React.Component {
+  textSearch;
   constructor(props) {
     super(props);
     this.state = {
       showModalBottom: false,
       urlFilePdf: '',
+      loadingLoadPdf: false,
     };
     this.downloadFile = DownloadFile.getInstance();
     this.generalRequestService = GeneralRequestService.getInstance();
@@ -99,7 +101,7 @@ class Header extends React.Component {textSearch
     const { navigation } = this.props;
     const { isAccount } = this.props.scene.route.params;
 
-    if(!isAccount){
+    if (!isAccount) {
       navigation.goBack();
       return;
     }
@@ -107,15 +109,17 @@ class Header extends React.Component {textSearch
     navigation.navigate('Account', {
       screen: 'AccountDetails',
       params: { tabIndexSelected: 1 },
-    });    
+    });
   };
 
   openViewerPdf = async () => {
+    this.setState({ loadingLoadPdf: true });
     const { urlDownloadFile } = this.props.scene.route.params;
-    const result = await this.generalRequestService.get(urlDownloadFile)
+    const result = await this.generalRequestService.get(urlDownloadFile);
     this.setState({
       urlFilePdf: result,
       showModalBottom: true,
+      loadingLoadPdf: false,
     });
   };
 
@@ -160,16 +164,21 @@ class Header extends React.Component {textSearch
       case 'Invoice Details':
         return [
           <View style={{ top: 7, width: 50 }}>
-            <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
+            {this.state.loadingLoadPdf ? (
+              <Loading />
+            ) : (
+              <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
+            )}
+
             <BottomModal
               show={this.state.showModalBottom}
               close={() => this.setState({ showModalBottom: false })}
-              downloadShared={{ 
-                url:this.props.scene.route.params?.urlDownloadFile
+              downloadShared={{
+                url: this.props.scene.route.params?.urlDownloadFile,
               }}
             >
               <View style={{ height: hp('80%') }}>
-              <PdfViewer url={this.state.urlFilePdf} />
+                <PdfViewer url={this.state.urlFilePdf} />
               </View>
             </BottomModal>
           </View>,
