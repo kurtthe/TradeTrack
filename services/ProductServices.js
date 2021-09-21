@@ -78,7 +78,7 @@ export const loadMoreProducts = async (ppage) => {
 export const searchCategories = async (query) => {
 	try {
 		let id = await getSupplierId()
-		let result = await fetch(`${ServicesResources.GET_ALL_CATEGORIES}?search=${query}&expand=products`, {
+		let result = await fetch(`${ServicesResources.GET_ALL_CATEGORIES}?search=${query}&expand=products&per-page=50`, {
 			method: "GET",
 			headers: {
                 "ttrak-key": await api_key()

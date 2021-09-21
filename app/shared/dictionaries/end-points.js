@@ -15,5 +15,6 @@ export const endPoints = {
   generateOrder: `${environment.api}material-orders`,
   supplierId: `${environment.api}burdens/supplier`,
   stores: `${environment.api}burdens/stores`,
-  jobs: `${environment.api}jobs`
+  jobs: `${environment.api}jobs`,
+  subcategories: `${environment.api}products/categories?per-page=50`
 }
