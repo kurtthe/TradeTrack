@@ -1,6 +1,6 @@
 import React, { useState, createRef, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import { Block, theme, Text, Input } from 'galio-framework';
+import { Block, theme, Text } from 'galio-framework';
 import { Button } from '@components';
 import { nowTheme } from '@constants';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -14,6 +14,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import RNPickerSelect from 'react-native-picker-select';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
+import { TextInputMask } from 'react-native-masked-text';
 
 const formatMoney = FormatMoneyService.getInstance();
 const generalRequestService = GeneralRequestService.getInstance();
@@ -23,6 +24,7 @@ const { width } = Dimensions.get('screen');
 const PaymentBalance = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
+  const [valueAmount, setValueAmount] = useState('');
 
   useEffect(() => {
     if (props.show) {
@@ -42,7 +44,6 @@ const PaymentBalance = (props) => {
     props.close && props.close();
   };
 
-  console.log('==>pickerOptions', pickerOptions);
 
   return (
     <>
@@ -53,8 +54,6 @@ const PaymentBalance = (props) => {
           </Block>
 
           <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            items={pickerOptions}
             placeholder={{ label: 'Select an option' }}
             textInputProps={{ color: '#8898AA' }}
             style={{
@@ -62,17 +61,23 @@ const PaymentBalance = (props) => {
               viewContainer: styles.pickerContainer,
               inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
             }}
+            onValueChange={(value) => console.log(value)}
+            items={pickerOptions}
           />
 
           <Text style={{ fontWeight: 'bold' }}>Amount</Text>
-          <Input
-            name="nirvana"
-            right
-            color="black"
+          <TextInputMask
+            placeholder='$0.00'
+            type={'money'}
+            options={{
+              precision: 2,
+              separator: ',',
+              delimiter: '.',
+              unit: '$',
+            }}
+            value={valueAmount}
+            onChangeText={(text) => setValueAmount(text)}
             style={styles.search}
-            placeholder={'$0.00'}
-            placeholderTextColor={'#8898AA'}
-            onChangeText={(value) => setValueAmount(value)}
             keyboardType="numeric"
           />
           <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
@@ -135,10 +140,19 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderRadius: 5,
     paddingLeft: 10,
-    marginVertical: 5
+    marginVertical: 5,
   },
   pickerText: {
     color: nowTheme.COLORS.PICKERTEXT,
+  },
+  search: {
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.PICKERTEXT,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginVertical: 5,
   },
 });
 
