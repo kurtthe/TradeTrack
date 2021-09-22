@@ -5,7 +5,6 @@ import { nowTheme } from '@constants/index';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import SkeletonInvoiceDetail from '@custom-elements/skeletons/InvoiceDetail';
 
@@ -28,7 +27,17 @@ class InvoiceDetails extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  async componentDidMount(){
+    await this.handleGetData();
+  }
+
+  async componentDidUpdate(prevProps) {
+    if(prevProps.route.params.invoice !== this.props.route.params.invoice){
+      await this.handleGetData();
+    }
+  }
+
+  handleGetData = async()=>{
     const { invoice, isAccount} = this.props.route.params;
     const url = endPoints.invoicesDetail.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
@@ -207,14 +216,9 @@ const styles = StyleSheet.create({
     height: 'auto',
     alignContent:'center',
     justifyContent:'center',
-   
-
     
   },
 });
 
-const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key,
-});
 
-export default connect(mapStateToProps)(InvoiceDetails);
+export default InvoiceDetails;
