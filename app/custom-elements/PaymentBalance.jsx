@@ -12,7 +12,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 
 import ActionSheet from 'react-native-actions-sheet';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import RNPickerSelect from 'react-native-picker-select';
+import Select from './forms/Select';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -33,7 +33,9 @@ const PaymentBalance = (props) => {
   });
 
   const handleShowMethodPayment = async () => {
-    const { url } = await generalRequestService.get(`${endPoints.payment}?amount=${valueAmount}`);
+    const { url } = await generalRequestService.get(
+      `${endPoints.payment}?amount=${formatMoney.clearSymbolize(valueAmount)}`,
+    );
     actionSheetRef.current?.setModalVisible(false);
     setUrlPayment(url);
     setShowModal(true);
@@ -44,7 +46,21 @@ const PaymentBalance = (props) => {
     props.close && props.close();
   };
 
-
+  const changeOptionBalancePay = (option) =>{
+    if(option === 'now'){ 
+      setValueAmount(formatMoney.format(props.balance?.thirty_day))
+      return;
+    }
+    if(option === 'overdue'){ 
+      setValueAmount(formatMoney.format(props.balance?.overdue))
+      return;
+    }
+    if(option === 'nowAndOver'){ 
+      const totalSum = props.balance?.thirty_day + props.balance?.overdue;
+      setValueAmount(formatMoney.format(totalSum))
+    }
+  }
+  
   return (
     <>
       <ActionSheet ref={actionSheetRef} closeOnTouchBackdrop={false}>
@@ -53,21 +69,10 @@ const PaymentBalance = (props) => {
             <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Balance to Pay</Text>
           </Block>
 
-          <RNPickerSelect
-            placeholder={{ label: 'Select an option' }}
-            textInputProps={{ color: '#8898AA' }}
-            style={{
-              placeholder: styles.pickerText,
-              viewContainer: styles.pickerContainer,
-              inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
-            }}
-            onValueChange={(value) => console.log(value)}
-            items={pickerOptions}
-          />
-
+          <Select onchange={(option) => changeOptionBalancePay(option)} options={pickerOptions} />
           <Text style={{ fontWeight: 'bold' }}>Amount</Text>
           <TextInputMask
-            placeholder='$0.00'
+            placeholder="$0.00"
             type={'money'}
             options={{
               precision: 2,
@@ -131,19 +136,6 @@ const styles = StyleSheet.create({
   },
   buttonAS: {
     width: width - theme.SIZES.BASE * 2,
-  },
-  pickerContainer: {
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: nowTheme.COLORS.PICKERTEXT,
-    paddingHorizontal: 5,
-    paddingVertical: 20,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginVertical: 5,
-  },
-  pickerText: {
-    color: nowTheme.COLORS.PICKERTEXT,
   },
   search: {
     borderWidth: 1,
