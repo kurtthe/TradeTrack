@@ -37,4 +37,11 @@ export class FormatMoneyService {
 
     return `${valueFormat.symbol}${(parseFloat(value)< 0) ? '-':''}${valueFormat.fullAmount}`
   }
+
+  clearSymbolize(value) {
+    const clearSymbol = value.split('$');
+    const newValue = clearSymbol[1];
+
+    return newValue
+  }
 }
