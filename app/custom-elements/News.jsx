@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withNavigation } from '@react-navigation/compat';
-import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 import BottomModal from '@custom-elements/BottomModal';
@@ -104,7 +104,7 @@ const News = (props) => {
 
       <BottomModal show={showModal} close={() => setShowModal(false)} sharedMessage={`Shared All the latest news- ${props.news.preview.title} read more ${props.news.link} `}>
 
-        <View style={{ height: hp('80%') }}>
+        <View style={styles.view_h}>
           <WebView url={props.news.link} />
         </View>
       </BottomModal>
@@ -113,6 +113,10 @@ const News = (props) => {
 };
 
 const styles = StyleSheet.create({
+
+  view_h: {
+    height: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 870) ? hp('78.5%') :hp('80%'))  : ((Dimensions.get('window').height < 595) ? hp('77.5%') : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? hp('79.5%'): hp('84%')))
+  },
   cardDate: {
     textAlign: 'right',
     marginRight: 35,
