@@ -31,7 +31,7 @@ const Tabs = (props) => {
 
   return (
     <View>
-      <Block style={{ top: 10 }}>
+     
         <SegmentedControlTab
           values={getLabels()}
           selectedIndex={indexSelectedTab}
@@ -54,7 +54,7 @@ const Tabs = (props) => {
           tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
           activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
         />
-      </Block>
+     
       {cloneElement(getComponent())}
     </View>
   );

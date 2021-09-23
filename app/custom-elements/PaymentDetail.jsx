@@ -33,7 +33,7 @@ const PaymentDetail = () => {
 
   return (
     <>
-      <Block style={{ padding: theme.SIZES.BASE, top: 10 }}>
+      <Block style={{ padding: theme.SIZES.BASE, top: 0 }}>
         <Text style={{ marginBottom: 15 }} size={16}>
           Payment Details
         </Text>

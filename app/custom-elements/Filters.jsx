@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search: {
-    width: width * 0.5,
+    width: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 870) ? width * 0.5 :width * 0.6)  : ((Dimensions.get('window').height < 595) ? width * 0.5 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? width * 0.5: width * 0.6)),
     marginHorizontal: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,

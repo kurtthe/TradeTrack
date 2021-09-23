@@ -96,186 +96,361 @@ class Login extends React.Component {
     const { navigation } = this.props;
 
     return (
+      // <DismissKeyboard>
+      //   <Block flex middle style={{ backgroundColor: '#fff' }}>
+      //     <Block flex space="evenly">
+      //       <Block flex middle style={styles.socialConnect}>
+      //       <Block
+      //             flex={3}
+      //             top
+      //             middle
+      //             style={{
+      //               top:
+      //                 Platform.OS === 'ios'
+      //                   ? Dimensions.get('window').height < 670
+      //                     ? 15
+      //                     : 30
+      //                   : Dimensions.get('window').height < 870
+      //                   ? 15
+      //                   : 40,
+      //             }}
+      //           >
+      //             <Image
+      //               style={styles.introImageStyle}
+      //               source={require('@assets/imgs/img/logo.png')}
+      //             />
+      //           </Block>
+      //           <Block flex={3} top  middle>
+      //             <Text
+                  
+      //               style={{
+      //                 fontFamily: 'montserrat-bold',
+      //                 textAlign: 'left',
+      //               }}
+      //               color="#2E2F33"
+      //               size={
+      //                 Platform.OS === 'ios'
+      //                   ? Dimensions.get('window').height < 670
+      //                     ? 20
+      //                     : 22
+      //                   : Dimensions.get('window').height < 870
+      //                   ? 20
+      //                   : 26
+      //               }
+      //               //size={20}
+      //             >
+      //               Welcome Back,{'\n'}
+      //               Please sign in with your account
+      //             </Text>
+      //           </Block>
+      //         </Block>
+
+           
+      //         <ScrollView
+      //     showsVerticalScrollIndicator={false}
+      //     style={styles.body}
+			// 					contentContainerStyle={styles.scrollChild, {paddingBottom:400}}
+      //   >
+
+      //         <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+
+      //           <Block center flex={1}>
+      //             <Block flex space="between" middle>
+      //               <Block>
+      //                 <Block width={width * 0.9} style={{ paddingTop: 20 }}>
+      //                   <Text
+      //                     color={nowTheme.COLORS.PRETEXT}
+      //                     style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
+      //                     row
+      //                     muted
+      //                     size={
+      //                       Platform.OS === 'ios'
+      //                         ? Dimensions.get('window').height < 670
+      //                           ? 16
+      //                           : 20
+      //                         : Dimensions.get('window').height < 870
+      //                         ? 16
+      //                         : 20
+      //                     }
+      //                   >
+      //                     Email
+      //                   </Text>
+      //                   <Input
+      //                     right
+      //                     placeholder="Enter your email here"
+      //                     iconContent={<Block />}
+      //                     shadowless
+      //                     keyboardType={'email-address'}
+      //                     onChangeText={(event) => this.handleChangeEmail(event)}
+      //                     autoCapitalize="none"
+      //                   />
+      //                   <Text
+      //                     color={nowTheme.COLORS.PRETEXT}
+      //                     style={{
+      //                       marginLeft: 0,
+      //                       fontFamily: 'montserrat-regular',
+      //                       fontFamily: 'montserrat-regular',
+      //                       top: 10,
+      //                     }}
+      //                     row
+      //                     muted
+      //                     size={
+      //                       Platform.OS === 'ios'
+      //                         ? Dimensions.get('window').height < 670
+      //                           ? 16
+      //                           : 20
+      //                         : Dimensions.get('window').height < 870
+      //                         ? 16
+      //                         : 20
+      //                     }
+      //                   >
+      //                     Password
+      //                   </Text>
+      //                 </Block>
+
+      //                 <Block width={width * 0.9} style={{ paddingTop: 10 }}>
+      //                   <Input
+      //                     secureTextEntry={true}
+      //                     iconContent={<Block />}
+      //                     placeholder="Enter your correct password"
+      //                     secureTextEntry={this.state.hidePass}
+      //                     onChangeText={(event) => this.handleChangePassword(event)}
+      //                   />
+      //                   <MaterialIcons
+      //                     style={styles.icon}
+      //                     name={this.state.hidePass ? 'visibility' : 'visibility-off'}
+      //                     size={20}
+      //                     color={nowTheme.COLORS.ICON}
+      //                     onPress={() => this.setState({ hidePass: !this.state.hidePass })}
+      //                   />
+      //                 </Block>
+      //                 <Block middle right>
+      //                   <ForgotButton onPress={() => navigation.navigate('ForgotPassword')}>
+      //                     Forgot Password?
+      //                   </ForgotButton>
+      //                 </Block>
+      //               </Block>
+      //               <Block
+      //                 style={{ top:
+      //                   Platform.OS === 'ios'
+      //                     ? Dimensions.get('window').height < 670
+      //                       ? 70
+      //                       : 100
+      //                     : Dimensions.get('window').height < 870
+      //                     ? 30
+      //                     : 90
+      //                 }}
+      //                 center
+      //               >
+      //                 <Button
+      //                   color="info"
+      //                   textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+      //                   style={styles.button}
+      //                   onPress={() => this.handleLogin()}
+      //                   loading={this.state.loading}
+      //                 >
+      //                   Login
+      //                 </Button>
+
+      //                 <SimpleButton onPress={() => navigation.navigate('Help')}>
+      //                   {' '}
+      //                   <Text style={{ textDecorationLine: 'underline' }}>Need Help?</Text>
+      //                 </SimpleButton>
+
+      //                 <Block style={{ top: 20 }} row middle space="between">
+      //                   <Text color={'#444857'} size={15}>
+      //                     Don't have an account yet?
+      //                   </Text>
+      //                   <SimpleButton onPress={() => navigation.navigate('SignUp')}>
+      //                     {' '}
+      //                     Learn how to open
+      //                     </SimpleButton>
+      //                 </Block>
+      //               </Block>
+      //             </Block>
+      //           </Block>
+      //         </Block>
+      //         </ScrollView>
+             
+      //       </Block>
+      //     </Block>
+      //   </DismissKeyboard>
+      // // </KeyboardAvoidingView>
+
+      <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
       <DismissKeyboard>
         <Block flex middle style={{ backgroundColor: '#fff' }}>
           <Block flex space="evenly">
             <Block flex middle style={styles.socialConnect}>
-            <Block
-                  flex={3}
-                  top
-                  middle
-                  style={{
-                    top:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 15
-                          : 30
-                        : Dimensions.get('window').height < 870
+              <Block
+                flex={3}
+                top
+                middle
+                style={{
+                  top:
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
                         ? 15
-                        : 40,
+                        : 30
+                      : Dimensions.get('window').height < 870
+                      ? 15
+                      : 40,
+                }}
+              >
+                <Image
+                  style={styles.introImageStyle}
+                  source={require('@assets/imgs/img/logo.png')}
+                />
+              </Block>
+              <Block flex={3} top middle>
+                <Text
+                  style={{
+                    fontFamily: 'montserrat-bold',
+                    textAlign: 'left',
                   }}
+                  color="#2E2F33"
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 20
+                        : 22
+                      : Dimensions.get('window').height < 870
+                      ? 20
+                      : 26
+                  }
+                  //size={20}
                 >
-                  <Image
-                    style={styles.introImageStyle}
-                    source={require('@assets/imgs/img/logo.png')}
-                  />
-                </Block>
-                <Block flex={3} top  middle>
-                  <Text
-                  
-                    style={{
-                      fontFamily: 'montserrat-bold',
-                      textAlign: 'left',
-                    }}
-                    color="#2E2F33"
-                    size={
+                  Welcome Back,{'\n'}
+                  Please sign in with your account
+                </Text>
+              </Block>
+            </Block>
+
+            <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
+              <Block center flex={1}>
+                <Block flex space="between" middle>
+                  <Block>
+                    
+                    <Block width={width * 0.9} style={{paddingTop:20}}>
+                    <Text
+                        color={nowTheme.COLORS.PRETEXT}
+                        style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
+                        row
+                        muted
+                        size={
+                          Platform.OS === 'ios'
+                            ? Dimensions.get('window').height < 670
+                              ? 16
+                              : 20
+                            : Dimensions.get('window').height < 870
+                            ? 16
+                            : 20
+                        }
+                      >
+                        Email
+                      </Text>
+                      <Input
+                        right
+                        placeholder="Enter your email here"
+                        iconContent={<Block />}
+                        shadowless
+                        keyboardType={'email-address'}
+                        onChangeText={(event) => this.handleChangeEmail(event)}
+                        autoCapitalize="none"
+                      />
+                       <Text
+                        color={nowTheme.COLORS.PRETEXT}
+                        style={{
+                          marginLeft: 0,
+                          fontFamily: 'montserrat-regular',
+                          fontFamily: 'montserrat-regular',
+                          top:10
+                        }}
+                        row
+                        muted
+                        size={
+                          Platform.OS === 'ios'
+                            ? Dimensions.get('window').height < 670
+                              ? 16
+                              : 20
+                            : Dimensions.get('window').height < 870
+                            ? 16
+                            : 20
+                        }
+                      >
+                        Password
+                      </Text>
+                    </Block>
+                   
+                    <Block width={width * 0.9} style={{paddingTop:10}}>
+                      <Input
+                        secureTextEntry={true}
+                        iconContent={<Block />}
+                        placeholder="Enter your correct password"
+                        secureTextEntry={this.state.hidePass}
+                        onChangeText={(event) => this.handleChangePassword(event)}
+                      />
+                      <MaterialIcons
+                        style={styles.icon}
+                        name={this.state.hidePass ? 'visibility' : 'visibility-off'}
+                        size={20}
+                        color={nowTheme.COLORS.ICON}
+                        onPress={() => this.setState({ hidePass: !this.state.hidePass })}
+                      />
+                    </Block>
+                    <Block middle right>
+                      <ForgotButton onPress={() => navigation.navigate('ForgotPassword')}>
+                        Forgot Password?
+                      </ForgotButton>
+                    </Block>
+                  </Block>
+                  <Block
+                    flex={
                       Platform.OS === 'ios'
                         ? Dimensions.get('window').height < 670
-                          ? 20
-                          : 22
+                          ? 0.8
+                          : 0.55
                         : Dimensions.get('window').height < 870
-                        ? 20
-                        : 26
+                        ? 0.8
+                        : 0.4
                     }
-                    //size={20}
+                    center
                   >
-                    Welcome Back,{'\n'}
-                    Please sign in with your account
-                  </Text>
-                </Block>
-              </Block>
-
-           
-              <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.body}
-								contentContainerStyle={styles.scrollChild, {paddingBottom:400}}
-        >
-
-              <Block flex={2.5} space="between" style={{ backgroundColor: 'transparent' }}>
-
-                <Block center flex={1}>
-                  <Block flex space="between" middle>
-                    <Block>
-                      <Block width={width * 0.9} style={{ paddingTop: 20 }}>
-                        <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                          style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
-                          row
-                          muted
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 16
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                          }
-                        >
-                          Email
-                        </Text>
-                        <Input
-                          right
-                          placeholder="Enter your email here"
-                          iconContent={<Block />}
-                          shadowless
-                          keyboardType={'email-address'}
-                          onChangeText={(event) => this.handleChangeEmail(event)}
-                          autoCapitalize="none"
-                        />
-                        <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                          style={{
-                            marginLeft: 0,
-                            fontFamily: 'montserrat-regular',
-                            fontFamily: 'montserrat-regular',
-                            top: 10,
-                          }}
-                          row
-                          muted
-                          size={
-                            Platform.OS === 'ios'
-                              ? Dimensions.get('window').height < 670
-                                ? 16
-                                : 20
-                              : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                          }
-                        >
-                          Password
-                        </Text>
-                      </Block>
-
-                      <Block width={width * 0.9} style={{ paddingTop: 10 }}>
-                        <Input
-                          secureTextEntry={true}
-                          iconContent={<Block />}
-                          placeholder="Enter your correct password"
-                          secureTextEntry={this.state.hidePass}
-                          onChangeText={(event) => this.handleChangePassword(event)}
-                        />
-                        <MaterialIcons
-                          style={styles.icon}
-                          name={this.state.hidePass ? 'visibility' : 'visibility-off'}
-                          size={20}
-                          color={nowTheme.COLORS.ICON}
-                          onPress={() => this.setState({ hidePass: !this.state.hidePass })}
-                        />
-                      </Block>
-                      <Block middle right>
-                        <ForgotButton onPress={() => navigation.navigate('ForgotPassword')}>
-                          Forgot Password?
-                        </ForgotButton>
-                      </Block>
-                    </Block>
-                    <Block
-                      style={{ top:
-                        Platform.OS === 'ios'
-                          ? Dimensions.get('window').height < 670
-                            ? 70
-                            : 100
-                          : Dimensions.get('window').height < 870
-                          ? 30
-                          : 90
-                      }}
-                      center
+                    <Button
+                      color="info"
+                      textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                      style={styles.button}
+                      onPress={() => this.handleLogin()}
                     >
-                      <Button
-                        color="info"
-                        textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                        style={styles.button}
-                        onPress={() => this.handleLogin()}
-                        loading={this.state.loading}
-                      >
-                        Login
-                      </Button>
+                      Login
+                    </Button>
 
-                      <SimpleButton onPress={() => navigation.navigate('Help')}>
+                    <SimpleButton onPress={() => navigation.navigate('Help')}>
+                      {' '}
+                      <Text style={{ textDecorationLine: 'underline' }}>Need Help?</Text>
+                    </SimpleButton>
+
+                    <Block style={{ top: 20 }} row middle space="between">
+                      <Text color={'#444857'} size={15}>
+                        Don't have an account yet?
+                      </Text>
+                      <SimpleButton onPress={() => navigation.navigate('SignUp')}>
                         {' '}
-                        <Text style={{ textDecorationLine: 'underline' }}>Need Help?</Text>
+                        Learn how to open
                       </SimpleButton>
-
-                      <Block style={{ top: 20 }} row middle space="between">
-                        <Text color={'#444857'} size={15}>
-                          Don't have an account yet?
-                        </Text>
-                        <SimpleButton onPress={() => navigation.navigate('SignUp')}>
-                          {' '}
-                          Learn how to open
-                          </SimpleButton>
-                      </Block>
                     </Block>
                   </Block>
                 </Block>
               </Block>
-              </ScrollView>
-             
             </Block>
           </Block>
-        </DismissKeyboard>
-      // </KeyboardAvoidingView>
+        </Block>
+      </DismissKeyboard>
+    </KeyboardAvoidingView>
+
     );
   }
 }

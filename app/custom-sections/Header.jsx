@@ -206,15 +206,15 @@ class Header extends React.Component {
             </Block>
           </Block>
         ) : (
-          <View style={{ paddingTop: 12.5, position: 'absolute' }}>
+          <TouchableOpacity style={{ paddingTop: 12.5, width:25, height:39, position: 'absolute' }}   onPress={this.handleLeftPress} >
             <Icon
               name={back ? 'minimal-left2x' : 'minimal-left2x'}
               family="NowExtra"
               size={18}
-              onPress={this.handleLeftPress}
+            
               color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
             />
-          </View>
+          </TouchableOpacity>
         )}
       </>
     );
