@@ -30,6 +30,8 @@ class Filters extends Component {
       dateEndValue: '',
       type: '',
       textSearch: '',
+      idSelectedType: null,
+      optionsType: radioButtonsHour
     };
   }
 
@@ -91,11 +93,26 @@ class Filters extends Component {
       this.setState({ textSearch: value });
     }
     if (!whoChange) {
+      const resetOptionsSelected = this.state.optionsType.map((item)=>{
+        if(item.id === this.state.idSelectedType){
+          return {
+            ...item,
+            selected: false
+          }
+        }
+
+        return {
+          ...item
+        }
+      })
+
       this.setState({
         dateStartValue: '',
         dateEndValue: '',
         type: '',
         textSearch: '',
+        idSelectedType: null,
+        optionsType:resetOptionsSelected
       });
     }
 
@@ -117,13 +134,16 @@ class Filters extends Component {
   };
 
   onPressRadioButton = () => {
-    actionSheetRef.current?.setModalVisible();
+    actionSheetRef.current?.setModalVisible(true);
   };
 
   selectedOptionRadio = (options) => {
-    const optionSelected = options.filter((item) => item.selected);
-    const valueOption = optionSelected[0].value;
-    this.changeValuesFilters('type', valueOption);
+    const optionSelected = options.find((item) => item.selected);
+    this.setState({
+      idSelectedType: optionSelected.id,
+    });
+
+    this.changeValuesFilters('type', optionSelected.value);
   };
 
   rangeDate = () => {
@@ -171,11 +191,12 @@ class Filters extends Component {
           <Block>{this.inputText()}</Block>
         </Block>
         <ActionSheet ref={actionSheetRef}>
-          <Block style={{ paddingVertical: 15}}>
+          <Block style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
             <RadioGroup
-              radioButtons={radioButtonsHour}
+              radioButtons={this.state.optionsType}
               color={nowTheme.COLORS.INFO}
               onPress={(option) => this.selectedOptionRadio(option)}
+              selected={false}
             />
           </Block>
         </ActionSheet>
@@ -256,8 +277,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingHorizontal: 10,
-    // backgroundColor:'red',
-    left: '600%',
+    width: '90%',
   },
   labelCleanFilter: {
     fontSize: 13,

@@ -21,6 +21,22 @@ export const getJobs = async () => {
 	}
 }
 
+export const searchJobs = async (query) => {
+	try {
+		let id = await getSupplierId()
+		let result = await fetch(`${ServicesResources.GET_JOBS}?search=${query}&expand=products`, {
+			method: "GET",
+			headers: {
+                "ttrak-key": await api_key()
+			}
+		});
+        let res = await result.json();
+		return res;
+	} catch (err) {
+		console.log("ERROR", err)
+	}
+}
+
 export const getStores = async () => {
 	try{
 		let result = await fetch(ServicesResources.GET_STORES, {
