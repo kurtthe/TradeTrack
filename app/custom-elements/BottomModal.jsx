@@ -6,34 +6,65 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 import Icon from '@components/Icon';
+import { DownloadFile } from '@core/services/download-file.service';
+import * as Sharing from 'expo-sharing';
+
+const downloadFile = DownloadFile.getInstance();
 
 const BottomModal = (props) => {
   if (!props.show) {
     return null;
   }
 
+  const downloadInfo = async ({ url }) => {
+    let newUrl = url;
+
+    if (url.includes('?base64=true')) {
+      const oldUrl = url.split('?base64=true');
+      newUrl = oldUrl[0];
+    }
+
+    const responseDownload = await downloadFile.download(newUrl, 'pdf');
+    return responseDownload;
+  };
+
   const handleShared = async () => {
-    if (!props.sharedMessage) {
+    if (!!props.downloadShared) {
+      const urlFile = await downloadInfo(props.downloadShared);
+      sharedFiles(urlFile);
       return;
     }
 
-    const result = await Share.share({
-      message: props.sharedMessage,
+    if (!!props.sharedMessage) {
+      sharedText();
+    }
+  };
+
+  const sharedFiles = async (urlFile) => {
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+    await Sharing.shareAsync(urlFile);
+  };
+
+  const sharedText = async () => {
+    await Share.share({
+      message: props.sharedMessage || '',
     });
 
-    if (result.action === Share.sharedAction) {
-      if (result.activityType) {
-        // shared with activity type of result.activityType
-      } else {
-        // shared
-      }
-    } else if (result.action === Share.dismissedAction) {
-      // dismissed
-
-    }
+    // if (result.action === Share.sharedAction) {
+    //   if (result.activityType) {
+    //     // shared with activity type of result.activityType
+    //   } else {
+    //     // shared
+    //   }
+    // } else if (result.action === Share.dismissedAction) {
+    //   // dismissed
+    // }
   };
 
   return (
@@ -45,11 +76,8 @@ const BottomModal = (props) => {
               <Icon name="chevron-left" family="evilicon" size={35} />
             </TouchableOpacity>
 
-
             <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
-               <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
-
-        
+              <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
             </TouchableOpacity>
           </View>
           <View style={styles.body}>{props.children}</View>
@@ -73,9 +101,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   body: {
-
     height: '100%',
-
   },
   header: {
     backgroundColor: '#fff',
@@ -87,7 +113,7 @@ const styles = StyleSheet.create({
   },
   btnClose: {
     padding: 8,
-    paddingHorizontal:15
+    paddingHorizontal: 15,
   },
 });
 export default BottomModal;

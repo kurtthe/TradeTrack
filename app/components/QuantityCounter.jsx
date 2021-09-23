@@ -17,7 +17,7 @@ const QuantityCounter = props => {
     useEffect (() => {
         if (quantity == 0) {
             Alert.alert(
-                "Are you sure?",
+                "Are you sure you want to remove the product for your cart?",
                       "",
                 [
                   {
