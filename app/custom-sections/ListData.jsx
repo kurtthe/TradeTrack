@@ -17,6 +17,7 @@ class ListData extends React.Component {
       perPageData: 12,
       valuesFilters: {},
       notFound: false,
+      loadingMoreData: false
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -33,6 +34,8 @@ class ListData extends React.Component {
   }
 
   getPetitionData = async () => {
+    this.setState({loadingMoreData: true })
+    
     if (!this.props.endpoint) {
       return;
     }
@@ -45,10 +48,12 @@ class ListData extends React.Component {
       this.setState({
         data: data,
         notFound: false,
+        loadingMoreData: false 
       });
     } else {
       this.setState({
         notFound: true,
+        loadingMoreData: false
       });
     }
 
@@ -125,6 +130,8 @@ class ListData extends React.Component {
                       color="info"
                       textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                       style={styles.button}
+                      loading={this.state.loadingMoreData}
+                      disabled={this.state.loadingMoreData}
                     >
                       Load More...
                     </Button>
