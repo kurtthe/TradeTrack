@@ -56,7 +56,7 @@ class Account extends React.Component {
       <ListData
         filters={true}
         endpoint={endPoints.searchInvoices}
-        children={<ListInvoices data={this.props.invoices} title={false} />}
+        children={<ListInvoices data={this.props.invoices} title={false} backAccount={true} />}
       />
     </Block>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Portal } from 'react-native-paper';
@@ -11,10 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 import Icon from '@components/Icon';
 import { DownloadFile } from '@core/services/download-file.service';
 import * as Sharing from 'expo-sharing';
+import Loading from '@custom-elements/Loading';
 
 const downloadFile = DownloadFile.getInstance();
 
 const BottomModal = (props) => {
+  const [loadingShared, setLoadingShared] = useState(false);
+
   if (!props.show) {
     return null;
   }
@@ -33,6 +36,7 @@ const BottomModal = (props) => {
 
   const handleShared = async () => {
     if (!!props.downloadShared) {
+      setLoadingShared(true);
       const urlFile = await downloadInfo(props.downloadShared);
       sharedFiles(urlFile);
       return;
@@ -44,6 +48,8 @@ const BottomModal = (props) => {
   };
 
   const sharedFiles = async (urlFile) => {
+    setLoadingShared(false);
+
     if (!(await Sharing.isAvailableAsync())) {
       alert(`Uh oh, sharing isn't available on your platform`);
       return;
@@ -55,16 +61,6 @@ const BottomModal = (props) => {
     await Share.share({
       message: props.sharedMessage || '',
     });
-
-    // if (result.action === Share.sharedAction) {
-    //   if (result.activityType) {
-    //     // shared with activity type of result.activityType
-    //   } else {
-    //     // shared
-    //   }
-    // } else if (result.action === Share.dismissedAction) {
-    //   // dismissed
-    // }
   };
 
   return (
@@ -77,7 +73,11 @@ const BottomModal = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
-              <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+              {loadingShared ? (
+                <Loading />
+              ) : (
+                <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.body}>{props.children}</View>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   modalDialog: {
     backgroundColor: '#f3f2f7',
     top: hp('5%'),
-    height: hp('85%'),
+    height: hp('90%'),
     width: wp('100%'),
     shadowColor: '#000',
     elevation: 8,
