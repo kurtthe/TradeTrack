@@ -100,15 +100,25 @@ class Header extends React.Component {
   handleLeftPress = () => {
     const { navigation } = this.props;
 
-    if (!this.props.scene.route.params?.isAccount) {
+    if (!this.props.scene.route.params?.nameRouteGoing) {
       navigation.goBack();
       return;
     }
 
-    navigation.navigate('Account', {
-      screen: 'AccountDetails',
-      params: { tabIndexSelected: 1 },
-    });
+    const routeName = this.props.scene.route.params?.nameRouteGoing;
+
+    console.log("==<this.props.navigation.state.routeName",this.props.scene)
+    
+    if (routeName === 'AccountInvoice') {
+      this.props.navigation.setParams({
+        nameRouteGoing: false,
+      });
+
+      navigation.navigate('Account', {
+        screen: 'AccountDetails',
+        params: { tabIndexSelected: 1 },
+      });
+    }
   };
 
   openViewerPdf = async () => {
