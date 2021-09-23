@@ -48,7 +48,7 @@ class Home extends React.Component {
               <Text
                 size={18}
                 style={{ fontFamily: 'montserrat-bold' }}
-                color={nowTheme.COLORS.BLACK}
+                color={'#363C4A'}
               >
                 Burden News
               </Text>
@@ -75,7 +75,7 @@ class Home extends React.Component {
                 Store Finder
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 10 }}>
+            <Block center style={{ paddingVertical: 30 }}>
             </Block>
           </Block>
         </ScrollView>
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
   },
   articles: {
     width: width - theme.SIZES.BASE * 0.1,
-    paddingVertical: theme.SIZES.BASE,
+   
     paddingHorizontal: 0,
     fontFamily: 'montserrat-regular',
   },
   button: {
     marginBottom: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
-    top: 5,
+    top: -15,
   },
   card: {
     backgroundColor: nowTheme.COLORS.WHITE,

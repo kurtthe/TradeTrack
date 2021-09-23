@@ -34,7 +34,7 @@ const ListInvoices = (props) => {
     <>
       {props.title && (
         <Block style={styles.cardHeader}>
-          <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 40, height: 20 }}>
+          <Block row middle space="between" style={{ paddingLeft: 15, top: 10, height: 20 }}>
             <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
               Invoices
             </Text>

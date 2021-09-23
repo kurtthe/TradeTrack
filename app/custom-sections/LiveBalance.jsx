@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   category: {
     backgroundColor: theme.COLORS.WHITE,
-    marginVertical: -15,
+    marginVertical: 0,
     borderWidth: 0,
   },
   categoryTitle: {
