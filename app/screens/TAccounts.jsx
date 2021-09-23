@@ -52,7 +52,7 @@ class Account extends React.Component {
   );
 
   renderInvoices = () => (
-    <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND} style={{ top: 12 }}>
+    <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND}>
       <ListData
         filters={true}
         endpoint={endPoints.searchInvoices}
