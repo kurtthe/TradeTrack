@@ -27,18 +27,28 @@ class InvoiceDetails extends React.Component {
     };
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
     await this.handleGetData();
   }
 
   async componentDidUpdate(prevProps) {
-    if(prevProps.route.params.invoice !== this.props.route.params.invoice){
+    if (prevProps.route.params.invoice !== this.props.route.params.invoice) {
       await this.handleGetData();
     }
   }
 
-  handleGetData = async()=>{
-    const { invoice, isAccount} = this.props.route.params;
+  componentWillUnmount() {
+    this.setState({
+      invoiceDetail: null,
+      isDateTimePickerVisible: false,
+      deleteAction: false,
+      date: new Date(),
+    });
+  }
+
+  handleGetData = async () => {
+    this.setState({ invoiceDetail: null });
+    const { invoice, isAccount } = this.props.route.params;
     const url = endPoints.invoicesDetail.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
@@ -47,30 +57,32 @@ class InvoiceDetails extends React.Component {
 
     this.props.navigation.setParams({
       urlDownloadFile,
-      isAccount
+      isAccount,
     });
-  }
+  };
 
   renderDetailProducts = () => {
-
     return this.state.invoiceDetail.structure.items.map((orders, index) => (
-        <Block key ={index} style={{top: 5, }} >
-          <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
-          <Text  numberOfLines={2} style={styles.receiptText}>{orders.description}</Text>
-          <Block row style={{ justifyContent: 'space-between',  }}>
-            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.unit_price)}</Text>
-            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
-          </Block>
+      <Block key={index} style={{ top: 5 }}>
+        <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
+        <Text numberOfLines={2} style={styles.receiptText}>
+          {orders.description}
+        </Text>
+        <Block row style={{ justifyContent: 'space-between' }}>
+          <Text style={styles.grayText}>
+            {orders.quantity} x {this.formatMoney.format(orders.unit_price)}
+          </Text>
+          <Text style={styles.detailPrice}>{this.formatMoney.format(orders.sub_total)}</Text>
         </Block>
-      ));
+      </Block>
+    ));
   };
 
   render() {
-    
     if (this.state.invoiceDetail === null || this.state.invoiceDetail === undefined) {
       return <SkeletonInvoiceDetail />;
     }
-    
+
     return (
       <ScrollView style={styles.cart}>
         <Block
@@ -139,10 +151,14 @@ class InvoiceDetails extends React.Component {
             </Text>
           </Block>
           <Block row style={styles.totalPrices}>
-              <Text size={12}>Total ex-GST</Text>
-              <Text style={styles.receiptPrice}>{this.formatMoney.format(this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst)}</Text>
-            </Block>
-        
+            <Text size={12}>Total ex-GST</Text>
+            <Text style={styles.receiptPrice}>
+              {this.formatMoney.format(
+                this.state.invoiceDetail.total_amount - this.state.invoiceDetail.gst,
+              )}
+            </Text>
+          </Block>
+
           <Block row style={styles.totalPrices}>
             <Text size={12}>GST</Text>
             <Text style={styles.receiptPrice}>
@@ -214,11 +230,9 @@ const styles = StyleSheet.create({
   },
   detailOrdersBlock: {
     height: 'auto',
-    alignContent:'center',
-    justifyContent:'center',
-    
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });
-
 
 export default InvoiceDetails;
