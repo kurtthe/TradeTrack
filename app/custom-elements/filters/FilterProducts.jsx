@@ -6,7 +6,8 @@ import FilterButton from '@components/FilterButton';
 import { Searchbar } from 'react-native-paper';
 import { nowTheme } from '@constants';
 import RadioGroup from 'react-native-radio-buttons-group';
-
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
 const { width, height } = Dimensions.get('window');
 
 const cardWidth = (width / 2) * 0.87;
@@ -20,20 +21,42 @@ class FilterProducts extends Component {
     super(props);
 
     this.state = {
-      radioButtons: [],
+      radioButtonsCategories: [],
       radioButtons2: [],
-      data: this.props.products,
       categoryActive: false,
-      loadingMoreData: false,
-      hideMyPrice: true,
-      ppage: 40,
       searchValue: '',
-      loading: false,
       selectedCategory: {},
-      loadingCategories: false,
+      loadingCategories: true,
       noCategoriesFound: false,
     };
+
+    this.generalRequest = GeneralRequestService.getInstance();
   }
+
+  async componentDidMount() {
+    const getCategories = await this.generalRequest.get(endPoints.categories);
+    console.log('==>getCategories', getCategories);
+    const getOptionsCategories = this.categoriesToRadioButton(getCategories);
+
+    this.setState({
+      radioButtonsCategories: getOptionsCategories,
+      loadingCategories: false,
+      noCategoriesFound: getOptionsCategories?.length === 0,
+    });
+  }
+
+  categoriesToRadioButton = (categories) => {
+    return categories
+      .filter((category) => category.products.length !== 0)
+      .map((category) => ({
+        ...category,
+        color: nowTheme.COLORS.INFO,
+        labelStyle: { fontWeight: 'bold' },
+        label: category.name,
+        value: category.name,
+        containerStyle: styles.styleRadio,
+      }));
+  };
 
   render() {
     return (
@@ -67,6 +90,7 @@ class FilterProducts extends Component {
             )}
           </Block>
         </Block>
+
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Searchbar
             placeholder="Search"
@@ -82,22 +106,21 @@ class FilterProducts extends Component {
             ) : (
               <ScrollView style={{ width: width }}>
                 <RadioGroup
-                  radioButtons={this.state.radioButtons}
+                  radioButtons={this.state.radioButtonsCategories}
                   color={nowTheme.COLORS.INFO}
                   onPress={(pick) => this.onPressRadioButton(pick)}
-                  containerStyle={{ alignItems: 'left' }}
                 />
               </ScrollView>
             )}
           </Block>
         </ActionSheet>
+
         <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
           <Block left style={{ height: 180, padding: 5, paddingBottom: 40 }}>
             <RadioGroup
               radioButtons={this.state.radioButtons2}
               color={nowTheme.COLORS.INFO}
               onPress={(pick) => this.onPressRadioButton2(pick)}
-              containerStyle={{ alignItems: 'left' }}
             />
           </Block>
         </ActionSheet>
@@ -174,6 +197,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
   },
+  styleRadio: {
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  }
 });
 
 export default FilterProducts;
