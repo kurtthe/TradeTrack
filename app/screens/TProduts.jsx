@@ -43,7 +43,6 @@ class Components extends React.Component {
   };
 
   handleChangeSwitch = (value) => {
-    console.log("===>gchange")
     this.setState({ activeSwitch: value });
   };
 
