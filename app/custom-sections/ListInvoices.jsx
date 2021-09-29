@@ -20,7 +20,7 @@ const ListInvoices = (props) => {
       );
     }
 
-    return props.data.map((item, index) => <Invoice key={index} invoice={item} />);
+    return props.data.map((item, index) => <Invoice key={index} invoice={item} isAccount={props.backAccount} />);
   };
 
   const handleRedirectAllInvoices = () => {
