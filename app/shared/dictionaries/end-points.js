@@ -19,4 +19,5 @@ export const endPoints = {
   subcategories: `${environment.api}products/categories?per-page=50`,
   products: `${environment.api}suppliers/:id/products`,
   suppliers: `${environment.api}burdens/supplier`,
+  categories: `${environment.api}products/categories?expand=products`,
 };
