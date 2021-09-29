@@ -20,7 +20,7 @@ const Invoice = (props) => {
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
-    props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id });
+    props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id, isAccount: props.isAccount });
   };
 
   return (

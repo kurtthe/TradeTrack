@@ -208,6 +208,7 @@ class Filters extends Component {
     return (
       <Input
         right
+        value={this.state.textSearch}
         color="black"
         autoFocus={false}
         autoCorrect={false}
@@ -215,7 +216,7 @@ class Filters extends Component {
         iconContent={iconSearch}
         style={styles.search}
         placeholder="By description or invoice number"
-        onChangeText={(text) => changeValuesFilters('text', text)}
+        onChangeText={(text) => this.changeValuesFilters('text', text)}
       />
     );
   };
