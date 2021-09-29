@@ -26,7 +26,7 @@ class Category extends React.Component {
           <ListData
             filters={'products'}
             endpoint={endPoints.products}
-            children={<ListProducts data={this.props.products} />}
+            children={<ListProducts />}
           />
         </Block>
       </>
