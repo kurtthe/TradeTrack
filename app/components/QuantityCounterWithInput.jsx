@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Dimensions, TextInput } from 'react-native';
+import { StyleSheet, Dimensions, TextInput, Alert } from 'react-native';
 import { Block, Text, Button } from "galio-framework";
 import { nowTheme } from "@constants/";
 
@@ -10,75 +10,87 @@ const sizeConstant = (Platform.OS === 'ios')
 const QuantityCounterWithInput = props => {
 
     const [quantity, setQuantity] = useState(props.quantity)
-    const [noButtons, setNoButtons] = useState(false)
     const [disabledPlus, setDisabledPlus] = useState(false)
     const [disabledMinus, setDisabledMinus] = useState(false)
 
-    useEffect(() => {
-        let initialQuantity = props.quantity
-        if (initialQuantity != 1) setNoButtons(true)
-    }, [])
-
     useEffect (() => {
-        if (quantity == 1) setDisabledMinus(true)
-        else setDisabledMinus(false)
-        if (quantity == 100) setDisabledPlus(true)
-        else setDisabledPlus(false)
+        if (quantity == 0 && !props.product) {
+            Alert.alert(
+                "Are you sure you want to remove the product for your cart?",
+                      "",
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "OK", onPress: () => {
+                      setDisabledMinus(true);
+                      deleteItem()
+                          }}
+                ],
+                { cancelable: false }
+              );
+        } else setDisabledMinus(false)
+        props.quantityHandler(quantity)
+        // if (quantity == 100) setDisabledPlus(true)
+        // else setDisabledPlus(false)
     }, [quantity])
 
     const plusCounter = () => {
+        console.log('PLUS', quantity)
         const quantity1 = quantity
         if (quantity1 != 100) {
-        const plus = quantity1 + 1 
-        setQuantity(plus)
-        //props.personsHandler(plus)
+            const plus = quantity1 + 1 
+            setQuantity(plus)
+            props.quantityHandler(plus)
         }
     }
 
     const minusCounter = () => {
+        console.log('MINUS', quantity)
         const quantity1 = quantity
-        if (quantity1 != 1) {
-        const minus = quantity1 - 1 
-        setQuantity(minus)
-        //props.personsHandler(minus)
+        const minVal = props.product ? 1 : 0
+        if (quantity1 != minVal) {
+            const minus = quantity1 - 1 
+            setQuantity(minus)
+            props.quantityHandler(minus)
         }
+    }
+
+    const deleteItem = () => {
+        props.delete()
     }
 
     return (
         <Block row center>
-            {
-                !noButtons &&
-                <Button
-                    shadowless
-                    style={styles.quantityButtons}
-                    color={'#f0f0f0'}
-                    onPress={minusCounter}
-                >
-                    <Text style={styles.quantityTexts}>
-                        -
-                    </Text>
-                </Button>
-            }
+            <Button
+                shadowless
+                style={styles.quantityButtons}
+                color={'#f0f0f0'}
+                onPress={minusCounter}
+            >
+                <Text style={styles.quantityTexts}>
+                    -
+                </Text>
+            </Button>
             <TextInput 
                 textAlign="center" 
                 style={styles.quantityButtons} 
                 keyboardType='number-pad'
+                value={quantity.toString()}
+                onChangeText={(q) => setQuantity(Number(q))}
+            />
+            <Button 
+                shadowless 
+                style={styles.quantityButtons}
+                color={props.product ? nowTheme.COLORS.ORANGE : nowTheme.COLORS.INFO}
+                onPress={plusCounter}
             >
-                {quantity}
-            </TextInput>
-            {
-                !noButtons && 
-                <Button 
-                    shadowless 
-                    style={styles.quantityButtons}
-                    color={nowTheme.COLORS.ORANGE}
-                    onPress={plusCounter}
-                >
-                    <Text color={'white'} style={styles.quantityTexts}>
-                        +
-                    </Text>
-                </Button>
-            }
+                <Text color={'white'} style={styles.quantityTexts}>
+                    +
+                </Text>
+            </Button>
         </Block>
     )
 };

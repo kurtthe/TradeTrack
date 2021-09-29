@@ -1,16 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { Ionicons } from '@expo/vector-icons';
+
+import Icon from '@components/Icon';
+import { DownloadFile } from '@core/services/download-file.service';
+import * as Sharing from 'expo-sharing';
+import Loading from '@custom-elements/Loading';
+
+const downloadFile = DownloadFile.getInstance();
 
 const BottomModal = (props) => {
+  const [loadingShared, setLoadingShared] = useState(false);
+
   if (!props.show) {
     return null;
   }
+
+  const downloadInfo = async ({ url }) => {
+    let newUrl = url;
+
+    if (url.includes('?base64=true')) {
+      const oldUrl = url.split('?base64=true');
+      newUrl = oldUrl[0];
+    }
+
+    const responseDownload = await downloadFile.download(newUrl, 'pdf');
+    return responseDownload;
+  };
+
+  const handleShared = async () => {
+    if (!!props.downloadShared) {
+      setLoadingShared(true);
+      const urlFile = await downloadInfo(props.downloadShared);
+      sharedFiles(urlFile);
+      return;
+    }
+
+    if (!!props.sharedMessage) {
+      sharedText();
+    }
+  };
+
+  const sharedFiles = async (urlFile) => {
+    setLoadingShared(false);
+
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+    await Sharing.shareAsync(urlFile);
+  };
+
+  const sharedText = async () => {
+    await Share.share({
+      message: props.sharedMessage || '',
+    });
+  };
 
   return (
     <Portal>
@@ -18,7 +69,15 @@ const BottomModal = (props) => {
         <View style={styles.modalDialog}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => props.close()} style={styles.btnClose}>
-              <Text>X</Text>
+              <Icon name="chevron-left" family="evilicon" size={35} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handleShared()} style={styles.btnClose}>
+              {loadingShared ? (
+                <Loading />
+              ) : (
+                <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+              )}
             </TouchableOpacity>
           </View>
           <View style={styles.body}>{props.children}</View>
@@ -30,29 +89,31 @@ const BottomModal = (props) => {
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: 'rgba(52, 52, 52, 0.7)',
     flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   modalDialog: {
-    backgroundColor: 'white',
-    height: hp('95%'),
+    backgroundColor: '#f3f2f7',
+    top: hp('5%'),
+    height: hp('90%'),
     width: wp('100%'),
     shadowColor: '#000',
     elevation: 8,
   },
-  body: {},
+  body: {
+    height: '100%',
+  },
   header: {
-    backgroundColor: '#EAEAEA',
+    backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     borderBottomColor: '#CCCCCC',
     borderBottomWidth: 1,
   },
-  btnClose:{
-    padding: 8
-  }
+  btnClose: {
+    padding: 8,
+    paddingHorizontal: 15,
+  },
 });
 export default BottomModal;

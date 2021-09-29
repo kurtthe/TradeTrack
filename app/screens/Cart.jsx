@@ -5,29 +5,34 @@ import {
   Image,
   FlatList,
   TouchableWithoutFeedback,
-  TouchableOpacity,
   View,
   Platform
 } from "react-native";
 import { Block, Text, theme, Button } from "galio-framework";
 import { nowTheme } from "@constants/index";
 import { cart } from "@constants";
-import FilterButton from "@components/FilterButton";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import ActionSheet from "react-native-actions-sheet";
-import QuantityCounter from "@components/QuantityCounter";
+import QuantityCounterWithInput from "@components/QuantityCounterWithInput";
 import { connect  } from 'react-redux';
 import { updateProducts, getProducts } from '@core/module/store/cart/cart';
+import { FormatMoneyService } from '@core/services/format-money.service';
 
 const { width } = Dimensions.get("screen");
 const actionSheetRef = createRef();
 
 class Cart extends React.Component {
-  state = {
-    customStyleIndex: 0,
-    deleteAction: false
-  };
+
+  constructor(props) {
+    super(props)
+    this.formatMoney = FormatMoneyService.getInstance();
+
+    this.state = {
+      customStyleIndex: 0,
+      deleteAction: false
+    };
+  }
 
   handleCustomIndexSelect = (index) => {
     this.setState(prevState => ({ ...prevState, customStyleIndex: index }))
@@ -62,8 +67,18 @@ class Cart extends React.Component {
     this.setState({ cart });
   };
 
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
+  handleUpdateQuantity = (item, q) => {
+    const index = this.props.cartProducts.findIndex((element) => (
+      element.id === item.id
+    ))
+    this.props.updateProducts([
+      ...this.props.cartProducts.slice(0, index),
+      {
+        ...this.props.cartProducts[index],
+        quantity: q
+      },
+      ...this.props.cartProducts.slice(index+1)
+    ])
   }
 
   onCheckoutPressed() {
@@ -72,15 +87,14 @@ class Cart extends React.Component {
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.cost_price
+      return p.price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `$${prices.reduce(reducer, 0)}`
+    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
   renderProduct = ({ item }) => {
     const { navigation } = this.props;
-
     return (
       <Block card shadow style={styles.product}>
         <Block flex row>
@@ -114,12 +128,13 @@ class Cart extends React.Component {
                   style={{ marginTop:10, fontWeight:'bold'}}
                   color={nowTheme.COLORS.ORANGE} size={20}
                 >
-                  {this.numberWithDecimals(item.cost_price)}
+                  {this.formatMoney.format(item.price)}
                 </Text>
               </Block>
-              <QuantityCounter 
-                delete={() => this.handleDelete(item.id)} 
-                quantity={1}
+              <QuantityCounterWithInput 
+                delete={() => this.handleDelete(item.id)}
+                quantity={item.quantity}
+                quantityHandler={(q) => this.handleUpdateQuantity(item, q)}
               />
               {/* <TouchableOpacity  onPress={() => this.handleDelete(item.id)} style={{padding:10}} >
                 <Ionicons name="trash-sharp" color={'red'}  size={20} />
@@ -246,7 +261,15 @@ class Cart extends React.Component {
   }
 
   renderEmpty() {
-    return <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>The cart is empty</Text>;
+    return (
+     <Block style={styles.container_empty}>
+
+<Ionicons name="cart" color={'#828489'} size={60} />
+    <Text style={{ fontFamily: 'montserrat-regular', fontSize:24 }} color={'#000'}>Your cart is empty!</Text>
+
+    
+    </Block>
+    );
   }
 
   render() {
@@ -347,6 +370,13 @@ const styles = StyleSheet.create({
   //   width: width,
   //   backgroundColor: nowTheme.COLORS.BACKGROUND
   // },
+  container_empty: {
+    flex: 1,
+    flexDirection: 'column',
+   // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+},
   header: {
     paddingVertical: theme.SIZES.BASE,
     marginHorizontal: theme.SIZES.BASE
