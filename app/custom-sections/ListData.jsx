@@ -46,15 +46,16 @@ class ListData extends React.Component {
   };
 
   loadData = (data) => {
-    if (data.length > 0) {
+    console.log("==>list data",data)
+    if (!data || data?.length < 1) {
       this.setState({
-        data: data,
-        notFound: false,
+        notFound: true,
         loadingMoreData: false,
       });
     } else {
       this.setState({
-        notFound: true,
+        data: data,
+        notFound: false,
         loadingMoreData: false,
       });
     }
@@ -110,7 +111,7 @@ class ListData extends React.Component {
           }}
           color={nowTheme.COLORS.TEXT}
         >
-          You can see more Invoices in your Account.
+          You can see more data in your Account.
         </Text>
       </View>
     );
