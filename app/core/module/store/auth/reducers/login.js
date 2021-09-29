@@ -21,19 +21,23 @@ export const loginSlice = createSlice({
   reducers: {
     sign: (state, action) => {
       const data = action.payload;
-
-      state.api_key = data.api_key
-      state.company_id = data.company_id
-      state.created_date = data.created_date
-      state.email = data.email
-      state.first_name = data.first_name
-      state.id = data.id
-      state.last_name = data.last_name
-      state.phone_number = data.phone_number
-      state.role = data.role
-      state.status = data.status
-      state.time_zone = data.time_zone
-      state.username = data.username
+      if(data=== null){
+        state.api_key= null
+        return;
+      } else {
+        state.api_key = data.api_key
+        state.company_id = data.company_id
+        state.created_date = data.created_date
+        state.email = data.email
+        state.first_name = data.first_name
+        state.id = data.id
+        state.last_name = data.last_name
+        state.phone_number = data.phone_number
+        state.role = data.role
+        state.status = data.status
+        state.time_zone = data.time_zone
+        state.username = data.username
+      }
     },
     logout: (state) => {
       state.token= null

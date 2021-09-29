@@ -16,25 +16,29 @@ import Input from '@components/Input';
 import Tabs from '@components/Tabs';
 import nowTheme from '@constants/Theme';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { DownloadFile } from '@core/services/download-file.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
+import * as SecureStore from 'expo-secure-store';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Loading from '@custom-elements/Loading';
 
 const { height, width } = Dimensions.get('window');
 const iPhoneX = () =>
   Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
 
-
 const SearchHome = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
-    onPress={() => {
+    onPress={async () => {
+      await SecureStore.deleteItemAsync('data_user');
       Keyboard.dismiss();
-      navigation.navigate('SearchHome');
+      navigation.navigate('Login');
     }}
   >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
+    <Ionicons name="log-out-outline" color={'#828489'} size={28} />
   </TouchableOpacity>
 );
 
@@ -50,8 +54,6 @@ const SearchProducts = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-
-
 const SearchAccount = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
@@ -60,7 +62,7 @@ const SearchAccount = ({ isWhite, style, navigation }) => (
       navigation.navigate('Search');
     }}
   >
-     {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
+    {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
   </TouchableOpacity>
 );
 
@@ -83,44 +85,46 @@ const DownloadButton = (props) => (
 );
 
 class Header extends React.Component {
+  textSearch;
   constructor(props) {
     super(props);
     this.state = {
       showModalBottom: false,
       urlFilePdf: '',
+      loadingLoadPdf: false,
     };
     this.downloadFile = DownloadFile.getInstance();
+    this.generalRequestService = GeneralRequestService.getInstance();
   }
 
   handleLeftPress = () => {
-    const { back, navigation } = this.props;
-    return back && navigation.goBack();
-  };
+    const { navigation } = this.props;
 
-  handleDownloadFile = async () => {
-    const { urlDownloadFile } = this.props.scene.route.params;
-    const urlPdf =  await this.downloadFile.download(urlDownloadFile, 'pdf');
+    if (!this.props.scene.route.params?.isAccount) {
+      navigation.goBack();
+      return;
+    }
 
-    this.setState({
-      urlFilePdf:urlDownloadFile,
-      showModalBottom: true,
+    navigation.navigate('Account', {
+      screen: 'AccountDetails',
+      params: { tabIndexSelected: 1 },
     });
   };
-  openViewerPdf = () => {
-    const { urlDownloadFile } = this.props.scene.route.params;
 
-    console.log('urlDownloadFile',urlDownloadFile)
-    
+  openViewerPdf = async () => {
+    this.setState({ loadingLoadPdf: true });
+    const { urlDownloadFile } = this.props.scene.route.params;
+    const result = await this.generalRequestService.get(urlDownloadFile);
     this.setState({
-      urlFilePdf:urlDownloadFile,
+      urlFilePdf: result,
       showModalBottom: true,
+      loadingLoadPdf: false,
     });
   };
 
   renderRight = () => {
     const { white, title, navigation } = this.props;
 
-    
     switch (title) {
       case 'Home':
         return [
@@ -128,21 +132,20 @@ class Header extends React.Component {
             <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
           </View>,
         ];
-        case 'Products':
-          return [
-            <View style={{ top: 6.5 }}>
-              <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
-            </View>,
-          ];
+      case 'Products':
+        return [
+          <View style={{ top: 6.5 }}>
+            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
+          </View>,
+        ];
 
-          case 'Account':
-            return [
-              <View style={{ top: 5.5 }}>
-                <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
-              </View>,
-            ];
-  
-     
+      case 'Account':
+        return [
+          <View style={{ top: 5.5 }}>
+            <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
+          </View>,
+        ];
+
       case 'Product':
         return [
           <Block row style={{ paddingTop: 17.5, width: 50 }}>
@@ -154,18 +157,28 @@ class Header extends React.Component {
       case 'SearchHome':
         return [<SearchHome key="basket-search" navigation={navigation} isWhite={white} />];
 
-        case 'SearchProducts':
-          return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
+      case 'SearchProducts':
+        return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
 
       case 'Invoice Details':
         return [
           <View style={{ top: 7, width: 50 }}>
-            <DownloadButton isWhite={white} onPress={() => this.handleDownloadFile()} />
+            {this.state.loadingLoadPdf ? (
+              <Loading />
+            ) : (
+              <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
+            )}
+
             <BottomModal
               show={this.state.showModalBottom}
               close={() => this.setState({ showModalBottom: false })}
+              downloadShared={{
+                url: this.props.scene.route.params?.urlDownloadFile,
+              }}
             >
-              <PdfViewer url={this.state.urlFilePdf} />
+              <View style={{ height: hp('80%') }}>
+                <PdfViewer url={this.state.urlFilePdf} />
+              </View>
             </BottomModal>
           </View>,
         ];
@@ -193,15 +206,15 @@ class Header extends React.Component {
             </Block>
           </Block>
         ) : (
-          <View style={{ paddingTop: 12.5, position: 'absolute' }}>
+          <TouchableOpacity style={{ paddingTop: 12.5, width:25, height:39, position: 'absolute' }}   onPress={this.handleLeftPress} >
             <Icon
               name={back ? 'minimal-left2x' : 'minimal-left2x'}
               family="NowExtra"
               size={18}
-              onPress={this.handleLeftPress}
+            
               color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
             />
-          </View>
+          </TouchableOpacity>
         )}
       </>
     );

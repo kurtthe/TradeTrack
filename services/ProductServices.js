@@ -1,5 +1,6 @@
 import * as ServicesResources from "./ServicesResources.js";
 import * as SecureStore from "expo-secure-store";
+import { getAllProductsSuccess } from "../app/core/module/store/cart/cart.js";
 
 // const getUserToken = async () => {
 // 	const user_token = await SecureStore.getItemAsync("token");
@@ -7,8 +8,9 @@ import * as SecureStore from "expo-secure-store";
 // };
 
 const api_key = async () => {
-	let api = await SecureStore.getItemAsync('api_key');
-	return api;
+	let data = await SecureStore.getItemAsync('data_user');
+	let api = JSON.parse(data)
+	return api.api_key;
 }
 
 const getSupplierId = async () => {
@@ -26,7 +28,7 @@ const getSupplierId = async () => {
 	}
 }
 
-export const getProducts = async () => {
+export const getProducts = () => async (dispatch) => {
 	try {
 		let id = await getSupplierId()
 		let result = await fetch(`${ServicesResources.GET_ALL_PRODUCTS}${id}/products`, {
@@ -36,7 +38,7 @@ export const getProducts = async () => {
 			}
 		});
         let res = await result.json();
-		return res;
+		dispatch(getAllProductsSuccess(res))
 	} catch (err) {
 		console.log("ERROR", err);
 	}
@@ -51,7 +53,6 @@ export const getCategories = async () => {
 			}
 		});
         let res = await result.json();
-		console.log(' REEES', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err);
@@ -68,7 +69,6 @@ export const loadMoreProducts = async (ppage) => {
 			}
 		});
         let res = await result.json();
-		console.log(' REEEESSSS', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err)
@@ -78,14 +78,13 @@ export const loadMoreProducts = async (ppage) => {
 export const searchCategories = async (query) => {
 	try {
 		let id = await getSupplierId()
-		let result = await fetch(`${ServicesResources.GET_ALL_CATEGORIES}?search=${query}&expand=products`, {
+		let result = await fetch(`${ServicesResources.GET_ALL_CATEGORIES}?search=${query}&expand=products&per-page=50`, {
 			method: "GET",
 			headers: {
                 "ttrak-key": await api_key()
 			}
 		});
         let res = await result.json();
-		console.log(' REEEESSSS', res)
 		return res;
 	} catch (err) {
 		console.log("ERROR", err)
@@ -95,7 +94,7 @@ export const searchCategories = async (query) => {
 export const searchProducts = async (query) => {
 	try {
 		let id = await getSupplierId()
-		let result = await fetch(`${ServicesResources.GET_ALL_PRODUCTS}${id}/products?search=${query}`, {
+		let result = await fetch(`${ServicesResources.SEARCH_PRODUCTS}?search=${query}&supplier_id=${id}`, {
 			method: "GET",
 			headers: {
                 "ttrak-key": await api_key()

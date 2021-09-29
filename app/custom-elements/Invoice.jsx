@@ -7,14 +7,20 @@ import { nowTheme } from '@constants';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { withNavigation } from '@react-navigation/compat';
 import { FormatMoneyService } from '@core/services/format-money.service';
+import { validateEmptyField } from '@core/utils/validate-empty-field';
+import moment from 'moment';
 
 const Invoice = (props) => {
-  const dateInvoice = `${props.invoice.invoice_date}`.split(' ');
+  let dateInvoice = validateEmptyField(props.invoice.invoice_date);
+
+  if(dateInvoice !== 'N/A'){ 
+    dateInvoice = moment(dateInvoice).format('YYYY-MM-DD');
+  }
 
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
-    props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id });
+    props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id, isAccount: props.isAccount });
   };
 
   return (
@@ -36,7 +42,7 @@ const Invoice = (props) => {
                   style={{ fontFamily: nowTheme.FONT.primaryBold, left: 10 }}
                   size={14}
                 >
-                  {props.invoice.order_number}
+                  {validateEmptyField(props.invoice.order_number)}
                 </Text>
               </Block>
               <Block row>
@@ -48,7 +54,7 @@ const Invoice = (props) => {
                   }}
                   size={14}
                 >
-                  {dateInvoice[0]}
+                  {validateEmptyField(dateInvoice)}
                 </Text>
               </Block>
             </Block>
@@ -59,7 +65,7 @@ const Invoice = (props) => {
                 size={13}
                 style={{ fontFamily: nowTheme.FONT.primaryRegular,  }}
               >
-                {props.invoice.description}
+                {validateEmptyField(props.invoice.description)}
               </Text>
               <Icon
                 style={{ left: -20 }}
@@ -76,7 +82,7 @@ const Invoice = (props) => {
                   size={theme.SIZES.BASE * 0.8}
                   color={(props.invoice.type !== 'Invoice')? nowTheme.COLORS.PURPLEINVOICE: nowTheme.COLORS.SUCCESS}
                 >
-                  {props.invoice.type}
+                  {validateEmptyField(props.invoice.type)}
                 </Text>
               </View>
             </Block>

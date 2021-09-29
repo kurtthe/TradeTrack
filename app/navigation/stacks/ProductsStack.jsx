@@ -18,7 +18,7 @@ function ProductsStack() {
       component: Products,
       colorBackground: '#FFFFFF',
       header:{
-        title: 'Categories',
+        title: 'Products ',
       }
     },
     

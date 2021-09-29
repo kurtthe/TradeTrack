@@ -1,8 +1,15 @@
 import * as FileSystem from 'expo-file-system';
+import * as SecureStore from 'expo-secure-store';
 
 export class DownloadFile {
   static instance;
 
+  constructor() {
+    this.getToken().then((data) => {
+      this.tokeAuth = data;
+    });
+  }
+  
   static getInstance() {
     if (!DownloadFile.instance) {
       DownloadFile.instance = new DownloadFile();
@@ -13,7 +20,9 @@ export class DownloadFile {
   createDownload(url, format) {
     return FileSystem.createDownloadResumable(
       url,
-      `${FileSystem.documentDirectory}file.${format}`
+      `${FileSystem.documentDirectory}file.${format}`,{
+        headers: { 'ttrak-key': this.tokeAuth || '' },
+      }
     );
   }
 
@@ -31,4 +40,11 @@ export class DownloadFile {
   progressDownload = (downloadProgress) => {
     return downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
   }
+
+  async getToken(){
+    const data =  await SecureStore.getItemAsync('data_user');
+    const dataParse = JSON.parse(data)
+    return dataParse.api_key
+  }
+  
 }
