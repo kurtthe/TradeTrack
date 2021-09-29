@@ -3,7 +3,9 @@ import { StyleSheet, Dimensions, ScrollView, View } from 'react-native';
 import { theme, Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
-import Filters from '@custom-elements/Filters';
+import Filters from '@custom-elements/filters/Filters';
+import FilterProducts from '@custom-elements/filters/FilterProducts';
+
 import nowTheme from '@constants/Theme';
 
 const { width } = Dimensions.get('screen');
@@ -17,7 +19,7 @@ class ListData extends React.Component {
       perPageData: 12,
       valuesFilters: {},
       notFound: false,
-      loadingMoreData: false
+      loadingMoreData: false,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -34,8 +36,8 @@ class ListData extends React.Component {
   }
 
   getPetitionData = async () => {
-    this.setState({loadingMoreData: true })
-    
+    this.setState({ loadingMoreData: true });
+
     if (!this.props.endpoint) {
       return;
     }
@@ -48,12 +50,12 @@ class ListData extends React.Component {
       this.setState({
         data: data,
         notFound: false,
-        loadingMoreData: false 
+        loadingMoreData: false,
       });
     } else {
       this.setState({
         notFound: true,
-        loadingMoreData: false
+        loadingMoreData: false,
       });
     }
 
@@ -84,6 +86,10 @@ class ListData extends React.Component {
   renderFilter = () => {
     if (!this.props.filters) {
       return null;
+    }
+
+    if (this.props.filters === 'products') {
+      return <FilterProducts />;
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;

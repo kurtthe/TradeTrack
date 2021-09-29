@@ -1,4 +1,4 @@
-import {environment} from '@env';
+import { environment } from '@env';
 
 export const endPoints = {
   auth: `${environment.api}login`,
@@ -10,11 +10,13 @@ export const endPoints = {
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements`,
   downloadStatementDetail: `${environment.api}burdens/statements/:id/download?base64=true`,
-  searchInvoices : `${environment.api}burdens/search`,
-  payment : `${environment.api}burdens/payment`,
+  searchInvoices: `${environment.api}burdens/search`,
+  payment: `${environment.api}burdens/payment`,
   generateOrder: `${environment.api}material-orders`,
   supplierId: `${environment.api}burdens/supplier`,
   stores: `${environment.api}burdens/stores`,
   jobs: `${environment.api}jobs`,
-  subcategories: `${environment.api}products/categories?per-page=50`
-}
+  subcategories: `${environment.api}products/categories?per-page=50`,
+  products: `${environment.api}/suppliers`,
+  suppliers: `${environment.api}/burdens/supplier`,
+};
