@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
 import Product from '@custom-elements/Product';
@@ -13,6 +13,9 @@ const ListProducts = (props) => {
           <SkeletonProduct />
           <SkeletonProduct />
           <SkeletonProduct />
+          <SkeletonProduct />
+          <SkeletonProduct />
+          <SkeletonProduct />
         </>
       );
     }
@@ -22,9 +25,18 @@ const ListProducts = (props) => {
 
   return (
     <ScrollView horizontal={false} style={{ bottom: 10 }}>
-      <Block style={{ left: theme.SIZES.BASE / 2 }}>{putProducts()}</Block>
+      <Block style={styles.contentProducts}>{putProducts()}</Block>
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  contentProducts: {
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
+  }
+})
 
 export default ListProducts;
