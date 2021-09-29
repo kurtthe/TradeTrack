@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: nowTheme.COLORS.DEFAULT,
     paddingHorizontal: 16,
     paddingTop: 10,
-    paddingBottom: 9.5,
+   
     borderRadius: 4,
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     shadowOffset: { width: 0, height: 2 },
