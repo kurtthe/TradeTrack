@@ -33,8 +33,11 @@ const PaymentBalance = (props) => {
   });
 
   const handleShowMethodPayment = async () => {
+
+    const getValue = formatMoney.clearSymbolize(valueAmount);
+
     const { url } = await generalRequestService.get(
-      `${endPoints.payment}?amount=${formatMoney.clearSymbolize(valueAmount)}`,
+      `${endPoints.payment}?amount=${getValue}`,
     );
     actionSheetRef.current?.setModalVisible(false);
     setUrlPayment(url);

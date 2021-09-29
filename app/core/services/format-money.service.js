@@ -42,6 +42,6 @@ export class FormatMoneyService {
     const clearSymbol = value.split('$');
     const newValue = clearSymbol[1];
 
-    return newValue
+    return newValue.replace(/\$|,|\./g, '')
   }
 }
