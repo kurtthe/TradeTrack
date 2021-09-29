@@ -1,38 +1,37 @@
 import React from 'react';
 import SkeletonContent from 'react-native-skeleton-content';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { Block, theme } from 'galio-framework';
+
+const { width } = Dimensions.get('window');
+
+const cardWidth = (width / 2) * 0.87;
 
 const firstLayout = [
   {
-    width: 280,
+    width: cardWidth,
     height: 215,
     marginBottom: 10
   },
   {
-    width: 260,
+    width: cardWidth,
     height: 20,
     marginBottom: 5
   },
   {
-    width: 260,
+    width: cardWidth,
     height: 10,
     marginBottom: 5
   },
   {
-    width: 260,
+    width: cardWidth,
     height: 10,
     marginBottom: 5
   },
   {
-    width: 260,
-    height: 10,
-    marginBottom: 5
-  },
-  {
-    width: 260,
-    height: 10,
-    marginBottom: 5
+    width: cardWidth,
+    height: 40,
+    marginTop: 50,
   },
 ];
 const Product = () => {
@@ -54,9 +53,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
-    minHeight: 114,
-    width: '100%',
+    width: cardWidth,
     marginHorizontal: 5,
+    paddingBottom: 10,
 
     shadowColor: '#8898AA',
     shadowOffset: { width: 2, height: 3 },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -12,6 +12,10 @@ import { Button } from '@components';
 import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '@constants';
+import { FormatMoneyService } from '@core/services/format-money.service';
+
+const formatMoney = FormatMoneyService.getInstance();
+
 const { width, height } = Dimensions.get('window');
 const cardWidth = (width / 2) * 0.87;
 const cardHeight = height * 0.59;
@@ -25,11 +29,21 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
+  const [hideMyPrice, setHideMyPrice] = useState(true)
+  
+  const onAddPressed = (productItem)=>{
+
+  }
+
+  const onProductPressed = (productItem)=>{
+
+  }
+
   return (
     <>
-      <Block key={`Card-${item.name}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={() => this.onProductPressed(item)}>
-          <Image resizeMode="contain" style={styles.image} source={{ uri: item.image }} />
+      <Block key={`Card-${props.product.name}`} style={styles.Card}>
+        <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
+          <Image resizeMode="contain" style={styles.image} source={{ uri: props.product.image }} />
         </TouchableWithoutFeedback>
         <Block flex space="between" style={{ paddingBottom: 7 }}>
           <Block row>
@@ -37,23 +51,23 @@ const Product = (props) => {
               SKU
             </Text>
             <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
-              {` ${item.sku}`}
+              {` ${props.product.sku}`}
             </Text>
           </Block>
           <Text
             style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }}
             size={15}
           >
-            {item.name}
+            {props.product.name}
           </Text>
           <Block row style={{ width: '100%' }}>
             <Block flex>
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                 Price:{' '}
               </Text>
-              <Text style={styles.price}>{this.formatMoney.format(item.rrp)}</Text>
+              <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
             </Block>
-            {!this.state.hideMyPrice && (
+            {!hideMyPrice && (
               <>
                 <View
                   style={{
@@ -67,7 +81,9 @@ const Product = (props) => {
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     My Price
                   </Text>
-                  <Text style={styles.price}>{this.formatMoney.format(item.cost_price)}</Text>
+                  <Text style={styles.price}>
+                    {formatMoney.format(props.product.cost_price)}
+                  </Text>
                 </Block>
               </>
             )}
@@ -78,7 +94,7 @@ const Product = (props) => {
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
-            onPress={() => this.onAddPressed(item)}
+            onPress={() => onAddPressed(props.product)}
           >
             Add
           </Button>

@@ -16,7 +16,7 @@ class ListData extends React.Component {
 
     this.state = {
       data: [],
-      perPageData: 12,
+      perPageData: (props?.perPage)? props?.perPage :12,
       valuesFilters: {},
       notFound: false,
       loadingMoreData: false,
@@ -46,7 +46,6 @@ class ListData extends React.Component {
   };
 
   loadData = (data) => {
-    console.log("==>list data",data)
     if (!data || data?.length < 1) {
       this.setState({
         notFound: true,
