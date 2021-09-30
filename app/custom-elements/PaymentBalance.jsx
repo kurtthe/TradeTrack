@@ -8,7 +8,6 @@ import BottomModal from '@custom-elements/BottomModal';
 import WebView from '@custom-elements/WebView';
 import RNPickerSelect from 'react-native-picker-select';
 
-
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
@@ -35,11 +34,9 @@ const PaymentBalance = (props) => {
 
   const handleShowMethodPayment = async () => {
 
-    const getValue = formatMoney.clearSymbolize(valueAmount);
+    const getValue = formatMoney.clearFormat(valueAmount);
 
-    const { url } = await generalRequestService.get(
-      `${endPoints.payment}?amount=${getValue}`,
-    );
+    const { url } = await generalRequestService.get(`${endPoints.payment}?amount=${getValue}`);
     actionSheetRef.current?.setModalVisible(false);
     setUrlPayment(url);
     setShowModal(true);
@@ -50,40 +47,42 @@ const PaymentBalance = (props) => {
     props.close && props.close();
   };
 
-  const changeOptionBalancePay = (option) =>{
-    if(option === 'now'){ 
-      setValueAmount(formatMoney.format(props.balance?.thirty_day))
+  const changeOptionBalancePay = (option) => {
+    if (option === 'now') {
+      setValueAmount(formatMoney.format(props.balance?.thirty_day));
       return;
     }
-    if(option === 'overdue'){ 
-      setValueAmount(formatMoney.format(props.balance?.overdue))
+    if (option === 'overdue') {
+      setValueAmount(formatMoney.format(props.balance?.overdue));
       return;
     }
-    if(option === 'nowAndOver'){ 
+    if (option === 'nowAndOver') {
       const totalSum = props.balance?.thirty_day + props.balance?.overdue;
-      setValueAmount(formatMoney.format(totalSum))
+      setValueAmount(formatMoney.format(totalSum));
     }
-  }
-  
+  };
+
   return (
     <>
       <ActionSheet ref={actionSheetRef} closeOnTouchBackdrop={false}>
         <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 15 , paddingBottom: 10}}>Balance to Pay</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 15, paddingBottom: 10 }}>
+            Balance to Pay
+          </Text>
 
           <RNPickerSelect
-              placeholder={{ label: 'Select an option' }}
-              pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
-              textInputProps={{ color: nowTheme.COLORS.LIGHTGRAY }}
-              style={{
-               placeholder: styles.pickerText,
-                viewContainer: styles.pickerContainer,
-                inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
-              }}
-              onValueChange={(option) => changeOptionBalancePay(option)}
-              items={pickerOptions}
-            />
-          <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10, }}>Amount</Text>
+            placeholder={{ label: 'Select an option' }}
+            pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
+            textInputProps={{ color: nowTheme.COLORS.LIGHTGRAY }}
+            style={{
+              placeholder: styles.pickerText,
+              viewContainer: styles.pickerContainer,
+              inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
+            }}
+            onValueChange={(option) => changeOptionBalancePay(option)}
+            items={pickerOptions}
+          />
+          <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10 }}>Amount</Text>
           <TextInputMask
             placeholder="$0.00"
             type={'money'}
@@ -168,10 +167,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     height: 45,
   },
-    pickerText: {
+  pickerText: {
     color: nowTheme.COLORS.BLACK,
   },
-
 });
 
 export default PaymentBalance;
