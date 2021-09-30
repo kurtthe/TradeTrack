@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import { Dimensions, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import ActionSheet from 'react-native-actions-sheet';
 import FilterButton from '@components/FilterButton';
@@ -8,6 +8,8 @@ import { nowTheme } from '@constants';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import LoadingComponent from '@custom-elements/Loading';
+
 const { width, height } = Dimensions.get('window');
 
 const cardWidth = (width / 2) * 0.87;
@@ -35,7 +37,6 @@ class FilterProducts extends Component {
 
   async componentDidMount() {
     const getCategories = await this.generalRequest.get(endPoints.categories);
-    console.log('==>getCategories', getCategories);
     const getOptionsCategories = this.categoriesToRadioButton(getCategories);
 
     this.setState({
@@ -100,7 +101,7 @@ class FilterProducts extends Component {
           />
           <Block style={{ height: 250, padding: 5, paddingBottom: 40 }}>
             {this.state.loadingCategories ? (
-              <ActivityIndicator />
+              <LoadingComponent />
             ) : this.state.noCategoriesFound ? (
               <Text> No categories found </Text>
             ) : (

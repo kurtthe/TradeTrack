@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Dimensions, ScrollView, ActivityIndicator } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import { Dimensions } from 'react-native';
+import { Block } from 'galio-framework';
 import { nowTheme } from '@constants';
 import ListData from '@custom-sections/ListData';
 import ListProducts from '@custom-sections/ListProducts';
@@ -9,6 +9,7 @@ import ListProducts from '@custom-sections/ListProducts';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import LoadingComponent from '@custom-elements/Loading';
 
 const { width } = Dimensions.get('window');
 
@@ -34,7 +35,7 @@ class Category extends React.Component {
 
   render() {
     if (this.state.urlProducts === '') {
-      return <ActivityIndicator />;
+      return <LoadingComponent />;
     }
 
     return (
