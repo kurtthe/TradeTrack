@@ -1,4 +1,4 @@
-import {FormatMoney} from 'format-money-js';
+import { FormatMoney } from 'format-money-js';
 
 export class FormatMoneyService {
   static instance;
@@ -26,22 +26,25 @@ export class FormatMoneyService {
     symbol: '$'
   }*/
   format(value) {
-    if(value === undefined || value === null || !value){
+    if (value === undefined || value === null || !value) {
       return `$0.00`;
     }
     const valueFormat = this.fm.from(parseFloat(value), { symbol: '$' }, true);
 
-    if(valueFormat.fullAmount === 'NaN'){
+    if (valueFormat.fullAmount === 'NaN') {
       return `$0.00`;
     }
 
-    return `${valueFormat.symbol}${(parseFloat(value)< 0) ? '-':''}${valueFormat.fullAmount}`
+    return `${valueFormat.symbol}${parseFloat(value) < 0 ? '-' : ''}${valueFormat.fullAmount}`;
   }
 
-  clearSymbolize(value) {
-    const clearSymbol = value.split('$');
-    const newValue = clearSymbol[1];
+  clearFormat(value) {
+    if (!value || value === undefined || value === null) {
+      return '0';
+    }
+    const withoutSymbolize = value?.replace(/\$/g, '');
+    const withoutComma = withoutSymbolize?.replace(',', '.');
 
-    return newValue.replace(/\$|,|\./g, '')
+    return parseFloat(withoutComma).toFixed(2);
   }
 }
