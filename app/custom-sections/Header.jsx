@@ -42,13 +42,13 @@ const SearchHome = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const SearchProducts = ({ isWhite, style, navigation }) => (
+const SearchProducts = ({ isWhite, style, navigation, myPrice }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
       Keyboard.dismiss();
       navigation.navigate('SearchProducts', {
-        myPrice: this.props.scene.route.params?.myPrice
+        myPrice
       });
     }}
   >
@@ -109,8 +109,6 @@ class Header extends React.Component {
 
     const routeName = this.props.scene.route.params?.nameRouteGoing;
 
-    console.log("==<this.props.navigation.state.routeName",this.props.scene)
-    
     if (routeName === 'AccountInvoice') {
       this.props.navigation.setParams({
         nameRouteGoing: false,
@@ -147,7 +145,7 @@ class Header extends React.Component {
       case 'Products':
         return [
           <View style={{ top: 6.5 }}>
-            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
+            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} myPrice={this.props.scene.route.params?.myPrice} />
           </View>,
         ];
 
