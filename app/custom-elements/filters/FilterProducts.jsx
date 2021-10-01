@@ -9,6 +9,7 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import LoadingComponent from '@custom-elements/Loading';
+import { AlertService } from '@core/services/alert.service';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,19 +25,27 @@ class FilterProducts extends Component {
 
     this.state = {
       radioButtonsCategories: [],
-      radioButtons2: [],
+      radioButtonsSubCategories: [],
       categoryActive: false,
       searchValue: '',
       selectedCategory: {},
       loadingCategories: true,
       noCategoriesFound: false,
+      noSubCategoriesFound: false,
     };
 
+    this.alertService = new AlertService();
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
   async componentDidMount() {
-    const getCategories = await this.generalRequest.get(endPoints.categories);
+    await this.getCategories();
+  }
+
+  getCategories = async (nameCategory="") => {
+    const getCategories = await this.generalRequest.get(
+      `${endPoints.categories}&search=${nameCategory}`,
+    );
     const getOptionsCategories = this.categoriesToRadioButton(getCategories);
 
     this.setState({
@@ -44,7 +53,7 @@ class FilterProducts extends Component {
       loadingCategories: false,
       noCategoriesFound: getOptionsCategories?.length === 0,
     });
-  }
+  };
 
   categoriesToRadioButton = (categories) => {
     return categories
@@ -58,6 +67,38 @@ class FilterProducts extends Component {
         containerStyle: styles.styleRadio,
       }));
   };
+
+  onPressRadioButtonCategory = async (options) => {
+    const optionSelected = options.find((option) => option.selected);
+    const url = endPoints.subcategories.replace(':codeCategoryId', optionSelected?.id);
+
+    const getSubCategories = await this.generalRequest.get(url);
+    const subcategories = this.categoriesToRadioButton(getSubCategories);
+
+    this.setState({
+      categoryActive: true,
+      selectedCategory: optionSelected,
+      radioButtonsSubCategories: subcategories,
+      noSubCategoriesFound: getSubCategories.length === 0,
+    });
+    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+    actionSheetRef.current?.setModalVisible(false);
+  };
+
+  onPressRadioButtonSubCategory = (options) => {
+    const optionSelected = options.find((option) => option.selected);
+    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+    actionSheetRef2.current?.setModalVisible(false);
+  };
+
+  onChangeSearchCategory = (value)=>{
+    this.setState({
+      loadingCategories:true
+    })
+    setTimeout(()=>{
+      this.getCategories(value)
+    },500)
+  }
 
   render() {
     return (
@@ -85,6 +126,10 @@ class FilterProducts extends Component {
               <FilterButton
                 text={'Sub Category'}
                 onPress={() => {
+                  if (this.state.noSubCategoriesFound) {
+                    this.alertService.show('Alert!', 'No sub categories found');
+                    return;
+                  }
                   actionSheetRef2.current?.setModalVisible();
                 }}
               />
@@ -95,7 +140,7 @@ class FilterProducts extends Component {
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Searchbar
             placeholder="Search"
-            onChangeText={this.onChangeSearch}
+            onChangeText={(text)=>this.onChangeSearchCategory(text)}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
@@ -109,7 +154,7 @@ class FilterProducts extends Component {
                 <RadioGroup
                   radioButtons={this.state.radioButtonsCategories}
                   color={nowTheme.COLORS.INFO}
-                  onPress={(pick) => this.onPressRadioButton(pick)}
+                  onPress={(pick) => this.onPressRadioButtonCategory(pick)}
                 />
               </ScrollView>
             )}
@@ -117,12 +162,18 @@ class FilterProducts extends Component {
         </ActionSheet>
 
         <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
-          <Block left style={{ height: 180, padding: 5, paddingBottom: 40 }}>
-            <RadioGroup
-              radioButtons={this.state.radioButtons2}
-              color={nowTheme.COLORS.INFO}
-              onPress={(pick) => this.onPressRadioButton2(pick)}
-            />
+          <Block style={{ height: 250, padding: 5, paddingBottom: 40 }}>
+            {this.state.noSubCategoriesFound ? (
+              <Text> No subcategories found </Text>
+            ) : (
+              <ScrollView style={{ width: width }}>
+                <RadioGroup
+                  radioButtons={this.state.radioButtonsSubCategories}
+                  color={nowTheme.COLORS.INFO}
+                  onPress={(pick) => this.onPressRadioButtonSubCategory(pick)}
+                />
+              </ScrollView>
+            )}
           </Block>
         </ActionSheet>
       </>
@@ -204,7 +255,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-  }
+  },
 });
 
 export default FilterProducts;

@@ -83,13 +83,17 @@ class ListData extends React.Component {
     await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
   };
 
+  getDataFilterProducts = (data)=>{
+    this.loadData(data)
+  }
+
   renderFilter = () => {
     if (!this.props.filters) {
       return null;
     }
 
     if (this.props.filters === 'products') {
-      return <FilterProducts />;
+      return <FilterProducts getProducts={(data)=>this.getDataFilterProducts(data)} />;
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;
