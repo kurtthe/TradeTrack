@@ -1,240 +1,92 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   FlatList,
   Dimensions,
   StyleSheet,
-  TouchableWithoutFeedback,
-  Image,
-  ActivityIndicator,
-} from "react-native";
-import { Block, Text, theme } from "galio-framework";
-import { articles, categories, nowTheme } from "@constants/";
+ 
+} from 'react-native';
+import { Block, Text, theme } from 'galio-framework';
+import {  nowTheme } from '@constants/';
 import { Searchbar } from 'react-native-paper';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
-import { Button } from "@components";
+import { Button } from '@components';
 
-import { connect } from 'react-redux';
+import ListData from '@custom-sections/ListData';
+import LoadingComponent from '@custom-elements/Loading';
 
-import { getProducts, searchProducts } from "../../services/ProductServices";
-import { updateProducts } from '@core/module/store/cart/cart';
-
-const { width, height } = Dimensions.get("screen");
-const sizeConstant = (Platform.OS === 'ios') 
-  ? ((Dimensions.get('window').height < 670) ? 12 : 14) 
-  : (Dimensions.get('window').height < 870) ? 11.5 : 15
-  const cardWidth = width / 2 *0.87;
+const { width, height } = Dimensions.get('screen');
+const sizeConstant =
+  Platform.OS === 'ios'
+    ? Dimensions.get('window').height < 670
+      ? 12
+      : 14
+    : Dimensions.get('window').height < 870
+    ? 11.5
+    : 15;
+const cardWidth = (width / 2) * 0.87;
 const cardHeight = height * 0.59;
-
-const suggestions = [
-  { id: "NAME", title: "NAME" },
-  { id: "SKU", title: "SKU" },
-];
-
-class SearchHome extends React.Component {
-
+class SearchProduct extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      results: [],
-      data: [],
-      search: "",
-      active: false,
-      loading: false,
-      hideMyPrice: true,
+      urlProducts: '',
+      listProducts: [],
+      myPriceActive: false
     };
+    
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
+    const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
+
     this.setState({
-      loading: true
-    })
-    try{
-      this.setState({
-        hideMyPrice: this.props.route.params.myPrice,
-        loading: false
-      })
-    } catch(e) {
-      console.log('err', e)
-    } finally {
-      this.setState({
-        loading: false
-      })
-    }
+      urlProducts: newUrl,
+      myPriceActive: this.props.route.params.myPrice
+    });
+
+    await this.getProducts();
   }
 
-  onProductPressed(item) {
-    this.props.navigation.navigate('Product', 
-      {
-        hideMyPrice: this.state.hideMyPrice, 
-        product: item, 
-        headerTitle: 'Product'
-      })
+  getProducts = async (textSearch="")=>{
+    await this.getDataPetition.getInfo(urlProducts, this.loadData, 50, {
+      search: textSearch
+    });
   }
 
-  onAddPressed(item) {
-    let price = this.state.hideMyPrice ? item.rrp : item.cost_price
-    let itemQ = ({...item, quantity: 1, price: price})
-    const index = this.props.cartProducts.findIndex((element) => (
-      element.id === item.id
-    ))
-    if (index !== -1) {
-      this.props.updateProducts([
-        ...this.props.cartProducts.slice(0, index),
-        {
-          ...this.props.cartProducts[index],
-          quantity: this.props.cartProducts[index].quantity + 1,
-          price: price
-        },
-        ...this.props.cartProducts.slice(index+1)
-      ]) 
-    } else {
-      this.props.updateProducts([...this.props.cartProducts, itemQ])
-    }
-  }
-
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`
-  }
-
-  onPressRadioButton2() {
-    actionSheetRef2.current?.setModalVisible(false);
-  }
-
-  onPressRadioButton() {
-    this.setState({ categoryActive: true })
-    actionSheetRef.current?.setModalVisible(false);
-  }
-
-  renderCard = ({ item }) => {
-    return (
-      <Block key={`Card-${item.name}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={() => this.onProductPressed(item)}>
-          <Image
-            resizeMode="contain"
-            style={styles.image}
-            source={{uri: item.image}}
-          />
-        </TouchableWithoutFeedback>
-        <Block flex space='between' style={{ paddingBottom: 7}}>
-          <Block row >
-            <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
-              SKU
-            </Text>
-            <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
-              {` ${item.sku}`}
-            </Text>
-          </Block>
-          <Text style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }} size={15} >
-            {item.name}
-          </Text>
-          <Block row style={{width: '100%'}}>
-            <Block flex >
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>Price: </Text>
-              <Text style={styles.price}> 
-                {this.numberWithDecimals(item.rrp)}
-              </Text>
-            </Block>
-            {!this.state.hideMyPrice && 
-              <>
-                <View  style={{borderWidth: 0.5, marginHorizontal: 10, height: '100%', borderColor: nowTheme.COLORS.LIGHTGRAY}}></View>
-                  <Block flex >
-                    <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                      My Price
-                    </Text>
-                    <Text style={styles.price}>
-                      {this.numberWithDecimals(item.cost_price)}
-                    </Text>
-                </Block>
-              </>
-            }
-          </Block>
-        </Block>
-        <Block center>
-          <Button
-            color="warning"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color:'#0E3A90' }}
-            style={styles.buttonAdd}
-            onPress={() => this.onAddPressed(item)}
-          >
-            Add
-          </Button>
-        </Block>               
-      </Block>
-    );
-  };
-
-  onChangeSearch = async (query) => {
+  loadData = (data) => {
     this.setState({
-      loading: true
-    })
-    try {
-      let searchResult = await searchProducts(query);
-      if (searchResult.length !== 0){
-        this.setState({
-          data: searchResult
-        })
-      }
-    } catch (e) {
-      console.log('search error', e)
-    } finally {
-      this.setState({
-        loading: false
-      })
-    }
-  }
-
-  renderSearch = () => {
-    return (
-      <Searchbar
-        placeholder="What are you looking for?"
-        onChangeText={this.onChangeSearch}
-        style={styles.search}
-        inputStyle={styles.searchInput}
-      />
-    );
-  };
-
-  renderNotFound = () => {
-    return (
-      <Block style={styles.notfound}>
-        <Text
-          style={{ fontFamily: "montserrat-regular" }}
-          size={18}
-          color={nowTheme.COLORS.TEXT}
-        >
-          No results were found
-        </Text>
-      </Block>
-    );
+      listProducts: data,
+    });
   };
 
   render() {
+    if (this.state.urlProducts === '') {
+      return <LoadingComponent />;
+    }
+    
     return (
       <View>
-        <Block flex  style={styles.searchContainer}>
+        <Block flex style={styles.searchContainer}>
           <Block center style={styles.header}>
-            {this.renderSearch()}
+            <Searchbar
+              placeholder="What are you looking for?"
+              onChangeText={this.onChangeSearch}
+              style={styles.search}
+              inputStyle={styles.searchInput}
+            />
           </Block>
         </Block>
-        <Block style={{top:60}}>
-          <Block backgroundColor={nowTheme.COLORS.BACKGROUND} width={width} >
-            {
-              this.state.loading
-              ? <ActivityIndicator />
-              : <FlatList
-                  contentContainerStyle={{alignItems: 'center'}}
-                  numColumns={2}
-                  data={this.state.data}
-                  renderItem={(item) => this.renderCard(item)}
-                  keyExtractor={(item, index) => 'key'+index}
-                  ListEmptyComponent={this.renderNotFound()}
-                />
-            }
-          </Block>
+
+        <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+          <ListData
+            dataRender={}
+            children={<ListProducts myPrice={this.state.myPriceActive}/>}
+          />
         </Block>
       </View>
     );
@@ -246,14 +98,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: cardWidth,
     marginHorizontal: '2%',
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,
     shadowOpacity: 0.2,
     padding: 10,
     paddingVertical: theme.SIZES.BASE,
-    borderRadius:5,
-    marginBottom: '5%'
+    borderRadius: 5,
+    marginBottom: '5%',
   },
   searchContainer: {
     width: width,
@@ -261,7 +113,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     color: 'black',
-    fontSize: 16
+    fontSize: 16,
   },
   search: {
     height: 48,
@@ -272,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   shadow: {
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 4,
     shadowOpacity: 0.1,
@@ -280,7 +132,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: theme.COLORS.WHITE,
-    shadowColor: "rgba(0, 0, 0, 0.2)",
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
     shadowOpacity: 1,
@@ -301,18 +153,18 @@ const styles = StyleSheet.create({
   },
   resultTitle: {
     flex: 1,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     paddingBottom: 6,
   },
   resultDescription: {
     padding: theme.SIZES.BASE / 2,
   },
   image: {
-    width: cardWidth*0.90,
-    height: cardHeight*0.30
+    width: cardWidth * 0.9,
+    height: cardHeight * 0.3,
   },
   dealsContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingTop: theme.SIZES.BASE,
   },
   deals: {
@@ -322,7 +174,7 @@ const styles = StyleSheet.create({
   },
   dealsTitle: {
     flex: 1,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     paddingBottom: 6,
   },
   dealsDescription: {
@@ -330,16 +182,16 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'montserrat-bold',
-    fontSize: (Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 12 :14) :  (Dimensions.get('window').height < 870) ? 11.5: 15,
-    color: nowTheme.COLORS.ORANGE
+    fontSize:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height < 670
+          ? 12
+          : 14
+        : Dimensions.get('window').height < 870
+        ? 11.5
+        : 15,
+    color: nowTheme.COLORS.ORANGE,
   },
 });
 
-const mapStateToProps = (state) => ({
-  token_login: state.loginReducer.api_key,
-  cartProducts: state.productsReducer.products
-});
-
-const mapDispatchToProps = { updateProducts };
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchHome);
+export default SearchProduct;

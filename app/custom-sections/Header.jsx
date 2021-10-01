@@ -47,7 +47,9 @@ const SearchProducts = ({ isWhite, style, navigation }) => (
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
       Keyboard.dismiss();
-      navigation.navigate('SearchProducts');
+      navigation.navigate('SearchProducts', {
+        myPrice: this.props.scene.route.params?.myPrice
+      });
     }}
   >
     <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
