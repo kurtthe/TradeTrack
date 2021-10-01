@@ -38,11 +38,14 @@ class ListData extends React.Component {
   getPetitionData = async () => {
     this.setState({ loadingMoreData: true });
 
-    if (!this.props.endpoint) {
+    if(!!this.props.endpoint){
+      await this.getDataPetition.getInfo(this.props.endpoint, this.loadData, this.state.perPageData);
       return;
     }
 
-    await this.getDataPetition.getInfo(this.props.endpoint, this.loadData, this.state.perPageData);
+    if(!!this.props.dataRender){
+      this.loadData(this.props.dataRender)
+    }
   };
 
   loadData = (data) => {
