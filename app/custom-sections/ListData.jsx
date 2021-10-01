@@ -15,8 +15,8 @@ class ListData extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
-      perPageData: (props?.perPage)? props?.perPage :12,
+      data: props.dataRender || [],
+      perPageData: props?.perPage ? props?.perPage : 12,
       valuesFilters: {},
       notFound: false,
       loadingMoreData: false,
@@ -38,14 +38,16 @@ class ListData extends React.Component {
   getPetitionData = async () => {
     this.setState({ loadingMoreData: true });
 
-    if(!!this.props.endpoint){
-      await this.getDataPetition.getInfo(this.props.endpoint, this.loadData, this.state.perPageData);
+    if (!!this.props.endpoint) {
+      await this.getDataPetition.getInfo(
+        this.props.endpoint,
+        this.loadData,
+        this.state.perPageData,
+      );
       return;
     }
 
-    if(!!this.props.dataRender){
-      this.loadData(this.props.dataRender)
-    }
+    this.loadData(this.props.dataRender);
   };
 
   loadData = (data) => {
@@ -86,9 +88,9 @@ class ListData extends React.Component {
     await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
   };
 
-  getDataFilterProducts = (data)=>{
-    this.loadData(data)
-  }
+  getDataFilterProducts = (data) => {
+    this.loadData(data);
+  };
 
   renderFilter = () => {
     if (!this.props.filters) {
@@ -96,7 +98,7 @@ class ListData extends React.Component {
     }
 
     if (this.props.filters === 'products') {
-      return <FilterProducts getProducts={(data)=>this.getDataFilterProducts(data)} />;
+      return <FilterProducts getProducts={(data) => this.getDataFilterProducts(data)} />;
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;
