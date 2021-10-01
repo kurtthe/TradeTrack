@@ -21,15 +21,18 @@ class Category extends React.Component {
 
     this.state = {
       urlProducts: '',
+      myPriceActive: false
     };
   }
 
   async componentDidMount() {
+
     const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
     const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
 
     this.setState({
       urlProducts: newUrl,
+      myPriceActive: this.props.route.params.myPrice
     });
   }
 
@@ -45,7 +48,7 @@ class Category extends React.Component {
             perPage={50}
             filters={'products'}
             endpoint={this.state.urlProducts}
-            children={<ListProducts />}
+            children={<ListProducts myPrice={this.state.myPriceActive}/>}
           />
         </Block>
       </>

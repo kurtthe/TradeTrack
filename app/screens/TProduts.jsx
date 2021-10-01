@@ -43,7 +43,7 @@ class Components extends React.Component {
   };
 
   handleChangeSwitch = (value) => {
-    this.setState({ activeSwitch: value });
+    this.setState({ activeSwitch: !value });
   };
 
   render() {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -29,15 +29,9 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
-  const [hideMyPrice, setHideMyPrice] = useState(true)
-  
-  const onAddPressed = (productItem)=>{
+  const onAddPressed = (productItem) => {};
 
-  }
-
-  const onProductPressed = (productItem)=>{
-
-  }
+  const onProductPressed = (productItem) => {};
 
   return (
     <>
@@ -67,7 +61,7 @@ const Product = (props) => {
               </Text>
               <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
             </Block>
-            {!hideMyPrice && (
+            {!props.myPrice ? null : (
               <>
                 <View
                   style={{
@@ -81,9 +75,7 @@ const Product = (props) => {
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     My Price
                   </Text>
-                  <Text style={styles.price}>
-                    {formatMoney.format(props.product.cost_price)}
-                  </Text>
+                  <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
                 </Block>
               </>
             )}
