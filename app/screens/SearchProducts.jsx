@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
-import { Block, theme } from 'galio-framework';
+import { Block, theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants/';
 import { Searchbar } from 'react-native-paper';
 
@@ -8,22 +8,18 @@ import { GetDataPetitionService } from '@core/services/get-data-petition.service
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-import ListData from '@custom-sections/ListData';
-import LoadingComponent from '@custom-elements/Loading';
 import ListProducts from '@custom-sections/ListProducts';
 
-const { width, height } = Dimensions.get('screen');
-const cardWidth = (width / 2) * 0.87;
-const cardHeight = height * 0.59;
+const { width } = Dimensions.get('screen');
+
 class SearchProduct extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      urlProducts: '',
       listProducts: [],
       myPriceActive: false,
-      loading: true,
+      notFound: false,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -31,13 +27,7 @@ class SearchProduct extends React.Component {
   }
 
   async componentDidMount() {
-    const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
-    const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
-
-    console.log("=>this.props.route.params.myPrice",this.props.route.params.myPrice)
-    
     this.setState({
-      urlProducts: newUrl,
       myPriceActive: this.props.route.params.myPrice,
     });
 
@@ -45,36 +35,54 @@ class SearchProduct extends React.Component {
   }
 
   getProducts = async (textSearch = '') => {
-    console.log("==>get get products")
-    await this.getDataPetition.getInfo(this.state.urlProducts, this.loadData, 10, {
-      search: textSearch,
-    });
+    await this.getDataPetition.getInfo(
+      `${endPoints.searchProducts}?search=${textSearch}`,
+      this.loadData,
+      10,
+    );
   };
 
   loadData = (data) => {
-    console.log("==>loadData loadData products")
-
-    this.setState({
-      listProducts: data,
-      loading: false,
-    });
+    if (data.length > 0) {
+      this.setState({
+        listProducts: data,
+        notFound: false,
+      });
+    } else {
+      this.setState({
+        notFound: true,
+      });
+    }
   };
 
   changeSearchText = (value) => {
-    this.setState({
-      loading: true,
-    });
-
     setTimeout(async () => {
       await this.getProducts(value);
     }, 500);
   };
 
-  render() {
-    if (this.state.urlProducts === '') {
-      return <LoadingComponent />;
-    }
+  renderNotFound = () => {
+    return (
+      <View style={styles.notfound}>
+        <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
+          We didn’t find products in the Data Base.
+        </Text>
 
+        <Text
+          size={18}
+          style={{
+            marginTop: theme.SIZES.BASE,
+            fontFamily: 'montserrat-regular',
+          }}
+          color={nowTheme.COLORS.TEXT}
+        >
+          You can see more data in your Account.
+        </Text>
+      </View>
+    );
+  };
+
+  render() {
     return (
       <View>
         <Searchbar
@@ -85,10 +93,11 @@ class SearchProduct extends React.Component {
         />
 
         <Block style={styles.content}>
-          <ListData
-            dataRender={this.state.listProducts}
-            children={<ListProducts myPrice={this.state.myPriceActive} />}
-          />
+          {!this.state.notFound ? (
+            <ListProducts data={this.state.listProducts} myPrice={this.state.myPriceActive} />
+          ) : (
+            <>{this.renderNotFound()}</>
+          )}
         </Block>
       </View>
     );
@@ -110,8 +119,12 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
-    paddingVertical: 5
-  }
+    paddingVertical: 5,
+  },
+  notfound: {
+    padding: 15,
+    marginVertical: theme.SIZES.BASE * 2,
+  },
 });
 
 export default SearchProduct;
