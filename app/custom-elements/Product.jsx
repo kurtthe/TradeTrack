@@ -13,6 +13,8 @@ import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
+import { connect } from 'react-redux';
+import { updateProducts } from '@core/module/store/cart/cart';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -29,7 +31,28 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
-  const onAddPressed = (productItem) => {};
+  const onAddPressed = (productItem) => {
+    const price = props.myPrice ? productItem.rrp : productItem.cost_price;
+    const itemQ = { ...productItem, quantity: 1, price: price };
+    const index = props.cartProducts.findIndex((element) => element.id === productItem.id);
+    updateProductAdd(index, itemQ);
+  };
+
+  const updateProductAdd = (index, itemQ) => {
+    if (index !== -1) {
+      props.updateProducts([
+        ...props.cartProducts.slice(0, index),
+        {
+          ...props.cartProducts[index],
+          quantity: props.cartProducts[index].quantity + 1,
+          price: price,
+        },
+        ...props.cartProducts.slice(index + 1),
+      ]);
+    } else {
+      props.updateProducts([...props.cartProducts, itemQ]);
+    }
+  };
 
   const onProductPressed = (productItem) => {};
 
@@ -164,4 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-export default Product;
+
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products,
+});
+
+const mapDispatchToProps = { updateProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
