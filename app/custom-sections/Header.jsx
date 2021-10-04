@@ -42,12 +42,14 @@ const SearchHome = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const SearchProducts = ({ isWhite, style, navigation }) => (
+const SearchProducts = ({ isWhite, style, navigation, myPrice }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
       Keyboard.dismiss();
-      navigation.navigate('SearchProducts');
+      navigation.navigate('SearchProducts', {
+        myPrice
+      });
     }}
   >
     <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
@@ -100,15 +102,23 @@ class Header extends React.Component {
   handleLeftPress = () => {
     const { navigation } = this.props;
 
-    if (!this.props.scene.route.params?.isAccount) {
+    if (!this.props.scene.route.params?.nameRouteGoing) {
       navigation.goBack();
       return;
     }
 
-    navigation.navigate('Account', {
-      screen: 'AccountDetails',
-      params: { tabIndexSelected: 1 },
-    });
+    const routeName = this.props.scene.route.params?.nameRouteGoing;
+
+    if (routeName === 'AccountInvoice') {
+      this.props.navigation.setParams({
+        nameRouteGoing: false,
+      });
+
+      navigation.navigate('Account', {
+        screen: 'AccountDetails',
+        params: { tabIndexSelected: 1 },
+      });
+    }
   };
 
   openViewerPdf = async () => {
@@ -135,7 +145,7 @@ class Header extends React.Component {
       case 'Products':
         return [
           <View style={{ top: 6.5 }}>
-            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} />
+            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} myPrice={this.props.scene.route.params?.myPrice} />
           </View>,
         ];
 
