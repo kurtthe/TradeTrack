@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share, Text } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,
@@ -39,6 +39,7 @@ const BottomModal = (props) => {
       setLoadingShared(true);
       const urlFile = await downloadInfo(props.downloadShared);
       sharedFiles(urlFile);
+     
       return;
     }
 
@@ -51,7 +52,7 @@ const BottomModal = (props) => {
     setLoadingShared(false);
 
     if (!(await Sharing.isAvailableAsync())) {
-      alert(`Uh oh, sharing isn't available on your platform`);
+      alert(`Sharing isn't available on your platform`);
       return;
     }
     await Sharing.shareAsync(urlFile);
@@ -77,6 +78,7 @@ const BottomModal = (props) => {
                 <Loading />
               ) : (
                 <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
+                
               )}
             </TouchableOpacity>
           </View>

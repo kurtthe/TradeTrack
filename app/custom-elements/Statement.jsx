@@ -22,12 +22,14 @@ const Statement = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [urlFilePdf, seturlFilePdf] = useState('');
+  const [urlDownloadFile, setUrlDownloadFile] = useState('');
 
   const handleDownloadFile = async () => {
     setLoading(true);
 
-    const urlDownloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
-    const result = await generalRequestService.get(urlDownloadFile);
+    const downloadFile = endPoints.downloadStatementDetail.replace(':id', props.statement.id);
+    setUrlDownloadFile(downloadFile)
+    const result = await generalRequestService.get(downloadFile);
 
     seturlFilePdf(result);
     setLoading(false);
@@ -107,7 +109,13 @@ const Statement = (props) => {
           </Block>
         </Block>
       </Block>
-      <BottomModal show={showModal} close={() => closeModal()}>
+      <BottomModal
+        show={showModal}
+        close={() => closeModal()}
+        downloadShared={{
+          url: urlDownloadFile
+        }}
+      >
         <View style={{ height: hp('80%') }}>
           <PdfViewer url={urlFilePdf} />
         </View>
