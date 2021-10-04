@@ -534,7 +534,7 @@ class PlaceOrders extends React.Component {
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
                 onPress={(items) => this.onPressRadioButton(items)}
-                containerStyle={{alignItems: 'left'}}
+                containerStyle={styles.radioStyle}
               />
             ) : (
               <View>
@@ -549,7 +549,7 @@ class PlaceOrders extends React.Component {
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO}
                     onPress={(items) => this.onPressRadioButton(items)}
-                    containerStyle={{alignItems: 'left'}}
+                    containerStyle={styles.radioStyle}
                   />
                 </Block>
               </View>
@@ -687,7 +687,11 @@ const styles = StyleSheet.create({
   searchInput: {
     color: 'black',
     fontSize: 16
-  }
+  },
+
+  radioStyle:{
+alignItems: 'flex-start'
+  },
 });
 
 const mapStateToProps = (state) => ({
