@@ -6,13 +6,13 @@ import { nowTheme } from '@constants';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import BottomModal from '@custom-elements/BottomModal';
 import WebView from '@custom-elements/WebView';
+import RNPickerSelect from 'react-native-picker-select';
 
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import ActionSheet from 'react-native-actions-sheet';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import Select from './forms/Select';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
 import { TextInputMask } from 'react-native-masked-text';
 
@@ -33,9 +33,10 @@ const PaymentBalance = (props) => {
   });
 
   const handleShowMethodPayment = async () => {
-    const { url } = await generalRequestService.get(
-      `${endPoints.payment}?amount=${formatMoney.clearSymbolize(valueAmount)}`,
-    );
+
+    const getValue = formatMoney.clearFormat(valueAmount);
+
+    const { url } = await generalRequestService.get(`${endPoints.payment}?amount=${getValue}`);
     actionSheetRef.current?.setModalVisible(false);
     setUrlPayment(url);
     setShowModal(true);
@@ -46,39 +47,50 @@ const PaymentBalance = (props) => {
     props.close && props.close();
   };
 
-  const changeOptionBalancePay = (option) =>{
-    if(option === 'now'){ 
-      setValueAmount(formatMoney.format(props.balance?.thirty_day))
+  const changeOptionBalancePay = (option) => {
+    if (option === 'now') {
+      setValueAmount(formatMoney.format(props.balance?.thirty_day));
       return;
     }
-    if(option === 'overdue'){ 
-      setValueAmount(formatMoney.format(props.balance?.overdue))
+    if (option === 'overdue') {
+      setValueAmount(formatMoney.format(props.balance?.overdue));
       return;
     }
-    if(option === 'nowAndOver'){ 
+    if (option === 'nowAndOver') {
       const totalSum = props.balance?.thirty_day + props.balance?.overdue;
-      setValueAmount(formatMoney.format(totalSum))
+      setValueAmount(formatMoney.format(totalSum));
     }
-  }
-  
+  };
+
   return (
     <>
       <ActionSheet ref={actionSheetRef} closeOnTouchBackdrop={false}>
         <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
-          <Block center style={{ paddingBottom: 30 }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Balance to Pay</Text>
-          </Block>
+          <Text style={{ fontWeight: 'bold', fontSize: 15, paddingBottom: 10 }}>
+            Balance to Pay
+          </Text>
 
-          <Select onchange={(option) => changeOptionBalancePay(option)} options={pickerOptions} />
-          <Text style={{ fontWeight: 'bold' }}>Amount</Text>
+          <RNPickerSelect
+            placeholder={{ label: 'Select an option' }}
+            pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
+            textInputProps={{ color: nowTheme.COLORS.LIGHTGRAY }}
+            style={{
+              placeholder: styles.pickerText,
+              viewContainer: styles.pickerContainer,
+              inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
+            }}
+            onValueChange={(option) => changeOptionBalancePay(option)}
+            items={pickerOptions}
+          />
+          <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10 }}>Amount</Text>
           <TextInputMask
             placeholder="$0.00"
             type={'money'}
             options={{
               precision: 2,
-              separator: ',',
-              delimiter: '.',
-              unit: '$',
+              separator: '.',
+              delimiter: ',',
+              unit: '',
             }}
             value={valueAmount}
             onChangeText={(text) => setValueAmount(text)}
@@ -145,6 +157,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 10,
     marginVertical: 5,
+  },
+  pickerContainer: {
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: nowTheme.COLORS.PICKERTEXT,
+    padding: 5,
+    borderRadius: 5,
+    paddingLeft: 10,
+    height: 45,
+  },
+  pickerText: {
+    color: nowTheme.COLORS.BLACK,
   },
 });
 

@@ -305,21 +305,22 @@ class Login extends React.Component {
                   source={require('@assets/imgs/img/logo.png')}
                 />
               </Block>
-              <Block flex={3} top middle>
+              <Block flex={2} top >
                 <Text
                   style={{
                     fontFamily: 'montserrat-bold',
                     textAlign: 'left',
+                    top:15
                   }}
                   color="#2E2F33"
                   size={
                     Platform.OS === 'ios'
                       ? Dimensions.get('window').height < 670
-                        ? 20
-                        : 22
+                        ? 16
+                        : 18
                       : Dimensions.get('window').height < 870
-                      ? 20
-                      : 26
+                      ? 18
+                      : 20
                   }
                   //size={20}
                 >
