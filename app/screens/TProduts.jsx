@@ -20,7 +20,7 @@ class Components extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeSwitch: false,
+      activeSwitch: true,
     };
   }
 

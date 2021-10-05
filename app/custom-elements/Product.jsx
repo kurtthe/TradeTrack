@@ -10,6 +10,7 @@ import {
 
 import { Button } from '@components';
 import { Block, Text, theme } from 'galio-framework';
+import { withNavigation } from '@react-navigation/compat';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
@@ -31,30 +32,53 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
+  const [priceProduct, setPriceProduct] = useState(0);
+
   const onAddPressed = (productItem) => {
-    const price = props.myPrice ? productItem.rrp : productItem.cost_price;
-    const itemQ = { ...productItem, quantity: 1, price: price };
-    const index = props.cartProducts.findIndex((element) => element.id === productItem.id);
-    updateProductAdd(index, itemQ);
-  };
-
-  const updateProductAdd = (index, itemQ) => {
-    if (index !== -1) {
-      props.updateProducts([
-        ...props.cartProducts.slice(0, index),
-        {
-          ...props.cartProducts[index],
-          quantity: props.cartProducts[index].quantity + 1,
-          price: price,
-        },
-        ...props.cartProducts.slice(index + 1),
-      ]);
-    } else {
-      props.updateProducts([...props.cartProducts, itemQ]);
+    if (priceProduct !== 0) {
+      const price = props.myPrice ? productItem.rrp : productItem.cost_price;
+      setPriceProduct(price);
     }
+
+    updateProductAdd(productItem);
   };
 
-  const onProductPressed = (productItem) => {};
+  const updateProductAdd = (productToCart) => {
+    const addProduct = {
+      ...productToCart,
+      quantity: 1,
+      price: priceProduct,
+    };
+
+    const index = props.cartProducts.findIndex((item) => item.id === addProduct.id);
+
+    if (index === -1) {
+      props.updateProducts([...props.cartProducts, addProduct]);
+      return;
+    }
+
+    const newArrayProducts = props.cartProducts.map((item) => {
+      if (item.id === addProduct.id) {
+        const newCant = parseInt(item.quantity) + 1;
+        console.log("==>newCant",newCant)
+        return {
+          ...item,
+          quantity: newCant,
+        };
+      }
+      return item;
+    });
+
+    props.updateProducts(newArrayProducts);
+  };
+
+  const onProductPressed = (productItem) => {
+    props.navigation?.navigate('Product', {
+      hideMyPrice: props.myPrice,
+      product: productItem,
+      headerTitle: 'Product',
+    });
+  };
 
   return (
     <>
@@ -194,4 +218,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { updateProducts };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Product));
