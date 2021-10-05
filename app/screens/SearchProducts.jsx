@@ -20,6 +20,7 @@ class SearchProduct extends React.Component {
       listProducts: [],
       myPriceActive: false,
       notFound: false,
+      noShowInit: true,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -30,8 +31,6 @@ class SearchProduct extends React.Component {
     this.setState({
       myPriceActive: this.props.route.params.myPrice,
     });
-
-    await this.getProducts();
   }
 
   getProducts = async (textSearch = '') => {
@@ -47,10 +46,12 @@ class SearchProduct extends React.Component {
       this.setState({
         listProducts: data,
         notFound: false,
+        noShowInit:false
       });
     } else {
       this.setState({
         notFound: true,
+        noShowInit:false
       });
     }
   };
@@ -92,13 +93,15 @@ class SearchProduct extends React.Component {
           inputStyle={styles.searchInput}
         />
 
-        <Block style={styles.content}>
-          {!this.state.notFound ? (
-            <ListProducts data={this.state.listProducts} myPrice={this.state.myPriceActive} />
-          ) : (
-            <>{this.renderNotFound()}</>
-          )}
-        </Block>
+        {!this.state.noShowInit ? (
+          <Block style={styles.content}>
+            {!this.state.notFound ? (
+              <ListProducts data={this.state.listProducts} myPrice={this.state.myPriceActive} />
+            ) : (
+              <>{this.renderNotFound()}</>
+            )}
+          </Block>
+        ) : null}
       </View>
     );
   }
@@ -110,7 +113,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   search: {
-    height: 48,
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
     marginBottom: theme.SIZES.BASE,
@@ -119,7 +121,8 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
-    paddingVertical: 5,
+    paddingTop: 15,
+    paddingBottom: 120,
   },
   notfound: {
     padding: 15,
