@@ -68,10 +68,10 @@ class ForgotPassword extends React.Component {
                    <Text
                      style={{
                        fontFamily: 'montserrat-bold',
-                       textAlign: 'left'
+                       textAlign: 'left', top:10
                      }}
                      color="#2E2F33"
-                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 20 :22) :  (Dimensions.get('window').height < 870) ? 20: 26}
+                    size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :18) :  (Dimensions.get('window').height < 870) ? 18: 20}
                    //size={20}
                    >
                      Forgot your current Password?
@@ -85,17 +85,17 @@ class ForgotPassword extends React.Component {
                       <Block>
                       <Text
                           color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
+                            style={{ marginLeft: 0,   fontFamily: 'montserrat-regular', top:10}}
                             row
                             muted
                             numberOfLines={2} 
-                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :20) :  (Dimensions.get('window').height < 870) ? 18: 20}
+                            size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :18) :  (Dimensions.get('window').height < 870) ? 16: 18}
 
                           >
                          Enter the form to send you an email{"\n"}for changes the password
                           </Text>
                        
-                        <Block width={width * 0.9} style={{paddingTop:40}}>
+                        <Block width={width * 0.9} style={{paddingTop:60}}>
                         <Text
                           color={nowTheme.COLORS.PRETEXT}
                             style={{ marginLeft: 0,   fontFamily: 'montserrat-regular',}}
