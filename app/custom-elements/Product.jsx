@@ -16,6 +16,7 @@ import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { ProductCart } from '@core/services/product-cart.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -32,44 +33,18 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
-  const [priceProduct, setPriceProduct] = useState(0);
+  const productCart = new ProductCart(props.cartProducts);
 
   const onAddPressed = (productItem) => {
-    if (priceProduct !== 0) {
-      const price = props.myPrice ? productItem.rrp : productItem.cost_price;
-      setPriceProduct(price);
-    }
+    const priceProduct = props.myPrice ? productItem.rrp : productItem.cost_price;
 
-    updateProductAdd(productItem);
-  };
-
-  const updateProductAdd = (productToCart) => {
     const addProduct = {
-      ...productToCart,
+      ...productItem,
       quantity: 1,
       price: priceProduct,
     };
 
-    const index = props.cartProducts.findIndex((item) => item.id === addProduct.id);
-
-    if (index === -1) {
-      props.updateProducts([...props.cartProducts, addProduct]);
-      return;
-    }
-
-    const newArrayProducts = props.cartProducts.map((item) => {
-      if (item.id === addProduct.id) {
-        const newCant = parseInt(item.quantity) + 1;
-        console.log("==>newCant",newCant)
-        return {
-          ...item,
-          quantity: newCant,
-        };
-      }
-      return item;
-    });
-
-    props.updateProducts(newArrayProducts);
+    productCart.addCart(addProduct, props.updateProducts);
   };
 
   const onProductPressed = (productItem) => {

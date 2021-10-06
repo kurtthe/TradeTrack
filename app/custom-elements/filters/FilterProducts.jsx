@@ -106,7 +106,7 @@ class FilterProducts extends Component {
         <Block
           row
           width={width * 0.9}
-          style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%' }}
+          style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%', paddingLeft: 9}}
         >
           <Block
             row
