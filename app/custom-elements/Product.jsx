@@ -108,7 +108,7 @@ const Product = (props) => {
               </Text>
               <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
             </Block>
-            {!props.myPrice ? null : (
+            {props.myPrice ? null : (
               <>
                 <View
                   style={{
