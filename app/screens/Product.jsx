@@ -16,6 +16,8 @@ import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
 import nowTheme from '@constants/Theme';
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { FormatMoneyService } from '@core/services/format-money.service';
+import { ProductCart } from '@core/services/product-cart.service';
 
 const { height, width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -40,15 +42,24 @@ class Product extends React.Component {
     super(props);
     this.state = {
       selectedSize: null,
-      hideMyPrice: !this.props.route.params.hideMyPrice,
+      hideMyPrice: false,
+      productDetail: {},
     };
+
+    this.productCart = new ProductCart(props?.cartProducts);
+    this.formatMoney = FormatMoneyService.getInstance();
   }
 
+  componentDidMount() {
+    this.setState({
+      myPriceActive: this.props.route?.params?.myPrice,
+      productDetail: this.props.route?.params?.product,
+    });
+  }
 
   renderGallery = () => {
-    const { navigation, route } = this.props;
-    const product = route.params?.product;
-    const productImages = [product.image, product.image];
+    const { productDetail } = this.state;
+    const productImages = [productDetail.image, productDetail.image];
 
     return (
       <ScrollView
@@ -62,7 +73,7 @@ class Product extends React.Component {
           <TouchableWithoutFeedback key={`product-image-${index}`}>
             <Image
               resizeMode="contain"
-              source={{ uri: product.image }}
+              source={{ uri: productDetail.image }}
               style={{ width: width * 0.95, height: width * 0.8 }}
             />
           </TouchableWithoutFeedback>
@@ -71,54 +82,22 @@ class Product extends React.Component {
     );
   };
 
-  numberWithDecimals(number) {
-    return `$${(Math.round(number * 100) / 100).toFixed(2)}`;
-  }
+  onAddCartPressed = (productItem, cant = 1) => {
+    const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
 
-  handleUpdateQuantity = (item, q) => {
-    let price = this.state.hideMyPrice ? item.rrp : item.cost_price;
-    let itemQ = { ...item, quantity: 1, price: price };
-    const index = this.props.cartProducts.findIndex((element) => element.id === item.id);
-    if (index !== -1) {
-      this.props.updateProducts([
-        ...this.props.cartProducts.slice(0, index),
-        {
-          ...this.props.cartProducts[index],
-          quantity: q,
-          price: price,
-        },
-        ...this.props.cartProducts.slice(index + 1),
-      ]);
-    } else {
-      this.props.updateProducts([...this.props.cartProducts, itemQ]);
-    }
-  };
-
-  onAddCartPressed = (product) => {
-    let price = this.state.hideMyPrice ? product.rrp : product.cost_price;
-    let itemQ = { ...product, quantity: 1, price: price };
-    const index = this.props.cartProducts.findIndex((element) => element.id === product.id);
-    if (index !== -1) {
-      this.props.updateProducts([
-        ...this.props.cartProducts.slice(0, index),
-        {
-          ...this.props.cartProducts[index],
-          quantity: this.props.cartProducts[index].quantity + 1,
-          price: price,
-        },
-        ...this.props.cartProducts.slice(index + 1),
-      ]);
-    } else {
-      this.props.updateProducts([...this.props.cartProducts, itemQ]);
-    }
+    const addProduct = {
+      ...productItem,
+      quantity: cant,
+      price: priceProduct,
+      cantSend: cant > 1,
+    };
+    this.productCart.addCart(addProduct, this.props.updateProducts);
   };
 
   renderProgress = () => {
-    const { navigation, route } = this.props;
-    // const { params } = navigation && navigation.state;
-    const product = route.params?.product;
-    const productImages = [product.image, product.image];
+    const { productDetail } = this.state;
 
+    const productImages = [productDetail.image, productDetail.image];
     const position = Animated.divide(this.scrollX, width);
 
     return (
@@ -142,8 +121,7 @@ class Product extends React.Component {
     });
   };
   render() {
-    const { route } = this.props;
-    const product = route.params?.product;
+    const { productDetail } = this.state;
 
     return (
       <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={120} style={styles.product}>
@@ -183,7 +161,7 @@ class Product extends React.Component {
                 }
                 style={{ paddingBottom: 24, fontWeight: '500' }}
               >
-                {product.name}
+                {productDetail.name}
               </Text>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
@@ -195,7 +173,7 @@ class Product extends React.Component {
                     color={nowTheme.COLORS.ORANGE}
                     size={sizeConstantBig}
                   >
-                    {this.numberWithDecimals(product.rrp)}
+                    {this.formatMoney.format(productDetail.rrp)}
                   </Text>
                 </Block>
                 {this.state.hideMyPrice && (
@@ -220,7 +198,7 @@ class Product extends React.Component {
                         color={nowTheme.COLORS.ORANGE}
                         size={sizeConstantBig}
                       >
-                        {this.numberWithDecimals(product.cost_price)}
+                        {this.formatMoney.format(productDetail.cost_price)}
                       </Text>
                     </Block>
                   </>
@@ -241,7 +219,7 @@ class Product extends React.Component {
 
                   <Text color={nowTheme.COLORS.INFO} size={sizeConstantSmall}>
                     {' '}
-                    {product.sku}{' '}
+                    {productDetail.sku}{' '}
                   </Text>
                 </Block>
                 <Block flex>
@@ -262,7 +240,7 @@ class Product extends React.Component {
                     }
                   >
                     {' '}
-                    {product.type}{' '}
+                    {productDetail.type}{' '}
                   </Text>
                 </Block>
               </Block>
@@ -272,8 +250,8 @@ class Product extends React.Component {
         <View style={styles.quantityBar}>
           <QuantityCounterWithInput
             product
-            quantity={product.quantity ? product.quantity : 1}
-            quantityHandler={(q) => this.handleUpdateQuantity(product, q)}
+            quantity={productDetail.quantity ? productDetail.quantity : 1}
+            quantityHandler={(q) => this.onAddCartPressed(product, q)}
           />
           <Button
             shadowless
