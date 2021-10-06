@@ -10,11 +10,13 @@ import {
 
 import { Button } from '@components';
 import { Block, Text, theme } from 'galio-framework';
+import { withNavigation } from '@react-navigation/compat';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { ProductCart } from '@core/services/product-cart.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -31,30 +33,27 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
+  const productCart = new ProductCart(props.cartProducts);
+
   const onAddPressed = (productItem) => {
-    const price = props.myPrice ? productItem.rrp : productItem.cost_price;
-    const itemQ = { ...productItem, quantity: 1, price: price };
-    const index = props.cartProducts.findIndex((element) => element.id === productItem.id);
-    updateProductAdd(index, itemQ);
+    const priceProduct = props.myPrice ? productItem.rrp : productItem.cost_price;
+
+    const addProduct = {
+      ...productItem,
+      quantity: 1,
+      price: priceProduct,
+    };
+
+    productCart.addCart(addProduct, props.updateProducts);
   };
 
-  const updateProductAdd = (index, itemQ) => {
-    if (index !== -1) {
-      props.updateProducts([
-        ...props.cartProducts.slice(0, index),
-        {
-          ...props.cartProducts[index],
-          quantity: props.cartProducts[index].quantity + 1,
-          price: price,
-        },
-        ...props.cartProducts.slice(index + 1),
-      ]);
-    } else {
-      props.updateProducts([...props.cartProducts, itemQ]);
-    }
+  const onProductPressed = (productItem) => {
+    props.navigation?.navigate('Product', {
+      hideMyPrice: props.myPrice,
+      product: productItem,
+      headerTitle: 'Product',
+    });
   };
-
-  const onProductPressed = (productItem) => {};
 
   return (
     <>
@@ -84,7 +83,7 @@ const Product = (props) => {
               </Text>
               <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
             </Block>
-            {!props.myPrice ? null : (
+            {props.myPrice ? null : (
               <>
                 <View
                   style={{
@@ -194,4 +193,4 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = { updateProducts };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Product));
