@@ -13,14 +13,17 @@ import moment from 'moment';
 const Invoice = (props) => {
   let dateInvoice = validateEmptyField(props.invoice.invoice_date);
 
-  if(dateInvoice !== 'N/A'){ 
+  if (dateInvoice !== 'N/A') {
     dateInvoice = moment(dateInvoice).format('YYYY-MM-DD');
   }
 
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
-    props.navigation.navigate('InvoiceDetails', { invoice: props.invoice.id, isAccount: props.isAccount });
+    props.navigation.navigate('InvoiceDetails', {
+      invoice: props.invoice.id,
+      nameRouteGoing: !props.isAccount ? false : 'AccountInvoice',
+    });
   };
 
   return (
@@ -28,7 +31,7 @@ const Invoice = (props) => {
       <TouchableWithoutFeedback onPress={() => handleShowDetails()}>
         <Block row>
           <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
-            <Block row space="between" style={{ height: 20,  }}>
+            <Block row space="between" style={{ height: 20 }}>
               <Block row>
                 <Text
                   color={nowTheme.COLORS.DEFAULT}
@@ -59,11 +62,11 @@ const Invoice = (props) => {
               </Block>
             </Block>
 
-            <Block row  justifyContent="space-between" style={{top:8}}>
+            <Block row justifyContent="space-between" style={{ top: 8 }}>
               <Text
                 color={nowTheme.COLORS.HEADER}
                 size={13}
-                style={{ fontFamily: nowTheme.FONT.primaryRegular,  }}
+                style={{ fontFamily: nowTheme.FONT.primaryRegular }}
               >
                 {validateEmptyField(props.invoice.description)}
               </Text>
@@ -76,11 +79,15 @@ const Invoice = (props) => {
               />
             </Block>
             <Block row>
-              <View style={(props.invoice.type !== 'Invoice')? styles.bg_purple:styles.bg_green}>
+              <View style={props.invoice.type !== 'Invoice' ? styles.bg_purple : styles.bg_green}>
                 <Text
                   style={{ fontFamily: nowTheme.FONT.primaryRegular, textAlign: 'center' }}
                   size={theme.SIZES.BASE * 0.8}
-                  color={(props.invoice.type !== 'Invoice')? nowTheme.COLORS.PURPLEINVOICE: nowTheme.COLORS.SUCCESS}
+                  color={
+                    props.invoice.type !== 'Invoice'
+                      ? nowTheme.COLORS.PURPLEINVOICE
+                      : nowTheme.COLORS.SUCCESS
+                  }
                 >
                   {validateEmptyField(props.invoice.type)}
                 </Text>
@@ -129,7 +136,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignContent: 'center',
-    left:-1
+    left: -1,
   },
   bg_purple: {
     width: wp('20%'),
@@ -139,7 +146,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignContent: 'center',
-    left:-1
+    left: -1,
   },
 });
 

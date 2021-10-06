@@ -3,7 +3,9 @@ import { StyleSheet, Dimensions, ScrollView, View } from 'react-native';
 import { theme, Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
-import Filters from '@custom-elements/Filters';
+import Filters from '@custom-elements/filters/Filters';
+import FilterProducts from '@custom-elements/filters/FilterProducts';
+
 import nowTheme from '@constants/Theme';
 
 const { width } = Dimensions.get('screen');
@@ -13,11 +15,11 @@ class ListData extends React.Component {
     super(props);
 
     this.state = {
-      data: [],
-      perPageData: 12,
+      data: props.dataRender || [],
+      perPageData: props?.perPage ? props?.perPage : 12,
       valuesFilters: {},
       notFound: false,
-      loadingMoreData: false
+      loadingMoreData: false,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -34,26 +36,31 @@ class ListData extends React.Component {
   }
 
   getPetitionData = async () => {
-    this.setState({loadingMoreData: true })
-    
-    if (!this.props.endpoint) {
+    this.setState({ loadingMoreData: true });
+
+    if (!!this.props.endpoint) {
+      await this.getDataPetition.getInfo(
+        this.props.endpoint,
+        this.loadData,
+        this.state.perPageData,
+      );
       return;
     }
 
-    await this.getDataPetition.getInfo(this.props.endpoint, this.loadData, this.state.perPageData);
+    this.loadData(this.props.dataRender);
   };
 
   loadData = (data) => {
-    if (data.length > 0) {
+    if (!data || data?.length < 1) {
       this.setState({
-        data: data,
-        notFound: false,
-        loadingMoreData: false 
+        notFound: true,
+        loadingMoreData: false,
       });
     } else {
       this.setState({
-        notFound: true,
-        loadingMoreData: false
+        data: data,
+        notFound: false,
+        loadingMoreData: false,
       });
     }
 
@@ -81,9 +88,17 @@ class ListData extends React.Component {
     await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
   };
 
+  getDataFilterProducts = (data) => {
+    this.loadData(data);
+  };
+
   renderFilter = () => {
     if (!this.props.filters) {
       return null;
+    }
+
+    if (this.props.filters === 'products') {
+      return <FilterProducts getProducts={(data) => this.getDataFilterProducts(data)} />;
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;
@@ -104,7 +119,7 @@ class ListData extends React.Component {
           }}
           color={nowTheme.COLORS.TEXT}
         >
-          You can see more Invoices in your Account.
+          You can see more data in your Account.
         </Text>
       </View>
     );
