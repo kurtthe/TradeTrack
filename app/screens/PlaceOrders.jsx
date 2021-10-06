@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { StyleSheet, Dimensions, Image, FlatList, View } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, FlatList, View } from 'react-native';
 import { Block, Text, theme, Button, Input } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { cart } from '@constants';
@@ -13,6 +13,7 @@ import { connect  } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 const { width } = Dimensions.get('screen');
@@ -112,6 +113,7 @@ class PlaceOrders extends React.Component {
   constructor(props) {
     super(props);
     this.generalRequest = GeneralRequestService.getInstance();
+    this.getDataPetition = GetDataPetitionService.getInstance();
     this.formatMoney = FormatMoneyService.getInstance();
     this.state = {
       isDatePickerVisible: false,
@@ -127,6 +129,7 @@ class PlaceOrders extends React.Component {
       delivery: '',
       time: '',
       orderName: '',
+      notFound: false,
     };
   }
 
@@ -146,7 +149,7 @@ class PlaceOrders extends React.Component {
   }
 
   setRadioButtons(stores) {
-    let radioButtonsValues = stores.map(c => ({
+    let radioButtonsValues = stores && stores.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
       labelStyle: {fontWeight: 'bold'},
@@ -206,17 +209,26 @@ class PlaceOrders extends React.Component {
   //   this.hideTimePicker();
   // };
 
-  onChangeSearch = async (query) => {
-    try {
-      let searchResult = await searchJobs(query);
-      let categories = this.setRadioButtons(searchResult);
+  onChangeSearch = async (textSearch = '') => {
+    await this.getDataPetition.getInfo(
+      `${endPoints.jobs}?search=${textSearch}&expand=products`,
+      this.loadData,
+      10,
+    );
+  };
+
+  loadData = (data) => {
+    if (data.length > 0) {
+      let jobs = this.setRadioButtons(data)
       this.setState({
-        radioButtonsJobs: categories
-      })
-    } catch (e) {
-      console.log('search error', e)
+        radioButtonsJobs: jobs,
+      });
+    } else {
+      this.setState({
+        notFound: true,
+      });
     }
-  }
+  };
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
@@ -545,12 +557,14 @@ class PlaceOrders extends React.Component {
                   inputStyle={styles.searchInput}
                 />
                 <Block left style={{ marginHorizontal: 16 }}>
-                  <RadioGroup
-                    radioButtons={this.state.radioButtonsData}
-                    color={nowTheme.COLORS.INFO}
-                    onPress={(items) => this.onPressRadioButton(items)}
-                    containerStyle={styles.radioStyle}
-                  />
+                  <ScrollView style={{ width: width }}>
+                    <RadioGroup
+                      radioButtons={this.state.radioButtonsData}
+                      color={nowTheme.COLORS.INFO}
+                      onPress={(items) => this.onPressRadioButton(items)}
+                      containerStyle={styles.radioStyle}
+                    />
+                  </ScrollView>
                 </Block>
               </View>
             )}
