@@ -4,7 +4,7 @@ import { Switch, Platform, StyleSheet } from 'react-native';
 import { nowTheme } from '@constants';
 
 const SwitchComponent = (props) => {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = () => {
     setIsChecked(!isChecked);
