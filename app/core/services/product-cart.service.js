@@ -21,14 +21,20 @@ export class ProductCart {
     }
 
     const newArrayProducts = this.cartProducts.map((item) => {
-      if (item.id === addProduct.id) {
-        const newCant = item.quantity + 1;
-        return {
-          ...item,
-          quantity: newCant,
-        };
+      if (item.id !== addProduct.id) {
+        return item;
       }
-      return item;
+
+      let newCant = item.quantity + 1;
+
+      if (addProduct.cantSend) {
+        newCant = addProduct.quantity;
+      }
+
+      return {
+        ...item,
+        quantity: newCant,
+      };
     });
 
     action && action(newArrayProducts);
