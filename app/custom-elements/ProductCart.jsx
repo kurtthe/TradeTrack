@@ -1,11 +1,22 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Image, Platform } from 'react-native';
+import { StyleSheet, Dimensions, Image } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
+import { useSelector } from 'react-redux';
+import { ProductCart } from '@core/services/product-cart.service';
 
 const { width } = Dimensions.get('screen');
 
-const ProductCart = (props) => {
+const ProductCartComponent = (props) => {
+  const productsInCart = useSelector((state) => state.productsReducer.products);
+  const productCart = new ProductCart(productsInCart);
+
+  console.log("==>product props", props)
+
+  handleUpdateQuantity = (newCant) => {
+    productCart.updateCant(props.product.id, newCant, this.props.updateProducts);
+  };
+
   return (
     <Block card shadow style={styles.product}>
       <Block flex row>
@@ -77,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductCart;
+export default ProductCartComponent;
