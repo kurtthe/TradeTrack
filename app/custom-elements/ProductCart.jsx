@@ -11,8 +11,8 @@ const ProductCartComponent = (props) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
   const productCart = new ProductCart(productsInCart);
 
-  console.log("==>product props", props)
-
+  console.log("===>props",props)
+  
   handleUpdateQuantity = (newCant) => {
     productCart.updateCant(props.product.id, newCant, this.props.updateProducts);
   };

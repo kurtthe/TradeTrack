@@ -6,6 +6,9 @@ import { Block, theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 import { Card } from '@components';
 import Switch from '@custom-elements/Switch';
+import { ProductCart } from '@core/services/product-cart.service';
+import { connect } from 'react-redux';
+import { updateProducts } from '@core/module/store/cart/cart';
 
 const { width } = Dimensions.get('screen');
 
@@ -16,12 +19,14 @@ const cardInfo = {
   cta: 'View article',
 };
 
-class Components extends React.Component {
+class TProducts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       activeSwitch: false,
     };
+
+    this.productCart = new ProductCart(props.cartProducts);
   }
 
   renderCards = () => {
@@ -44,6 +49,7 @@ class Components extends React.Component {
 
   handleChangeSwitch = (value) => {
     this.setState({ activeSwitch: !value });
+    this.productCart.changePrice(!value, this.props.updateProducts);
   };
 
   render() {
@@ -89,4 +95,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Components;
+const mapStateToProps = (state) => ({
+  cartProducts: state.productsReducer.products,
+});
+
+const mapDispatchToProps = { updateProducts };
+
+export default connect(mapStateToProps, mapDispatchToProps)(TProducts);
