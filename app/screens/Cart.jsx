@@ -1,14 +1,19 @@
 import React from 'react';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, Platform } from 'react-native';
-import { Block, Text, theme, Button } from 'galio-framework';
+import { StyleSheet, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { updateProducts, getProducts } from '@core/module/store/cart/cart';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import { ProductCart } from '@core/services/product-cart.service';
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
+import ProductCartComponent from '@custom-elements/ProductCart';
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
@@ -21,7 +26,6 @@ class Cart extends React.Component {
       myPrice: true,
     };
 
-    this.productCart = new ProductCart(props?.cartProducts);
     this.formatMoney = FormatMoneyService.getInstance();
   }
 
@@ -34,10 +38,6 @@ class Cart extends React.Component {
   handleDelete = (id) => {
     const updatedCart = this.props.cartProducts.filter((product) => product.id !== id);
     this.props.updateProducts(updatedCart);
-  };
-
-  handleUpdateQuantity = (product, newCant) => {
-    this.productCart.updateCant(product.id, newCant, this.props.updateProducts);
   };
 
   onCheckoutPressed() {
@@ -63,25 +63,33 @@ class Cart extends React.Component {
     );
   }
 
-  renderCurrentOrder = () => {
-    return (
-      <>
-        <Text> current</Text>
-      </>
-    );
-  };
+  renderProduct = ({ item }) => (
+    <ProductCartComponent product={item} myPrice={this.state.myPrice} />
+  );
 
-  renderPreviousOrder = () => {
-    return (
-      <>
-        <Text> previous</Text>
-      </>
-    );
-  };
+  renderCurrentOrder = () => (
+    <FlatList
+      data={this.props.cartProducts}
+      renderItem={this.renderProducts}
+      keyExtractor={(item, index) => `${index}-${item.id}`}
+      ListEmptyComponent={this.renderEmpty()}
+      style={{ width: width }}
+    />
+  );
+
+  renderPreviousOrder = () => (
+    <FlatList
+      data={this.state.productsPreviousCart}
+      renderItem={this.renderProduct}
+      keyExtractor={(item, index) => `${index}-${item.id}`}
+      ListEmptyComponent={this.renderEmpty()}
+      style={{ width: width }}
+    />
+  );
 
   render() {
     return (
-      <>
+      <Block style={styles.container}>
         <Tabs
           optionsTabsRender={[
             {
@@ -96,6 +104,7 @@ class Cart extends React.Component {
           tabIndexSelected={this.state.customStyleIndex}
           changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
         />
+
         <TouchableWithoutFeedback style={{ position: 'relative', bottom: 0 }}>
           <Block row style={styles.detailOrders}>
             <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
@@ -111,84 +120,21 @@ class Cart extends React.Component {
             </Button>
           </Block>
         </TouchableWithoutFeedback>
-      </>
+      </Block>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: wp('100%'),
+    height: hp('100%'),
+  },
   container_empty: {
-    flex: 1,
+    height: hp('60%'),
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  header: {
-    paddingVertical: theme.SIZES.BASE,
-    marginHorizontal: theme.SIZES.BASE,
-  },
-  products: {
-    minHeight: '100%',
-  },
-  product: {
-    width: width * 0.92,
-    borderWidth: 0,
-    marginVertical: theme.SIZES.BASE * 0.5,
-    marginHorizontal: theme.SIZES.BASE,
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: theme.SIZES.BASE / 4,
-    shadowOpacity: 0.1,
-    elevation: 2,
-    borderRadius: 3,
-  },
-  productTitle: {
-    fontFamily: 'montserrat-regular',
-    flex: 1,
-    flexWrap: 'wrap',
-    marginTop: 10,
-  },
-  productDescription: {
-    padding: theme.SIZES.BASE / 2,
-    paddingBottom: 0,
-  },
-  imageHorizontal: {
-    height: nowTheme.SIZES.BASE * 5,
-    width: nowTheme.SIZES.BASE * 5,
-    margin: nowTheme.SIZES.BASE / 2,
-  },
-  qty: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignContent: 'center',
-    width: theme.SIZES.BASE * 6.25,
-    backgroundColor: nowTheme.COLORS.INPUT,
-    paddingHorizontal: theme.SIZES.BASE,
-    paddingVertical: 10,
-    borderRadius: 3,
-    shadowColor: 'rgba(0, 0, 0, 0.1)',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    shadowOpacity: 1,
-  },
-  checkout: {
-    height: theme.SIZES.BASE * 3,
-    fontSize: 14,
-    width: width - theme.SIZES.BASE * 4,
-  },
-  quantityButtons: {
-    width: 25,
-    height: 25,
-  },
-  quantityTexts: {
-    fontWeight: 'bold',
-    fontSize: 20,
-  },
-  button: {
-    borderRadius: 8,
-    marginBottom: theme.SIZES.BASE,
-    width: width - theme.SIZES.BASE * 3,
   },
   detailOrders: {
     backgroundColor: 'white',
@@ -203,25 +149,6 @@ const styles = StyleSheet.create({
     elevation: 2,
     shadowRadius: 10,
     shadowOpacity: 0.3,
-  },
-  buttonOrder: {
-    width: '35%',
-    height: 30,
-  },
-  receiptText: {
-    fontSize: 13,
-    width: '60%',
-  },
-  receiptPrice: {
-    fontSize: 14,
-    color: nowTheme.COLORS.INFO,
-    fontWeight: Platform.OS == 'android' ? 'bold' : '500',
-  },
-  addButton: {
-    width: '25%',
-    height: 40,
-    backgroundColor: 'rgba(14, 58, 144, 0.1)',
-    borderRadius: 5,
   },
 });
 
