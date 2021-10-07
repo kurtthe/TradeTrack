@@ -42,7 +42,7 @@ class SearchInvoice extends React.Component {
   }
 
   handlePetitionInvoices = async (textFilter = '') => {
-    await this.getDataPetition.getInfo(endPoints.invoices, this.handleDataInvoices, 10, {
+    await this.getDataPetition.getInfo(endPoints.invoices, this.handleDataInvoices, 1, 10, {
       search: textFilter,
     });
   };
@@ -61,7 +61,7 @@ class SearchInvoice extends React.Component {
   };
 
   handleSearchChange = (text) => {
-    this.setState({ search: text })
+    this.setState({ search: text });
 
     setTimeout(() => {}, 1000);
     this.handlePetitionInvoices(text);
