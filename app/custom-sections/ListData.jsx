@@ -20,6 +20,7 @@ class ListData extends React.Component {
       valuesFilters: {},
       notFound: false,
       loadingMoreData: false,
+      showLoadMore: true,
       page: 1,
     };
 
@@ -57,12 +58,14 @@ class ListData extends React.Component {
       this.setState({
         notFound: true,
         loadingMoreData: false,
+        showLoadMore: false
       });
     } else {
       this.setState({
         data: data,
         notFound: false,
         loadingMoreData: false,
+        showLoadMore: true
       });
     }
 
@@ -100,8 +103,9 @@ class ListData extends React.Component {
     );
   };
 
-  getDataFilterProducts = (data) => {
+  getDataFilterProducts = (data, dataFilter = false) => {
     this.loadData(data);
+    this.setState({ showLoadMore: !dataFilter });
   };
 
   renderFilter = () => {
@@ -110,7 +114,11 @@ class ListData extends React.Component {
     }
 
     if (this.props.filters === 'products') {
-      return <FilterProducts getProducts={(data) => this.getDataFilterProducts(data)} />;
+      return (
+        <FilterProducts
+          getProducts={(data, dataFilter) => this.getDataFilterProducts(data, dataFilter)}
+        />
+      );
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;
@@ -137,6 +145,29 @@ class ListData extends React.Component {
     );
   };
 
+  putLoadingMore = () => {
+    if (!this.state.showLoadMore) {
+      return null;
+    }
+
+    if (this.state.data.length > 10) {
+      return (
+        <View style={styles.contentButton}>
+          <Button
+            onPress={() => this.handleLoadMore()}
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+            loading={this.state.loadingMoreData}
+            disabled={this.state.loadingMoreData}
+          >
+            Load More...
+          </Button>
+        </View>
+      );
+    }
+  };
+
   render() {
     const { children } = this.props;
 
@@ -150,20 +181,7 @@ class ListData extends React.Component {
             ) : (
               <>
                 <View>{cloneElement(children, { data: this.state.data })}</View>
-                {this.state.data.length > 10 && (
-                  <View style={styles.contentButton}>
-                    <Button
-                      onPress={() => this.handleLoadMore()}
-                      color="info"
-                      textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                      style={styles.button}
-                      loading={this.state.loadingMoreData}
-                      disabled={this.state.loadingMoreData}
-                    >
-                      Load More...
-                    </Button>
-                  </View>
-                )}
+                {this.putLoadingMore()}
               </>
             )}
           </View>
