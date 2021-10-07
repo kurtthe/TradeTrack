@@ -26,7 +26,17 @@ class TProducts extends React.Component {
       activeSwitch: false,
     };
 
-    this.productCart = new ProductCart(props.cartProducts);
+    this.productCart = ProductCart.getInstance(props.cartProducts);
+  }
+
+  componentDidUpdate(prevProps){
+    if(this.props.cartProducts !== prevProps.cartProducts || !this.productCart ){
+      this.productCart = ProductCart.getInstance(this.props.cartProducts);
+    }
+  }
+
+  componentWillUnmount(){
+    this.productCart = undefined;
   }
 
   renderCards = () => {

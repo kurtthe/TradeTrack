@@ -47,7 +47,7 @@ class Product extends React.Component {
       cantProduct: 1,
     };
 
-    this.productCart = new ProductCart(props?.cartProducts);
+    this.productCart = ProductCart.getInstance(props?.cartProducts);
     this.formatMoney = FormatMoneyService.getInstance();
   }
 

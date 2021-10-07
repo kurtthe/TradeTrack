@@ -33,7 +33,7 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
-  const productCart = new ProductCart(props.cartProducts);
+  const productCart = ProductCart.getInstance(props.cartProducts);
 
   const onAddPressed = (productItem) => {
     const addProduct = {

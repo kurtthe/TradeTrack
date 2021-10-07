@@ -5,11 +5,11 @@ export class ProductCart {
     this.cartProducts = listProductsCart;
   }
 
-  static getInstance() {
-    if (!AddProductCart.instance) {
-      AddProductCart.instance = new AddProductCart();
-    }
-    return AddProductCart.instance;
+  static getInstance(products) {
+    ProductCart.instance = undefined;
+    ProductCart.instance = new ProductCart(products);
+
+    return ProductCart.instance;
   }
 
   addCart(addProduct, action) {
@@ -56,7 +56,6 @@ export class ProductCart {
   }
 
   changePrice(myPrice = false, action) {
-
     if (!this.cartProducts || this.cartProducts.length === 0) {
       return;
     }
