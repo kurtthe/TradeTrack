@@ -31,30 +31,29 @@ const Tabs = (props) => {
 
   return (
     <View>
-     
-        <SegmentedControlTab
-          values={getLabels()}
-          selectedIndex={indexSelectedTab}
-          onTabPress={handleCustomIndexSelect}
-          borderRadius={0}
-          tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
-          tabStyle={{
-            backgroundColor: '#FFFFFF',
-            borderWidth: 0,
-            borderColor: 'transparent',
-            borderBottomWidth: 2,
-            borderBottomColor: '#D2D2D2',
-          }}
-          activeTabStyle={{
-            backgroundColor: nowTheme.COLORS.BACKGROUND,
-            marginTop: 2,
-            borderBottomWidth: 2,
-            borderBottomColor: nowTheme.COLORS.INFO,
-          }}
-          tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
-          activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
-        />
-     
+      <SegmentedControlTab
+        values={getLabels()}
+        selectedIndex={indexSelectedTab}
+        onTabPress={handleCustomIndexSelect}
+        borderRadius={0}
+        tabsContainerStyle={{ height: 50, backgroundColor: '#F2F2F2' }}
+        tabStyle={{
+          backgroundColor: '#FFFFFF',
+          borderWidth: 0,
+          borderColor: 'transparent',
+          borderBottomWidth: 2,
+          borderBottomColor: '#D2D2D2',
+        }}
+        activeTabStyle={{
+          backgroundColor: nowTheme.COLORS.BACKGROUND,
+          marginTop: 2,
+          borderBottomWidth: 2,
+          borderBottomColor: nowTheme.COLORS.INFO,
+        }}
+        tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
+        activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
+      />
+
       {cloneElement(getComponent())}
     </View>
   );

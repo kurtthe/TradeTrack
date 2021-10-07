@@ -25,7 +25,7 @@ const QuantityCounterWithInput = (props) => {
         [
           {
             text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
+            onPress: () => setQuantity(1),
             style: 'cancel',
           },
           {
