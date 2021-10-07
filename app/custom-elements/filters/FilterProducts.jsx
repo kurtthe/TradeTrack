@@ -81,13 +81,13 @@ class FilterProducts extends Component {
       radioButtonsSubCategories: subcategories,
       noSubCategoriesFound: getSubCategories.length === 0,
     });
-    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+    this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef.current?.setModalVisible(false);
   };
 
   onPressRadioButtonSubCategory = (options) => {
     const optionSelected = options.find((option) => option.selected);
-    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+    this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef2.current?.setModalVisible(false);
   };
 
