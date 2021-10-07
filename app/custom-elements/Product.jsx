@@ -36,12 +36,9 @@ const Product = (props) => {
   const productCart = new ProductCart(props.cartProducts);
 
   const onAddPressed = (productItem) => {
-    const priceProduct = props.myPrice ? productItem.rrp : productItem.cost_price;
-
     const addProduct = {
       ...productItem,
       quantity: 1,
-      price: priceProduct,
       cantSend: false,
     };
 

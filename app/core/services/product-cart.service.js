@@ -39,4 +39,19 @@ export class ProductCart {
 
     action && action(newArrayProducts);
   }
+
+  updateCant(IdProduct, newCant, action) {
+    const newArrayProducts = this.cartProducts.map((item) => {
+      if (item.id !== IdProduct) {
+        return item;
+      }
+
+      return {
+        ...item,
+        quantity: newCant,
+      };
+    });
+
+    action && action(newArrayProducts);
+  }
 }
