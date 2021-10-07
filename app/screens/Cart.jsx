@@ -13,7 +13,7 @@ import {
 } from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
-import ProductCartComponent from '@custom-elements/ProductCart';
+import ProductCart from '@custom-elements/ProductCart';
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
@@ -23,16 +23,9 @@ class Cart extends React.Component {
     this.state = {
       customStyleIndex: 0,
       deleteAction: false,
-      myPrice: true,
     };
 
     this.formatMoney = FormatMoneyService.getInstance();
-  }
-
-  componentDidMount() {
-    this.setState({
-      myPrice: this.props.route?.params?.myPrice,
-    });
   }
 
   handleDelete = (id) => {
@@ -63,9 +56,7 @@ class Cart extends React.Component {
     );
   }
 
-  renderProduct = ({ item }) => (
-    <ProductCartComponent product={item} myPrice={this.state.myPrice} />
-  );
+  renderProducts = ({ item }) => <ProductCart product={item} myPrice={this.state.myPrice} />;
 
   renderCurrentOrder = () => (
     <FlatList
@@ -80,7 +71,7 @@ class Cart extends React.Component {
   renderPreviousOrder = () => (
     <FlatList
       data={this.state.productsPreviousCart}
-      renderItem={this.renderProduct}
+      renderItem={this.renderProducts}
       keyExtractor={(item, index) => `${index}-${item.id}`}
       ListEmptyComponent={this.renderEmpty()}
       style={{ width: width }}
