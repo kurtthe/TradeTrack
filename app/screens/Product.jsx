@@ -162,7 +162,7 @@ class Product extends React.Component {
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    The Price
+                     Price
                   </Text>
                   <Text
                     style={{ fontFamily: 'montserrat-bold' }}
@@ -218,7 +218,7 @@ class Product extends React.Component {
                     {productDetail?.sku}{' '}
                   </Text>
                 </Block>
-                <Block flex>
+                {/* <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     Type
                   </Text>
@@ -238,7 +238,7 @@ class Product extends React.Component {
                     {' '}
                     {productDetail?.type}{' '}
                   </Text>
-                </Block>
+                </Block> */}
               </Block>
             </Block>
           </Block>
