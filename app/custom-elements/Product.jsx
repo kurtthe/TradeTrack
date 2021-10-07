@@ -62,6 +62,10 @@ const Product = (props) => {
         <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
           <Image resizeMode="contain" style={styles.image} source={{ uri: props.product.image }} />
         </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
+         
+       
         <Block flex space="between" style={{ paddingBottom: 7 }}>
           <Block row>
             <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
@@ -104,6 +108,7 @@ const Product = (props) => {
             )}
           </Block>
         </Block>
+        </TouchableWithoutFeedback>
         <Block center>
           <Button
             color="warning"
