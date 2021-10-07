@@ -3,12 +3,11 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableWithoutFeedback,
   Image,
-  Animated,
   Platform,
   View,
-  KeyboardAvoidingView,
+  Animated,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import { Block, Text, Button, theme } from 'galio-framework';
@@ -16,8 +15,9 @@ import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
 import nowTheme from '@constants/Theme';
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
-import { FormatMoneyService } from '@core/services/format-money.service';
 import { ProductCart } from '@core/services/product-cart.service';
+import { FormatMoneyService } from '@core/services/format-money.service';
+import LoadingComponent from '@custom-elements/Loading';
 
 const { height, width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -43,7 +43,8 @@ class Product extends React.Component {
     this.state = {
       selectedSize: null,
       hideMyPrice: false,
-      productDetail: {},
+      productDetail: null,
+      cantProduct: 1,
     };
 
     this.productCart = new ProductCart(props?.cartProducts);
@@ -57,9 +58,30 @@ class Product extends React.Component {
     });
   }
 
+  renderProgress = () => {
+    const { productDetail } = this.state;
+
+    const productImages = [productDetail?.image, productDetail?.image];
+    const position = Animated.divide(this.scrollX, width);
+
+    return (
+      <Block row>
+        {productImages.map((_, i) => {
+          const opacity = position.interpolate({
+            inputRange: [i - 1, i, i + 1],
+            outputRange: [0.5, 1, 0.5],
+            extrapolate: 'clamp',
+          });
+
+          return <Animated.View key={i} style={[styles.dots, { opacity }]} />;
+        })}
+      </Block>
+    );
+  };
+
   renderGallery = () => {
     const { productDetail } = this.state;
-    const productImages = [productDetail.image, productDetail.image];
+    const productImages = [productDetail?.image, productDetail?.image];
 
     return (
       <ScrollView
@@ -82,50 +104,28 @@ class Product extends React.Component {
     );
   };
 
-  onAddCartPressed = (productItem, cant = 1) => {
+  onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
 
     const addProduct = {
       ...productItem,
-      quantity: cant,
+      quantity: this.state.cantProduct,
       price: priceProduct,
-      cantSend: cant > 1,
+      cantSend: this.state.cantProduct > 1,
     };
     this.productCart.addCart(addProduct, this.props.updateProducts);
   };
 
-  renderProgress = () => {
-    const { productDetail } = this.state;
-
-    const productImages = [productDetail.image, productDetail.image];
-    const position = Animated.divide(this.scrollX, width);
-
-    return (
-      <Block row>
-        {productImages.map((_, i) => {
-          const opacity = position.interpolate({
-            inputRange: [i - 1, i, i + 1],
-            outputRange: [0.5, 1, 0.5],
-            extrapolate: 'clamp',
-          });
-
-          return <Animated.View key={i} style={[styles.dots, { opacity }]} />;
-        })}
-      </Block>
-    );
-  };
-
-  renderDescription = (product) => {
-    return product.description?.map((d) => {
-      return <Text style={{ paddingBottom: 5 }}>- {d}</Text>;
-    });
-  };
   render() {
     const { productDetail } = this.state;
 
+    if (!productDetail || productDetail == undefined || productDetail === undefined) {
+      return <LoadingComponent />;
+    }
+
     return (
-      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={120} style={styles.product}>
-        <ScrollView vertical={true} showsVerticalScrollIndicator={false}>
+      <>
+        <ScrollView>
           <Block
             row
             flex
@@ -136,12 +136,8 @@ class Product extends React.Component {
               justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly',
             }}
           ></Block>
-          <Block flex>
-            {this.renderGallery()}
-            <Block center style={styles.dotsContainer}>
-              {this.renderProgress()}
-            </Block>
-          </Block>
+
+          <Block flex>{this.renderGallery()}</Block>
           <Block flex style={styles.options}>
             <Block
               style={{
@@ -161,7 +157,7 @@ class Product extends React.Component {
                 }
                 style={{ paddingBottom: 24, fontWeight: '500' }}
               >
-                {productDetail.name}
+                {productDetail?.name}
               </Text>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
@@ -173,7 +169,7 @@ class Product extends React.Component {
                     color={nowTheme.COLORS.ORANGE}
                     size={sizeConstantBig}
                   >
-                    {this.formatMoney.format(productDetail.rrp)}
+                    {this.formatMoney.format(productDetail?.rrp)}
                   </Text>
                 </Block>
                 {this.state.hideMyPrice && (
@@ -198,7 +194,7 @@ class Product extends React.Component {
                         color={nowTheme.COLORS.ORANGE}
                         size={sizeConstantBig}
                       >
-                        {this.formatMoney.format(productDetail.cost_price)}
+                        {this.formatMoney.format(productDetail?.cost_price)}
                       </Text>
                     </Block>
                   </>
@@ -219,7 +215,7 @@ class Product extends React.Component {
 
                   <Text color={nowTheme.COLORS.INFO} size={sizeConstantSmall}>
                     {' '}
-                    {productDetail.sku}{' '}
+                    {productDetail?.sku}{' '}
                   </Text>
                 </Block>
                 <Block flex>
@@ -240,7 +236,7 @@ class Product extends React.Component {
                     }
                   >
                     {' '}
-                    {productDetail.type}{' '}
+                    {productDetail?.type}{' '}
                   </Text>
                 </Block>
               </Block>
@@ -250,27 +246,27 @@ class Product extends React.Component {
         <View style={styles.quantityBar}>
           <QuantityCounterWithInput
             product
-            quantity={productDetail.quantity ? productDetail.quantity : 1}
-            quantityHandler={(q) => this.onAddCartPressed(product, q)}
+            quantity={productDetail?.quantity ? productDetail?.quantity : this.state.cantProduct}
+            quantityHandler={(cant) => this.setState({ cantProduct: cant })}
           />
           <Button
             shadowless
             style={styles.addToCart}
             color={nowTheme.COLORS.INFO}
-            onPress={() => this.onAddCartPressed(product)}
+            onPress={() => this.onAddCartPressed(productDetail)}
           >
             <Text size={18} color={nowTheme.COLORS.WHITE}>
               Add to Cart
             </Text>
           </Button>
         </View>
-      </KeyboardAvoidingView>
+      </>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  product: {
+  productDetail: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
