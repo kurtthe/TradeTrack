@@ -9,12 +9,13 @@ const { width } = Dimensions.get('screen');
 
 const ProductCartComponent = (props) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
-  const productCart = new ProductCart(productsInCart);
+  const productCart = ProductCart.getInstance(productsInCart);
 
   console.log("===>props",props)
   
   handleUpdateQuantity = (newCant) => {
-    productCart.updateCant(props.product.id, newCant, this.props.updateProducts);
+    // productCart.updateCant(props.product.id, newCant, this.props.updateProducts);
+    console.log("==<")
   };
 
   return (
