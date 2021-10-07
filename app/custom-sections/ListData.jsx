@@ -20,6 +20,7 @@ class ListData extends React.Component {
       valuesFilters: {},
       notFound: false,
       loadingMoreData: false,
+      page: 1,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -42,6 +43,7 @@ class ListData extends React.Component {
       await this.getDataPetition.getInfo(
         this.props.endpoint,
         this.loadData,
+        this.state.page,
         this.state.perPageData,
       );
       return;
@@ -68,6 +70,11 @@ class ListData extends React.Component {
   };
 
   handleLoadMore = () => {
+    if (this.state.perPageData >= 100) {
+      const oldPage = this.state.page;
+      this.setState({ page: oldPage + 1, perPageData: 20 });
+      return;
+    }
     const oldData = this.state.perPageData;
     this.setState({ perPageData: oldData + 20 });
   };
@@ -85,7 +92,12 @@ class ListData extends React.Component {
       linkPetition += `${item}=${valuesFilters[item]}&`;
     });
 
-    await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
+    await this.getDataPetition.getInfo(
+      linkPetition,
+      this.loadData,
+      this.state.page,
+      this.state.perPageData,
+    );
   };
 
   getDataFilterProducts = (data) => {
