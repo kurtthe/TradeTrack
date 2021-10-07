@@ -16,7 +16,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
 
 const radioButtonsDelivery = [
@@ -130,6 +130,7 @@ class PlaceOrders extends React.Component {
       time: { label: '', value: ''},
       orderName: '',
       notFound: false,
+      showSearch: false,
     };
   }
 
@@ -181,7 +182,8 @@ class PlaceOrders extends React.Component {
       })
     else if (this.state.radioButtonsData == this.state.radioButtonsJobs)
       this.setState({
-        job: selected.value
+        job: selected.value,
+        showSearch: false
       })
     
     actionSheetRadioButtonRef.current?.setModalVisible(false);
@@ -215,7 +217,7 @@ class PlaceOrders extends React.Component {
   //   this.hideTimePicker();
   // };
 
-  onChangeSearch = async (textSearch = '') => {
+  onChangeSearch = async (textSearch) => {
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${textSearch}&expand=products`,
       this.loadData,
@@ -228,10 +230,13 @@ class PlaceOrders extends React.Component {
       let jobs = this.setRadioButtons(data)
       this.setState({
         radioButtonsJobs: jobs,
+        radioButtonsData: this.state.radioButtonsJobs,
+        showSearch: true
       });
     } else {
       this.setState({
         notFound: true,
+        showSearch: false
       });
     }
   };
@@ -552,7 +557,7 @@ class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
           <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
-            {radioButtonsData !== this.state.radioButtonsJobs ? (
+            {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
@@ -560,23 +565,24 @@ class PlaceOrders extends React.Component {
                 containerStyle={styles.radioStyle}
               />
             ) : (
-              <View>
+              <View style={{ height: height/2}}>
                 <Searchbar
                   placeholder="Search job"
                   onChangeText={this.onChangeSearch}
                   style={styles.search}
                   inputStyle={styles.searchInput}
                 />
-                <Block left style={{ marginHorizontal: 16 }}>
-                  <ScrollView style={{ width: width }}>
-                    <RadioGroup
-                      radioButtons={this.state.radioButtonsData}
-                      color={nowTheme.COLORS.INFO}
-                      onPress={(items) => this.onPressRadioButton(items)}
-                      containerStyle={styles.radioStyle}
-                    />
-                  </ScrollView>
-                </Block>
+                <ScrollView 
+                  style={{ width: width, marginHorizontal: 16 }}
+                  contentContainerStyle={{ alignItems: 'flex-start' }}
+                >
+                  <RadioGroup
+                    radioButtons={this.state.radioButtonsData}
+                    color={nowTheme.COLORS.INFO}
+                    onPress={(items) => this.onPressRadioButton(items)}
+                    containerStyle={styles.radioStyle}
+                  />
+                </ScrollView>
               </View>
             )}
           </Block>
