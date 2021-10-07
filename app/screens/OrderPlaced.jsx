@@ -62,7 +62,7 @@ class orderPlaced extends React.Component {
                                     size={20}
                                     // style={{textDecorationLine: 'underline',}}
                                 >
-                                    MO1223123
+                                    MO2021100605
                                 </Text>
                             </Block>
                             <Block flex={0.2} width={width * 0.7} style={{marginTop:10}} >
