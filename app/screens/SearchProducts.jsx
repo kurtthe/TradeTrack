@@ -37,6 +37,7 @@ class SearchProduct extends React.Component {
     await this.getDataPetition.getInfo(
       `${endPoints.searchProducts}?search=${textSearch}`,
       this.loadData,
+      1,
       10,
     );
   };
