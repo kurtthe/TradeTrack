@@ -33,16 +33,14 @@ const sizeConstant =
     : 15;
 
 const Product = (props) => {
-  const productCart = new ProductCart(props.cartProducts);
+  const productCart = ProductCart.getInstance(props.cartProducts);
 
   const onAddPressed = (productItem) => {
-    const priceProduct = props.myPrice ? productItem.rrp : productItem.cost_price;
-
     const addProduct = {
       ...productItem,
       quantity: 1,
-      price: priceProduct,
       cantSend: false,
+      myPrice: props.myPrice
     };
 
     productCart.addCart(addProduct, props.updateProducts);
@@ -142,7 +140,6 @@ const styles = StyleSheet.create({
     height: cardHeight * 0.3,
   },
   priceGrayText: {
-    // paddingLeft: 2,
     fontSize: 13,
   },
   price: {
@@ -157,16 +154,7 @@ const styles = StyleSheet.create({
         : 15,
     color: nowTheme.COLORS.ORANGE,
   },
-  addButton: {
-    width: '100%',
-    height: 40,
-    backgroundColor: 'rgba(14, 58, 144, 0.1)',
-    borderRadius: 5,
-  },
-  button: {
-    marginBottom: theme.SIZES.BASE,
-    width: width * 0.9,
-  },
+
   buttonAdd: {
     width:
       Platform.OS === 'ios'
@@ -177,19 +165,6 @@ const styles = StyleSheet.create({
         ? width - 220
         : width - 300,
     top: 10,
-  },
-  search: {
-    height: 40,
-    width: width - 32,
-    marginHorizontal: 12,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: nowTheme.COLORS.BORDER,
-    elevation: 0,
-  },
-  searchInput: {
-    color: 'black',
-    fontSize: 16,
   },
 });
 
