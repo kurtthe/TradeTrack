@@ -53,6 +53,7 @@ export class ProductCart {
     });
 
     action && action(newArrayProducts);
+    return newArrayProducts;
   }
 
   changePrice(myPrice = false, action) {
