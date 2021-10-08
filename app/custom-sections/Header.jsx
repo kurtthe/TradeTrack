@@ -159,8 +159,8 @@ class Header extends React.Component {
       case 'Product':
         return [
           <Block row style={{ paddingTop: 17.5, width: 50 }}>
-            <CartButton isWhite={white} />
-            <ConfigButton isWhite={white} />
+            {/* <CartButton isWhite={white} />
+            <ConfigButton isWhite={white} /> */}
           </Block>,
         ];
 

@@ -43,7 +43,7 @@ class Category extends React.Component {
       <>
         <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
           <ListData
-            perPage={50}
+            perPage={20}
             filters={'products'}
             endpoint={this.state.urlProducts}
             children={<ListProducts myPrice={this.state.myPriceActive}/>}

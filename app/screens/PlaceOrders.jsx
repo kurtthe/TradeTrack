@@ -22,14 +22,14 @@ const actionSheetRadioButtonRef = createRef();
 const radioButtonsDelivery = [
   {
     id: '1',
-    label: 'Use delivery',
+    label: 'Delivery',
     value: 'delivery',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '2',
-    label: 'Take it by yourself',
+    label: 'Pickup',
     value: 'pickup',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
