@@ -1,8 +1,11 @@
+import { AlertService } from './alert.service';
+
 export class ProductCart {
   static instance;
 
   constructor(listProductsCart) {
     this.cartProducts = listProductsCart;
+    this.alertService = new AlertService();
   }
 
   static getInstance(products) {
@@ -20,24 +23,7 @@ export class ProductCart {
       return;
     }
 
-    const newArrayProducts = this.cartProducts.map((item) => {
-      if (item.id !== addProduct.id) {
-        return item;
-      }
-
-      let newCant = item.quantity + 1;
-
-      if (addProduct.cantSend) {
-        newCant = addProduct.quantity;
-      }
-
-      return {
-        ...item,
-        quantity: newCant,
-      };
-    });
-
-    action && action(newArrayProducts);
+    this.alertService.show('Alert!', `Product with SKU: ${addProduct.sku} is already added.`);
   }
 
   updateCant(IdProduct, newCant, action) {
@@ -68,6 +54,21 @@ export class ProductCart {
       };
     });
 
+    console.log('==>newArrayProducts', newArrayProducts);
+
     action && action(newArrayProducts);
+  }
+
+  totalOrder() {
+    if(!this.cartProducts){
+      return
+    }
+    
+    const prices = this.cartProducts?.map((product) => {
+      const priceProduct = product.myPrice ? product.rrp : product.cost_price;
+      return parseFloat(priceProduct) * parseFloat(product.quantity);
+    });
+    const reducer = (accumulator, curr) => accumulator + curr;
+    return prices.reduce(reducer);
   }
 }
