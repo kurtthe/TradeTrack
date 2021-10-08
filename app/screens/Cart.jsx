@@ -78,6 +78,30 @@ class Cart extends React.Component {
     />
   );
 
+  renderFoother = () => {
+    if (!this.props.cartProducts || this.props.cartProducts.length === 0) {
+      return null;
+    }
+
+    return (
+      <TouchableWithoutFeedback style={{ position: 'relative', bottom: 0 }}>
+        <Block row style={styles.detailOrders}>
+          <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
+          <Button
+            shadowless
+            style={(styles.addToCart, { left: 10 })}
+            color={nowTheme.COLORS.INFO}
+            onPress={() => this.onCheckoutPressed()}
+          >
+            <Text size={18} color={nowTheme.COLORS.WHITE}>
+              Checkout
+            </Text>
+          </Button>
+        </Block>
+      </TouchableWithoutFeedback>
+    );
+  };
+
   render() {
     return (
       <Block style={styles.container}>
@@ -95,22 +119,7 @@ class Cart extends React.Component {
           tabIndexSelected={this.state.customStyleIndex}
           changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
         />
-
-        <TouchableWithoutFeedback style={{ position: 'relative', bottom: 0 }}>
-          <Block row style={styles.detailOrders}>
-            <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
-            <Button
-              shadowless
-              style={(styles.addToCart, { left: 10 })}
-              color={nowTheme.COLORS.INFO}
-              onPress={() => this.onCheckoutPressed()}
-            >
-              <Text size={18} color={nowTheme.COLORS.WHITE}>
-                Checkout
-              </Text>
-            </Button>
-          </Block>
-        </TouchableWithoutFeedback>
+        {this.renderFoother()}
       </Block>
     );
   }
