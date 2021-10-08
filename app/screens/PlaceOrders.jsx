@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { StyleSheet, Dimensions, Image, FlatList, View } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, FlatList, View } from 'react-native';
 import { Block, Text, theme, Button, Input } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { cart } from '@constants';
@@ -13,23 +13,24 @@ import { connect  } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-const { width } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
 
 const radioButtonsDelivery = [
   {
     id: '1',
-    label: 'Use delivery',
-    value: 'Use delivery',
+    label: 'Delivery',
+    value: 'delivery',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '2',
-    label: 'Take it by yourself',
-    value: 'Take it by yourself',
+    label: 'Pickup',
+    value: 'pickup',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
@@ -39,70 +40,70 @@ const radioButtonsHour = [
   {
     id: '1',
     label: '7 AM',
-    value: '7 AM',
+    value: '7:00am',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '2',
     label: '8 AM',
-    value: '8 AM',
+    value: '8:00am',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '3',
     label: '9 AM',
-    value: '9 AM',
+    value: '9:00am',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '4',
     label: '10 AM',
-    value: '10 AM',
+    value: '10:00am',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '5',
     label: '11 AM',
-    value: '11 AM',
+    value: '11:00am',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '6',
     label: '12 PM',
-    value: '12 PM',
+    value: '12:00pm',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '7',
     label: '1 PM',
-    value: '1 PM',
+    value: '1:00pm',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '8',
     label: '2 PM',
-    value: '2 PM',
+    value: '2:00pm',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '9',
     label: '3 PM',
-    value: '3 PM',
+    value: '3:00pm',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
   {
     id: '10',
     label: '4 PM',
-    value: '4 PM',
+    value: '4:00pm',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
   },
@@ -112,6 +113,7 @@ class PlaceOrders extends React.Component {
   constructor(props) {
     super(props);
     this.generalRequest = GeneralRequestService.getInstance();
+    this.getDataPetition = GetDataPetitionService.getInstance();
     this.formatMoney = FormatMoneyService.getInstance();
     this.state = {
       isDatePickerVisible: false,
@@ -124,9 +126,11 @@ class PlaceOrders extends React.Component {
       radioButtonsStore: [],
       store: '',
       job: '',
-      delivery: '',
-      time: '',
+      delivery: { label: '', value: ''},
+      time: { label: '', value: ''},
       orderName: '',
+      notFound: false,
+      showSearch: false,
     };
   }
 
@@ -146,7 +150,7 @@ class PlaceOrders extends React.Component {
   }
 
   setRadioButtons(stores) {
-    let radioButtonsValues = stores.map(c => ({
+    let radioButtonsValues = stores && stores.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
       labelStyle: {fontWeight: 'bold'},
@@ -160,11 +164,17 @@ class PlaceOrders extends React.Component {
     let selected = items.find(i => i.selected)
     if (this.state.radioButtonsData == radioButtonsDelivery)
       this.setState({
-        delivery: selected.value
+        delivery: {
+          value: selected.value,
+          label: selected.label
+        }
       })
     else if (this.state.radioButtonsData == radioButtonsHour)
       this.setState({
-        time: selected.value
+        time: {
+          value: selected.value,
+          label: selected.label
+        }
       })
     else if (this.state.radioButtonsData == this.state.radioButtonsStore)
       this.setState({
@@ -172,7 +182,8 @@ class PlaceOrders extends React.Component {
       })
     else if (this.state.radioButtonsData == this.state.radioButtonsJobs)
       this.setState({
-        job: selected.value
+        job: selected.value,
+        showSearch: false
       })
     
     actionSheetRadioButtonRef.current?.setModalVisible(false);
@@ -206,17 +217,29 @@ class PlaceOrders extends React.Component {
   //   this.hideTimePicker();
   // };
 
-  onChangeSearch = async (query) => {
-    try {
-      let searchResult = await searchJobs(query);
-      let categories = this.setRadioButtons(searchResult);
+  onChangeSearch = async (textSearch) => {
+    await this.getDataPetition.getInfo(
+      `${endPoints.jobs}?search=${textSearch}&expand=products`,
+      this.loadData,
+      10,
+    );
+  };
+
+  loadData = (data) => {
+    if (data.length > 0) {
+      let jobs = this.setRadioButtons(data)
       this.setState({
-        radioButtonsJobs: categories
-      })
-    } catch (e) {
-      console.log('search error', e)
+        radioButtonsJobs: jobs,
+        radioButtonsData: this.state.radioButtonsJobs,
+        showSearch: true
+      });
+    } else {
+      this.setState({
+        notFound: true,
+        showSearch: false
+      });
     }
-  }
+  };
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
@@ -250,46 +273,51 @@ class PlaceOrders extends React.Component {
       let items = this.props.cartProducts.map(e => {
         return (
           {
-            ...e,
             description: e.name,
+            quantity: e.quantity,
             units: e.quantity,
-            cost: e.price
+            cost: e.price,
+            tax: [
+              {
+                  name: "GST",
+                  rate: 10
+              }
+          ]
           }
         )
       })
       let missingFields = this.verifyFields()
       if (!missingFields) {
         let data = {
-          "data": {
-            "name": this.state.orderName,
-            "supplier": supplierId,
-            "job": this.state.job,
-            "issued_on": date.toISOString("2015-05-14").slice(0,10),
-            "description": "A description for this order",
-            "notes": this.state.notes,
-            "tax_exclusive": null,
-            "sections": [
+          data: {
+            name: this.state.orderName,
+            supplier: supplierId.id,
+            job: this.state.job,
+            issued_on: date.toISOString("2015-05-14").slice(0,10),
+            description: "A description for this order",
+            notes: this.state.notes,
+            tax_exclusive: true,
+            sections: [
                 {
-                    "items": items,
-                    "name": "Section 1",
-                    "description": "A section description",
-                    "hide_section": false,
-                    "hide_section_price": false,
-                    "hide_section_items": false,
-                    "hide_item_qty": false,
-                    "hide_item_price": false,
-                    "hide_item_subtotal": false,
-                    "hide_item_total": false
+                    items: items,
+                    name: "Section 1",
+                    description: "A section description",
+                    hide_section: false,
+                    hide_section_price: false,
+                    hide_section_items: false,
+                    hide_item_qty: false,
+                    hide_item_price: false,
+                    hide_item_subtotal: false,
+                    hide_item_total: false
                 }
             ],
-            "delivery_instructions": {
-                "delivery": this.state.delivery,
-                "time": this.state.time
+            delivery_instructions: {
+                delivery: this.state.delivery.value,
+                time: this.state.time.value
             }
           }
         };
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
-        console.log(placedOrder)
         if (placedOrder) {
           this.props.navigation.navigate('OrderPlaced');
         }
@@ -346,9 +374,9 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
-            placeholder={this.state.delivery || "Select delivery type"}
+            placeholder={this.state.delivery.label || "Select delivery type"}
             icon
-            picked={this.state.delivery !== ''}
+            picked={this.state.delivery.value !== ''}
             onPress={() => {
               this.setState({ radioButtonsData: radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
@@ -375,9 +403,9 @@ class PlaceOrders extends React.Component {
           </>
           <PickerButton
             text="Preferred Delivery Time"
-            placeholder={this.state.time || "Select time"}
+            placeholder={this.state.time.label || "Select time"}
             icon
-            picked={this.state.time !== ''}
+            picked={this.state.time.value !== ''}
             iconName={'lock-clock'}
             size={25}
             onPress={ () => {
@@ -529,7 +557,7 @@ class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
           <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
-            {radioButtonsData !== this.state.radioButtonsJobs ? (
+            {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
@@ -537,21 +565,24 @@ class PlaceOrders extends React.Component {
                 containerStyle={styles.radioStyle}
               />
             ) : (
-              <View>
+              <View style={{ height: height/2}}>
                 <Searchbar
                   placeholder="Search job"
                   onChangeText={this.onChangeSearch}
                   style={styles.search}
                   inputStyle={styles.searchInput}
                 />
-                <Block left style={{ marginHorizontal: 16 }}>
+                <ScrollView 
+                  style={{ width: width, marginHorizontal: 16 }}
+                  contentContainerStyle={{ alignItems: 'flex-start' }}
+                >
                   <RadioGroup
                     radioButtons={this.state.radioButtonsData}
                     color={nowTheme.COLORS.INFO}
                     onPress={(items) => this.onPressRadioButton(items)}
                     containerStyle={styles.radioStyle}
                   />
-                </Block>
+                </ScrollView>
               </View>
             )}
           </Block>
