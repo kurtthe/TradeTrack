@@ -8,6 +8,7 @@ import {
   View,
   Animated,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import { Block, Text, Button, theme } from 'galio-framework';
@@ -124,7 +125,7 @@ class Product extends React.Component {
     }
 
     return (
-      <>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={120} style={styles.product}>
         <ScrollView>
           <Block
             row
@@ -260,12 +261,18 @@ class Product extends React.Component {
             </Text>
           </Button>
         </View>
-      </>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  product: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 0
+  },
   productDetail: {
     flex: 1,
     flexDirection: 'row',
