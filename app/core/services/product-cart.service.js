@@ -41,7 +41,7 @@ export class ProductCart {
     action && action(newArrayProducts);
     return newArrayProducts;
   }
-
+  
   changePrice(myPrice = false, action) {
     if (!this.cartProducts || this.cartProducts.length === 0) {
       return;
