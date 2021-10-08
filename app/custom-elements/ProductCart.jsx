@@ -2,20 +2,38 @@ import React from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ProductCart } from '@core/services/product-cart.service';
+import { FormatMoneyService } from '@core/services/format-money.service';
+import { updateProducts } from '@core/module/store/cart/cart';
+import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
 
 const { width } = Dimensions.get('screen');
+const formatMoney = FormatMoneyService.getInstance();
 
 const ProductCartComponent = (props) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
+  const dispatch = useDispatch();
+
   const productCart = ProductCart.getInstance(productsInCart);
 
-  console.log("===>props",props)
-  
-  handleUpdateQuantity = (newCant) => {
-    // productCart.updateCant(props.product.id, newCant, this.props.updateProducts);
-    console.log("==<")
+  const handleUpdateQuantity = (newCant) => {
+    const newArrayCant = productCart.updateCant(props.product.id, newCant);
+    dispatch(updateProducts(newArrayCant));
+  };
+
+  const getPriceProduct = () => {
+    const price = props.product.myPrice ? props.product.rrp : props.product.cost_price;
+    const totalPrice = parseFloat(price) * parseFloat(props.product.quantity);
+    console.log("==>price",price)
+    console.log("==>props.product.quantity",props.product)
+    console.log("==>totalPrice",totalPrice)
+    return formatMoney.format(totalPrice);
+  };
+
+  const handleDelete = (id) => {
+    const updatedCart = productsInCart.filter((product) => product.id !== id);
+    dispatch(updateProducts(updatedCart));
   };
 
   return (
@@ -37,15 +55,23 @@ const ProductCartComponent = (props) => {
               color={nowTheme.COLORS.ORANGE}
               size={20}
             >
-              ${props.product.price * props.product.qty}
+              {getPriceProduct()}
             </Text>
-            <Button
-              color="warning"
-              textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color: '#0E3A90' }}
-              style={styles.buttonOrder}
-            >
-              Re-Order
-            </Button>
+            {props.previusProduct ? (
+              <Button
+                color="warning"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color: '#0E3A90' }}
+                style={styles.buttonOrder}
+              >
+                Re-Order
+              </Button>
+            ) : (
+              <QuantityCounterWithInput
+                delete={() => handleDelete(props.product.id)}
+                quantity={props.product.quantity}
+                quantityHandler={(cant) => handleUpdateQuantity(props.product, cant)}
+              />
+            )}
           </Block>
         </Block>
       </Block>
