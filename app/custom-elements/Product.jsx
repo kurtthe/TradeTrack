@@ -39,7 +39,6 @@ const Product = (props) => {
     const addProduct = {
       ...productItem,
       quantity: 1,
-      cantSend: false,
       myPrice: props.myPrice
     };
 
