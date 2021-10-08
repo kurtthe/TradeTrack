@@ -153,7 +153,7 @@ class Help extends React.Component {
                             size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 16 :20) :  (Dimensions.get('window').height < 870) ? 16: 20}
 
                           >
-                          Phone number
+                          Phone Number
                           </Text>
                         </Block>
                         <Block width={width * 0.9} >
