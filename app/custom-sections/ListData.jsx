@@ -58,14 +58,14 @@ class ListData extends React.Component {
       this.setState({
         notFound: true,
         loadingMoreData: false,
-        showLoadMore: false
+        showLoadMore: false,
       });
     } else {
       this.setState({
         data: data,
         notFound: false,
         loadingMoreData: false,
-        showLoadMore: true
+        showLoadMore: true,
       });
     }
 
@@ -103,8 +103,12 @@ class ListData extends React.Component {
     );
   };
 
-  getDataFilterProducts = (data, dataFilter = false) => {
-    this.loadData(data);
+  getDataFilterProducts = async (data = false, dataFilter = false) => {
+    if (!data) {
+      await this.getPetitionData();
+    } else {
+      this.loadData(data);
+    }
     this.setState({ showLoadMore: !dataFilter });
   };
 

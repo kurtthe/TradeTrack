@@ -31,7 +31,7 @@ class Filters extends Component {
       type: '',
       textSearch: '',
       idSelectedType: null,
-      optionsType: radioButtonsHour
+      optionsType: radioButtonsHour,
     };
   }
 
@@ -93,18 +93,16 @@ class Filters extends Component {
       this.setState({ textSearch: value });
     }
     if (!whoChange) {
-      const resetOptionsSelected = this.state.optionsType.map((item)=>{
-        if(item.id === this.state.idSelectedType){
+      const resetOptionsSelected = this.state.optionsType.map((item) => {
+        if (item.id === this.state.idSelectedType) {
           return {
             ...item,
-            selected: false
-          }
+            selected: false,
+          };
         }
 
-        return {
-          ...item
-        }
-      })
+        return item;
+      });
 
       this.setState({
         dateStartValue: '',
@@ -112,7 +110,7 @@ class Filters extends Component {
         type: '',
         textSearch: '',
         idSelectedType: null,
-        optionsType:resetOptionsSelected
+        optionsType: resetOptionsSelected,
       });
     }
 
@@ -268,7 +266,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   search: {
-    width: (Platform.OS === 'ios')  ?   ( (Dimensions.get('window').height < 870) ? width * 0.5 :width * 0.6)  : ((Dimensions.get('window').height < 595) ? width * 0.5 : ((Dimensions.get('window').height > 600) && (Dimensions.get('window').height < 900) ? width * 0.5: width * 0.6)),
+    width:
+      Platform.OS === 'ios'
+        ? Dimensions.get('window').height < 870
+          ? width * 0.5
+          : width * 0.6
+        : Dimensions.get('window').height < 595
+        ? width * 0.5
+        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+        ? width * 0.5
+        : width * 0.6,
     marginHorizontal: theme.SIZES.BASE,
     borderWidth: 1,
     borderRadius: 30,
