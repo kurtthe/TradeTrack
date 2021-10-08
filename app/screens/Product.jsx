@@ -53,7 +53,7 @@ class Product extends React.Component {
 
   componentDidMount() {
     this.setState({
-      myPriceActive: this.props.route?.params?.myPrice,
+      hideMyPrice: this.props.route?.params?.hideMyPrice,
       productDetail: this.props.route?.params?.product,
     });
   }
@@ -172,7 +172,7 @@ class Product extends React.Component {
                     {this.formatMoney.format(productDetail?.rrp)}
                   </Text>
                 </Block>
-                {this.state.hideMyPrice && (
+                {!this.state.hideMyPrice && (
                   <>
                     <View
                       style={{
