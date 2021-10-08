@@ -5,11 +5,11 @@ export class ProductCart {
     this.cartProducts = listProductsCart;
   }
 
-  static getInstance() {
-    if (!AddProductCart.instance) {
-      AddProductCart.instance = new AddProductCart();
-    }
-    return AddProductCart.instance;
+  static getInstance(products) {
+    ProductCart.instance = undefined;
+    ProductCart.instance = new ProductCart(products);
+
+    return ProductCart.instance;
   }
 
   addCart(addProduct, action) {
@@ -34,6 +34,37 @@ export class ProductCart {
       return {
         ...item,
         quantity: newCant,
+      };
+    });
+
+    action && action(newArrayProducts);
+  }
+
+  updateCant(IdProduct, newCant, action) {
+    const newArrayProducts = this.cartProducts.map((item) => {
+      if (item.id !== IdProduct) {
+        return item;
+      }
+
+      return {
+        ...item,
+        quantity: newCant,
+      };
+    });
+
+    action && action(newArrayProducts);
+    return newArrayProducts;
+  }
+
+  changePrice(myPrice = false, action) {
+    if (!this.cartProducts || this.cartProducts.length === 0) {
+      return;
+    }
+
+    const newArrayProducts = this.cartProducts.map((product) => {
+      return {
+        ...product,
+        myPrice,
       };
     });
 

@@ -8,6 +8,7 @@ import {
   View,
   Animated,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import { Block, Text, Button, theme } from 'galio-framework';
@@ -47,13 +48,13 @@ class Product extends React.Component {
       cantProduct: 1,
     };
 
-    this.productCart = new ProductCart(props?.cartProducts);
+    this.productCart = ProductCart.getInstance(props?.cartProducts);
     this.formatMoney = FormatMoneyService.getInstance();
   }
 
   componentDidMount() {
     this.setState({
-      myPriceActive: this.props.route?.params?.myPrice,
+      hideMyPrice: this.props.route?.params?.hideMyPrice,
       productDetail: this.props.route?.params?.product,
     });
   }
@@ -124,7 +125,7 @@ class Product extends React.Component {
     }
 
     return (
-      <>
+      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={120} style={styles.product}>
         <ScrollView>
           <Block
             row
@@ -172,7 +173,7 @@ class Product extends React.Component {
                     {this.formatMoney.format(productDetail?.rrp)}
                   </Text>
                 </Block>
-                {this.state.hideMyPrice && (
+                {!this.state.hideMyPrice && (
                   <>
                     <View
                       style={{
@@ -260,12 +261,18 @@ class Product extends React.Component {
             </Text>
           </Button>
         </View>
-      </>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  product: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 0
+  },
   productDetail: {
     flex: 1,
     flexDirection: 'row',
