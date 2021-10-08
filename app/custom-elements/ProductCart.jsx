@@ -25,9 +25,7 @@ const ProductCartComponent = (props) => {
   const getPriceProduct = () => {
     const price = props.product.myPrice ? props.product.rrp : props.product.cost_price;
     const totalPrice = parseFloat(price) * parseFloat(props.product.quantity);
-    console.log("==>price",price)
-    console.log("==>props.product.quantity",props.product)
-    console.log("==>totalPrice",totalPrice)
+
     return formatMoney.format(totalPrice);
   };
 
@@ -69,7 +67,7 @@ const ProductCartComponent = (props) => {
               <QuantityCounterWithInput
                 delete={() => handleDelete(props.product.id)}
                 quantity={props.product.quantity}
-                quantityHandler={(cant) => handleUpdateQuantity(props.product, cant)}
+                quantityHandler={(cant) => handleUpdateQuantity(cant)}
               />
             )}
           </Block>

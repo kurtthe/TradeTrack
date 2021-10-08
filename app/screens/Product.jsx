@@ -112,7 +112,6 @@ class Product extends React.Component {
       ...productItem,
       quantity: this.state.cantProduct,
       price: priceProduct,
-      cantSend: this.state.cantProduct > 1,
     };
     this.productCart.addCart(addProduct, this.props.updateProducts);
   };

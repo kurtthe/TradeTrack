@@ -4,8 +4,8 @@ import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { updateProducts, getProducts } from '@core/module/store/cart/cart';
 import { FormatMoneyService } from '@core/services/format-money.service';
+import { ProductCart as ProductCartService } from '@core/services/product-cart.service';
 
 import {
   widthPercentageToDP as wp,
@@ -26,24 +26,23 @@ class Cart extends React.Component {
     };
 
     this.formatMoney = FormatMoneyService.getInstance();
+    this.productCartService = ProductCartService.getInstance(props.cartProducts);
   }
 
-  handleDelete = (id) => {
-    const updatedCart = this.props.cartProducts.filter((product) => product.id !== id);
-    this.props.updateProducts(updatedCart);
-  };
+  componentDidUpdate(prevProps) {
+    if (this.props.cartProducts !== prevProps.cartProducts) {
+      this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
+    }
+  }
 
   onCheckoutPressed() {
     this.props.navigation.navigate('PlaceOrders');
   }
 
-  orderTotal() {
-    let prices = this.props.cartProducts.map((p) => {
-      return p.price * p.quantity;
-    });
-    const reducer = (accumulator, curr) => accumulator + curr;
-    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`;
-  }
+  orderTotal = () => {
+    const total = this.productCartService.totalOrder();
+    return `${this.formatMoney.format(total)}`;
+  };
 
   renderEmpty() {
     return (
@@ -84,7 +83,7 @@ class Cart extends React.Component {
     }
 
     return (
-      <TouchableWithoutFeedback style={{ position: 'relative', bottom: 0 }}>
+      <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
         <Block row style={styles.detailOrders}>
           <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
           <Button
@@ -127,8 +126,10 @@ class Cart extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: wp('100%'),
-    height: hp('100%'),
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+
   },
   container_empty: {
     height: hp('60%'),
@@ -156,6 +157,4 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
 });
 
-const mapDispatchToProps = { updateProducts, getProducts };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default connect(mapStateToProps)(Cart);
