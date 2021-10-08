@@ -27,8 +27,10 @@ class FilterProducts extends Component {
       radioButtonsCategories: [],
       radioButtonsSubCategories: [],
       categoryActive: false,
+      subCategoryActive: false,
       searchValue: '',
-      selectedCategory: {},
+      selectedCategory: null,
+      selectedSubCategory: null,
       loadingCategories: true,
       noCategoriesFound: false,
       noSubCategoriesFound: false,
@@ -42,7 +44,7 @@ class FilterProducts extends Component {
     await this.getCategories();
   }
 
-  getCategories = async (nameCategory="") => {
+  getCategories = async (nameCategory = '') => {
     const getCategories = await this.generalRequest.get(
       `${endPoints.categories}&search=${nameCategory}`,
     );
@@ -81,24 +83,70 @@ class FilterProducts extends Component {
       radioButtonsSubCategories: subcategories,
       noSubCategoriesFound: getSubCategories.length === 0,
     });
-    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+    this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef.current?.setModalVisible(false);
   };
 
   onPressRadioButtonSubCategory = (options) => {
     const optionSelected = options.find((option) => option.selected);
-    this.props.getProducts && this.props.getProducts(optionSelected?.products);
+
+    this.setState({
+      selectedSubCategory: optionSelected,
+      subCategoryActive: true,
+    });
+
+    this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef2.current?.setModalVisible(false);
   };
 
-  onChangeSearchCategory = (value)=>{
+  onChangeSearchCategory = (value) => {
     this.setState({
-      loadingCategories:true
+      loadingCategories: true,
+    });
+    setTimeout(() => {
+      this.getCategories(value);
+    }, 500);
+  };
+
+  clearFilterSelected = (listData = [], idSelected) => {
+    return listData.map((item) => {
+      if (item.id === idSelected) {
+        return {
+          ...item,
+          selected: false,
+        };
+      }
+
+      return item;
+    });
+  };
+
+  handleResetFilter = () => {
+    const {
+      selectedCategory,
+      selectedSubCategory,
+      radioButtonsSubCategories,
+      radioButtonsCategories,
+    } = this.state;
+
+    const categoriesClear = this.clearFilterSelected(radioButtonsCategories,selectedCategory?.id);
+    const subCategoriesClear = this.clearFilterSelected(radioButtonsSubCategories,selectedSubCategory?.id);
+
+    this.setState({
+      radioButtonsCategories: categoriesClear,
+      radioButtonsSubCategories: subCategoriesClear,
+      categoryActive: false,
+      subCategoryActive: false,
+      searchValue: '',
+      selectedCategory: null,
+      selectedSubCategory: null,
+      loadingCategories: true,
+      noCategoriesFound: false,
+      noSubCategoriesFound: false,
     })
-    setTimeout(()=>{
-      this.getCategories(value)
-    },500)
-  }
+
+    this.props.getProducts && this.props.getProducts(false, false);
+  };
 
   render() {
     return (
@@ -106,7 +154,7 @@ class FilterProducts extends Component {
         <Block
           row
           width={width * 0.9}
-          style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%', paddingLeft: 9}}
+          style={{ alignItems: 'center', paddingBottom: '3%', paddingTop: '3%', paddingLeft: 9 }}
         >
           <Block
             row
@@ -114,7 +162,11 @@ class FilterProducts extends Component {
             width={this.state.categoryActive ? '90%' : '60%'}
             style={{ justifyContent: 'space-evenly', marginLeft: '-3%' }}
           >
-            <FilterButton text={'Filters'} icon={require('@assets/nuk-icons/png/2x/filter.png')} />
+            <FilterButton
+              text={'Filters'}
+              onPress={()=>this.handleResetFilter()}
+              icon={require('@assets/nuk-icons/png/2x/filter.png')}
+            />
             <FilterButton
               text={'Category'}
               onPress={() => {
@@ -132,6 +184,7 @@ class FilterProducts extends Component {
                   }
                   actionSheetRef2.current?.setModalVisible();
                 }}
+                isActive={this.state.subCategoryActive}
               />
             )}
           </Block>
@@ -140,7 +193,7 @@ class FilterProducts extends Component {
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Searchbar
             placeholder="Search"
-            onChangeText={(text)=>this.onChangeSearchCategory(text)}
+            onChangeText={(text) => this.onChangeSearchCategory(text)}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
@@ -200,7 +253,6 @@ const styles = StyleSheet.create({
     height: cardHeight * 0.3,
   },
   priceGrayText: {
-    // paddingLeft: 2,
     fontSize: 13,
   },
   price: {

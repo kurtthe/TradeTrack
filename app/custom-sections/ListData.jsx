@@ -20,6 +20,8 @@ class ListData extends React.Component {
       valuesFilters: {},
       notFound: false,
       loadingMoreData: false,
+      showLoadMore: true,
+      page: 1,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -42,6 +44,7 @@ class ListData extends React.Component {
       await this.getDataPetition.getInfo(
         this.props.endpoint,
         this.loadData,
+        this.state.page,
         this.state.perPageData,
       );
       return;
@@ -55,12 +58,14 @@ class ListData extends React.Component {
       this.setState({
         notFound: true,
         loadingMoreData: false,
+        showLoadMore: false,
       });
     } else {
       this.setState({
         data: data,
         notFound: false,
         loadingMoreData: false,
+        showLoadMore: true,
       });
     }
 
@@ -68,6 +73,11 @@ class ListData extends React.Component {
   };
 
   handleLoadMore = () => {
+    if (this.state.perPageData >= 100) {
+      const oldPage = this.state.page;
+      this.setState({ page: oldPage + 1, perPageData: 20 });
+      return;
+    }
     const oldData = this.state.perPageData;
     this.setState({ perPageData: oldData + 20 });
   };
@@ -85,11 +95,21 @@ class ListData extends React.Component {
       linkPetition += `${item}=${valuesFilters[item]}&`;
     });
 
-    await this.getDataPetition.getInfo(linkPetition, this.loadData, this.state.perPageData);
+    await this.getDataPetition.getInfo(
+      linkPetition,
+      this.loadData,
+      this.state.page,
+      this.state.perPageData,
+    );
   };
 
-  getDataFilterProducts = (data) => {
-    this.loadData(data);
+  getDataFilterProducts = async (data = false, dataFilter = false) => {
+    if (!data) {
+      await this.getPetitionData();
+    } else {
+      this.loadData(data);
+    }
+    this.setState({ showLoadMore: !dataFilter });
   };
 
   renderFilter = () => {
@@ -98,7 +118,11 @@ class ListData extends React.Component {
     }
 
     if (this.props.filters === 'products') {
-      return <FilterProducts getProducts={(data) => this.getDataFilterProducts(data)} />;
+      return (
+        <FilterProducts
+          getProducts={(data, dataFilter) => this.getDataFilterProducts(data, dataFilter)}
+        />
+      );
     }
 
     return <Filters getValues={(values) => this.getValuesFilters(values)} />;
@@ -125,6 +149,29 @@ class ListData extends React.Component {
     );
   };
 
+  putLoadingMore = () => {
+    if (!this.state.showLoadMore) {
+      return null;
+    }
+
+    if (this.state.data.length > 10) {
+      return (
+        <View style={styles.contentButton}>
+          <Button
+            onPress={() => this.handleLoadMore()}
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+            loading={this.state.loadingMoreData}
+            disabled={this.state.loadingMoreData}
+          >
+            Load More...
+          </Button>
+        </View>
+      );
+    }
+  };
+
   render() {
     const { children } = this.props;
 
@@ -138,20 +185,7 @@ class ListData extends React.Component {
             ) : (
               <>
                 <View>{cloneElement(children, { data: this.state.data })}</View>
-                {this.state.data.length > 10 && (
-                  <View style={styles.contentButton}>
-                    <Button
-                      onPress={() => this.handleLoadMore()}
-                      color="info"
-                      textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                      style={styles.button}
-                      loading={this.state.loadingMoreData}
-                      disabled={this.state.loadingMoreData}
-                    >
-                      Load More...
-                    </Button>
-                  </View>
-                )}
+                {this.putLoadingMore()}
               </>
             )}
           </View>
