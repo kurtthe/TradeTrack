@@ -60,7 +60,7 @@ export class ProductCart {
   }
 
   totalOrder() {
-    if(!this.cartProducts){
+    if(!this.cartProducts || this.cartProducts.length === 0){
       return
     }
     
