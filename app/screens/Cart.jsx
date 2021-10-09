@@ -30,7 +30,7 @@ class Cart extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.cartProducts !== prevProps.cartProducts) {
+    if (JSON.stringify(this.props.cartProducts) !== JSON.stringify(prevProps.cartProducts)) {
       this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
     }
   }
