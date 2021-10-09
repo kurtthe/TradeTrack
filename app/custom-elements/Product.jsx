@@ -40,6 +40,8 @@ const Product = (props) => {
       ...productItem,
       quantity: 1,
       myPrice: props.myPrice
+      // price: priceProduct,
+      // cantSend: false,
     };
 
     productCart.addCart(addProduct, props.updateProducts);
