@@ -54,8 +54,6 @@ export class ProductCart {
       };
     });
 
-    console.log('==>newArrayProducts', newArrayProducts);
-
     action && action(newArrayProducts);
   }
 
