@@ -23,6 +23,9 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 class orderPlaced extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            orderNumber: this.props.route.params.placedOrder
+        }
     }
 
   render() {
@@ -62,7 +65,7 @@ class orderPlaced extends React.Component {
                                     size={20}
                                     // style={{textDecorationLine: 'underline',}}
                                 >
-                                    MO2021100605
+                                    {this.state.orderNumber.order_number}
                                 </Text>
                             </Block>
                             <Block flex={0.2} width={width * 0.7} style={{marginTop:10}} >
