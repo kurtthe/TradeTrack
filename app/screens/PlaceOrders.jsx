@@ -274,7 +274,7 @@ class PlaceOrders extends React.Component {
             description: e.name,
             quantity: e.quantity,
             units: e.quantity,
-            cost: e.price,
+            cost: e.myPrice ? e.rrp : e.cost_price,
             tax: [
               {
                   name: "GST",
