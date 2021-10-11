@@ -54,13 +54,11 @@ export class ProductCart {
       };
     });
 
-    console.log('==>newArrayProducts', newArrayProducts);
-
     action && action(newArrayProducts);
   }
 
   totalOrder() {
-    if(!this.cartProducts){
+    if(!this.cartProducts || this.cartProducts.length === 0){
       return
     }
     
