@@ -131,6 +131,8 @@ class PlaceOrders extends React.Component {
       orderName: '',
       notFound: false,
       showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false
     };
   }
 
@@ -243,25 +245,21 @@ class PlaceOrders extends React.Component {
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.price*p.quantity
+      const price = p.myPrice ? p.rrp : p.cost_price;
+      return price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
     return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
   verifyFields() {
-    let error = false
-    if (!this.state.orderName) {
-      alert('You must specify a valid name')
-      error = true
-    } 
-    if (!this.state.delivery) {
-      alert('You must pick a Delivery Type')
-      error = true
-    } 
-    if (!this.props.cartProducts) {
-      alert('You must have an order to place')
-      error = true
+    let error = !this.state.orderName || !this.state.delivery.value
+    this.setState({
+      orderNameError: !this.state.orderName,
+      deliveryTypeError: !this.state.delivery.value
+    })
+    if (error) {
+      alert('Fill in the required data *')
     }
     return error
   }
@@ -292,7 +290,7 @@ class PlaceOrders extends React.Component {
           data: {
             name: this.state.orderName,
             supplier: supplierId.id,
-            job: this.state.job,
+            job: this.state.job || null,
             issued_on: date.toISOString("2015-05-14").slice(0,10),
             description: "A description for this order",
             notes: this.state.notes,
@@ -319,7 +317,7 @@ class PlaceOrders extends React.Component {
         };
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
-          this.props.navigation.navigate('OrderPlaced');
+          this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
     } catch (e) {
@@ -350,7 +348,10 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          <Text style={styles.text}>Order Name</Text>
+          <Block row>
+            <Text style={styles.text}>Order Name</Text>
+            {this.state.orderNameError && <Text style={styles.errorText}> * </Text>}
+          </Block>
           <Input
             left
             color="black"
@@ -374,6 +375,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
+            error={this.state.deliveryTypeError}
             placeholder={this.state.delivery.label || "Select delivery type"}
             icon
             picked={this.state.delivery.value !== ''}
@@ -500,6 +502,7 @@ class PlaceOrders extends React.Component {
     const orders = this.props.cartProducts
 
     return orders.map((orders) => {
+      const price = orders.myPrice ? orders.rrp : orders.cost_price;
       return (
         <Block 
           keyExtractor={(i) => { index: i }} 
@@ -508,8 +511,8 @@ class PlaceOrders extends React.Component {
           <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
           <Text  numberOfLines={2} style={styles.receiptText}>{orders.name}</Text>
           <Block row style={{ justifyContent: 'space-between',  }}>
-            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.price)}</Text>
-            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.price*orders.quantity)}</Text>
+            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(price)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(price*orders.quantity)}</Text>
           </Block>
         </Block>
       );
@@ -668,6 +671,11 @@ const styles = StyleSheet.create({
   text: {
     paddingTop: 10,
     color: nowTheme.COLORS.PRETEXT,
+  },
+  errorText: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.ERROR,
+    fontWeight: 'bold'
   },
   orderName: {
     width: 'auto',
