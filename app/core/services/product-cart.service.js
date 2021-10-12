@@ -60,15 +60,15 @@ export class ProductCart {
   }
 
   totalOrder() {
-    if(!this.cartProducts){
+    if (this.cartProducts.length === 0){
       return
+    } else {
+      const prices = this.cartProducts?.map((product) => {
+        const priceProduct = product.myPrice ? product.rrp : product.cost_price;
+        return parseFloat(priceProduct) * parseFloat(product.quantity);
+      });
+      const reducer = (accumulator, curr) => accumulator + curr;
+      return prices.reduce(reducer);
     }
-    
-    const prices = this.cartProducts?.map((product) => {
-      const priceProduct = product.myPrice ? product.rrp : product.cost_price;
-      return parseFloat(priceProduct) * parseFloat(product.quantity);
-    });
-    const reducer = (accumulator, curr) => accumulator + curr;
-    return prices.reduce(reducer);
   }
 }

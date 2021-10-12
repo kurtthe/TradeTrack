@@ -15,6 +15,7 @@ import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import { clearProducts } from '@core/module/store/cart/cart';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -254,7 +255,7 @@ class PlaceOrders extends React.Component {
   }
 
   verifyFields() {
-    let error = !this.state.orderName || !this.state.delivery.value || !this.state.storeError
+    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store
     this.setState({
       orderNameError: !this.state.orderName,
       deliveryTypeError: !this.state.delivery.value,
@@ -319,6 +320,7 @@ class PlaceOrders extends React.Component {
         };
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
+          this.props.clearProducts()
           this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
@@ -740,5 +742,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products
 });
 
+const mapDispatchToProps = { clearProducts };
 
-export default connect(mapStateToProps, {})(PlaceOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrders);
