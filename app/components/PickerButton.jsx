@@ -9,7 +9,7 @@ class PickerButton extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            error: false
+            error: this.props.error
         }
     }
 

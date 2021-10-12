@@ -132,7 +132,8 @@ class PlaceOrders extends React.Component {
       notFound: false,
       showSearch: false,
       orderNameError: false,
-      deliveryTypeError: false
+      deliveryTypeError: false,
+      storeError: false
     };
   }
 
@@ -253,10 +254,11 @@ class PlaceOrders extends React.Component {
   }
 
   verifyFields() {
-    let error = !this.state.orderName || !this.state.delivery.value
+    let error = !this.state.orderName || !this.state.delivery.value || !this.state.storeError
     this.setState({
       orderNameError: !this.state.orderName,
-      deliveryTypeError: !this.state.delivery.value
+      deliveryTypeError: !this.state.delivery.value,
+      storeError: !this.state.store
     })
     if (error) {
       alert('Fill in the required data *')
@@ -350,7 +352,7 @@ class PlaceOrders extends React.Component {
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
-            {this.state.orderNameError && <Text style={styles.errorText}> * </Text>}
+            <Text style={styles.errorText}> * </Text>
           </Block>
           <Input
             left
@@ -375,7 +377,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
-            error={this.state.deliveryTypeError}
+            error
             placeholder={this.state.delivery.label || "Select delivery type"}
             icon
             picked={this.state.delivery.value !== ''}
@@ -434,6 +436,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
             text='Select Store'
+            error
             placeholder={this.state.store || "Select store"}
             picked={this.state.store !== ''}
             icon
