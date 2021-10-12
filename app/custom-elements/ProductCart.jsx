@@ -37,7 +37,7 @@ const ProductCartComponent = (props) => {
   return (
     <Block card shadow style={styles.product}>
       <Block flex row>
-        <Image source={{ uri: props.product.image }} style={styles.imageHorizontal} />
+        <Image source={{ uri: props.product.cover_image }} style={styles.imageHorizontal} />
         <Block flex style={styles.productDescription}>
           <Block row>
             <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
