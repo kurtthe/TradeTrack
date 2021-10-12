@@ -39,7 +39,7 @@ const BottomModal = (props) => {
       setLoadingShared(true);
       const urlFile = await downloadInfo(props.downloadShared);
       sharedFiles(urlFile);
-     
+
       return;
     }
 
@@ -78,7 +78,6 @@ const BottomModal = (props) => {
                 <Loading />
               ) : (
                 <Ionicons name="share-outline" color={'#0E3A90'} size={28} />
-                
               )}
             </TouchableOpacity>
           </View>
@@ -96,14 +95,15 @@ const styles = StyleSheet.create({
   },
   modalDialog: {
     backgroundColor: '#f3f2f7',
-    top: hp('5%'),
-    height: hp('90%'),
+    top: hp('6%'),
+    height: hp('100%'),
     width: wp('100%'),
     shadowColor: '#000',
     elevation: 8,
   },
   body: {
-    height: '100%',
+    height: hp('100%'),
+    width: wp('100%'),
   },
   header: {
     backgroundColor: '#fff',
