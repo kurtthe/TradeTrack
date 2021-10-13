@@ -85,7 +85,7 @@ class Cart extends React.Component {
     return (
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
         <Block row style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{`Total (ex-GST): ${this.orderTotal()}`}</Text>
           <Button
             shadowless
             style={(styles.addToCart, { left: 10 })}

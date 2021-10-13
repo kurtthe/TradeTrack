@@ -50,7 +50,7 @@ class Home extends React.Component {
                 style={{ fontFamily: 'montserrat-bold' }}
                 color={'#363C4A'}
               >
-                Burden News
+                Burdens News
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('AllNews')}>
                 <Text
