@@ -154,6 +154,11 @@ class PlaceOrders extends React.Component {
   }
 
   setRadioButtons(stores) {
+    stores.sort(function(a, b) {
+      var textA = a.name.toUpperCase();
+      var textB = b.name.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
     let radioButtonsValues = stores && stores.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
