@@ -23,10 +23,10 @@ function CartStack() {
     {
       name: 'PlaceOrders',
       component: PlaceOrders,
-      title: 'Place Orders',
+      title: 'Checkout',
       colorBackground: '#FFFFFF',
       header:{
-        title: 'Place Orders',
+        title: 'Checkout',
       }
     },
     {

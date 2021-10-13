@@ -502,7 +502,7 @@ class PlaceOrders extends React.Component {
               }}
             />
             <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
-              <Text size={14}>Total Orders</Text>
+              <Text size={14}>Total (ex-GST)</Text>
               <Text
                 size={16}
                 color={nowTheme.COLORS.ORANGE}

@@ -145,9 +145,10 @@ class Callouts extends React.Component {
             id: 8,
             name: "Ferntree Gully VIC 3156",
             coordinate: {
-              latitude: "--37.6912349" ,
+              latitude: "-37.6912349" ,
               longitude: "145.0022803" ,
           },
+          
             address: "1825 Ferntree Gully Rd Ferntree Gully, VIC Australia 3156",
             phone_number: "(03) 9730 5500",
             email: "ferntreegully@burdens.com.au",
@@ -195,7 +196,7 @@ class Callouts extends React.Component {
             manager_email: "johnbatty@burdens.com.au",
         },
         {
-            id: 13,
+            id: 12,
 
             name: "Somerville VIC 3912",
             coordinate: {
@@ -209,7 +210,7 @@ class Callouts extends React.Component {
             manager_email: "michael.ligocki@burdens.com.au",
         },
         {
-            id: 14,
+            id: 13,
             name: "Cranbourne VIC 3977",
             coordinate: {
               latitude: "-38.218677" ,
@@ -1250,6 +1251,89 @@ class Callouts extends React.Component {
           </Marker>
 
  
+          <Marker
+            coordinate={markers[12].coordinate}
+           
+            ref={ref => {
+              this.marker2 = ref;
+            }}
+          >
+            <Callout
+              alphaHitTest
+              tooltip
+              style={styles.customView}
+            >
+              <CustomCallout>
+
+                <Block>
+                <Block row style={styles.row_info}>
+             
+                <MaterialIcons name="store" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+             
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              {markers[12].name}
+              </Text>
+              
+              </Block>
+
+              <Block row style={styles.row_info}>
+             
+                <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+
+              <CalloutSubview  onPress={()=>{this.dialCall(markers[12].phone_number)}}>
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
+              {markers[12].phone_number}
+              </Text>
+              </CalloutSubview>
+              </Block>
+
+              <Block row style={styles.row_info}>
+             
+             <MaterialIcons name="email" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+          
+           
+
+              <CalloutSubview  onPress={() => Linking.openURL(`mailto: ${markers[12].email}?subject= Burdens App &body=Hi There`) } >
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
+              {markers[12].email}
+              </Text>
+              </CalloutSubview>
+              </Block>
+
+              <Block row style={styles.row_info}>
+             
+             <MaterialIcons name="person" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
+          
+              <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
+              {markers[12].manager}
+              </Text>
+           
+             </Block>
+
+             <Block row style={styles.row_info}>
+            
+              <CalloutSubview  onPress={() =>    Linking.openURL(`http://maps.google.com/?q=${markers[12].address}`) } 
+
+
+              style={styles.buttonOrder}
+              >
+               
+              <Text color={'white'} style={{top:7}}>
+                Navigate
+              </Text>
+             
+              </CalloutSubview>
+              </Block>
+
+
+              </Block>
+
+             
+              </CustomCallout>
+            </Callout>
+          </Marker>
+
+          
 
          
         </MapView>
