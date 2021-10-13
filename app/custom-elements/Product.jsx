@@ -39,9 +39,7 @@ const Product = (props) => {
     const addProduct = {
       ...productItem,
       quantity: 1,
-      myPrice: props.myPrice
-      // price: priceProduct,
-      // cantSend: false,
+      myPrice: props.myPrice,
     };
 
     productCart.addCart(addProduct, props.updateProducts);
@@ -59,54 +57,56 @@ const Product = (props) => {
     <>
       <Block key={`Card-${props.product.name}`} style={styles.Card}>
         <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
-          <Image resizeMode="contain" style={styles.image} source={{ uri: props.product.image }} />
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{ uri: props.product.cover_image }}
+          />
         </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
-         
-       
-        <Block flex space="between" style={{ paddingBottom: 7 }}>
-          <Block row>
-            <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
-              SKU
-            </Text>
-            <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
-              {` ${props.product.sku}`}
-            </Text>
-          </Block>
-          <Text
-            style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }}
-            size={15}
-          >
-            {props.product.name}
-          </Text>
-          <Block row style={{ width: '100%' }}>
-            <Block flex>
-              <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                Price:{' '}
+          <Block flex space="between" style={{ paddingBottom: 7 }}>
+            <Block row>
+              <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
+                SKU
               </Text>
-              <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
+              <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
+                {` ${props.product.sku}`}
+              </Text>
             </Block>
-            {props.myPrice ? null : (
-              <>
-                <View
-                  style={{
-                    borderWidth: 0.5,
-                    marginHorizontal: 10,
-                    height: '100%',
-                    borderColor: nowTheme.COLORS.LIGHTGRAY,
-                  }}
-                ></View>
-                <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    My Price
-                  </Text>
-                  <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
-                </Block>
-              </>
-            )}
+            <Text
+              style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }}
+              size={15}
+            >
+              {props.product.name}
+            </Text>
+            <Block row style={{ width: '100%' }}>
+              <Block flex>
+                <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                  Price:{' '}
+                </Text>
+                <Text style={styles.price}>{formatMoney.format(props.product.rrp)}</Text>
+              </Block>
+              {props.myPrice ? null : (
+                <>
+                  <View
+                    style={{
+                      borderWidth: 0.5,
+                      marginHorizontal: 10,
+                      height: '100%',
+                      borderColor: nowTheme.COLORS.LIGHTGRAY,
+                    }}
+                  ></View>
+                  <Block flex>
+                    <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
+                      My Price
+                    </Text>
+                    <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
+                  </Block>
+                </>
+              )}
+            </Block>
           </Block>
-        </Block>
         </TouchableWithoutFeedback>
         <Block center>
           <Button
