@@ -113,11 +113,11 @@ class InvoiceDetails extends React.Component {
         >
           <Block row>
             <Block flex>
-              <Text style={styles.text}>Invoice Number</Text>
+              <Text style={styles.text}>{this.state.invoiceDetail?.type} Number</Text>
               <Text>{validateEmptyField(this.state.invoiceDetail.order_number)}</Text>
             </Block>
             <Block flex>
-              <Text style={styles.text}>Invoice Date</Text>
+              <Text style={styles.text}>{this.state.invoiceDetail?.type} Date</Text>
               <Text>{validateEmptyField(this.state.invoiceDetail.invoice_date)}</Text>
             </Block>
           </Block>

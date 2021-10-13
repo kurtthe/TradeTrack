@@ -8,7 +8,7 @@ import {
   View,
   Animated,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import { Block, Text, Button, theme } from 'galio-framework';
@@ -20,7 +20,7 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import LoadingComponent from '@custom-elements/Loading';
 
-const { height, width } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const sizeConstantSmall =
   Platform.OS === 'ios'
     ? Dimensions.get('window').height < 670
@@ -80,31 +80,6 @@ class Product extends React.Component {
     );
   };
 
-  renderGallery = () => {
-    const { productDetail } = this.state;
-    const productImages = [productDetail?.image, productDetail?.image];
-
-    return (
-      <ScrollView
-        horizontal={true}
-        pagingEnabled={true}
-        decelerationRate={0}
-        scrollEventThrottle={16}
-        showsHorizontalScrollIndicator={false}
-      >
-        {productImages.map((image, index) => (
-          <TouchableWithoutFeedback key={`product-image-${index}`}>
-            <Image
-              resizeMode="contain"
-              source={{ uri: productDetail.image }}
-              style={{ width: width * 0.95, height: width * 0.8 }}
-            />
-          </TouchableWithoutFeedback>
-        ))}
-      </ScrollView>
-    );
-  };
-
   onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
 
@@ -124,7 +99,7 @@ class Product extends React.Component {
     }
 
     return (
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={120} style={styles.product}>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={120} style={styles.product}>
         <ScrollView>
           <Block
             row
@@ -137,7 +112,15 @@ class Product extends React.Component {
             }}
           ></Block>
 
-          <Block flex>{this.renderGallery()}</Block>
+          <Block flex>
+            <TouchableWithoutFeedback>
+              <Image
+                resizeMode="contain"
+                source={{ uri: productDetail.cover_image }}
+                style={{ width: width * 0.95, height: width * 0.8 }}
+              />
+            </TouchableWithoutFeedback>
+          </Block>
           <Block flex style={styles.options}>
             <Block
               style={{
@@ -162,7 +145,7 @@ class Product extends React.Component {
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                     Price
+                    Price
                   </Text>
                   <Text
                     style={{ fontFamily: 'montserrat-bold' }}
@@ -209,36 +192,12 @@ class Product extends React.Component {
               <Block row style={{ paddingBottom: 15 }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    {' '}
-                    SKU{' '}
+                    SKU
                   </Text>
-
                   <Text color={nowTheme.COLORS.INFO} size={sizeConstantSmall}>
-                    {' '}
-                    {productDetail?.sku}{' '}
+                    {productDetail?.sku}
                   </Text>
                 </Block>
-                {/* <Block flex>
-                  <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                    Type
-                  </Text>
-
-                  <Text
-                    color={nowTheme.COLORS.INFO}
-                    size={
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('window').height < 670
-                          ? 14
-                          : 16
-                        : Dimensions.get('window').height < 870
-                        ? 14
-                        : 16
-                    }
-                  >
-                    {' '}
-                    {productDetail?.type}{' '}
-                  </Text>
-                </Block> */}
               </Block>
             </Block>
           </Block>
@@ -270,12 +229,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 0
-  },
-  productDetail: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginTop: 0,
   },
   grayLine: {
@@ -285,29 +238,14 @@ const styles = StyleSheet.create({
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     marginHorizontal: -theme.SIZES.BASE,
   },
-  grayDescriptionLine: {
-    height: 1,
-    width: '100%',
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
-    alignSelf: 'center',
-    marginVertical: 15,
-  },
   priceGrayText: {
-    paddingLeft: 2,
-    fontSize: 14,
-  },
-  priceOrange: {
-    fontWeight: 'bold',
+    fontSize: 14
   },
   options: {
     position: 'relative',
     marginHorizontal: theme.SIZES.BASE * 0.6,
     marginTop: -theme.SIZES.BASE,
     backgroundColor: theme.COLORS.WHITE,
-  },
-  galleryImage: {
-    width: width,
-    height: 'auto',
   },
   dots: {
     borderRadius: 20,
@@ -316,20 +254,8 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: 'black',
   },
-  dotsContainer: {
-    position: 'absolute',
-    bottom: theme.SIZES.BASE,
-    left: 0,
-    right: 0,
-    bottom: height / 20,
-  },
   addToCart: {
     width: width * 0.5,
-  },
-  image_temp: {
-    width: 22,
-    height: 22,
-    resizeMode: 'contain',
   },
   quantityBar: {
     paddingTop: Platform.OS == 'ios' ? 0 : 3,

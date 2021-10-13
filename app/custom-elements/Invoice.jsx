@@ -38,7 +38,7 @@ const Invoice = (props) => {
                   style={{ fontFamily: nowTheme.FONT.primaryBold }}
                   size={14}
                 >
-                  Invoice
+                  {props.invoice.type} No
                 </Text>
                 <Text
                   color={nowTheme.COLORS.INFO}
