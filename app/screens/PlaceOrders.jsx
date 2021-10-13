@@ -15,6 +15,7 @@ import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import { clearProducts } from '@core/module/store/cart/cart';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -127,12 +128,14 @@ class PlaceOrders extends React.Component {
       store: '',
       job: '',
       delivery: { label: '', value: ''},
+      location: '',
       time: { label: '', value: ''},
       orderName: '',
       notFound: false,
       showSearch: false,
       orderNameError: false,
-      deliveryTypeError: false
+      deliveryTypeError: false,
+      storeError: false
     };
   }
 
@@ -152,6 +155,11 @@ class PlaceOrders extends React.Component {
   }
 
   setRadioButtons(stores) {
+    stores.sort(function(a, b) {
+      var textA = a.name.toUpperCase();
+      var textB = b.name.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
     let radioButtonsValues = stores && stores.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
@@ -253,10 +261,11 @@ class PlaceOrders extends React.Component {
   }
 
   verifyFields() {
-    let error = !this.state.orderName || !this.state.delivery.value
+    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store
     this.setState({
       orderNameError: !this.state.orderName,
-      deliveryTypeError: !this.state.delivery.value
+      deliveryTypeError: !this.state.delivery.value,
+      storeError: !this.state.store
     })
     if (error) {
       alert('Fill in the required data *')
@@ -310,13 +319,15 @@ class PlaceOrders extends React.Component {
                 }
             ],
             delivery_instructions: {
-                delivery: this.state.delivery.value,
-                time: this.state.time.value
+              delivery: this.state.delivery.value,
+              location: this.state.location || "",
+              time: this.state.time.value
             }
           }
         };
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
+          this.props.clearProducts()
           this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
@@ -350,7 +361,7 @@ class PlaceOrders extends React.Component {
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
-            {this.state.orderNameError && <Text style={styles.errorText}> * </Text>}
+            <Text style={styles.errorText}> * </Text>
           </Block>
           <Input
             left
@@ -375,7 +386,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
-            error={this.state.deliveryTypeError}
+            error
             placeholder={this.state.delivery.label || "Select delivery type"}
             icon
             picked={this.state.delivery.value !== ''}
@@ -384,7 +395,24 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-
+          { 
+            this.state.delivery.value === 'delivery' &&
+            <>
+              <Block row>
+                <Text style={styles.text}>Address</Text>
+              </Block>
+              <Input
+                left
+                color="black"
+                style={styles.orderName}
+                placeholder="Enter your address"
+                onChangeText={t => this.setState({ location: t})}
+                value={this.state.location}
+                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+                textInputStyle={{ flex: 1 }}
+              />
+            </>
+          }
           <>
             <PickerButton
               text="Preferred Delivery Date"
@@ -434,6 +462,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
             text='Select Store'
+            error
             placeholder={this.state.store || "Select store"}
             picked={this.state.store !== ''}
             icon
@@ -737,5 +766,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products
 });
 
+const mapDispatchToProps = { clearProducts };
 
-export default connect(mapStateToProps, {})(PlaceOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrders);
