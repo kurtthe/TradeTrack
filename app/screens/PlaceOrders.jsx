@@ -128,6 +128,7 @@ class PlaceOrders extends React.Component {
       store: '',
       job: '',
       delivery: { label: '', value: ''},
+      location: '',
       time: { label: '', value: ''},
       orderName: '',
       notFound: false,
@@ -318,8 +319,9 @@ class PlaceOrders extends React.Component {
                 }
             ],
             delivery_instructions: {
-                delivery: this.state.delivery.value,
-                time: this.state.time.value
+              delivery: this.state.delivery.value,
+              location: this.state.location || "",
+              time: this.state.time.value
             }
           }
         };
@@ -393,7 +395,24 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-
+          { 
+            this.state.delivery.value === 'delivery' &&
+            <>
+              <Block row>
+                <Text style={styles.text}>Address</Text>
+              </Block>
+              <Input
+                left
+                color="black"
+                style={styles.orderName}
+                placeholder="Enter your address"
+                onChangeText={t => this.setState({ location: t})}
+                value={this.state.location}
+                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+                textInputStyle={{ flex: 1 }}
+              />
+            </>
+          }
           <>
             <PickerButton
               text="Preferred Delivery Date"
