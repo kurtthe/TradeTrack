@@ -145,8 +145,8 @@ class Callouts extends React.Component {
             id: 8,
             name: "Ferntree Gully VIC 3156",
             coordinate: {
-              latitude: "-37.6912349" ,
-              longitude: "145.0022803" ,
+              latitude: "-37.88304111820594" ,
+              longitude: "145.27020989772473" ,
           },
           
             address: "1825 Ferntree Gully Rd Ferntree Gully, VIC Australia 3156",
