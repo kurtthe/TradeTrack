@@ -11,7 +11,7 @@ import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 import AppStack from '@navigation/index';
-import { Images, articles, nowTheme } from '@constants/index';
+import { Images, nowTheme } from '@constants/index';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
@@ -30,17 +30,19 @@ const assetImages = [
   Images.ProfileBackground,
 ];
 
-articles.map((article) => assetImages.push(article.image));
+const cacheImages = (images) =>
+  images?.map((image) => {
+    if (!image || image === undefined || image === null) {
+      return;
+    }
 
-function cacheImages(images) {
-  return images.map((image) => {
     if (typeof image === 'string') {
       return Image.prefetch(image);
     } else {
       return Asset.fromModule(image).downloadAsync();
     }
   });
-}
+
 const theme = {
   ...DefaultTheme,
   roundness: 2,
@@ -88,8 +90,7 @@ export default class App extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
-
-    return Promise.all([...cacheImages(assetImages)]);
+    cacheImages(assetImages);
   };
 
   _handleLoadingError = (error) => {
