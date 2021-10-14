@@ -1,19 +1,18 @@
 import React from 'react';
 import SkeletonContent from 'react-native-skeleton-content';
-import { StyleSheet } from 'react-native';
-import { Block } from 'galio-framework';
+import { StyleSheet, View } from 'react-native';
 import { nowTheme } from '@constants';
 
 const firstLayout = [
   {
     width: 300,
     height: 30,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 60,
     height: 20,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 350,
@@ -22,7 +21,7 @@ const firstLayout = [
 ];
 const Invoices = () => {
   return (
-    <Block style={styles.container}>
+    <View style={styles.container}>
       <SkeletonContent
         containerStyle={{ flex: 1, width: 300 }}
         animationDirection="horizontalLeft"
@@ -30,7 +29,7 @@ const Invoices = () => {
         layout={firstLayout}
         isLoading={true}
       />
-    </Block>
+    </View>
   );
 };
 

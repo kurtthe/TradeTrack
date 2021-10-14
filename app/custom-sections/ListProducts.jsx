@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { Block, theme } from 'galio-framework';
+import { Block } from 'galio-framework';
 
 import Product from '@custom-elements/Product';
 import SkeletonProduct from '@custom-elements/skeletons/Product';

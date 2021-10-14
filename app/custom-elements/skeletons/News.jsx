@@ -1,43 +1,43 @@
 import React from 'react';
 import SkeletonContent from 'react-native-skeleton-content';
-import { StyleSheet } from 'react-native';
-import { Block, theme } from 'galio-framework';
+import { StyleSheet, View } from 'react-native';
+import { theme } from 'galio-framework';
 
 const firstLayout = [
   {
     width: 280,
     height: 215,
-    marginBottom: 10
+    marginBottom: 10,
   },
   {
     width: 260,
     height: 20,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 260,
     height: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 260,
     height: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 260,
     height: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
   {
     width: 260,
     height: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
 ];
 const News = () => {
   return (
-    <Block style={styles.container}>
+    <View style={styles.container}>
       <SkeletonContent
         containerStyle={{ flex: 1, width: 300 }}
         animationDirection="horizontalLeft"
@@ -45,7 +45,7 @@ const News = () => {
         layout={firstLayout}
         isLoading={true}
       />
-    </Block>
+    </View>
   );
 };
 
