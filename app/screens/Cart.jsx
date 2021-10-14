@@ -43,8 +43,9 @@ class Cart extends React.Component {
       this.setState({
         myPrice: this.props.cartProducts[0].myPrice
       })
-    }
 
+      this.orderTotal()
+    }
   }
 
   onCheckoutPressed() {
