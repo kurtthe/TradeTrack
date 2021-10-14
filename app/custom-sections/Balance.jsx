@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { StyleSheet, View, Dimensions } from 'react-native';
-import { Block, theme, Text } from 'galio-framework';
+import { theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
 import GrayLine from '@components/GrayLine';
 import { FormatMoneyService } from '@core/services/format-money.service';
@@ -37,24 +37,23 @@ const Balance = () => {
       },
     ];
 
-    return orders.map((orders, index) => {
-      return (
-      <Block style={{top:-25}}>
-      <BalanceDetail key={index} item={orders} />
-      </Block>
-      );
-    });
+    return orders.map((orders, index) => (
+      <View key={index} style={{ top: -25 }}>
+        <BalanceDetail key={index} item={orders} />
+      </View>
+    ));
   };
 
   return (
-    <Block style={{ height: 'auto', paddingHorizontal:15}}>
+    <View style={{ height: 'auto', paddingHorizontal: 15 }}>
       <View style={styles.detailOrders}>
-        <Text style={{ fontWeight: 'bold', fontSize: 16, top:-5 }}>Balance Details</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, top: -5 }}>Balance Details</Text>
       </View>
       {renderDetailOrdersAS()}
-      <GrayLine style={{ width: '100%', alignSelf: 'center' , top:-30 }} />
-      <Block row style={{ justifyContent: 'space-between', bottom:15}}>
 
+      <GrayLine style={{ width: '100%', alignSelf: 'center', top: -30 }} />
+
+      <View style={{ justifyContent: 'space-between', bottom: 15 }}>
         <Text size={15}>Total Due</Text>
         <Text
           size={16}
@@ -63,15 +62,15 @@ const Balance = () => {
         >
           {formatMoney.format(balance.total)}
         </Text>
-      </Block>
-    </Block>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: theme.SIZES.BASE,
-    marginBottom:theme.SIZES.BASE
+    marginBottom: theme.SIZES.BASE,
   },
   detailOrders: {
     flexDirection: 'row',
@@ -81,8 +80,7 @@ const styles = StyleSheet.create({
     width: width,
     height: 'auto',
     marginVertical: theme.SIZES.BASE * 0.3,
-    top:-10,
-   
+    top: -10,
   },
   receiptText: {
     fontSize: 13,
