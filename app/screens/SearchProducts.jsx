@@ -67,18 +67,7 @@ class SearchProduct extends React.Component {
     return (
       <View style={styles.notfound}>
         <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
-          We didn’t find products in the Data Base.
-        </Text>
-
-        <Text
-          size={18}
-          style={{
-            marginTop: theme.SIZES.BASE,
-            fontFamily: 'montserrat-regular',
-          }}
-          color={nowTheme.COLORS.TEXT}
-        >
-          You can see more data in your Account.
+          No results found for search options selected.
         </Text>
       </View>
     );
