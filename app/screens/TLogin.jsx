@@ -53,6 +53,11 @@ class Login extends React.Component {
 
   async componentDidMount() {
     const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+
+    if(!tokenStorageExist){
+      return;
+    }
+    
     this.props.sign(JSON.parse(tokenStorageExist));
     this.redirectLogin();
   }
@@ -81,8 +86,8 @@ class Login extends React.Component {
 
     if (!!resLogin) {
       this.props.sign(resLogin);
-      this.setState({ loading: false });
     }
+    this.setState({ loading: false });
   };
 
   handleChangeEmail = (text) => {
