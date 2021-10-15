@@ -45,6 +45,6 @@ export class FormatMoneyService {
     const withoutSymbolize = value?.replace(/\$/g, '');
     const withoutComma = withoutSymbolize?.replace(',', '.');
 
-    return parseFloat(withoutComma).toFixed(2);
+    return withoutComma;
   }
 }
