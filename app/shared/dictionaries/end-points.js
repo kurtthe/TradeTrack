@@ -20,5 +20,5 @@ export const endPoints = {
   products: `${environment.api}suppliers/:id/products`,
   searchProducts: `${environment.api}products`,
   suppliers: `${environment.api}burdens/supplier`,
-  categories: `${environment.api}products/categories?expand=products`,
+  categories: `${environment.api}burdens/categories?expand=products`,
 };
