@@ -6,7 +6,6 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import MarkMap from '@custom-elements/MarkMap';
 import Loading from '@custom-elements/Loading';
-import CustomCallout from '@components/CustomCallout';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -58,8 +57,6 @@ class TStores extends Component {
     }
     const arrarCor = value.split(',');
 
-    
-    
     return {
       coordinate: {
         latitude: parseFloat(arrarCor[0]),
@@ -81,10 +78,8 @@ class TStores extends Component {
   getMarkers = () =>
     this.state.markers.map((mark, index) => (
       <Marker key={index} coordinate={mark.coordinate}>
-        <Callout alphaHitTest tooltip style={styles.customView}>
-          <CustomCallout>
-            <MarkMap mark={mark} actionCall={(numberCall) => this.dialCall(numberCall)} />
-          </CustomCallout>
+        <Callout alphaHitTest tooltip >
+          <MarkMap mark={mark} actionCall={(numberCall) => this.dialCall(numberCall)} />
         </Callout>
       </Marker>
     ));
@@ -117,10 +112,6 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  customView: {
-    width: 140,
-    height: 140,
   },
 });
 
