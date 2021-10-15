@@ -25,7 +25,7 @@ export class GeneralRequestService {
     try {
       const data =  await SecureStore.getItemAsync('data_user');
       const dataParse = JSON.parse(data)
-      return dataParse.api_key
+      return dataParse?.api_key
     } catch (e){
       console.error(e)
     }
