@@ -21,6 +21,7 @@ class SearchProduct extends React.Component {
       myPriceActive: false,
       notFound: false,
       noShowInit: true,
+      textSearch: '',
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -47,20 +48,33 @@ class SearchProduct extends React.Component {
       this.setState({
         listProducts: data,
         notFound: false,
-        noShowInit:false
+        noShowInit: false,
       });
     } else {
       this.setState({
         notFound: true,
-        noShowInit:false
+        noShowInit: false,
       });
     }
   };
 
-  changeSearchText = (value) => {
-    setTimeout(async () => {
+  changeSearchText = async (value) => {
+    this.setState({
+      textSearch: value,
+    });
+
+    if (value === '') {
+      await this.getProducts();
+      return
+    }
+
+    if (value.length > 5) {
       await this.getProducts(value);
-    }, 500);
+    }
+  };
+
+  handleSearchProduct = async () => {
+    await this.getProducts(this.state.textSearch);
   };
 
   renderNotFound = () => {
@@ -81,6 +95,7 @@ class SearchProduct extends React.Component {
           onChangeText={(text) => this.changeSearchText(text)}
           style={styles.search}
           inputStyle={styles.searchInput}
+          onIconPress={() => this.handleSearchProduct()}
         />
 
         {!this.state.noShowInit ? (
