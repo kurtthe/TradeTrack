@@ -142,7 +142,6 @@ class Login extends React.Component {
                         ? 18
                         : 20
                     }
-                    //size={20}
                   >
                     Welcome Back,{'\n'}
                     Please sign in with your account
@@ -244,6 +243,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
+                        loading={this.state.loading}
                       >
                         Login
                       </Button>
