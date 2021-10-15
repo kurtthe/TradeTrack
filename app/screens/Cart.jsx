@@ -31,18 +31,22 @@ class Cart extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({
-      myPrice: this.props.cartProducts[0].myPrice
-    })
+    if(!!this.props.cartProducts[0]?.myPrice){
+      this.setState({
+        myPrice: this.props.cartProducts[0].myPrice
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(this.props.cartProducts) !== JSON.stringify(prevProps.cartProducts)) {
       this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
 
-      this.setState({
-        myPrice: this.props.cartProducts[0].myPrice
-      })
+      if(!!this.props.cartProducts[0]?.myPrice){
+        this.setState({
+          myPrice: this.props.cartProducts[0].myPrice
+        })
+      }
 
       this.orderTotal()
     }
@@ -100,10 +104,12 @@ class Cart extends React.Component {
       return null;
     }
 
+    const titleOrder = this.state.myPrice? 'Total RRP (ex-GST)' : 'Total (ex-GST)'
+
     return (
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
         <Block row style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold' }}>{`Order total: ${this.orderTotal()}`}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
           <Button
             shadowless
             style={(styles.addToCart, { left: 10 })}
