@@ -1,6 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet } from 'react-native';
-import { CalloutSubview } from 'react-native-maps';
+import { Linking, StyleSheet, TouchableOpacity } from 'react-native';
 import { Block, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -24,17 +23,17 @@ const MarkMap = (props) => {
       <Block row style={styles.row_info}>
         <MaterialIcons name="phone" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
-        <CalloutSubview onPress={() => actionCall(props.mark.phone_number)}>
+        <TouchableOpacity onPress={() => actionCall(props.mark.phone_number)}>
           <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
             {props.mark.phone_number}
           </Text>
-        </CalloutSubview>
+        </TouchableOpacity>
       </Block>
 
       <Block row style={styles.row_info}>
         <MaterialIcons name="email" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
-        <CalloutSubview
+        <TouchableOpacity
           onPress={() =>
             Linking.openURL(`mailto: ${props.mark.email}?subject= Burdens App &body=Hi There`)
           }
@@ -42,7 +41,7 @@ const MarkMap = (props) => {
           <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText_}>
             {props.mark.email}
           </Text>
-        </CalloutSubview>
+        </TouchableOpacity>
       </Block>
 
       <Block row style={styles.row_info}>
@@ -54,14 +53,14 @@ const MarkMap = (props) => {
       </Block>
 
       <Block row style={styles.row_info}>
-        <CalloutSubview
+        <TouchableOpacity
           onPress={() => Linking.openURL(`http://maps.google.com/?q=${props.mark.address}`)}
           style={styles.buttoNavigate}
         >
           <Text color={'white'} style={{ top: 7 }}>
             Navigate
           </Text>
-        </CalloutSubview>
+        </TouchableOpacity>
       </Block>
     </Block>
   );
