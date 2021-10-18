@@ -45,13 +45,7 @@ const MarkMap = (props) => {
           </TouchableOpacity>
         </Block>
 
-        <Block row style={styles.row_info}>
-          <MaterialIcons name="person" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
-
-          <Text color={nowTheme.COLORS.PRICE_COLOR} style={styles.MapsText}>
-            {props.mark.manager}
-          </Text>
-        </Block>
+       
 
         <Block row center style={styles.row_info}>
           <TouchableOpacity
@@ -82,7 +76,8 @@ const styles = StyleSheet.create({
   row_info: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 2
+    paddingHorizontal: 2,
+    paddingVertical:5
   },
   MapsText: {
     paddingLeft: 12,
