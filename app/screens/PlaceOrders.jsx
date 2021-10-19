@@ -39,6 +39,13 @@ const radioButtonsDelivery = [
 
 const radioButtonsHour = [
   {
+    id: '0',
+    label: 'Anytime',
+    value: '12:00pm',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
+  {
     id: '1',
     label: '7 AM',
     value: '7:00am',
@@ -122,20 +129,22 @@ class PlaceOrders extends React.Component {
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
-      date: '',
+      date: { label: '', value: '' },
       radioButtonsJobs: [],
       radioButtonsStore: [],
       store: '',
       job: '',
-      delivery: { label: '', value: ''},
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
       location: '',
-      time: { label: '', value: ''},
+      time: { label: '', value: '' },
       orderName: '',
       notFound: false,
       showSearch: false,
       orderNameError: false,
       deliveryTypeError: false,
-      storeError: false
+      storeError: false,
+      locationError: false,
     };
   }
 
@@ -152,6 +161,32 @@ class PlaceOrders extends React.Component {
     } catch (e){
       console.log(e)
     }
+  }
+
+  componentWillUnmount(){
+    this.setState({
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
+      deleteAction: false,
+      radioButtons: [],
+      date: { label: '', value: '' },
+      radioButtonsJobs: [],
+      radioButtonsStore: [],
+      store: '',
+      job: '',
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
+      location: '',
+      time: { label: '', value: '' },
+      orderName: '',
+      notFound: false,
+      showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false,
+      storeError: false,
+      locationError: false,
+    });
   }
 
   setRadioButtons(stores) {
@@ -176,8 +211,9 @@ class PlaceOrders extends React.Component {
       this.setState({
         delivery: {
           value: selected.value,
-          label: selected.label
-        }
+          label: selected.label,
+        },
+        deliveryText: selected.label,
       })
     else if (this.state.radioButtonsData == radioButtonsHour)
       this.setState({
@@ -209,7 +245,10 @@ class PlaceOrders extends React.Component {
 
   handleDatePicked = (date) => {
     this.setState({
-      date: date.toDateString()
+      date: {
+        label: date.toDateString(),
+        value: date.toISOString("2015-05-14").slice(0,10)
+      }
     })
     this.hideDatePicker();
   };
@@ -261,11 +300,13 @@ class PlaceOrders extends React.Component {
   }
 
   verifyFields() {
-    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store
+    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store 
+      || this.state.delivery.value === 'delivery' && this.state.location === '';
     this.setState({
       orderNameError: !this.state.orderName,
       deliveryTypeError: !this.state.delivery.value,
-      storeError: !this.state.store
+      storeError: !this.state.store,
+      locationError: this.state.delivery.value === 'delivery' && this.state.location === '',
     })
     if (error) {
       alert('Fill in the required data *')
@@ -282,7 +323,7 @@ class PlaceOrders extends React.Component {
           {
             description: e.name,
             quantity: e.quantity,
-            units: e.quantity,
+            units: "ea",
             cost: e.myPrice ? e.rrp : e.cost_price,
             tax: [
               {
@@ -301,14 +342,11 @@ class PlaceOrders extends React.Component {
             supplier: supplierId.id,
             job: this.state.job || null,
             issued_on: date.toISOString("2015-05-14").slice(0,10),
-            description: "A description for this order",
             notes: this.state.notes,
             tax_exclusive: true,
             sections: [
                 {
                     items: items,
-                    name: "Section 1",
-                    description: "A section description",
                     hide_section: false,
                     hide_section_price: false,
                     hide_section_items: false,
@@ -318,13 +356,15 @@ class PlaceOrders extends React.Component {
                     hide_item_total: false
                 }
             ],
-            delivery_instructions: {
+            delivery_instructions: [{
               delivery: this.state.delivery.value,
               location: this.state.location || "",
-              time: this.state.time.value
-            }
+              date: this.state.date.value,
+              time: this.state.time.value || "12:00pm"
+            }]
           }
         };
+        console.log(data)
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
           this.props.clearProducts()
@@ -400,6 +440,7 @@ class PlaceOrders extends React.Component {
             <>
               <Block row>
                 <Text style={styles.text}>Address</Text>
+                <Text style={styles.errorText}> * </Text>
               </Block>
               <Input
                 left
@@ -415,10 +456,10 @@ class PlaceOrders extends React.Component {
           }
           <>
             <PickerButton
-              text="Preferred Delivery Date"
-              placeholder={this.state.date || "Select date"}
+              text={`${this.state.deliveryText} Date`}
+              placeholder={this.state.date.label || "Select date"}
               icon
-              picked={this.state.date !== ''}
+              picked={this.state.date.value !== ''}
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
@@ -432,7 +473,7 @@ class PlaceOrders extends React.Component {
             />
           </>
           <PickerButton
-            text="Preferred Delivery Time"
+            text={`${this.state.deliveryText} Time`}
             placeholder={this.state.time.label || "Select time"}
             icon
             picked={this.state.time.value !== ''}
@@ -443,6 +484,24 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
+          { 
+            this.state.time.label === 'Anytime' &&
+            <>
+              <Block row>
+                <Text style={styles.text}>Time</Text>
+              </Block>
+              <Input
+                left
+                color="black"
+                style={styles.orderName}
+                placeholder="Enter time"
+                onChangeText={t => this.setState({ time: { label: 'Anytime', value: t }})}
+                value={this.state.time.value}
+                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+                textInputStyle={{ flex: 1 }}
+              />
+            </>
+          }
           {/* <DateTimePicker
             mode="time"
             isVisible={this.state.isTimePickerVisible}
