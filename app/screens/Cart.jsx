@@ -110,6 +110,7 @@ class Cart extends React.Component {
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
         <Block row style={styles.detailOrders}>
           <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
+
           <Button
             shadowless
             style={(styles.addToCart, { left: 10 })}
