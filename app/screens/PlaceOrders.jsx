@@ -15,6 +15,7 @@ import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import { clearProducts } from '@core/module/store/cart/cart';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -37,6 +38,13 @@ const radioButtonsDelivery = [
 ];
 
 const radioButtonsHour = [
+  {
+    id: '0',
+    label: 'Anytime',
+    value: '12:00pm',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: { fontWeight: 'bold' },
+  },
   {
     id: '1',
     label: '7 AM',
@@ -121,16 +129,22 @@ class PlaceOrders extends React.Component {
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
-      date: '',
+      date: { label: '', value: '' },
       radioButtonsJobs: [],
       radioButtonsStore: [],
       store: '',
       job: '',
-      delivery: { label: '', value: ''},
-      time: { label: '', value: ''},
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
+      location: '',
+      time: { label: '', value: '' },
       orderName: '',
       notFound: false,
       showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false,
+      storeError: false,
+      locationError: false,
     };
   }
 
@@ -149,7 +163,38 @@ class PlaceOrders extends React.Component {
     }
   }
 
+  componentWillUnmount(){
+    this.setState({
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
+      deleteAction: false,
+      radioButtons: [],
+      date: { label: '', value: '' },
+      radioButtonsJobs: [],
+      radioButtonsStore: [],
+      store: '',
+      job: '',
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
+      location: '',
+      time: { label: '', value: '' },
+      orderName: '',
+      notFound: false,
+      showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false,
+      storeError: false,
+      locationError: false,
+    });
+  }
+
   setRadioButtons(stores) {
+    stores.sort(function(a, b) {
+      var textA = a.name.toUpperCase();
+      var textB = b.name.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
     let radioButtonsValues = stores && stores.map(c => ({
       ...c, 
       color: nowTheme.COLORS.INFO,
@@ -166,8 +211,9 @@ class PlaceOrders extends React.Component {
       this.setState({
         delivery: {
           value: selected.value,
-          label: selected.label
-        }
+          label: selected.label,
+        },
+        deliveryText: selected.label,
       })
     else if (this.state.radioButtonsData == radioButtonsHour)
       this.setState({
@@ -199,7 +245,10 @@ class PlaceOrders extends React.Component {
 
   handleDatePicked = (date) => {
     this.setState({
-      date: date.toDateString()
+      date: {
+        label: date.toDateString(),
+        value: date.toISOString("2015-05-14").slice(0,10)
+      }
     })
     this.hideDatePicker();
   };
@@ -243,25 +292,24 @@ class PlaceOrders extends React.Component {
 
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
-      return p.price*p.quantity
+      const price = p.myPrice ? p.rrp : p.cost_price;
+      return price*p.quantity
     })
     const reducer = (accumulator, curr) => accumulator + curr;
     return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
   }
 
   verifyFields() {
-    let error = false
-    if (!this.state.orderName) {
-      alert('You must specify a valid name')
-      error = true
-    } 
-    if (!this.state.delivery) {
-      alert('You must pick a Delivery Type')
-      error = true
-    } 
-    if (!this.props.cartProducts) {
-      alert('You must have an order to place')
-      error = true
+    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store 
+      || this.state.delivery.value === 'delivery' && this.state.location === '';
+    this.setState({
+      orderNameError: !this.state.orderName,
+      deliveryTypeError: !this.state.delivery.value,
+      storeError: !this.state.store,
+      locationError: this.state.delivery.value === 'delivery' && this.state.location === '',
+    })
+    if (error) {
+      alert('Fill in the required data *')
     }
     return error
   }
@@ -275,8 +323,8 @@ class PlaceOrders extends React.Component {
           {
             description: e.name,
             quantity: e.quantity,
-            units: e.quantity,
-            cost: e.price,
+            units: "ea",
+            cost: e.myPrice ? e.rrp : e.cost_price,
             tax: [
               {
                   name: "GST",
@@ -292,16 +340,13 @@ class PlaceOrders extends React.Component {
           data: {
             name: this.state.orderName,
             supplier: supplierId.id,
-            job: this.state.job,
+            job: this.state.job || null,
             issued_on: date.toISOString("2015-05-14").slice(0,10),
-            description: "A description for this order",
             notes: this.state.notes,
             tax_exclusive: true,
             sections: [
                 {
                     items: items,
-                    name: "Section 1",
-                    description: "A section description",
                     hide_section: false,
                     hide_section_price: false,
                     hide_section_items: false,
@@ -311,15 +356,19 @@ class PlaceOrders extends React.Component {
                     hide_item_total: false
                 }
             ],
-            delivery_instructions: {
-                delivery: this.state.delivery.value,
-                time: this.state.time.value
-            }
+            delivery_instructions: [{
+              delivery: this.state.delivery.value,
+              location: this.state.location || "",
+              date: this.state.date.value,
+              time: this.state.time.value || "12:00pm"
+            }]
           }
         };
+        console.log(data)
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
-          this.props.navigation.navigate('OrderPlaced');
+          this.props.clearProducts()
+          this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
     } catch (e) {
@@ -350,7 +399,10 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          <Text style={styles.text}>Order Name</Text>
+          <Block row>
+            <Text style={styles.text}>Order Name</Text>
+            <Text style={styles.errorText}> * </Text>
+          </Block>
           <Input
             left
             color="black"
@@ -374,6 +426,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
             text="Delivery Type"
+            error
             placeholder={this.state.delivery.label || "Select delivery type"}
             icon
             picked={this.state.delivery.value !== ''}
@@ -382,13 +435,31 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-
+          { 
+            this.state.delivery.value === 'delivery' &&
+            <>
+              <Block row>
+                <Text style={styles.text}>Address</Text>
+                <Text style={styles.errorText}> * </Text>
+              </Block>
+              <Input
+                left
+                color="black"
+                style={styles.orderName}
+                placeholder="Enter your address"
+                onChangeText={t => this.setState({ location: t})}
+                value={this.state.location}
+                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+                textInputStyle={{ flex: 1 }}
+              />
+            </>
+          }
           <>
             <PickerButton
-              text="Preferred Delivery Date"
-              placeholder={this.state.date || "Select date"}
+              text={`${this.state.deliveryText} Date`}
+              placeholder={this.state.date.label || "Select date"}
               icon
-              picked={this.state.date !== ''}
+              picked={this.state.date.value !== ''}
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
@@ -402,7 +473,7 @@ class PlaceOrders extends React.Component {
             />
           </>
           <PickerButton
-            text="Preferred Delivery Time"
+            text={`${this.state.deliveryText} Time`}
             placeholder={this.state.time.label || "Select time"}
             icon
             picked={this.state.time.value !== ''}
@@ -413,6 +484,24 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
+          { 
+            this.state.time.label === 'Anytime' &&
+            <>
+              <Block row>
+                <Text style={styles.text}>Time</Text>
+              </Block>
+              <Input
+                left
+                color="black"
+                style={styles.orderName}
+                placeholder="Enter time"
+                onChangeText={t => this.setState({ time: { label: 'Anytime', value: t }})}
+                value={this.state.time.value}
+                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+                textInputStyle={{ flex: 1 }}
+              />
+            </>
+          }
           {/* <DateTimePicker
             mode="time"
             isVisible={this.state.isTimePickerVisible}
@@ -432,6 +521,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
             text='Select Store'
+            error
             placeholder={this.state.store || "Select store"}
             picked={this.state.store !== ''}
             icon
@@ -471,7 +561,7 @@ class PlaceOrders extends React.Component {
               }}
             />
             <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
-              <Text size={14}>Total Orders</Text>
+              <Text size={14}>Total (ex-GST)</Text>
               <Text
                 size={16}
                 color={nowTheme.COLORS.ORANGE}
@@ -500,6 +590,7 @@ class PlaceOrders extends React.Component {
     const orders = this.props.cartProducts
 
     return orders.map((orders) => {
+      const price = orders.myPrice ? orders.rrp : orders.cost_price;
       return (
         <Block 
           keyExtractor={(i) => { index: i }} 
@@ -508,8 +599,8 @@ class PlaceOrders extends React.Component {
           <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
           <Text  numberOfLines={2} style={styles.receiptText}>{orders.name}</Text>
           <Block row style={{ justifyContent: 'space-between',  }}>
-            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(orders.price)}</Text>
-            <Text style={styles.detailPrice}>{this.formatMoney.format(orders.price*orders.quantity)}</Text>
+            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(price)}</Text>
+            <Text style={styles.detailPrice}>{this.formatMoney.format(price*orders.quantity)}</Text>
           </Block>
         </Block>
       );
@@ -669,6 +760,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     color: nowTheme.COLORS.PRETEXT,
   },
+  errorText: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.ERROR,
+    fontWeight: 'bold'
+  },
   orderName: {
     width: 'auto',
     paddingVertical: 10,
@@ -729,5 +825,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products
 });
 
+const mapDispatchToProps = { clearProducts };
 
-export default connect(mapStateToProps, {})(PlaceOrders);
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceOrders);

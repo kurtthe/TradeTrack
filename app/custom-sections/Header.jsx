@@ -171,8 +171,9 @@ class Header extends React.Component {
       case 'SearchProducts':
         return <SearchProducts key="basket-search" navigation={navigation} isWhite={white} />;
 
-      case 'Invoice Details':
-        return (
+      case 'Details':
+        return [
+
           <View style={{ top: 7, width: 50 }}>
             {this.state.loadingLoadPdf ? (
               <Loading />
