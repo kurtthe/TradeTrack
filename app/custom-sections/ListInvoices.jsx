@@ -36,7 +36,7 @@ const ListInvoices = (props) => {
         <Block style={styles.cardHeader}>
           <Block row middle space="between" style={{ paddingLeft: 15, top: 10, height: 20 }}>
             <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
-              Invoices
+            Transactions
             </Text>
 
             <TouchableOpacity onPress={() => handleRedirectAllInvoices()}>

@@ -73,7 +73,7 @@ class Account extends React.Component {
                 component: this.renderAccountDetails(),
               },
               {
-                labelTab: 'Invoices',
+                labelTab: 'Transactions',
                 component: this.renderInvoices(),
               },
             ]}
