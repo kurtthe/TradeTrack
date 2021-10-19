@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import WebViewComponent from '@custom-elements/WebView';
+import { GeneralRequestService } from '@core/services/general-request.service';
 
 const { height } = Dimensions.get('screen');
+const generalRequestService = GeneralRequestService.getInstance();
 
 const Register = () => {
+  const [urlView, setUrlView] = useState(null);
+
+  useEffect(() => {
+    getUrlRender();
+  });
+
+  const getUrlRender = async () => {
+    const { url } = await generalRequestService.get(
+      'https://api.tradetrak.com.au/burdens/dashboard',
+    );
+    setUrlView(url);
+  };
+
   return (
     <SafeAreaView style={styles.webViewContainer}>
-      <WebViewComponent url="http://app.tradetrak.com.au/" />
+      <WebViewComponent url={urlView} />
     </SafeAreaView>
   );
 };

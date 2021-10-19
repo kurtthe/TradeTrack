@@ -53,6 +53,11 @@ class Login extends React.Component {
 
   async componentDidMount() {
     const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+
+    if(!tokenStorageExist){
+      return;
+    }
+    
     this.props.sign(JSON.parse(tokenStorageExist));
     this.redirectLogin();
   }
@@ -81,8 +86,8 @@ class Login extends React.Component {
 
     if (!!resLogin) {
       this.props.sign(resLogin);
-      this.setState({ loading: false });
     }
+    this.setState({ loading: false });
   };
 
   handleChangeEmail = (text) => {
@@ -142,7 +147,6 @@ class Login extends React.Component {
                         ? 18
                         : 20
                     }
-                    //size={20}
                   >
                     Welcome Back,{'\n'}
                     Please sign in with your account
@@ -244,6 +248,7 @@ class Login extends React.Component {
                         textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                         style={styles.button}
                         onPress={() => this.handleLogin()}
+                        loading={this.state.loading}
                       >
                         Login
                       </Button>

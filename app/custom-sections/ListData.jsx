@@ -22,6 +22,7 @@ class ListData extends React.Component {
       loadingMoreData: false,
       showLoadMore: true,
       page: 1,
+      urlPetition: null,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -29,10 +30,18 @@ class ListData extends React.Component {
 
   async componentDidMount() {
     await this.getPetitionData();
+    this.setState({
+      urlPetition: this.props.endpoint,
+    });
   }
 
   async componentDidUpdate(prevProps, prevState) {
     if (this.state.perPageData !== prevState.perPageData) {
+      await this.getPetitionData();
+      return;
+    }
+
+    if (this.state.urlPetition !== prevState.urlPetition) {
       await this.getPetitionData();
     }
   }
@@ -40,9 +49,9 @@ class ListData extends React.Component {
   getPetitionData = async () => {
     this.setState({ loadingMoreData: true });
 
-    if (!!this.props.endpoint) {
+    if (!!this.state.urlPetition) {
       await this.getDataPetition.getInfo(
-        this.props.endpoint,
+        this.state.urlPetition,
         this.loadData,
         this.state.page,
         this.state.perPageData,
@@ -95,12 +104,9 @@ class ListData extends React.Component {
       linkPetition += `${item}=${valuesFilters[item]}&`;
     });
 
-    await this.getDataPetition.getInfo(
-      linkPetition,
-      this.loadData,
-      this.state.page,
-      this.state.perPageData,
-    );
+    this.setState({
+      urlPetition: linkPetition,
+    });
   };
 
   getDataFilterProducts = async (data = false, dataFilter = false) => {
@@ -132,18 +138,7 @@ class ListData extends React.Component {
     return (
       <View style={styles.notfound}>
         <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
-          We didn’t find "<Text bold>{this.state.search}</Text>" in the Data Base.
-        </Text>
-
-        <Text
-          size={18}
-          style={{
-            marginTop: theme.SIZES.BASE,
-            fontFamily: 'montserrat-regular',
-          }}
-          color={nowTheme.COLORS.TEXT}
-        >
-          You can see more data in your Account.
+          No results found for search options selected.
         </Text>
       </View>
     );
@@ -154,7 +149,7 @@ class ListData extends React.Component {
       return null;
     }
 
-    if (this.state.data.length > 10) {
+    if (this.state.data.length > 5) {
       return (
         <View style={styles.contentButton}>
           <Button
