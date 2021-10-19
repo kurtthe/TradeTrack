@@ -193,7 +193,7 @@ class Header extends React.Component {
               </View>
             </BottomModal>
           </View>
-        );
+        ];
 
       default:
         break;
