@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { View, StyleSheet, TouchableOpacity, Share, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { Portal } from 'react-native-paper';
 import {
   widthPercentageToDP as wp,

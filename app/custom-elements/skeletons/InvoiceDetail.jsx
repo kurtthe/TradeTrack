@@ -1,6 +1,6 @@
 import React from 'react';
 import SkeletonContent from 'react-native-skeleton-content';
-import {View} from 'react-native'
+import { View } from 'react-native';
 
 const firstLayout = [
   {
@@ -85,9 +85,8 @@ const firstLayout = [
   },
 ];
 const InvoicesDetail = () => {
-
   return (
-    <View style={{padding: 10}}>
+    <View style={{ padding: 10 }}>
       <SkeletonContent
         containerStyle={{ flex: 1, width: 300 }}
         animationDirection="horizontalLeft"

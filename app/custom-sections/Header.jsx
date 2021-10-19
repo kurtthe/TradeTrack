@@ -48,7 +48,7 @@ const SearchProducts = ({ isWhite, style, navigation, myPrice }) => (
     onPress={() => {
       Keyboard.dismiss();
       navigation.navigate('SearchProducts', {
-        myPrice
+        myPrice,
       });
     }}
   >
@@ -137,41 +137,43 @@ class Header extends React.Component {
 
     switch (title) {
       case 'Home':
-        return [
+        return (
           <View style={{ top: 5.5 }}>
             <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
-          </View>,
-        ];
+          </View>
+        );
+
       case 'Products':
-        return [
+        return (
           <View style={{ top: 6.5 }}>
-            <SearchProducts key="basket-deals" navigation={navigation} isWhite={white} myPrice={this.props.scene.route.params?.myPrice} />
-          </View>,
-        ];
+            <SearchProducts
+              key="basket-deals"
+              navigation={navigation}
+              isWhite={white}
+              myPrice={this.props.scene.route.params?.myPrice}
+            />
+          </View>
+        );
 
       case 'Account':
-        return [
+        return (
           <View style={{ top: 5.5 }}>
             <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
-          </View>,
-        ];
+          </View>
+        );
 
       case 'Product':
-        return [
-          <Block row style={{ paddingTop: 17.5, width: 50 }}>
-            {/* <CartButton isWhite={white} />
-            <ConfigButton isWhite={white} /> */}
-          </Block>,
-        ];
+        return <Block row style={{ paddingTop: 17.5, width: 50 }} />;
 
       case 'SearchHome':
-        return [<SearchHome key="basket-search" navigation={navigation} isWhite={white} />];
+        return <SearchHome key="basket-search" navigation={navigation} isWhite={white} />;
 
       case 'SearchProducts':
-        return [<SearchProducts key="basket-search" navigation={navigation} isWhite={white} />];
+        return <SearchProducts key="basket-search" navigation={navigation} isWhite={white} />;
 
       case 'Details':
         return [
+
           <View style={{ top: 7, width: 50 }}>
             {this.state.loadingLoadPdf ? (
               <Loading />
@@ -190,8 +192,8 @@ class Header extends React.Component {
                 <PdfViewer url={this.state.urlFilePdf} />
               </View>
             </BottomModal>
-          </View>,
-        ];
+          </View>
+        );
 
       default:
         break;
@@ -205,23 +207,20 @@ class Header extends React.Component {
       <>
         {title == 'Home' ? (
           <Block row style={{ width: wp('62.5%') }}>
-            <Block flex middle>
-              <TouchableOpacity>
-                {/* <Image source={require('@assets/imgs/img/book-invoice.png')} style={styles.image} />  */}
-              </TouchableOpacity>
-            </Block>
-
+            <Block flex middle />
             <Block flex middle style={{ top: 5 }}>
               <Image style={styles.introImageStyle} source={require('@assets/imgs/img/logo.png')} />
             </Block>
           </Block>
         ) : (
-          <TouchableOpacity style={{ paddingTop: 12.5, width:25, height:39, position: 'absolute' }}   onPress={this.handleLeftPress} >
+          <TouchableOpacity
+            style={{ paddingTop: 12.5, width: 25, height: 39, position: 'absolute' }}
+            onPress={this.handleLeftPress}
+          >
             <Icon
               name={back ? 'minimal-left2x' : 'minimal-left2x'}
               family="NowExtra"
               size={18}
-            
               color={iconColor || (white ? nowTheme.COLORS.WHITE : nowTheme.COLORS.ICON)}
             />
           </TouchableOpacity>
@@ -347,7 +346,6 @@ class Header extends React.Component {
             { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
             titleColor && { color: titleColor },
           ]}
-          {...props}
         />
         {this.renderHeader()}
       </Block>

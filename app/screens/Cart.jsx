@@ -7,13 +7,12 @@ import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { ProductCart as ProductCartService } from '@core/services/product-cart.service';
 
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
 import ProductCart from '@custom-elements/ProductCart';
+import { AlertService } from '@core/services/alert.service';
+
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
@@ -23,19 +22,42 @@ class Cart extends React.Component {
     this.state = {
       customStyleIndex: 0,
       deleteAction: false,
+      myPrice: false
     };
 
+    this.alertService = new AlertService();
     this.formatMoney = FormatMoneyService.getInstance();
     this.productCartService = ProductCartService.getInstance(props.cartProducts);
+  }
+
+  componentDidMount(){
+    if(!!this.props.cartProducts[0]?.myPrice){
+      this.setState({
+        myPrice: this.props.cartProducts[0].myPrice
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(this.props.cartProducts) !== JSON.stringify(prevProps.cartProducts)) {
       this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
+
+      if(!!this.props.cartProducts[0]?.myPrice){
+        this.setState({
+          myPrice: this.props.cartProducts[0].myPrice
+        })
+      }
+
+      this.orderTotal()
     }
   }
 
   onCheckoutPressed() {
+
+    if(this.state.myPrice){
+      this.alertService.show('Alert!', 'Cannot checkout in client mode, please disable');
+      return;
+    }
     this.props.navigation.navigate('PlaceOrders');
   }
 
@@ -55,7 +77,7 @@ class Cart extends React.Component {
     );
   }
 
-  renderProducts = ({ item }) => <ProductCart product={item} myPrice={this.state.myPrice} />;
+  renderProducts = ({ item }) => <ProductCart product={item} />;
 
   renderCurrentOrder = () => (
     <FlatList
@@ -82,10 +104,13 @@ class Cart extends React.Component {
       return null;
     }
 
+    const titleOrder = this.state.myPrice? 'Total RRP (ex-GST)' : 'Total (ex-GST)'
+
     return (
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
         <Block row style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold' }}>{`Total (ex-GST): ${this.orderTotal()}`}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
+
           <Button
             shadowless
             style={(styles.addToCart, { left: 10 })}
@@ -128,8 +153,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between'
-
+    justifyContent: 'space-between',
   },
   container_empty: {
     height: hp('60%'),

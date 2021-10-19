@@ -44,7 +44,7 @@ export class DownloadFile {
   async getToken(){
     const data =  await SecureStore.getItemAsync('data_user');
     const dataParse = JSON.parse(data)
-    return dataParse.api_key
+    return dataParse?.api_key
   }
   
 }
