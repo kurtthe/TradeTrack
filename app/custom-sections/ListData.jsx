@@ -43,6 +43,11 @@ class ListData extends React.Component {
 
     if (this.state.urlPetition !== prevState.urlPetition) {
       await this.getPetitionData();
+      return;
+    }
+
+    if(this.props.endpoint !== prevProps.endpoint){
+      await this.getPetitionData();
     }
   }
 
