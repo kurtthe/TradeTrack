@@ -9,6 +9,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import ListProducts from '@custom-sections/ListProducts';
+import LoadingComponent from '@custom-elements/Loading';
 
 const { width } = Dimensions.get('screen');
 
@@ -22,6 +23,7 @@ class SearchProduct extends React.Component {
       notFound: false,
       noShowInit: true,
       textSearch: '',
+      urlProducts: ''
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -29,14 +31,18 @@ class SearchProduct extends React.Component {
   }
 
   async componentDidMount() {
+    const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
+    const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
+
     this.setState({
+      urlProducts: newUrl,
       myPriceActive: this.props.route.params.myPrice,
     });
   }
 
   getProducts = async (textSearch = '') => {
     await this.getDataPetition.getInfo(
-      `${endPoints.searchProducts}?search=${textSearch}`,
+      `${this.state.urlProducts}&search=${textSearch}`,
       this.loadData,
       1,
       10,
@@ -88,6 +94,11 @@ class SearchProduct extends React.Component {
   };
 
   render() {
+
+    if (this.state.urlProducts === '') {
+      return <LoadingComponent />;
+    }
+    
     return (
       <View>
         <Searchbar
