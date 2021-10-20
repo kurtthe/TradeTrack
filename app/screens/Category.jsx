@@ -39,6 +39,8 @@ class Category extends React.Component {
       return <LoadingComponent />;
     }
 
+    console.log("==Z>this.state.urlProducts",this.state.urlProducts)
+    
     return (
       <>
         <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
