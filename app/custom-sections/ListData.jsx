@@ -70,7 +70,6 @@ class ListData extends React.Component {
   loadData = (data) => {
     if (!data || data?.length < 1) {
       this.setState({
-        notFound: true,
         loadingMoreData: false,
         showLoadMore: false,
       });
