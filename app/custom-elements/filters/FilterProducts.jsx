@@ -10,6 +10,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import LoadingComponent from '@custom-elements/Loading';
 import { AlertService } from '@core/services/alert.service';
+import Search from '@custom-elements/Search';
 
 const { width, height } = Dimensions.get('window');
 
@@ -101,11 +102,16 @@ class FilterProducts extends Component {
 
   onChangeSearchCategory = (value) => {
     this.setState({
+      textSearch: value,
       loadingCategories: true,
     });
     setTimeout(() => {
       this.getCategories(value);
     }, 500);
+  };
+
+  handleSearchProduct = async () => {
+    await this.getCategories(this.state.textSearch);
   };
 
   clearFilterSelected = (listData = [], idSelected) => {
@@ -191,9 +197,10 @@ class FilterProducts extends Component {
         </Block>
 
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
-          <Searchbar
+          <Search
             placeholder="Search"
             onChangeText={(text) => this.onChangeSearchCategory(text)}
+            onIconPress={() => this.handleSearchProduct()}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
@@ -296,6 +303,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: nowTheme.COLORS.BORDER,
     elevation: 0,
+    marginBottom: theme.SIZES.BASE * 4,
   },
   searchInput: {
     color: 'black',
