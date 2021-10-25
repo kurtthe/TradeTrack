@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants/';
-import { Searchbar } from 'react-native-paper';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import ListProducts from '@custom-sections/ListProducts';
+import Search from '@custom-elements/Search';
 
 const { width } = Dimensions.get('screen');
 
@@ -68,7 +68,7 @@ class SearchProduct extends React.Component {
       return
     }
 
-    if (value.length > 5) {
+    if (value.length > 3) {
       await this.getProducts(value);
     }
   };
@@ -90,7 +90,7 @@ class SearchProduct extends React.Component {
   render() {
     return (
       <View>
-        <Searchbar
+        <Search
           placeholder="What are you looking for?"
           onChangeText={(text) => this.changeSearchText(text)}
           style={styles.search}
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   search: {
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
-    marginBottom: theme.SIZES.BASE,
+    marginBottom: theme.SIZES.BASE * 4,
     borderWidth: 1,
     borderRadius: 30,
   },
