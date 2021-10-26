@@ -27,6 +27,7 @@ const radioButtonsDelivery = [
     value: 'delivery',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '2',
@@ -34,6 +35,7 @@ const radioButtonsDelivery = [
     value: 'pickup',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
 ];
 
@@ -41,79 +43,90 @@ const radioButtonsHour = [
   {
     id: '0',
     label: 'Anytime',
-    value: '12:00pm',
+    value: '12.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '1',
     label: '7 AM',
-    value: '7:00am',
+    value: '7.00 AM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '2',
     label: '8 AM',
-    value: '8:00am',
+    value: '8.00 AM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '3',
     label: '9 AM',
-    value: '9:00am',
+    value: '9.00 AM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '4',
     label: '10 AM',
-    value: '10:00am',
+    value: '10.00 AM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '5',
     label: '11 AM',
-    value: '11:00am',
+    value: '11.00 AM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '6',
     label: '12 PM',
-    value: '12:00pm',
+    value: '12.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '7',
     label: '1 PM',
-    value: '1:00pm',
+    value: '1.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '8',
     label: '2 PM',
-    value: '2:00pm',
+    value: '2.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '9',
     label: '3 PM',
-    value: '3:00pm',
+    value: '3.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
   {
     id: '10',
     label: '4 PM',
-    value: '4:00pm',
+    value: '4.00 PM',
     color: nowTheme.COLORS.INFO,
     labelStyle: { fontWeight: 'bold' },
+    selected: false,
   },
 ];
 
@@ -158,18 +171,30 @@ class PlaceOrders extends React.Component {
         radioButtonsStore: storesAsRadioButtons,
         radioButtonsJobs: jobsAsRadioButtons
       })
+      this.didBlurSubscription = this.props.navigation.addListener(
+        'blur',
+        payload => {
+          this.clearState()
+          console.log('>>>>>>>>', this.state.radioButtonsData)
+        }
+      )
     } catch (e){
       console.log(e)
     }
   }
 
   componentWillUnmount(){
+    this.didBlurSubscription()
+  }
+
+  clearState() {
     this.setState({
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
+      radioButtonsData: radioButtonsDelivery,
       date: { label: '', value: '' },
       radioButtonsJobs: [],
       radioButtonsStore: [],
@@ -356,15 +381,14 @@ class PlaceOrders extends React.Component {
                     hide_item_total: false
                 }
             ],
-            delivery_instructions: [{
+            delivery_instructions: {
               delivery: this.state.delivery.value,
               location: this.state.location || "",
               date: this.state.date.value,
-              time: this.state.time.value || "12:00pm"
-            }]
+              time: this.state.time.value || "12.00 PM"
+            }
           }
         };
-        console.log(data)
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
           this.props.clearProducts()
