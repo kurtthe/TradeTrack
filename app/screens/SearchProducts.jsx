@@ -4,11 +4,12 @@ import { Block, theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants/';
 import { Searchbar } from 'react-native-paper';
 
-import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import ListProducts from '@custom-sections/ListProducts';
+import LoadingComponent from '@custom-elements/Loading';
+import ListData from '@custom-sections/ListData';
 
 const { width } = Dimensions.get('screen');
 
@@ -17,77 +18,48 @@ class SearchProduct extends React.Component {
     super(props);
 
     this.state = {
-      listProducts: [],
       myPriceActive: false,
-      notFound: false,
-      noShowInit: true,
       textSearch: '',
+      urlProducts: '',
     };
 
-    this.getDataPetition = GetDataPetitionService.getInstance();
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
   async componentDidMount() {
+    const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
+    const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
+
     this.setState({
+      urlProducts: newUrl,
       myPriceActive: this.props.route.params.myPrice,
     });
   }
 
-  getProducts = async (textSearch = '') => {
-    await this.getDataPetition.getInfo(
-      `${endPoints.searchProducts}?search=${textSearch}`,
-      this.loadData,
-      1,
-      10,
-    );
-  };
-
-  loadData = (data) => {
-    if (data.length > 0) {
-      this.setState({
-        listProducts: data,
-        notFound: false,
-        noShowInit: false,
-      });
-    } else {
-      this.setState({
-        notFound: true,
-        noShowInit: false,
-      });
-    }
-  };
-
-  changeSearchText = async (value) => {
-    this.setState({
-      textSearch: value,
-    });
-
+  changeSearchText = async (value = '') => {
     if (value === '') {
-      await this.getProducts();
-      return
+      this.setState({
+        textSearch: value,
+      });
+      return;
     }
 
-    if (value.length > 5) {
-      await this.getProducts(value);
+    if (value.length > 3) {
+      this.setState({
+        textSearch: value,
+      });
     }
   };
 
-  handleSearchProduct = async () => {
-    await this.getProducts(this.state.textSearch);
-  };
-
-  renderNotFound = () => {
-    return (
-      <View style={styles.notfound}>
-        <Text style={{ fontFamily: 'montserrat-regular' }} size={18} color={nowTheme.COLORS.TEXT}>
-          No results found for search options selected.
-        </Text>
-      </View>
-    );
-  };
+  handleSearchProduct = ()=> {
+    
+  }
 
   render() {
+    if (this.state.urlProducts === '') {
+      return <LoadingComponent />;
+    }
+
     return (
       <View>
         <Searchbar
@@ -98,15 +70,13 @@ class SearchProduct extends React.Component {
           onIconPress={() => this.handleSearchProduct()}
         />
 
-        {!this.state.noShowInit ? (
-          <Block style={styles.content}>
-            {!this.state.notFound ? (
-              <ListProducts data={this.state.listProducts} myPrice={this.state.myPriceActive} />
-            ) : (
-              <>{this.renderNotFound()}</>
-            )}
-          </Block>
-        ) : null}
+        <Block style={styles.content}>
+          <ListData
+            perPage={20}
+            endpoint={`${this.state.urlProducts}&search=${this.state.textSearch}`}
+            children={<ListProducts myPrice={this.state.myPriceActive} />}
+          />
+        </Block>
       </View>
     );
   }
@@ -127,7 +97,7 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     paddingTop: 15,
-    paddingBottom: 120,
+    paddingBottom: 150,
   },
   notfound: {
     padding: 15,
