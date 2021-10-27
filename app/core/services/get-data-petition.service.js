@@ -18,7 +18,7 @@ export class GetDataPetitionService {
     const response = await this.generalRequest.get(endpoint, {
       params: { page, 'per-page': perPage, ...paramsMore },
     });
-    action && action(response);
+    action && action(response, page);
     return response;
   }
 }

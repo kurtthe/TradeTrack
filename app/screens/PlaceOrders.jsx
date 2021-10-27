@@ -16,6 +16,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import { clearProducts } from '@core/module/store/cart/cart';
+import Search from '@custom-elements/Search';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
@@ -158,6 +159,8 @@ class PlaceOrders extends React.Component {
       deliveryTypeError: false,
       storeError: false,
       locationError: false,
+      search: '',
+      page: 1,
     };
   }
 
@@ -211,6 +214,8 @@ class PlaceOrders extends React.Component {
       deliveryTypeError: false,
       storeError: false,
       locationError: false,
+      search: '',
+      page: 1,
     });
   }
 
@@ -291,20 +296,22 @@ class PlaceOrders extends React.Component {
   //   this.hideTimePicker();
   // };
 
-  onChangeSearch = async (textSearch) => {
+  onChangeSearch = async (textSearch, page) => {
+    this.setState({page: page + 1, search: textSearch})
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${textSearch}&expand=products`,
       this.loadData,
-      10,
+      page
     );
   };
 
-  loadData = (data) => {
+  loadData = (data, page) => {
+    console.log(page)
     if (data.length > 0) {
       let jobs = this.setRadioButtons(data)
       this.setState({
         radioButtonsJobs: jobs,
-        radioButtonsData: this.state.radioButtonsJobs,
+        radioButtonsData: page === 1 ? this.state.radioButtonsJobs : this.state.radioButtonsData.concat(jobs),
         showSearch: true
       });
     } else {
@@ -671,7 +678,7 @@ class PlaceOrders extends React.Component {
         />
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
+          <Block left style={{ height: height/2, padding: 5, paddingBottom: 40 }}>
             {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
@@ -681,15 +688,16 @@ class PlaceOrders extends React.Component {
               />
             ) : (
               <View style={{ height: height/2}}>
-                <Searchbar
+                <Search
                   placeholder="Search job"
-                  onChangeText={this.onChangeSearch}
+                  onChangeText={(text) => this.onChangeSearch(text, 1)}
                   style={styles.search}
                   inputStyle={styles.searchInput}
                 />
                 <ScrollView 
-                  style={{ width: width, marginHorizontal: 16 }}
-                  contentContainerStyle={{ alignItems: 'flex-start' }}
+                  style={{ width: width - 16, height: '95%'}}
+                  contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16}}
+                  onMomentumScrollEnd={() => this.onChangeSearch(this.state.search, this.state.page)}
                 >
                   <RadioGroup
                     radioButtons={this.state.radioButtonsData}
@@ -826,7 +834,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingBottom: 10,
   },
-  search: {
+  /* search: {
     height: 40,
     width: width - 32,
     marginHorizontal: 12,
@@ -839,9 +847,20 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16
   },
-
+ */
+  searchInput: {
+    color: 'black',
+    fontSize: 16,
+  },
+  search: {
+    height: 40,
+    width: width - 32,
+    marginBottom: theme.SIZES.BASE * 4,
+    borderRadius: 30,
+    
+  },  
   radioStyle:{
-alignItems: 'flex-start'
+    alignItems: 'flex-start'
   },
 });
 
