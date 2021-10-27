@@ -30,30 +30,31 @@ class Cart extends React.Component {
     this.productCartService = ProductCartService.getInstance(props.cartProducts);
   }
 
-  componentDidMount(){
-    if(!!this.props.cartProducts[0]?.myPrice){
-      this.setState({
-        myPrice: this.props.cartProducts[0].myPrice
-      })
-    }
-  }
+  // componentDidMount(){
+  //   if(!!this.props.cartProducts[0]?.myPrice){
+  //     this.setState({
+  //       myPrice: this.props.cartProducts[0].myPrice
+  //     })
+  //   }
+  // }
 
   componentDidUpdate(prevProps) {
     if (JSON.stringify(this.props.cartProducts) !== JSON.stringify(prevProps.cartProducts)) {
       this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
 
-      if(!!this.props.cartProducts[0]?.myPrice){
-        this.setState({
-          myPrice: this.props.cartProducts[0].myPrice
-        })
-      }
+      // if(!!this.props.cartProducts[0]?.myPrice ||
+      //   this.props.cartProducts[0]?.myPrice !== prevProps.cartProducts[0]?.myPrice
+      //   ){
+      //   this.setState({
+      //     myPrice: this.props.cartProducts[0].myPrice
+      //   })
+      // }
 
-      this.orderTotal()
+      // this.orderTotal()
     }
   }
 
   onCheckoutPressed() {
-
     if(this.state.myPrice){
       this.alertService.show('Alert!', 'Cannot checkout in client mode, please disable');
       return;
