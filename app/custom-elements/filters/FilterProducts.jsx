@@ -100,19 +100,23 @@ class FilterProducts extends Component {
     actionSheetRef2.current?.setModalVisible(false);
   };
 
-  onChangeSearchCategory = (value) => {
+  changeSearchText = (text) => {
     this.setState({
-      textSearch: value,
-      loadingCategories: true,
+      textSearch: text,
     });
-    setTimeout(() => {
-      this.getCategories(value);
-    }, 500);
+
+    if(text == '') {
+      this.handleSearch()
+    }
   };
 
-  handleSearchProduct = async () => {
+  handleSearch = async () => {
+    this.setState({
+      loadingCategories: true,
+    });
     await this.getCategories(this.state.textSearch);
   };
+
 
   clearFilterSelected = (listData = [], idSelected) => {
     return listData.map((item) => {
@@ -199,8 +203,8 @@ class FilterProducts extends Component {
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Search
             placeholder="Search"
-            onChangeText={(text) => this.onChangeSearchCategory(text)}
-            onIconPress={() => this.handleSearchProduct()}
+            onChangeText={(text) => this.changeSearchText(text)}
+            onSearch={() => this.handleSearch()}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
