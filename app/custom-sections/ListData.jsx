@@ -47,6 +47,9 @@ class ListData extends React.Component {
     }
 
     if(this.props.endpoint !== prevProps.endpoint){
+      this.setState({
+        urlPetition: this.props.endpoint,
+      });
       await this.getPetitionData();
     }
   }
