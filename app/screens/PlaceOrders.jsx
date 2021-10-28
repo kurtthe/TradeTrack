@@ -326,6 +326,9 @@ class PlaceOrders extends React.Component {
         showSearch: false
       });
     }
+    if (page == 1) {
+      this.handleSearch(this.state.page)
+    }
   };
 
   orderTotal() {
