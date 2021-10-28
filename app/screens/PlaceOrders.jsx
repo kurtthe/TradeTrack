@@ -295,23 +295,29 @@ class PlaceOrders extends React.Component {
   //   console.log('A date has been picked: ', time);
   //   this.hideTimePicker();
   // };
+  changeSearchText = (text) => {
+    this.setState({search: text})
 
-  onChangeSearch = async (textSearch, page) => {
-    this.setState({page: page + 1, search: textSearch})
+    if(text == '') {
+      this.handleSearch(1)
+    }
+  };
+
+  handleSearch = async (page) => {
+    this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
-      `${endPoints.jobs}?search=${textSearch}&expand=products`,
+      `${endPoints.jobs}?search=${this.state.search}&expand=products`,
       this.loadData,
       page
     );
   };
 
   loadData = (data, page) => {
-    console.log(page)
     if (data.length > 0) {
       let jobs = this.setRadioButtons(data)
       this.setState({
         radioButtonsJobs: jobs,
-        radioButtonsData: page === 1 ? this.state.radioButtonsJobs : this.state.radioButtonsData.concat(jobs),
+        radioButtonsData: page == 1 ? jobs : this.state.radioButtonsData.concat(jobs),
         showSearch: true
       });
     } else {
@@ -678,7 +684,7 @@ class PlaceOrders extends React.Component {
         />
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: height/2, padding: 5, paddingBottom: 40 }}>
+          <Block left style={{ height: height/2, padding: 5 }}>
             {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
@@ -687,17 +693,18 @@ class PlaceOrders extends React.Component {
                 containerStyle={styles.radioStyle}
               />
             ) : (
-              <View style={{ height: height/2}}>
+              <View style={{ height: height/2, paddingBottom: 40}}>
                 <Search
                   placeholder="Search job"
-                  onChangeText={(text) => this.onChangeSearch(text, 1)}
+                  onChangeText={(text) => this.changeSearchText(text)}
+                  onSearch={() => this.handleSearch(1)}
                   style={styles.search}
                   inputStyle={styles.searchInput}
                 />
                 <ScrollView 
                   style={{ width: width - 16, height: '95%'}}
                   contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16}}
-                  onMomentumScrollEnd={() => this.onChangeSearch(this.state.search, this.state.page)}
+                  onMomentumScrollEnd={() => this.handleSearch(this.state.page)}
                 >
                   <RadioGroup
                     radioButtons={this.state.radioButtonsData}
