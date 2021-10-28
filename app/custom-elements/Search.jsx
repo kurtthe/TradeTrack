@@ -16,7 +16,7 @@ class Search extends React.Component {
       onChangeText, 
       style, 
       inputStyle, 
-      onIconPress = () => {}, 
+      onSearch = () => {}, 
     } = this.props;
     return (
       <Block flex center style={[styles.searchContainer, style]}>
@@ -28,7 +28,7 @@ class Search extends React.Component {
             autoCorrect={false}
             autoCapitalize="none"
             iconContent={
-              <TouchableWithoutFeedback onPress={() => onIconPress()}>
+              <TouchableWithoutFeedback onPress={() => onSearch()}>
                 <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
               </TouchableWithoutFeedback>
             }

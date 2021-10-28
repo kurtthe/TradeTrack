@@ -67,7 +67,7 @@ class SearchProduct extends React.Component {
           onChangeText={(text) => this.changeSearchText(text)}
           style={styles.search}
           inputStyle={styles.searchInput}
-          onIconPress={() => this.handleSearchProduct()}
+          onSearch={() => this.handleSearchProduct()}
         />
 
         <Block style={styles.content}>
