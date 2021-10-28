@@ -36,24 +36,19 @@ class SearchProduct extends React.Component {
     });
   }
 
-  changeSearchText = async (value = '') => {
-    if (value === '') {
-      this.setState({
-        textSearch: value,
-      });
-      return;
-    }
+  changeSearchText = (text) => {
+    this.setState({search: text})
 
-    if (value.length > 3) {
-      this.setState({
-        textSearch: value,
-      });
+    if(text == '') {
+      this.handleSearch()
     }
   };
 
-  handleSearchProduct = ()=> {
-    
-  }
+  handleSearch = () => {
+    this.setState({
+      textSearch: this.state.search,
+    });
+  };
 
   render() {
     if (this.state.urlProducts === '') {
@@ -65,9 +60,9 @@ class SearchProduct extends React.Component {
         <Search
           placeholder="What are you looking for?"
           onChangeText={(text) => this.changeSearchText(text)}
+          onSearch={() => this.handleSearch()}
           style={styles.search}
           inputStyle={styles.searchInput}
-          onSearch={() => this.handleSearchProduct()}
         />
 
         <Block style={styles.content}>
