@@ -35,6 +35,7 @@ class Search extends React.Component {
             style={[styles.search, inputStyle]}
             placeholder={placeholder}
             onChangeText={(text) => onChangeText(text)}
+            onSubmitEditing={() => onSearch()}
           />
       </Block>
     );
