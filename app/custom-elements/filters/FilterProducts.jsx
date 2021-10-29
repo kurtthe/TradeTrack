@@ -102,7 +102,7 @@ class FilterProducts extends Component {
 
   changeSearchText = (text) => {
     this.setState({
-      textSearch: text,
+      searchValue: text,
     });
 
     if(text == '') {
@@ -114,7 +114,7 @@ class FilterProducts extends Component {
     this.setState({
       loadingCategories: true,
     });
-    await this.getCategories(this.state.textSearch);
+    await this.getCategories(this.state.searchValue);
   };
 
 
@@ -203,6 +203,7 @@ class FilterProducts extends Component {
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
           <Search
             placeholder="Search"
+            value={this.state.searchValue}
             onChangeText={(text) => this.changeSearchText(text)}
             onSearch={() => this.handleSearch()}
             style={styles.search}
@@ -303,10 +304,8 @@ const styles = StyleSheet.create({
     height: 40,
     width: width - 32,
     marginHorizontal: 12,
-    borderWidth: 1,
     borderRadius: 30,
     borderColor: nowTheme.COLORS.BORDER,
-    elevation: 0,
     marginBottom: theme.SIZES.BASE * 4,
   },
   searchInput: {

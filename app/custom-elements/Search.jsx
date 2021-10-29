@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     height: 48,
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
-    borderWidth: 1,
     borderRadius: 30,
   },
 });

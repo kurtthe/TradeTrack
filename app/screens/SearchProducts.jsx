@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
     marginBottom: theme.SIZES.BASE * 4,
-    borderWidth: 1,
     borderRadius: 30,
   },
   content: {
