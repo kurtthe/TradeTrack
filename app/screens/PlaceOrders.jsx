@@ -299,11 +299,12 @@ class PlaceOrders extends React.Component {
     this.setState({search: text})
 
     if(text == '') {
-      this.handleSearch(1)
+      this.setState({radioButtonsJobs: [], radioButtonsData: []})
     }
   };
 
   handleSearch = async (page) => {
+    console.log('jdjdjjdjdjd', page, this.state.page, this.state.search)
     this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${this.state.search}&expand=products`,
@@ -313,6 +314,7 @@ class PlaceOrders extends React.Component {
   };
 
   loadData = (data, page) => {
+    console.log('me llamo', page)
     if (data.length > 0) {
       let jobs = this.setRadioButtons(data)
       this.setState({
@@ -320,14 +322,15 @@ class PlaceOrders extends React.Component {
         radioButtonsData: page == 1 ? jobs : this.state.radioButtonsData.concat(jobs),
         showSearch: true
       });
+      if (page == 1) {
+        console.log('bueno', this.state.page)
+        this.handleSearch(this.state.page)
+      }
     } else {
       this.setState({
         notFound: true,
         showSearch: false
       });
-    }
-    if (page == 1) {
-      this.handleSearch(this.state.page)
     }
   };
 
@@ -675,6 +678,7 @@ class PlaceOrders extends React.Component {
   render() {
     const { customStyleIndex, radioButtonsData } = this.state;
     const { navigation } = this.props;
+    console.log(radioButtonsData !== this.state.radioButtonsJobs, this.state.showSearch)
     return (
       <Block flex center style={styles.cart}>
         <FlatList
@@ -699,6 +703,7 @@ class PlaceOrders extends React.Component {
               <View style={{ height: height/2, paddingBottom: 40}}>
                 <Search
                   placeholder="Search job"
+                  value={this.state.search}
                   onChangeText={(text) => this.changeSearchText(text)}
                   onSearch={() => this.handleSearch(1)}
                   style={styles.search}
@@ -844,20 +849,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingBottom: 10,
   },
-  /* search: {
-    height: 40,
-    width: width - 32,
-    marginHorizontal: 12,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: nowTheme.COLORS.BORDER,
-    elevation: 0
-  },
-  searchInput: {
-    color: 'black',
-    fontSize: 16
-  },
- */
   searchInput: {
     color: 'black',
     fontSize: 16,
@@ -867,7 +858,6 @@ const styles = StyleSheet.create({
     width: width - 32,
     marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
-    
   },  
   radioStyle:{
     alignItems: 'flex-start'
