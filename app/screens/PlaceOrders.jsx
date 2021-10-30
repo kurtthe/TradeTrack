@@ -265,6 +265,15 @@ class PlaceOrders extends React.Component {
     actionSheetRadioButtonRef.current?.setModalVisible(false);
   }
 
+  onPressRadioButtonJob(items) {
+    let selected = items.find(i => i.selected)
+      this.setState({
+        job: selected.value,
+        showSearch: false
+      })
+    actionSheetRadioButtonRef.current?.setModalVisible(false);
+  }
+
   showDatePicker = () => {
     this.setState({ isDatePickerVisible: true });
   };
@@ -299,12 +308,11 @@ class PlaceOrders extends React.Component {
     this.setState({search: text})
 
     if(text == '') {
-      this.setState({radioButtonsJobs: [], radioButtonsData: []})
+      this.handleSearch(1)
     }
   };
 
   handleSearch = async (page) => {
-    console.log('jdjdjjdjdjd', page, this.state.page, this.state.search)
     this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${this.state.search}&expand=products`,
@@ -314,22 +322,21 @@ class PlaceOrders extends React.Component {
   };
 
   loadData = (data, page) => {
-    console.log('me llamo', page)
     if (data.length > 0) {
       let jobs = this.setRadioButtons(data)
       this.setState({
-        radioButtonsJobs: jobs,
-        radioButtonsData: page == 1 ? jobs : this.state.radioButtonsData.concat(jobs),
+        radioButtonsJobs: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
+        radioButtonsData: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
         showSearch: true
       });
       if (page == 1) {
-        console.log('bueno', this.state.page)
         this.handleSearch(this.state.page)
       }
     } else {
       this.setState({
+        radioButtonsData: [],
+        radioButtonsJobs: [],
         notFound: true,
-        showSearch: false
       });
     }
   };
@@ -678,7 +685,7 @@ class PlaceOrders extends React.Component {
   render() {
     const { customStyleIndex, radioButtonsData } = this.state;
     const { navigation } = this.props;
-    console.log(radioButtonsData !== this.state.radioButtonsJobs, this.state.showSearch)
+    console.log(radioButtonsData !== this.state.radioButtonsJobs, !this.state.showSearch )
     return (
       <Block flex center style={styles.cart}>
         <FlatList
@@ -691,39 +698,39 @@ class PlaceOrders extends React.Component {
         />
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: height/2, padding: 5 }}>
-            {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
+          {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
+            <View style={{ height: 'auto', padding: 5, paddingBottom: 25}}>
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
                 onPress={(items) => this.onPressRadioButton(items)}
                 containerStyle={styles.radioStyle}
               />
-            ) : (
-              <View style={{ height: height/2, paddingBottom: 40}}>
-                <Search
-                  placeholder="Search job"
-                  value={this.state.search}
-                  onChangeText={(text) => this.changeSearchText(text)}
-                  onSearch={() => this.handleSearch(1)}
-                  style={styles.search}
-                  inputStyle={styles.searchInput}
+            </View>
+          ) : (
+            <View style={{ height: height/2, paddingBottom: 40}}>
+              <Search
+                placeholder="Search job"
+                value={this.state.search}
+                onChangeText={(text) => this.changeSearchText(text)}
+                onSearch={() => this.handleSearch(1)}
+                style={styles.search}
+                inputStyle={styles.searchInput}
+              />
+              <ScrollView 
+                style={{ width: width - 16, height: '95%'}}
+                contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16}}
+                onMomentumScrollEnd={() => this.handleSearch(this.state.page)}
+              >
+                <RadioGroup
+                  radioButtons={this.state.radioButtonsJobs}
+                  color={nowTheme.COLORS.INFO}
+                  onPress={(items) => this.onPressRadioButtonJob(items)}
+                  containerStyle={styles.radioStyle}
                 />
-                <ScrollView 
-                  style={{ width: width - 16, height: '95%'}}
-                  contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16}}
-                  onMomentumScrollEnd={() => this.handleSearch(this.state.page)}
-                >
-                  <RadioGroup
-                    radioButtons={this.state.radioButtonsData}
-                    color={nowTheme.COLORS.INFO}
-                    onPress={(items) => this.onPressRadioButton(items)}
-                    containerStyle={styles.radioStyle}
-                  />
-                </ScrollView>
-              </View>
-            )}
-          </Block>
+              </ScrollView>
+            </View>
+          )}
         </ActionSheet>
       </Block>
     );
