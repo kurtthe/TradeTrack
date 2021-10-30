@@ -181,6 +181,7 @@ class FilterProducts extends Component {
               text={'Category'}
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
+                this.getCategories()
               }}
               isActive={this.state.categoryActive}
             />

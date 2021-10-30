@@ -7,6 +7,7 @@ import Filters from '@custom-elements/filters/Filters';
 import FilterProducts from '@custom-elements/filters/FilterProducts';
 
 import nowTheme from '@constants/Theme';
+import { isEmpty } from 'rxjs';
 
 const { width } = Dimensions.get('screen');
 
@@ -15,7 +16,7 @@ class ListData extends React.Component {
     super(props);
 
     this.state = {
-      data: props.dataRender || [],
+      data: [],
       perPageData: props?.perPage ? props?.perPage : 12,
       valuesFilters: {},
       notFound: false,
@@ -50,14 +51,23 @@ class ListData extends React.Component {
       this.setState({
         urlPetition: this.props.endpoint,
       });
-      await this.getPetitionData();
     }
   }
 
   getPetitionData = async () => {
-    this.setState({ loadingMoreData: true });
+    if (this.props.isEmpty) {
+      this.setState({
+        data: [],
+        notFound: false,
+        loadingMoreData: false,
+        showLoadMore: false,
+      });
+      return;
+    }
 
-    if (!!this.state.urlPetition) {
+    this.setState({ loadingMoreData: true});
+
+    if (!!this.state.urlPetition && !this.props.isEmpty) {
       await this.getDataPetition.getInfo(
         this.state.urlPetition,
         this.loadData,
@@ -66,8 +76,6 @@ class ListData extends React.Component {
       );
       return;
     }
-
-    this.loadData(this.props.dataRender);
   };
 
   loadData = (data) => {
@@ -176,17 +184,18 @@ class ListData extends React.Component {
 
   render() {
     const { children } = this.props;
-
     return (
       <ScrollView>
         <View style={styles.container}>
           <View>{this.renderFilter()}</View>
           <View>
-            {this.state.notFound ? (
+            {this.state.data.length === 0 && !this.props.isEmpty && !this.state.loadingMoreData ? (
               this.renderNotFound()
             ) : (
               <>
-                <View>{cloneElement(children, { data: this.state.data })}</View>
+                <View style={[styles.content, {backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white',}]}>{
+                  cloneElement(children, {data: this.state.data})}
+                </View>
                 {this.putLoadingMore()}
               </>
             )}
@@ -201,6 +210,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  content: { 
+    backgroundColor: nowTheme.COLORS.BACKGROUND,
+    paddingTop: 15,
   },
   contentButton: {
     flexDirection: 'row',
