@@ -21,6 +21,8 @@ class SearchProduct extends React.Component {
       myPriceActive: false,
       textSearch: '',
       urlProducts: '',
+      isEmpty: true,
+      search: '',
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -38,15 +40,15 @@ class SearchProduct extends React.Component {
 
   changeSearchText = (text) => {
     this.setState({search: text})
-
     if(text == '') {
-      this.handleSearch()
+      this.handleSearch() 
+      this.setState({isEmpty: true})
     }
   };
 
   handleSearch = () => {
     this.setState({
-      textSearch: this.state.search,
+      textSearch: this.state.search, isEmpty: false
     });
   };
 
@@ -65,13 +67,12 @@ class SearchProduct extends React.Component {
           inputStyle={styles.searchInput}
         />
 
-        <Block style={styles.content}>
           <ListData
             perPage={20}
             endpoint={`${this.state.urlProducts}&search=${this.state.textSearch}`}
-            children={<ListProducts myPrice={this.state.myPriceActive} />}
+            isEmpty={this.state.isEmpty}
+            children={<ListProducts myPrice={this.state.myPriceActive} isEmpty={this.state.isEmpty}/>}
           />
-        </Block>
       </View>
     );
   }
@@ -87,11 +88,6 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.SIZES.BASE,
     marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
-  },
-  content: {
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
-    paddingTop: 15,
-    paddingBottom: 150,
   },
   notfound: {
     padding: 15,
