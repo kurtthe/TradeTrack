@@ -685,7 +685,6 @@ class PlaceOrders extends React.Component {
   render() {
     const { customStyleIndex, radioButtonsData } = this.state;
     const { navigation } = this.props;
-    console.log(radioButtonsData !== this.state.radioButtonsJobs, !this.state.showSearch )
     return (
       <Block flex center style={styles.cart}>
         <FlatList
