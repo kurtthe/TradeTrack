@@ -66,14 +66,16 @@ class SearchProduct extends React.Component {
           style={styles.search}
           inputStyle={styles.searchInput}
         />
-
+          <Block style={{height:"90%"}}>
           <ListData
             perPage={20}
             endpoint={`${this.state.urlProducts}&search=${this.state.textSearch}`}
             isEmpty={this.state.isEmpty}
             children={<ListProducts myPrice={this.state.myPriceActive} isEmpty={this.state.isEmpty}/>}
           />
+          </Block>
       </View>
+      
     );
   }
 }
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.SIZES.BASE,
     marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
+    
   },
   notfound: {
     padding: 15,
