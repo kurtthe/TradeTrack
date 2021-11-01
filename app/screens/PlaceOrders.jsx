@@ -297,7 +297,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Detail Order</Text>
-          {/* <PickerButton
+          <PickerButton
             text="Select Job"
             placeholder={this.state.job || 'Select or search job'}
             picked={this.state.job !== ''}
@@ -306,7 +306,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: this.state.radioButtonsJobs });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          /> */}
+          />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
             <Text style={styles.errorText}> * </Text>
@@ -333,7 +333,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
-          {/* <PickerButton
+          <PickerButton
             text="Delivery Type"
             error
             placeholder={this.state.delivery.label || 'Select delivery type'}
@@ -343,7 +343,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          /> */}
+          />
           {this.state.delivery.value === 'delivery' && (
             <>
               <Block row>
@@ -363,7 +363,7 @@ class PlaceOrders extends React.Component {
             </>
           )}
           <>
-            {/* <PickerButton
+            <PickerButton
               text={`${this.state.deliveryText} Date`}
               placeholder={this.state.date.label || 'Select date'}
               icon
@@ -371,7 +371,7 @@ class PlaceOrders extends React.Component {
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
-            /> */}
+            />
 
             <DateTimePicker
               mode="date"
@@ -380,7 +380,7 @@ class PlaceOrders extends React.Component {
               onCancel={this.hideDatePicker}
             />
           </>
-          {/* <PickerButton
+          <PickerButton
             text={`${this.state.deliveryText} Time`}
             placeholder={this.state.time.label || 'Select time'}
             icon
@@ -391,7 +391,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: radioButtonsHour });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          /> */}
+          />
           {this.state.time.label === 'Anytime' && (
             <>
               <Block row>
@@ -421,7 +421,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
-          {/* <PickerButton
+          <PickerButton
             text="Select Store"
             error
             placeholder={this.state.store || 'Select store'}
@@ -431,7 +431,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: this.state.radioButtonsStore });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          /> */}
+          />
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
             Notes to Store
           </Text>
