@@ -72,32 +72,6 @@ class PlaceOrders extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.setState({
-      isDatePickerVisible: false,
-      isTimePickerVisible: false,
-      ordersPlaced: cart.products.slice(0, 3),
-      deleteAction: false,
-      radioButtons: [],
-      date: { label: '', value: '' },
-      radioButtonsJobs: [],
-      radioButtonsStore: [],
-      store: '',
-      job: '',
-      delivery: { label: '', value: '' },
-      deliveryText: 'Delivery',
-      location: '',
-      time: { label: '', value: '' },
-      orderName: '',
-      notFound: false,
-      showSearch: false,
-      orderNameError: false,
-      deliveryTypeError: false,
-      storeError: false,
-      locationError: false,
-    });
-  }
-
   setRadioButtons(stores) {
     stores.sort(function (a, b) {
       var textA = a.name.toUpperCase();
@@ -118,6 +92,7 @@ class PlaceOrders extends React.Component {
 
   onPressRadioButton(items) {
     let selected = items.find((i) => i.selected);
+
     if (this.state.radioButtonsData == radioButtonsDelivery)
       this.setState({
         delivery: {
@@ -206,6 +181,46 @@ class PlaceOrders extends React.Component {
     return error;
   }
 
+  clearSelectedFields = (listData = []) => {
+    return listData.map((item) => {
+      return {
+        ...item,
+        selected: false,
+      };
+    });
+  };
+
+  resetFields = () => {
+    const radioButtonsDelivery = this.clearSelectedFields(radioButtonsDelivery);
+    const radioButtonsHour = this.clearSelectedFields(radioButtonsHour);
+    const radioButtonsStore = this.clearSelectedFields(radioButtonsStore);
+    const radioButtonsJobs = this.clearSelectedFields(radioButtonsJobs);
+
+    this.setState({
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      ordersPlaced: cart.products.slice(0, 3),
+      deleteAction: false,
+      radioButtons: [],
+      date: { label: '', value: '' },
+      radioButtonsJobs: radioButtonsJobs,
+      radioButtonsStore: radioButtonsStore,
+      store: '',
+      job: '',
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
+      location: '',
+      time: { label: '', value: '' },
+      orderName: '',
+      notFound: false,
+      showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false,
+      storeError: false,
+      locationError: false,
+    });
+  };
+
   placeOrderHandler = async () => {
     try {
       let supplierId = await this.generalRequest.get(endPoints.supplierId);
@@ -260,6 +275,7 @@ class PlaceOrders extends React.Component {
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
           this.props.clearProducts();
+          this.resetFields();
           this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
@@ -281,7 +297,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Detail Order</Text>
-          <PickerButton
+          {/* <PickerButton
             text="Select Job"
             placeholder={this.state.job || 'Select or search job'}
             picked={this.state.job !== ''}
@@ -290,7 +306,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: this.state.radioButtonsJobs });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          />
+          /> */}
           <Block row>
             <Text style={styles.text}>Order Name</Text>
             <Text style={styles.errorText}> * </Text>
@@ -317,7 +333,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
-          <PickerButton
+          {/* <PickerButton
             text="Delivery Type"
             error
             placeholder={this.state.delivery.label || 'Select delivery type'}
@@ -327,7 +343,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          />
+          /> */}
           {this.state.delivery.value === 'delivery' && (
             <>
               <Block row>
@@ -347,7 +363,7 @@ class PlaceOrders extends React.Component {
             </>
           )}
           <>
-            <PickerButton
+            {/* <PickerButton
               text={`${this.state.deliveryText} Date`}
               placeholder={this.state.date.label || 'Select date'}
               icon
@@ -355,7 +371,7 @@ class PlaceOrders extends React.Component {
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
-            />
+            /> */}
 
             <DateTimePicker
               mode="date"
@@ -364,7 +380,7 @@ class PlaceOrders extends React.Component {
               onCancel={this.hideDatePicker}
             />
           </>
-          <PickerButton
+          {/* <PickerButton
             text={`${this.state.deliveryText} Time`}
             placeholder={this.state.time.label || 'Select time'}
             icon
@@ -375,7 +391,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: radioButtonsHour });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          />
+          /> */}
           {this.state.time.label === 'Anytime' && (
             <>
               <Block row>
@@ -405,7 +421,7 @@ class PlaceOrders extends React.Component {
           marginBottom={20}
         >
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
-          <PickerButton
+          {/* <PickerButton
             text="Select Store"
             error
             placeholder={this.state.store || 'Select store'}
@@ -415,7 +431,7 @@ class PlaceOrders extends React.Component {
               this.setState({ radioButtonsData: this.state.radioButtonsStore });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
-          />
+          /> */}
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
             Notes to Store
           </Text>
