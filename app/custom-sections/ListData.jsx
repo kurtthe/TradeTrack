@@ -23,6 +23,7 @@ class ListData extends React.Component {
       showLoadMore: true,
       page: 1,
       urlPetition: null,
+      filter: false
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -72,6 +73,7 @@ class ListData extends React.Component {
       this.setState({
         loadingMoreData: false,
         showLoadMore: false,
+        notFound: (this.state.filter)? true: false
       });
     } else {
       this.setState({
@@ -96,7 +98,7 @@ class ListData extends React.Component {
   };
 
   getValuesFilters = (values) => {
-    this.setState({ valuesFilters: values, data: [] });
+    this.setState({ valuesFilters: values, data: [], filter:true });
     this.setParamsEndPoint();
   };
 
