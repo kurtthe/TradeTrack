@@ -49,8 +49,6 @@ class Cart extends React.Component {
           myPrice: this.props.cartProducts[0]?.myPrice
         })
       }
-
-      this.orderTotal()
     }
   }
 
