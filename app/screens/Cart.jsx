@@ -33,7 +33,7 @@ class Cart extends React.Component {
   componentDidMount(){
     if(!!this.props.cartProducts[0]?.myPrice){
       this.setState({
-        myPrice: this.props.cartProducts[0].myPrice
+        myPrice: this.props.cartProducts[0]?.myPrice
       })
     }
   }
@@ -46,7 +46,7 @@ class Cart extends React.Component {
         this.props.cartProducts[0]?.myPrice !== prevProps.cartProducts[0]?.myPrice
         ){
         this.setState({
-          myPrice: this.props.cartProducts[0].myPrice
+          myPrice: this.props.cartProducts[0]?.myPrice
         })
       }
 
