@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Cart from '@screens/Cart';
 import PlaceOrders from '@screens/PlaceOrders';
-import orderPlaced from '@screens/OrderPlaced';
+import OrderPlaced from '@screens/OrderPlaced';
 import Example from '@screens/DatePicker';
 import { screensRoute } from './ConfigRoutes';
 
@@ -40,11 +40,8 @@ function CartStack() {
     },
     {
       name: 'OrderPlaced',
-      component: orderPlaced,
-      colorBackground: '#FFFFFF',
-      header:{
-        title: '',
-      }
+      component: OrderPlaced,
+      colorBackground: '#FFFFFF'
     },
   ];
 
