@@ -7,7 +7,7 @@ import SkeletonProduct from '@custom-elements/skeletons/Product';
 
 const ListProducts = (props) => {
   const putProducts = () => {
-    if (props.data.length === 0) {
+    if (props.data.length === 0 && !props.isEmpty) {
       return (
         <>
           <SkeletonProduct />
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
   }
 })
 

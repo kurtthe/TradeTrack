@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Dimensions, Linking, Platform } from 'react-native';
-
-import MapView, { Marker, Callout } from 'react-native-maps';
+import {StyleSheet, View, Dimensions, Linking, Platform, Modal} from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import MarkMap from '@custom-elements/MarkMap';
@@ -22,6 +21,8 @@ class TStores extends Component {
       cnt: 0,
       markers: [],
       region: null,
+      modalVisible: false,
+      markSelected: []
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -77,11 +78,7 @@ class TStores extends Component {
 
   getMarkers = () =>
     this.state.markers.map((mark, index) => (
-      <Marker key={index} coordinate={mark.coordinate}>
-        <Callout alphaHitTest tooltip >
-          <MarkMap mark={mark} actionCall={(numberCall) => this.dialCall(numberCall)} />
-        </Callout>
-      </Marker>
+      <Marker key={index} coordinate={mark.coordinate} onPress={() => this.setState({modalVisible: !this.state.modalVisible, markSelected: mark})} />
     ));
 
   render() {
@@ -99,6 +96,25 @@ class TStores extends Component {
         >
           {this.getMarkers()}
         </MapView>
+        <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          this.setState({modalVisible: !this.state.modalVisible});
+        }}
+      >
+        <View style={styles.centeredView}>
+          <MarkMap 
+            mark={this.state.markSelected} 
+            actionCall={(numberCall) => this.dialCall(numberCall)} 
+            onClose={() => {
+              this.setState({modalVisible: !this.state.modalVisible});
+            }}
+          />
+        </View>
+      </Modal>
       </View>
     );
   }
@@ -107,11 +123,17 @@ class TStores extends Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
   },
 });
 
