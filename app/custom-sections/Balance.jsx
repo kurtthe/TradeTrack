@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { StyleSheet, View, Dimensions } from 'react-native';
-import { theme, Text } from 'galio-framework';
+import { theme, Text, Block } from 'galio-framework';
 import { nowTheme } from '@constants';
 import GrayLine from '@components/GrayLine';
 import { FormatMoneyService } from '@core/services/format-money.service';
@@ -52,17 +52,17 @@ const Balance = () => {
       {renderDetailOrdersAS()}
 
       <GrayLine style={{ width: '100%', alignSelf: 'center', top: -30 }} />
+      <Block row style={{ justifyContent: 'space-between', bottom:15}}>
 
-      <View style={{ justifyContent: 'space-between', bottom: 15 }}>
-        <Text size={15}>Total Due</Text>
-        <Text
-          size={16}
-          color={nowTheme.COLORS.INFO}
-          style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
-        >
-          {formatMoney.format(balance.total)}
-        </Text>
-      </View>
+          <Text size={15}>Total Due</Text>
+          <Text
+            size={16}
+            color={nowTheme.COLORS.INFO}
+            style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
+          >
+            {formatMoney.format(balance.total)}
+          </Text>
+          </Block>
     </View>
   );
 };
