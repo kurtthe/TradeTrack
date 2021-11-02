@@ -3,7 +3,6 @@ import { Linking, StyleSheet, TouchableOpacity } from 'react-native';
 import { Block, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
 import { MaterialIcons } from '@expo/vector-icons';
-import CustomCallout from './CustomCallout';
 
 const MarkMap = (props) => {
   const actionCall = (numberPhone) => {
@@ -11,8 +10,7 @@ const MarkMap = (props) => {
   };
 
   return (
-    <CustomCallout>
-      <Block>
+      <Block style={styles.view}>
         <Block row style={styles.row_info}>
           <MaterialIcons name="store" size={24} color={nowTheme.COLORS.LIGHTGRAY} />
 
@@ -47,7 +45,7 @@ const MarkMap = (props) => {
 
        
 
-        <Block row center style={styles.row_info}>
+        <Block row style={styles.row_info}>
           <TouchableOpacity
             onPress={() => Linking.openURL(`http://maps.google.com/?q=${props.mark.address}`)}
             style={styles.buttoNavigate}
@@ -56,13 +54,36 @@ const MarkMap = (props) => {
               Navigate
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.onClose()}
+            style={styles.buttoNavigate}
+          >
+            <Text color={'white'}>
+              Close
+            </Text>
+          </TouchableOpacity>
         </Block>
       </Block>
-    </CustomCallout>
   );
 };
 
 const styles = StyleSheet.create({
+  view: {
+    padding: 10,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
   buttoNavigate: {
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -71,7 +92,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 5
+    marginVertical: 5, 
+    marginHorizontal: 20,
   },
   row_info: {
     flexDirection: 'row',

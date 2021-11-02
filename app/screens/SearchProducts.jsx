@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 import { nowTheme } from '@constants/';
-import { Searchbar } from 'react-native-paper';
 
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -10,6 +9,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import ListProducts from '@custom-sections/ListProducts';
 import LoadingComponent from '@custom-elements/Loading';
 import ListData from '@custom-sections/ListData';
+import Search from '@custom-elements/Search';
 
 const { width } = Dimensions.get('screen');
 
@@ -21,6 +21,8 @@ class SearchProduct extends React.Component {
       myPriceActive: false,
       textSearch: '',
       urlProducts: '',
+      isEmpty: true,
+      search: '',
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -36,24 +38,19 @@ class SearchProduct extends React.Component {
     });
   }
 
-  changeSearchText = async (value = '') => {
-    if (value === '') {
-      this.setState({
-        textSearch: value,
-      });
-      return;
-    }
-
-    if (value.length > 3) {
-      this.setState({
-        textSearch: value,
-      });
+  changeSearchText = (text) => {
+    this.setState({search: text})
+    if(text == '') {
+      this.handleSearch() 
+      this.setState({isEmpty: true})
     }
   };
 
-  handleSearchProduct = ()=> {
-    
-  }
+  handleSearch = () => {
+    this.setState({
+      textSearch: this.state.search, isEmpty: false
+    });
+  };
 
   render() {
     if (this.state.urlProducts === '') {
@@ -62,22 +59,23 @@ class SearchProduct extends React.Component {
 
     return (
       <View>
-        <Searchbar
+        <Search
           placeholder="What are you looking for?"
           onChangeText={(text) => this.changeSearchText(text)}
+          onSearch={() => this.handleSearch()}
           style={styles.search}
           inputStyle={styles.searchInput}
-          onIconPress={() => this.handleSearchProduct()}
         />
-
-        <Block style={styles.content}>
+          <Block style={{height:"90%"}}>
           <ListData
             perPage={20}
             endpoint={`${this.state.urlProducts}&search=${this.state.textSearch}`}
-            children={<ListProducts myPrice={this.state.myPriceActive} />}
+            isEmpty={this.state.isEmpty}
+            children={<ListProducts myPrice={this.state.myPriceActive} isEmpty={this.state.isEmpty}/>}
           />
-        </Block>
+          </Block>
       </View>
+      
     );
   }
 }
@@ -90,14 +88,9 @@ const styles = StyleSheet.create({
   search: {
     width: width - 32,
     marginHorizontal: theme.SIZES.BASE,
-    marginBottom: theme.SIZES.BASE,
-    borderWidth: 1,
+    marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
-  },
-  content: {
-    backgroundColor: nowTheme.COLORS.BACKGROUND,
-    paddingTop: 15,
-    paddingBottom: 150,
+    
   },
   notfound: {
     padding: 15,

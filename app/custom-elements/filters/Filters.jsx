@@ -4,7 +4,7 @@ import { Block, Text, theme } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Icon, Input } from '@components';
+import { Icon } from '@components';
 import ActionSheet from 'react-native-actions-sheet';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
@@ -12,6 +12,7 @@ import nowTheme from '@constants/Theme';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
+import Search from '@custom-elements/Search';
 
 const iconSearch = (
   <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
@@ -186,7 +187,13 @@ class Filters extends Component {
               onPress={() => this.onPressRadioButton()}
             />
           </Block>
-          <Block>{this.inputText()}</Block>
+          <Search
+            style={styles.search}
+            inputStyle={styles.inputStyle}
+            value={this.state.textSearch}
+            placeholder="By description or invoice number"
+            onChangeText={(text) => this.changeValuesFilters('text', text)}
+          />
         </Block>
         <ActionSheet ref={actionSheetRef}>
           <Block style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
@@ -199,23 +206,6 @@ class Filters extends Component {
           </Block>
         </ActionSheet>
       </>
-    );
-  };
-
-  inputText = () => {
-    return (
-      <Input
-        right
-        value={this.state.textSearch}
-        color="black"
-        autoFocus={false}
-        autoCorrect={false}
-        autoCapitalize="none"
-        iconContent={iconSearch}
-        style={styles.search}
-        placeholder="By description or invoice number"
-        onChangeText={(text) => this.changeValuesFilters('text', text)}
-      />
     );
   };
 
@@ -265,7 +255,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
-  search: {
+  inputStyle: {
     width:
       Platform.OS === 'ios'
         ? Dimensions.get('window').height < 870
@@ -277,7 +267,6 @@ const styles = StyleSheet.create({
         ? width * 0.5
         : width * 0.6,
     marginHorizontal: theme.SIZES.BASE,
-    borderWidth: 1,
     borderRadius: 30,
   },
   cleanFilter: {
