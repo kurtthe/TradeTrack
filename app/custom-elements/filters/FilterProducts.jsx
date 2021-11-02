@@ -10,6 +10,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import LoadingComponent from '@custom-elements/Loading';
 import { AlertService } from '@core/services/alert.service';
+import Search from '@custom-elements/Search';
 
 const { width, height } = Dimensions.get('window');
 
@@ -103,14 +104,23 @@ class FilterProducts extends Component {
     actionSheetRef2.current?.setModalVisible(false);
   };
 
-  onChangeSearchCategory = (value) => {
+  changeSearchText = (text) => {
+    this.setState({
+      searchValue: text,
+    });
+
+    if(text == '') {
+      this.handleSearch()
+    }
+  };
+
+  handleSearch = async () => {
     this.setState({
       loadingCategories: true,
     });
-    setTimeout(() => {
-      this.getCategories(value);
-    }, 500);
+    await this.getCategories(this.state.searchValue);
   };
+
 
   clearFilterSelected = (listData = [], idSelected) => {
     return listData.map((item) => {
@@ -175,6 +185,7 @@ class FilterProducts extends Component {
               text={'Category'}
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
+                this.getCategories()
               }}
               isActive={this.state.categoryActive}
             />
@@ -195,9 +206,11 @@ class FilterProducts extends Component {
         </Block>
 
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
-          <Searchbar
+          <Search
             placeholder="Search"
-            onChangeText={(text) => this.onChangeSearchCategory(text)}
+            value={this.state.searchValue}
+            onChangeText={(text) => this.changeSearchText(text)}
+            onSearch={() => this.handleSearch()}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
@@ -296,10 +309,9 @@ const styles = StyleSheet.create({
     height: 40,
     width: width - 32,
     marginHorizontal: 12,
-    borderWidth: 1,
     borderRadius: 30,
     borderColor: nowTheme.COLORS.BORDER,
-    elevation: 0,
+    marginBottom: theme.SIZES.BASE * 4,
   },
   searchInput: {
     color: 'black',
