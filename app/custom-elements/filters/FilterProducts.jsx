@@ -59,7 +59,6 @@ class FilterProducts extends Component {
 
   categoriesToRadioButton = (categories) => {
     return categories
-      .filter((category) => category.products.length !== 0)
       .map((category) => ({
         ...category,
         color: nowTheme.COLORS.INFO,
@@ -95,6 +94,11 @@ class FilterProducts extends Component {
       subCategoryActive: true,
     });
 
+    if(optionSelected?.products.length === 0){
+      this.alertService.show('Alert!', `Category ${optionSelected?.name?.toLowerCase()} haven't products`)
+      return;
+    }
+    
     this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef2.current?.setModalVisible(false);
   };
