@@ -35,15 +35,15 @@ class PlaceOrders extends React.Component {
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
-      date: { label: '', value: '' },
+      date: null,
       radioButtonsJobs: [],
       radioButtonsStore: [],
       store: '',
       job: '',
-      delivery: { label: '', value: '' },
+      delivery: null,
       deliveryText: 'Delivery',
       location: '',
-      time: { label: '', value: '' },
+      time: null,
       orderName: '',
       notFound: false,
       showSearch: false,
@@ -68,13 +68,16 @@ class PlaceOrders extends React.Component {
         radioButtonsStore: storesAsRadioButtons,
         radioButtonsJobs: jobsAsRadioButtons,
       });
-      this.didBlurSubscription = this.props.navigation.addListener('blur', (payload) => {
-        this.clearState();
-      });
+      this.didBlurSubscription();
     } catch (e) {
       console.log(e);
     }
   }
+
+  didBlurSubscription = () =>
+    this.props.navigation.addListener('blur', (payload) => {
+      this.clearState();
+    });
 
   componentWillUnmount() {
     this.didBlurSubscription();
@@ -82,7 +85,7 @@ class PlaceOrders extends React.Component {
 
   clearSelected = (listData = [], idSelected) => {
     return listData.map((item) => {
-      if (item.value === idSelected) {
+      if (item.id === idSelected) {
         return {
           ...item,
           selected: false,
@@ -92,12 +95,13 @@ class PlaceOrders extends React.Component {
       return item;
     });
   };
-  
-  clearState() {
 
-    const radioButtonsDeliveryClear = this.clearSelected(this.state.radioButtonsDelivery, this.state.delivery?.value); 
-    const radioButtonsHourClear = this.clearSelected(this.state.radioButtonsHour, this.state.time?.value); 
-    
+  clearState = () => {
+    const { radioButtonsDelivery, radioButtonsHour, delivery, time } = this.state;
+
+    const radioButtonsDeliveryClear = this.clearSelected(radioButtonsDelivery, delivery?.id);
+    const radioButtonsHourClear = this.clearSelected(radioButtonsHour, time?.id);
+
     this.setState({
       isDatePickerVisible: false,
       isTimePickerVisible: false,
@@ -105,15 +109,15 @@ class PlaceOrders extends React.Component {
       deleteAction: false,
       radioButtons: [],
       radioButtonsData: [],
-      date: { label: '', value: '' },
+      date: null,
       radioButtonsJobs: [],
       radioButtonsStore: [],
       store: '',
       job: '',
-      delivery: { label: '', value: '' },
+      delivery: null,
       deliveryText: 'Delivery',
       location: '',
-      time: { label: '', value: '' },
+      time: null,
       orderName: '',
       notFound: false,
       showSearch: false,
@@ -124,11 +128,11 @@ class PlaceOrders extends React.Component {
       search: '',
       page: 1,
       radioButtonsDelivery: radioButtonsDeliveryClear,
-      radioButtonsHour:radioButtonsHourClear,
+      radioButtonsHour: radioButtonsHourClear,
     });
-  }
+  };
 
-  setRadioButtons(stores) {
+  setRadioButtons = (stores) => {
     stores.sort(function (a, b) {
       var textA = a.name.toUpperCase();
       var textB = b.name.toUpperCase();
@@ -144,46 +148,40 @@ class PlaceOrders extends React.Component {
         value: c.name,
       }));
     return radioButtonsValues;
-  }
+  };
 
-  onPressRadioButton(items) {
+  onPressRadioButton = (items) => {
     let selected = items.find((i) => i.selected);
     if (this.state.radioButtonsData == this.state.radioButtonsDelivery)
       this.setState({
-        delivery: {
-          value: selected.value,
-          label: selected.label,
-        },
-        deliveryText: selected.label,
+        delivery: selected,
+        deliveryText: selected?.label,
       });
     else if (this.state.radioButtonsData == this.state.radioButtonsHour)
       this.setState({
-        time: {
-          value: selected.value,
-          label: selected.label,
-        },
+        time: selected,
       });
     else if (this.state.radioButtonsData == this.state.radioButtonsStore)
       this.setState({
-        store: selected.value,
+        store: selected?.value,
       });
     else if (this.state.radioButtonsData == this.state.radioButtonsJobs)
       this.setState({
-        job: selected.value,
+        job: selected?.value,
         showSearch: false,
       });
 
     actionSheetRadioButtonRef.current?.setModalVisible(false);
-  }
+  };
 
-  onPressRadioButtonJob(items) {
+  onPressRadioButtonJob = (items) => {
     let selected = items.find((i) => i.selected);
     this.setState({
-      job: selected.value,
+      job: selected?.value,
       showSearch: false,
     });
     actionSheetRadioButtonRef.current?.setModalVisible(false);
-  }
+  };
 
   showDatePicker = () => {
     this.setState({ isDatePickerVisible: true });
@@ -240,34 +238,34 @@ class PlaceOrders extends React.Component {
     }
   };
 
-  orderTotal() {
+  orderTotal = () => {
     let prices = this.props.cartProducts.map((p) => {
       const price = p.myPrice ? p.rrp : p.cost_price;
       return price * p.quantity;
     });
     const reducer = (accumulator, curr) => accumulator + curr;
     return `${this.formatMoney.format(prices.reduce(reducer, 0))}`;
-  }
+  };
 
-  verifyFields() {
+  verifyFields = () => {
     let error =
       !this.state.orderName ||
-      !this.state.delivery.value ||
+      !this.state.delivery?.value ||
       !this.state.store ||
-      (this.state.delivery.value === 'delivery' && this.state.location === '');
+      (this.state.delivery?.value === 'delivery' && this.state.location === '');
     this.setState({
       orderNameError: !this.state.orderName,
-      deliveryTypeError: !this.state.delivery.value,
+      deliveryTypeError: !this.state.delivery?.value,
       storeError: !this.state.store,
-      locationError: this.state.delivery.value === 'delivery' && this.state.location === '',
+      locationError: this.state.delivery?.value === 'delivery' && this.state.location === '',
     });
     if (error) {
       alert('Fill in the required data *');
     }
     return error;
-  }
+  };
 
-  async placeOrderHandler() {
+  placeOrderHandler = async () => {
     try {
       let supplierId = await this.generalRequest.get(endPoints.supplierId);
       let date = new Date();
@@ -308,10 +306,10 @@ class PlaceOrders extends React.Component {
               },
             ],
             delivery_instructions: {
-              delivery: this.state.delivery.value,
+              delivery: this.state.delivery?.value,
               location: this.state.location || '',
-              date: this.state.date.value,
-              time: this.state.time.value || '12.00 PM',
+              date: this.state.date?.value,
+              time: this.state.time?.value || '12.00 PM',
             },
           },
         };
@@ -324,7 +322,7 @@ class PlaceOrders extends React.Component {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   renderOptions = () => {
     return (
@@ -377,15 +375,15 @@ class PlaceOrders extends React.Component {
           <PickerButton
             text="Delivery Type"
             error
-            placeholder={this.state.delivery.label || 'Select delivery type'}
+            placeholder={this.state.delivery?.label || 'Select delivery type'}
             icon
-            picked={this.state.delivery.value !== ''}
+            picked={this.state.delivery?.value !== ''}
             onPress={() => {
               this.setState({ radioButtonsData: this.state.radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          {this.state.delivery.value === 'delivery' && (
+          {this.state.delivery?.value === 'delivery' && (
             <>
               <Block row>
                 <Text style={styles.text}>Address</Text>
@@ -406,9 +404,9 @@ class PlaceOrders extends React.Component {
           <>
             <PickerButton
               text={`${this.state.deliveryText} Date`}
-              placeholder={this.state.date.label || 'Select date'}
+              placeholder={this.state.date?.label || 'Select date'}
               icon
-              picked={this.state.date.value !== ''}
+              picked={this.state.date?.value !== ''}
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
@@ -423,9 +421,9 @@ class PlaceOrders extends React.Component {
           </>
           <PickerButton
             text={`${this.state.deliveryText} Time`}
-            placeholder={this.state.time.label || 'Select time'}
+            placeholder={this.state.time?.label || 'Select time'}
             icon
-            picked={this.state.time.value !== ''}
+            picked={this.state.time?.value !== ''}
             iconName={'lock-clock'}
             size={25}
             onPress={() => {
@@ -433,7 +431,7 @@ class PlaceOrders extends React.Component {
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          {this.state.time.label === 'Anytime' && (
+          {this.state.time?.label === 'Anytime' && (
             <>
               <Block row>
                 <Text style={styles.text}>Time</Text>
@@ -444,7 +442,7 @@ class PlaceOrders extends React.Component {
                 style={styles.orderName}
                 placeholder="Enter time"
                 onChangeText={(t) => this.setState({ time: { label: 'Anytime', value: t } })}
-                value={this.state.time.value}
+                value={this.state.time?.value}
                 placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
                 textInputStyle={{ flex: 1 }}
               />
