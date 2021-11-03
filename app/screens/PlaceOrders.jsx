@@ -41,7 +41,7 @@ class PlaceOrders extends React.Component {
       store: '',
       job: '',
       delivery: null,
-      deliveryText: 'Delivery',
+      deliveryText: '',
       location: '',
       time: null,
       orderName: '',
@@ -53,34 +53,24 @@ class PlaceOrders extends React.Component {
       locationError: false,
       search: '',
       page: 1,
-      radioButtonsDelivery,
-      radioButtonsHour,
+      radioButtonsDeliveries: [],
+      radioButtonsHours: [],
+      radioButtonsData: []
     };
   }
 
   async componentDidMount() {
-    try {
-      let stores = await this.generalRequest.get(endPoints.stores);
-      let jobs = await this.generalRequest.get(endPoints.jobs);
-      let storesAsRadioButtons = this.setRadioButtons(stores.locations);
-      let jobsAsRadioButtons = this.setRadioButtons(jobs);
-      this.setState({
-        radioButtonsStore: storesAsRadioButtons,
-        radioButtonsJobs: jobsAsRadioButtons,
-      });
-      this.didBlurSubscription();
-    } catch (e) {
-      console.log(e);
-    }
-  }
+    let stores = await this.generalRequest.get(endPoints.stores);
+    let jobs = await this.generalRequest.get(endPoints.jobs);
+    let storesAsRadioButtons = this.setRadioButtons(stores.locations);
+    let jobsAsRadioButtons = this.setRadioButtons(jobs);
 
-  didBlurSubscription = () =>
-    this.props.navigation.addListener('blur', (payload) => {
-      this.clearState();
+    this.setState({
+      radioButtonsStore: storesAsRadioButtons,
+      radioButtonsJobs: jobsAsRadioButtons,
+      radioButtonsDeliveries: radioButtonsDelivery,
+      radioButtonsHours: radioButtonsHour,
     });
-
-  componentWillUnmount() {
-    this.didBlurSubscription();
   }
 
   clearSelected = (listData = [], idSelected) => {
@@ -97,10 +87,10 @@ class PlaceOrders extends React.Component {
   };
 
   clearState = () => {
-    const { radioButtonsDelivery, radioButtonsHour, delivery, time } = this.state;
+    const { radioButtonsDeliveries, radioButtonsHours, delivery, time } = this.state;
 
-    const radioButtonsDeliveryClear = this.clearSelected(radioButtonsDelivery, delivery?.id);
-    const radioButtonsHourClear = this.clearSelected(radioButtonsHour, time?.id);
+    const radioButtonsDeliveryClear = this.clearSelected(radioButtonsDeliveries, delivery?.id);
+    const radioButtonsHourClear = this.clearSelected(radioButtonsHours, time?.id);
 
     this.setState({
       isDatePickerVisible: false,
@@ -115,7 +105,7 @@ class PlaceOrders extends React.Component {
       store: '',
       job: '',
       delivery: null,
-      deliveryText: 'Delivery',
+      deliveryText: '',
       location: '',
       time: null,
       orderName: '',
@@ -127,8 +117,9 @@ class PlaceOrders extends React.Component {
       locationError: false,
       search: '',
       page: 1,
-      radioButtonsDelivery: radioButtonsDeliveryClear,
-      radioButtonsHour: radioButtonsHourClear,
+      radioButtonsDeliveries: radioButtonsDeliveryClear,
+      radioButtonsHours: radioButtonsHourClear,
+      radioButtonsData: []
     });
   };
 
@@ -152,12 +143,12 @@ class PlaceOrders extends React.Component {
 
   onPressRadioButton = (items) => {
     let selected = items.find((i) => i.selected);
-    if (this.state.radioButtonsData == this.state.radioButtonsDelivery)
+    if (this.state.radioButtonsData == this.state.radioButtonsDeliveries)
       this.setState({
         delivery: selected,
         deliveryText: selected?.label,
       });
-    else if (this.state.radioButtonsData == this.state.radioButtonsHour)
+    else if (this.state.radioButtonsData == this.state.radioButtonsHours)
       this.setState({
         time: selected,
       });
@@ -316,6 +307,7 @@ class PlaceOrders extends React.Component {
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
           this.props.clearProducts();
+          this.clearState();
           this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
@@ -379,7 +371,7 @@ class PlaceOrders extends React.Component {
             icon
             picked={this.state.delivery?.value !== ''}
             onPress={() => {
-              this.setState({ radioButtonsData: this.state.radioButtonsDelivery });
+              this.setState({ radioButtonsData: this.state.radioButtonsDeliveries});
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
@@ -427,7 +419,7 @@ class PlaceOrders extends React.Component {
             iconName={'lock-clock'}
             size={25}
             onPress={() => {
-              this.setState({ radioButtonsData: this.state.radioButtonsHour });
+              this.setState({ radioButtonsData: this.state.radioButtonsHours });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
