@@ -10,7 +10,7 @@ export const endPoints = {
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements?sort=id_desc`,
   downloadStatementDetail: `${environment.api}burdens/statements/:id/download?base64=true`,
-  searchInvoices: `${environment.api}burdens/search`,
+  searchInvoices: `${environment.api}burdens/search?sort=id_desc`,
   payment: `${environment.api}burdens/payment`,
   generateOrder: `${environment.api}material-orders`,
   supplierId: `${environment.api}burdens/supplier`,
