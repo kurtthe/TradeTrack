@@ -8,128 +8,20 @@ import ActionSheet from 'react-native-actions-sheet';
 import PickerButton from '@components/PickerButton';
 import RadioGroup from 'react-native-radio-buttons-group';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { getStores, getJobs, searchJobs } from '../../services/PlaceOrdersServices';
-import { connect  } from 'react-redux';
+import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import { Searchbar } from 'react-native-paper';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import { clearProducts } from '@core/module/store/cart/cart';
 import Search from '@custom-elements/Search';
+import {
+  radioButtonsDelivery,
+  radioButtonsHour,
+} from '@shared/dictionaries/radio-buttons-delivery';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
-
-const radioButtonsDelivery = [
-  {
-    id: '1',
-    label: 'Delivery',
-    value: 'delivery',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '2',
-    label: 'Pickup',
-    value: 'pickup',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-];
-
-const radioButtonsHour = [
-  {
-    id: '0',
-    label: 'Anytime',
-    value: '12.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '1',
-    label: '7 AM',
-    value: '7.00 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '2',
-    label: '8 AM',
-    value: '8.00 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '3',
-    label: '9 AM',
-    value: '9.00 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '4',
-    label: '10 AM',
-    value: '10.00 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '5',
-    label: '11 AM',
-    value: '11.00 AM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '6',
-    label: '12 PM',
-    value: '12.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '7',
-    label: '1 PM',
-    value: '1.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '8',
-    label: '2 PM',
-    value: '2.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '9',
-    label: '3 PM',
-    value: '3.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-  {
-    id: '10',
-    label: '4 PM',
-    value: '4.00 PM',
-    color: nowTheme.COLORS.INFO,
-    labelStyle: { fontWeight: 'bold' },
-    selected: false,
-  },
-];
 
 class PlaceOrders extends React.Component {
   constructor(props) {
@@ -161,43 +53,58 @@ class PlaceOrders extends React.Component {
       locationError: false,
       search: '',
       page: 1,
+      radioButtonsDelivery,
+      radioButtonsHour,
     };
   }
 
   async componentDidMount() {
-    try{
+    try {
       let stores = await this.generalRequest.get(endPoints.stores);
       let jobs = await this.generalRequest.get(endPoints.jobs);
-      let storesAsRadioButtons = this.setRadioButtons(stores.locations)
-      let jobsAsRadioButtons = this.setRadioButtons(jobs)
+      let storesAsRadioButtons = this.setRadioButtons(stores.locations);
+      let jobsAsRadioButtons = this.setRadioButtons(jobs);
       this.setState({
         radioButtonsStore: storesAsRadioButtons,
-        radioButtonsJobs: jobsAsRadioButtons
-      })
-      this.didBlurSubscription = this.props.navigation.addListener(
-        'blur',
-        payload => {
-          this.clearState()
-          console.log('>>>>>>>>', this.state.radioButtonsData)
-        }
-      )
-    } catch (e){
-      console.log(e)
+        radioButtonsJobs: jobsAsRadioButtons,
+      });
+      this.didBlurSubscription = this.props.navigation.addListener('blur', (payload) => {
+        this.clearState();
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 
-  componentWillUnmount(){
-    this.didBlurSubscription()
+  componentWillUnmount() {
+    this.didBlurSubscription();
   }
 
+  clearSelected = (listData = [], idSelected) => {
+    return listData.map((item) => {
+      if (item.value === idSelected) {
+        return {
+          ...item,
+          selected: false,
+        };
+      }
+
+      return item;
+    });
+  };
+  
   clearState() {
+
+    const radioButtonsDeliveryClear = this.clearSelected(this.state.radioButtonsDelivery, this.state.delivery?.value); 
+    const radioButtonsHourClear = this.clearSelected(this.state.radioButtonsHour, this.state.time?.value); 
+    
     this.setState({
       isDatePickerVisible: false,
       isTimePickerVisible: false,
       ordersPlaced: cart.products.slice(0, 3), // To only show 3 elements
       deleteAction: false,
       radioButtons: [],
-      radioButtonsData: radioButtonsDelivery,
+      radioButtonsData: [],
       date: { label: '', value: '' },
       radioButtonsJobs: [],
       radioButtonsStore: [],
@@ -216,61 +123,65 @@ class PlaceOrders extends React.Component {
       locationError: false,
       search: '',
       page: 1,
+      radioButtonsDelivery: radioButtonsDeliveryClear,
+      radioButtonsHour:radioButtonsHourClear,
     });
   }
 
   setRadioButtons(stores) {
-    stores.sort(function(a, b) {
+    stores.sort(function (a, b) {
       var textA = a.name.toUpperCase();
       var textB = b.name.toUpperCase();
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
     });
-    let radioButtonsValues = stores && stores.map(c => ({
-      ...c, 
-      color: nowTheme.COLORS.INFO,
-      labelStyle: {fontWeight: 'bold'},
-      label: c.name,
-      value: c.name
-    }))
+    let radioButtonsValues =
+      stores &&
+      stores.map((c) => ({
+        ...c,
+        color: nowTheme.COLORS.INFO,
+        labelStyle: { fontWeight: 'bold' },
+        label: c.name,
+        value: c.name,
+      }));
     return radioButtonsValues;
   }
 
   onPressRadioButton(items) {
-    let selected = items.find(i => i.selected)
-    if (this.state.radioButtonsData == radioButtonsDelivery)
+    let selected = items.find((i) => i.selected);
+    if (this.state.radioButtonsData == this.state.radioButtonsDelivery)
       this.setState({
         delivery: {
           value: selected.value,
           label: selected.label,
         },
         deliveryText: selected.label,
-      })
-    else if (this.state.radioButtonsData == radioButtonsHour)
+      });
+    else if (this.state.radioButtonsData == this.state.radioButtonsHour)
       this.setState({
         time: {
           value: selected.value,
-          label: selected.label
-        }
-      })
+          label: selected.label,
+        },
+      });
     else if (this.state.radioButtonsData == this.state.radioButtonsStore)
       this.setState({
-        store: selected.value
-      })
+        store: selected.value,
+      });
     else if (this.state.radioButtonsData == this.state.radioButtonsJobs)
       this.setState({
         job: selected.value,
-        showSearch: false
-      })
-    
+        showSearch: false,
+      });
+
     actionSheetRadioButtonRef.current?.setModalVisible(false);
   }
 
   onPressRadioButtonJob(items) {
-    let selected = items.find(i => i.selected)
-      this.setState({
-        job: selected.value,
-        showSearch: false
-      })
+    let selected = items.find((i) => i.selected);
+    this.setState({
+      job: selected.value,
+      showSearch: false,
+    });
     actionSheetRadioButtonRef.current?.setModalVisible(false);
   }
 
@@ -286,51 +197,39 @@ class PlaceOrders extends React.Component {
     this.setState({
       date: {
         label: date.toDateString(),
-        value: date.toISOString("2015-05-14").slice(0,10)
-      }
-    })
+        value: date.toISOString('2015-05-14').slice(0, 10),
+      },
+    });
     this.hideDatePicker();
   };
 
-  // showTimePicker = () => {
-  //   this.setState({ isTimePickerVisible: true });
-  // };
-
-  // hideTimePicker = () => {
-  //   this.setState({ isTimePickerVisible: false });
-  // };
-
-  // handleTimePicked = (time) => {
-  //   console.log('A date has been picked: ', time);
-  //   this.hideTimePicker();
-  // };
   changeSearchText = (text) => {
-    this.setState({search: text})
+    this.setState({ search: text });
 
-    if(text == '') {
-      this.handleSearch(1)
+    if (text == '') {
+      this.handleSearch(1);
     }
   };
 
   handleSearch = async (page) => {
-    this.setState({page: page + 1})
+    this.setState({ page: page + 1 });
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${this.state.search}&expand=products`,
       this.loadData,
-      page
+      page,
     );
   };
 
   loadData = (data, page) => {
     if (data.length > 0) {
-      let jobs = this.setRadioButtons(data)
+      let jobs = this.setRadioButtons(data);
       this.setState({
         radioButtonsJobs: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
         radioButtonsData: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
-        showSearch: true
+        showSearch: true,
       });
       if (page == 1) {
-        this.handleSearch(this.state.page)
+        this.handleSearch(this.state.page);
       }
     } else {
       this.setState({
@@ -344,85 +243,86 @@ class PlaceOrders extends React.Component {
   orderTotal() {
     let prices = this.props.cartProducts.map((p) => {
       const price = p.myPrice ? p.rrp : p.cost_price;
-      return price*p.quantity
-    })
+      return price * p.quantity;
+    });
     const reducer = (accumulator, curr) => accumulator + curr;
-    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`
+    return `${this.formatMoney.format(prices.reduce(reducer, 0))}`;
   }
 
   verifyFields() {
-    let error = !this.state.orderName || !this.state.delivery.value || !this.state.store 
-      || this.state.delivery.value === 'delivery' && this.state.location === '';
+    let error =
+      !this.state.orderName ||
+      !this.state.delivery.value ||
+      !this.state.store ||
+      (this.state.delivery.value === 'delivery' && this.state.location === '');
     this.setState({
       orderNameError: !this.state.orderName,
       deliveryTypeError: !this.state.delivery.value,
       storeError: !this.state.store,
       locationError: this.state.delivery.value === 'delivery' && this.state.location === '',
-    })
+    });
     if (error) {
-      alert('Fill in the required data *')
+      alert('Fill in the required data *');
     }
-    return error
+    return error;
   }
 
   async placeOrderHandler() {
-    try{
+    try {
       let supplierId = await this.generalRequest.get(endPoints.supplierId);
       let date = new Date();
-      let items = this.props.cartProducts.map(e => {
-        return (
-          {
-            description: e.name,
-            quantity: e.quantity,
-            units: "ea",
-            cost: e.myPrice ? e.rrp : e.cost_price,
-            tax: [
-              {
-                  name: "GST",
-                  rate: 10
-              }
-          ]
-          }
-        )
-      })
-      let missingFields = this.verifyFields()
+      let items = this.props.cartProducts.map((e) => {
+        return {
+          description: e.name,
+          quantity: e.quantity,
+          units: 'ea',
+          cost: e.myPrice ? e.rrp : e.cost_price,
+          tax: [
+            {
+              name: 'GST',
+              rate: 10,
+            },
+          ],
+        };
+      });
+      let missingFields = this.verifyFields();
       if (!missingFields) {
         let data = {
           data: {
             name: this.state.orderName,
             supplier: supplierId.id,
             job: this.state.job || null,
-            issued_on: date.toISOString("2015-05-14").slice(0,10),
+            issued_on: date.toISOString('2015-05-14').slice(0, 10),
             notes: this.state.notes,
             tax_exclusive: true,
             sections: [
-                {
-                    items: items,
-                    hide_section: false,
-                    hide_section_price: false,
-                    hide_section_items: false,
-                    hide_item_qty: false,
-                    hide_item_price: false,
-                    hide_item_subtotal: false,
-                    hide_item_total: false
-                }
+              {
+                items: items,
+                hide_section: false,
+                hide_section_price: false,
+                hide_section_items: false,
+                hide_item_qty: false,
+                hide_item_price: false,
+                hide_item_subtotal: false,
+                hide_item_total: false,
+              },
             ],
             delivery_instructions: {
               delivery: this.state.delivery.value,
-              location: this.state.location || "",
+              location: this.state.location || '',
               date: this.state.date.value,
-              time: this.state.time.value || "12.00 PM"
-            }
-          }
+              time: this.state.time.value || '12.00 PM',
+            },
+          },
         };
         let placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
         if (placedOrder) {
-          this.props.clearProducts()
+          this.props.clearProducts();
           this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
         }
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
   }
 
@@ -441,7 +341,7 @@ class PlaceOrders extends React.Component {
           <Text style={{ fontWeight: 'bold' }}>Detail Order</Text>
           <PickerButton
             text="Select Job"
-            placeholder={this.state.job || "Select or search job"}
+            placeholder={this.state.job || 'Select or search job'}
             picked={this.state.job !== ''}
             icon
             onPress={() => {
@@ -458,7 +358,7 @@ class PlaceOrders extends React.Component {
             color="black"
             style={styles.orderName}
             placeholder="Enter your order name"
-            onChangeText={t => this.setState({ orderName: t})}
+            onChangeText={(t) => this.setState({ orderName: t })}
             value={this.state.orderName}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
@@ -477,16 +377,15 @@ class PlaceOrders extends React.Component {
           <PickerButton
             text="Delivery Type"
             error
-            placeholder={this.state.delivery.label || "Select delivery type"}
+            placeholder={this.state.delivery.label || 'Select delivery type'}
             icon
             picked={this.state.delivery.value !== ''}
             onPress={() => {
-              this.setState({ radioButtonsData: radioButtonsDelivery });
+              this.setState({ radioButtonsData: this.state.radioButtonsDelivery });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          { 
-            this.state.delivery.value === 'delivery' &&
+          {this.state.delivery.value === 'delivery' && (
             <>
               <Block row>
                 <Text style={styles.text}>Address</Text>
@@ -497,17 +396,17 @@ class PlaceOrders extends React.Component {
                 color="black"
                 style={styles.orderName}
                 placeholder="Enter your address"
-                onChangeText={t => this.setState({ location: t})}
+                onChangeText={(t) => this.setState({ location: t })}
                 value={this.state.location}
                 placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
                 textInputStyle={{ flex: 1 }}
               />
             </>
-          }
+          )}
           <>
             <PickerButton
               text={`${this.state.deliveryText} Date`}
-              placeholder={this.state.date.label || "Select date"}
+              placeholder={this.state.date.label || 'Select date'}
               icon
               picked={this.state.date.value !== ''}
               iconName={'calendar-today'}
@@ -516,7 +415,7 @@ class PlaceOrders extends React.Component {
             />
 
             <DateTimePicker
-              mode='date'
+              mode="date"
               isVisible={this.state.isDatePickerVisible}
               onConfirm={this.handleDatePicked}
               onCancel={this.hideDatePicker}
@@ -524,18 +423,17 @@ class PlaceOrders extends React.Component {
           </>
           <PickerButton
             text={`${this.state.deliveryText} Time`}
-            placeholder={this.state.time.label || "Select time"}
+            placeholder={this.state.time.label || 'Select time'}
             icon
             picked={this.state.time.value !== ''}
             iconName={'lock-clock'}
             size={25}
-            onPress={ () => {
-              this.setState({ radioButtonsData: radioButtonsHour });
+            onPress={() => {
+              this.setState({ radioButtonsData: this.state.radioButtonsHour });
               actionSheetRadioButtonRef.current?.setModalVisible();
             }}
           />
-          { 
-            this.state.time.label === 'Anytime' &&
+          {this.state.time.label === 'Anytime' && (
             <>
               <Block row>
                 <Text style={styles.text}>Time</Text>
@@ -545,19 +443,13 @@ class PlaceOrders extends React.Component {
                 color="black"
                 style={styles.orderName}
                 placeholder="Enter time"
-                onChangeText={t => this.setState({ time: { label: 'Anytime', value: t }})}
+                onChangeText={(t) => this.setState({ time: { label: 'Anytime', value: t } })}
                 value={this.state.time.value}
                 placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
                 textInputStyle={{ flex: 1 }}
               />
             </>
-          }
-          {/* <DateTimePicker
-            mode="time"
-            isVisible={this.state.isTimePickerVisible}
-            onConfirm={this.handleTimePicked}
-            onCancel={this.hideTimePicker}
-          /> */}
+          )}
         </Block>
         <Block
           card
@@ -570,9 +462,9 @@ class PlaceOrders extends React.Component {
         >
           <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
-            text='Select Store'
+            text="Select Store"
             error
-            placeholder={this.state.store || "Select store"}
+            placeholder={this.state.store || 'Select store'}
             picked={this.state.store !== ''}
             icon
             onPress={() => {
@@ -589,7 +481,7 @@ class PlaceOrders extends React.Component {
             style={styles.notes}
             placeholder="Type notes here"
             value={this.state.notes}
-            onChangeText={t => this.setState({ notes: t})}
+            onChangeText={(t) => this.setState({ notes: t })}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
             multiline
@@ -637,20 +529,28 @@ class PlaceOrders extends React.Component {
   };
 
   renderDetailOrdersAS = () => {
-    const orders = this.props.cartProducts
+    const orders = this.props.cartProducts;
 
     return orders.map((orders) => {
       const price = orders.myPrice ? orders.rrp : orders.cost_price;
       return (
-        <Block 
-          keyExtractor={(i) => { index: i }} 
-          style={{top: 5, }} 
+        <Block
+          keyExtractor={(i) => {
+            index: i;
+          }}
+          style={{ top: 5 }}
         >
           <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
-          <Text  numberOfLines={2} style={styles.receiptText}>{orders.name}</Text>
-          <Block row style={{ justifyContent: 'space-between',  }}>
-            <Text style={styles.grayText}>{orders.quantity} x {this.formatMoney.format(price)}</Text>
-            <Text style={styles.detailPrice}>{this.formatMoney.format(price*orders.quantity)}</Text>
+          <Text numberOfLines={2} style={styles.receiptText}>
+            {orders.name}
+          </Text>
+          <Block row style={{ justifyContent: 'space-between' }}>
+            <Text style={styles.grayText}>
+              {orders.quantity} x {this.formatMoney.format(price)}
+            </Text>
+            <Text style={styles.detailPrice}>
+              {this.formatMoney.format(price * orders.quantity)}
+            </Text>
           </Block>
         </Block>
       );
@@ -698,7 +598,7 @@ class PlaceOrders extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
           {radioButtonsData !== this.state.radioButtonsJobs && !this.state.showSearch ? (
-            <View style={{ height: 'auto', padding: 5, paddingBottom: 25}}>
+            <View style={{ height: 'auto', padding: 5, paddingBottom: 25 }}>
               <RadioGroup
                 radioButtons={this.state.radioButtonsData}
                 color={nowTheme.COLORS.INFO}
@@ -707,7 +607,7 @@ class PlaceOrders extends React.Component {
               />
             </View>
           ) : (
-            <View style={{ height: height/2, paddingBottom: 40}}>
+            <View style={{ height: height / 2, paddingBottom: 40 }}>
               <Search
                 placeholder="Search job"
                 value={this.state.search}
@@ -716,9 +616,9 @@ class PlaceOrders extends React.Component {
                 style={styles.search}
                 inputStyle={styles.searchInput}
               />
-              <ScrollView 
-                style={{ width: width - 16, height: '95%'}}
-                contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16}}
+              <ScrollView
+                style={{ width: width - 16, height: '95%' }}
+                contentContainerStyle={{ alignItems: 'flex-start', paddingHorizontal: 16 }}
                 onMomentumScrollEnd={() => this.handleSearch(this.state.page)}
               >
                 <RadioGroup
@@ -816,7 +716,7 @@ const styles = StyleSheet.create({
   errorText: {
     paddingTop: 10,
     color: nowTheme.COLORS.ERROR,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   orderName: {
     width: 'auto',
@@ -864,14 +764,14 @@ const styles = StyleSheet.create({
     width: width - 32,
     marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
-  },  
-  radioStyle:{
-    alignItems: 'flex-start'
+  },
+  radioStyle: {
+    alignItems: 'flex-start',
   },
 });
 
 const mapStateToProps = (state) => ({
-  cartProducts: state.productsReducer.products
+  cartProducts: state.productsReducer.products,
 });
 
 const mapDispatchToProps = { clearProducts };
