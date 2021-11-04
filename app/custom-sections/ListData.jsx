@@ -24,7 +24,7 @@ class ListData extends React.Component {
       showLoadMore: true,
       page: 1,
       urlPetition: null,
-      filter: false
+      filter: false,
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -48,7 +48,7 @@ class ListData extends React.Component {
       return;
     }
 
-    if(this.props.endpoint !== prevProps.endpoint){
+    if (this.props.endpoint !== prevProps.endpoint) {
       this.setState({
         urlPetition: this.props.endpoint,
       });
@@ -66,7 +66,7 @@ class ListData extends React.Component {
       return;
     }
 
-    this.setState({ loadingMoreData: true});
+    this.setState({ loadingMoreData: true });
 
     if (!!this.state.urlPetition && !this.props.isEmpty) {
       await this.getDataPetition.getInfo(
@@ -84,7 +84,7 @@ class ListData extends React.Component {
       this.setState({
         loadingMoreData: false,
         showLoadMore: false,
-        notFound: (this.state.filter)? true: false
+        notFound: this.state.filter ? true : false,
       });
     } else {
       this.setState({
@@ -109,13 +109,14 @@ class ListData extends React.Component {
   };
 
   getValuesFilters = (values) => {
-    this.setState({ valuesFilters: values, data: [], filter:true });
+    this.setState({ valuesFilters: values, data: [], filter: true });
     this.setParamsEndPoint();
   };
 
   setParamsEndPoint = async () => {
     const { valuesFilters } = this.state;
-    let linkPetition = `${this.props.endpoint}?`;
+    const includeParamUrl = this.props.endpoint.includes('?');
+    let linkPetition = `${this.props.endpoint}${includeParamUrl ? '&' : '?'}`;
 
     Object.keys(valuesFilters).forEach((item) => {
       linkPetition += `${item}=${valuesFilters[item]}&`;
@@ -195,8 +196,13 @@ class ListData extends React.Component {
               this.renderNotFound()
             ) : (
               <>
-                <View style={[styles.content, {backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white',}]}>{
-                  cloneElement(children, {data: this.state.data})}
+                <View
+                  style={[
+                    styles.content,
+                    { backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white' },
+                  ]}
+                >
+                  {cloneElement(children, { data: this.state.data })}
                 </View>
                 {this.putLoadingMore()}
               </>
@@ -213,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
-  content: { 
+  content: {
     backgroundColor: nowTheme.COLORS.BACKGROUND,
     paddingTop: 15,
   },
