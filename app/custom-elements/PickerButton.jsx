@@ -29,30 +29,16 @@ class PickerButton extends Component {
       this.setState({
         error: this.props.error,
       });
+      return
     }
 
-    if (this.props.resetValue === true) {
-      this.resetValue(this.state.renderOptions, this.state.optionSelected?.id);
+    if (this.props.renderOptions !== prevProps.renderOptions) {
+      this.setState({
+        renderOptions: this.props.renderOptions,
+      });
     }
+
   }
-
-  resetValue = (listData = [], idSelected) => {
-    const newValue = listData.map((item) => {
-      if (item.id === idSelected) {
-        return {
-          ...item,
-          selected: false,
-        };
-      }
-
-      return item;
-    });
-
-    this.setState({
-      renderOptions: newValue,
-      optionSelected: null
-    })
-  };
 
   onPressRadioButton = (options) => {
     const selected = options.find((option) => option.selected);
@@ -84,14 +70,6 @@ class PickerButton extends Component {
   };
 
   rendetOptionsSelected = () => {
-    if (
-      !this.state.renderOptions ||
-      this.state.renderOptions === null ||
-      this.state.renderOptions?.length === 0
-    ) {
-      return <Text>No exists options</Text>;
-    }
-
     return (
       <View style={{ maxHeight: height / 2 }}>
         {this.state.search ? (
@@ -104,13 +82,17 @@ class PickerButton extends Component {
             inputStyle={styles.searchInput}
           />
         ) : null}
-        <ScrollView style={{ width: width }} contentContainerStyle={{ alignItems: 'flex-start' }}>
-          <RadioGroup
-            radioButtons={this.state.renderOptions}
-            color={nowTheme.COLORS.INFO}
-            onPress={(items) => this.onPressRadioButton(items)}
-            containerStyle={styles.radioStyle}
-          />
+        <ScrollView style={styles.scrollOptions} contentContainerStyle={styles.sortContent}>
+          {this.state.renderOptions?.length === 0 ? (
+            <Text>No exists options</Text>
+          ) : (
+            <RadioGroup
+              radioButtons={this.state.renderOptions}
+              color={nowTheme.COLORS.INFO}
+              onPress={(items) => this.onPressRadioButton(items)}
+              containerStyle={styles.radioStyle}
+            />
+          )}
         </ScrollView>
       </View>
     );
@@ -148,7 +130,7 @@ class PickerButton extends Component {
         </View>
 
         <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
+          <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40, flexWrap: 'wrap' }}>
             {this.rendetOptionsSelected()}
           </Block>
         </ActionSheet>
@@ -158,6 +140,15 @@ class PickerButton extends Component {
 }
 
 const styles = StyleSheet.create({
+  scrollOptions: {
+    width: width - 20,
+    maxHeight: height / 2,
+  },
+  sortContent: {
+    flexGrow: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
   wholeContainer: {
     color: 'red',
   },
