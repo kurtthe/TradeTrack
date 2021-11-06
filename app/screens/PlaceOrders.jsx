@@ -2,6 +2,7 @@ import React from 'react';
 import { Block, Text, theme, Button, Input } from 'galio-framework';
 import { StyleSheet, Dimensions, FlatList, View } from 'react-native';
 import PickerButton from '@custom-elements/PickerButton';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { GeneralRequestService } from '@core/services/general-request.service';
@@ -10,6 +11,12 @@ import {
   radioButtonsDelivery,
   radioButtonsHour,
 } from '@shared/dictionaries/radio-buttons-delivery';
+import { clearProducts } from '@core/module/store/cart/cart';
+import { connect } from 'react-redux';
+import { cart, nowTheme } from '@constants/index';
+import DetailOrders from '@custom-sections/place-order/DetailsOrders';
+import { endPoints } from '@shared/dictionaries/end-points';
+
 
 const { width, height } = Dimensions.get('screen');
 
@@ -52,7 +59,23 @@ class PlaceOrders extends React.Component {
     });
   }
 
-  handleChangeDelivery = (option) => {};
+  setRadioButtons = (stores) => {
+    stores.sort(function (a, b) {
+      var textA = a.name.toUpperCase();
+      var textB = b.name.toUpperCase();
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
+    });
+    let radioButtonsValues =
+      stores &&
+      stores.map((c) => ({
+        ...c,
+        color: nowTheme.COLORS.INFO,
+        labelStyle: { fontWeight: 'bold' },
+        label: c.name,
+        value: c.name,
+      }));
+    return radioButtonsValues;
+  };
 
   handleChangeOptionSelected = (option, type) => {
     if (type === 'job') {
@@ -73,6 +96,13 @@ class PlaceOrders extends React.Component {
     if (type === 'time') {
       this.setState({
         time: option,
+      });
+      return;
+    }
+
+    if (type === 'store') {
+      this.setState({
+        store: option?.value,
       });
     }
   };
@@ -112,7 +142,21 @@ class PlaceOrders extends React.Component {
     this.hideDatePicker();
   };
 
+  renderEmpty() {
+    return (
+      <Text style={{ fontFamily: 'montserrat-regular' }} color={nowTheme.COLORS.ERROR}>
+        The cart is empty
+      </Text>
+    );
+  }
+
   renderOptions = () => {
+
+    console.log("=>this.state.radioButtonsStore",this.state.radioButtonsStore)
+    console.log("=>this.state.radioButtonsJobs",this.state.radioButtonsJobs)
+    console.log("=>this.state.radioButtonsDeliveries",this.state.radioButtonsDeliveries)
+    console.log("=>this.state.radioButtonsHours",this.state.radioButtonsHours)
+    
     return (
       <Block center>
         <Block
@@ -210,7 +254,7 @@ class PlaceOrders extends React.Component {
             iconName={'lock-clock'}
             size={25}
             renderOptions={this.state.radioButtonsHours}
-            onChangeOption={(option) => this.handleChangeDelivery(option, 'time')}
+            onChangeOption={(option) => this.handleChangeOptionSelected(option, 'time')}
           />
           {this.state.time?.label === 'Anytime' && (
             <>
@@ -243,13 +287,10 @@ class PlaceOrders extends React.Component {
           <PickerButton
             text="Select Store"
             error
-            placeholder={this.state.store || 'Select store'}
-            picked={this.state.store !== ''}
+            placeholder={'Select store'}
             icon
-            onPress={() => {
-              this.setState({ radioButtonsData: this.state.radioButtonsStore });
-              actionSheetRadioButtonRef.current?.setModalVisible();
-            }}
+            renderOptions={this.state.radioButtonsStore}
+            onChangeOption={(option) => this.handleChangeOptionSelected(option, 'store')}
           />
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
             Notes to Store
@@ -266,43 +307,10 @@ class PlaceOrders extends React.Component {
             multiline
           />
         </Block>
-        <Block card backgroundColor={'white'} width={width}>
-          <Block style={styles.detailOrdersBlock}>
-            <View style={styles.detailOrders}>
-              <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Detail Orders</Text>
-            </View>
-
-            {this.renderDetailOrdersAS()}
-            <View
-              style={{
-                borderWidth: 0.7,
-                marginVertical: 5,
-                backgroundColor: '#E8E8E8',
-                borderColor: '#E8E8E8',
-              }}
-            />
-            <Block row style={{ justifyContent: 'space-between', paddingBottom: 15, top: 10 }}>
-              <Text size={14}>Total (ex-GST)</Text>
-              <Text
-                size={16}
-                color={nowTheme.COLORS.ORANGE}
-                style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
-              >
-                {this.orderTotal()}
-              </Text>
-            </Block>
-            <Block center style={{ position: 'relative', bottom: 0, paddingHorizontal: 20 }}>
-              <Button
-                color="info"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                style={styles.button}
-                onPress={() => this.placeOrderHandler()}
-              >
-                Place Order
-              </Button>
-            </Block>
-          </Block>
-        </Block>
+        <DetailOrders
+          cartProducts={this.props.cartProducts}
+          orderHandler={() => this.placeOrderHandler()}
+        />
       </Block>
     );
   };
