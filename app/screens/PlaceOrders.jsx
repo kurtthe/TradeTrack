@@ -17,7 +17,6 @@ import { cart, nowTheme } from '@constants/index';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-
 const { width, height } = Dimensions.get('screen');
 
 class PlaceOrders extends React.Component {
@@ -151,12 +150,15 @@ class PlaceOrders extends React.Component {
   }
 
   renderOptions = () => {
+    // console.log("=>this.state.radioButtonsStore",this.state.radioButtonsStore)
+    // console.log("=>this.state.radioButtonsJobs",this.state.radioButtonsJobs)
+    // console.log("=>this.state.radioButtonsDeliveries",this.state.radioButtonsDeliveries)
+    // console.log("=>this.state.radioButtonsHours",this.state.radioButtonsHours)
 
-    console.log("=>this.state.radioButtonsStore",this.state.radioButtonsStore)
-    console.log("=>this.state.radioButtonsJobs",this.state.radioButtonsJobs)
-    console.log("=>this.state.radioButtonsDeliveries",this.state.radioButtonsDeliveries)
-    console.log("=>this.state.radioButtonsHours",this.state.radioButtonsHours)
-    
+    if (this.state.radioButtonsJobs.length === 0) {
+      return null;
+    }
+
     return (
       <Block center>
         <Block
@@ -168,8 +170,8 @@ class PlaceOrders extends React.Component {
           paddingBottom={20}
           marginBottom={20}
         >
-          <Text style={{ fontWeight: 'bold' }}>Detail Order</Text>
           <PickerButton
+            label="Detail Order"
             text="Select Job"
             placeholder={this.state.job || 'Select or search job'}
             renderOptions={this.state.radioButtonsJobs}
@@ -203,8 +205,8 @@ class PlaceOrders extends React.Component {
           paddingBottom={20}
           marginBottom={20}
         >
-          <Text style={{ fontWeight: 'bold' }}>Delivery Options</Text>
           <PickerButton
+            label="Delivery Options"
             text="Delivery Type"
             error
             placeholder={this.state.deliveryText || 'Select delivery type'}
@@ -283,8 +285,8 @@ class PlaceOrders extends React.Component {
           paddingBottom={20}
           marginBottom={20}
         >
-          <Text style={{ fontWeight: 'bold' }}>Store</Text>
           <PickerButton
+            label="Store"
             text="Select Store"
             error
             placeholder={'Select store'}
