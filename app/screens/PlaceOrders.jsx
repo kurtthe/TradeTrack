@@ -37,6 +37,10 @@ class PlaceOrders extends React.Component {
       deliveryText: '',
       date: null,
       time: null,
+      orderName: null,
+      store: null,
+      location: null,
+      resetSelects: false,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -149,12 +153,125 @@ class PlaceOrders extends React.Component {
     );
   }
 
-  renderOptions = () => {
-    // console.log("=>this.state.radioButtonsStore",this.state.radioButtonsStore)
-    // console.log("=>this.state.radioButtonsJobs",this.state.radioButtonsJobs)
-    // console.log("=>this.state.radioButtonsDeliveries",this.state.radioButtonsDeliveries)
-    // console.log("=>this.state.radioButtonsHours",this.state.radioButtonsHours)
+  verifyFields = () => {
+    const error =
+      !this.state.orderName ||
+      !this.state.delivery?.value ||
+      !this.state.store ||
+      (this.state.delivery?.value === 'delivery' && this.state.location === '');
 
+    this.setState({
+      orderNameError: !this.state.orderName,
+      deliveryTypeError: !this.state.delivery?.value,
+      storeError: !this.state.store,
+      locationError: this.state.delivery?.value === 'delivery' && this.state.location === '',
+    });
+
+    if (error) {
+      alert('Fill in the required data *');
+    }
+    return error;
+  };
+
+  serializeItems = () => {
+    if (this.props.cartProducts.length === 0) {
+      return;
+    }
+
+    return this.props.cartProducts.map((item) => ({
+      description: item.name,
+      quantity: item.quantity,
+      units: 'ea',
+      cost: item.myPrice ? item.rrp : item.cost_price,
+      tax: [
+        {
+          name: 'GST',
+          rate: 10,
+        },
+      ],
+    }));
+  };
+
+  resetFields = () => {
+    this.setState({
+      isDatePickerVisible: false,
+      isTimePickerVisible: false,
+      ordersPlaced: cart.products.slice(0, 3),
+      deleteAction: false,
+      radioButtons: [],
+      date: { label: '', value: '' },
+      store: '',
+      job: '',
+      delivery: { label: '', value: '' },
+      deliveryText: 'Delivery',
+      location: '',
+      time: { label: '', value: '' },
+      orderName: '',
+      notFound: false,
+      showSearch: false,
+      orderNameError: false,
+      deliveryTypeError: false,
+      storeError: false,
+      locationError: false,
+      resetSelects: true,
+    });
+  };
+
+  placeOrderHandler = async () => {
+    const supplierId = await this.generalRequest.get(endPoints.supplierId);
+    const date = new Date();
+    const items = this.serializeItems();
+
+    let missingFields = this.verifyFields();
+
+    if (missingFields) {
+      return;
+    }
+
+    const data = {
+      data: {
+        name: this.state.orderName,
+        supplier: supplierId.id,
+        job: this.state.job || null,
+        issued_on: date.toISOString('2015-05-14').slice(0, 10),
+        notes: this.state.notes,
+        tax_exclusive: true,
+        sections: [
+          {
+            items: items,
+            hide_section: false,
+            hide_section_price: false,
+            hide_section_items: false,
+            hide_item_qty: false,
+            hide_item_price: false,
+            hide_item_subtotal: false,
+            hide_item_total: false,
+          },
+        ],
+        delivery_instructions: {
+          delivery: this.state.delivery?.value,
+          location: this.state.location || '',
+          date: this.state.date?.value,
+          time: this.state.time?.value || '12.00 PM',
+        },
+      },
+    };
+
+    const placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
+
+    if (placedOrder) {
+      this.resetFields();
+
+      this.setState({
+        resetSelects: false,
+      });
+
+      this.props.clearProducts();
+      this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
+    }
+  };
+
+  renderOptions = () => {
     if (this.state.radioButtonsJobs.length === 0) {
       return null;
     }
@@ -180,6 +297,7 @@ class PlaceOrders extends React.Component {
             changeTextSearch={(text) => this.changeSearchText(text)}
             search={true}
             icon={true}
+            resetValue={this.state.resetSelects}
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
@@ -213,6 +331,7 @@ class PlaceOrders extends React.Component {
             icon
             renderOptions={this.state.radioButtonsDeliveries}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'delivery')}
+            resetValue={this.state.resetSelects}
           />
           {this.state.delivery?.value === 'delivery' && (
             <>
@@ -257,6 +376,7 @@ class PlaceOrders extends React.Component {
             size={25}
             renderOptions={this.state.radioButtonsHours}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'time')}
+            resetValue={this.state.resetSelects}
           />
           {this.state.time?.label === 'Anytime' && (
             <>
@@ -293,6 +413,7 @@ class PlaceOrders extends React.Component {
             icon
             renderOptions={this.state.radioButtonsStore}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'store')}
+            resetValue={this.state.resetSelects}
           />
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
             Notes to Store

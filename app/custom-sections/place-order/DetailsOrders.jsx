@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
@@ -9,6 +9,8 @@ const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
 
 const DetailsOrders = (props) => {
+  const [loading, setLoading] = useState(false);
+
   const orderTotal = () => {
     let prices = props.cartProducts.map((p) => {
       const price = p.myPrice ? p.rrp : p.cost_price;
@@ -19,7 +21,9 @@ const DetailsOrders = (props) => {
   };
 
   const placeOrderHandler = async () => {
+    setLoading(true);
     props.orderHandler && (await props.orderHandler());
+    setLoading(false);
   };
 
   const putDetails = () => {
@@ -61,6 +65,7 @@ const DetailsOrders = (props) => {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
             style={styles.button}
             onPress={() => placeOrderHandler()}
+            loading={loading}
           >
             Place Order
           </Button>
