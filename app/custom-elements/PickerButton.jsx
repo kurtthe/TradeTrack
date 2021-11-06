@@ -18,7 +18,7 @@ class PickerButton extends Component {
       optionSelected: null,
       picked: false,
       textSearch: '',
-      search: props.search || false
+      search: props.search || false,
     };
 
     this.actionSheetRadioButtonRef = createRef();
@@ -30,7 +30,29 @@ class PickerButton extends Component {
         error: this.props.error,
       });
     }
+
+    if (this.props.resetValue === true) {
+      this.resetValue(this.state.renderOptions, this.state.optionSelected?.id);
+    }
   }
+
+  resetValue = (listData = [], idSelected) => {
+    const newValue = listData.map((item) => {
+      if (item.id === idSelected) {
+        return {
+          ...item,
+          selected: false,
+        };
+      }
+
+      return item;
+    });
+
+    this.setState({
+      renderOptions: newValue,
+      optionSelected: null
+    })
+  };
 
   onPressRadioButton = (options) => {
     const selected = options.find((option) => option.selected);
@@ -40,6 +62,7 @@ class PickerButton extends Component {
       picked: true,
     });
     this.props.onChangeOption && this.props.onChangeOption(selected);
+    this.actionSheetRadioButtonRef.current?.setModalVisible(false);
   };
 
   changeSearchText = (text) => {
@@ -61,7 +84,11 @@ class PickerButton extends Component {
   };
 
   rendetOptionsSelected = () => {
-    if (!this.state.renderOptions || this.state.renderOptions === null || this.state.renderOptions?.length === 0) {
+    if (
+      !this.state.renderOptions ||
+      this.state.renderOptions === null ||
+      this.state.renderOptions?.length === 0
+    ) {
       return <Text>No exists options</Text>;
     }
 
@@ -77,10 +104,7 @@ class PickerButton extends Component {
             inputStyle={styles.searchInput}
           />
         ) : null}
-        <ScrollView
-          style={{ width: width }}
-          contentContainerStyle={{ alignItems: 'flex-start' }}
-        >
+        <ScrollView style={{ width: width }} contentContainerStyle={{ alignItems: 'flex-start' }}>
           <RadioGroup
             radioButtons={this.state.renderOptions}
             color={nowTheme.COLORS.INFO}
@@ -94,13 +118,13 @@ class PickerButton extends Component {
 
   render() {
     const { style, placeholder, text, icon, iconName, size, label } = this.props;
-    const { picked } = this.state;
+    const { picked, optionSelected } = this.state;
     const buttonStyles = [styles.button, { ...style }];
 
     return (
       <>
         <View style={styles.wholeContainer}>
-        <Text style={{ fontWeight: 'bold' }}>{label}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{label}</Text>
           <Block row>
             <Text size={14} style={styles.text}>
               {text}
