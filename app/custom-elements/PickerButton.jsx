@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React, { Component, createRef } from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View, ScrollView, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import nowTheme from '@constants/Theme';
@@ -8,31 +8,23 @@ import { Block, Text, theme } from 'galio-framework';
 import ActionSheet from 'react-native-actions-sheet';
 
 const { width, height } = Dimensions.get('screen');
-const actionSheetRadioButtonRef = createRef();
 
-class PickerButton extends React.Component {
-
+class PickerButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
       error: this.props.error,
-      renderOptions: [],
+      renderOptions: props.renderOptions || [],
       optionSelected: null,
       picked: false,
       textSearch: '',
+      search: props.search || false
     };
+
+    this.actionSheetRadioButtonRef = createRef();
   }
 
-  componentDidMount() {
-    this.setState({
-      renderOptions: this.props.renderOptions
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-
-    console.log("=>prevProps",prevProps.renderOptions)
-
+  componentDidUpdate(prevProps) {
     if (prevProps.error !== this.props.error) {
       this.setState({
         error: this.props.error,
@@ -65,17 +57,17 @@ class PickerButton extends React.Component {
       this.props.onPress();
       return;
     }
-    actionSheetRadioButtonRef.current?.setModalVisible();
+    this.actionSheetRadioButtonRef.current?.setModalVisible();
   };
 
   rendetOptionsSelected = () => {
-    if (this.state.renderOptions === null || this.state.renderOptions?.length === 0) {
+    if (!this.state.renderOptions || this.state.renderOptions === null || this.state.renderOptions?.length === 0) {
       return <Text>No exists options</Text>;
     }
 
     return (
-      <View style={{ height: height / 2 }}>
-        {this.props.search ? (
+      <View style={{ maxHeight: height / 2 }}>
+        {this.state.search ? (
           <Search
             placeholder="Search..."
             value={this.state.textSearch}
@@ -86,7 +78,7 @@ class PickerButton extends React.Component {
           />
         ) : null}
         <ScrollView
-          style={{ width: width, marginHorizontal: 16 }}
+          style={{ width: width }}
           contentContainerStyle={{ alignItems: 'flex-start' }}
         >
           <RadioGroup
@@ -101,13 +93,14 @@ class PickerButton extends React.Component {
   };
 
   render() {
-    const { style, placeholder, text, icon, iconName, size } = this.props;
+    const { style, placeholder, text, icon, iconName, size, label } = this.props;
     const { picked } = this.state;
     const buttonStyles = [styles.button, { ...style }];
 
     return (
       <>
         <View style={styles.wholeContainer}>
+        <Text style={{ fontWeight: 'bold' }}>{label}</Text>
           <Block row>
             <Text size={14} style={styles.text}>
               {text}
@@ -130,7 +123,7 @@ class PickerButton extends React.Component {
           </TouchableWithoutFeedback>
         </View>
 
-        <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
+        <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
           <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
             {this.rendetOptionsSelected()}
           </Block>
