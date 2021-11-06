@@ -17,7 +17,7 @@ import { cart, nowTheme } from '@constants/index';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-const { width, height } = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 
 class PlaceOrders extends React.Component {
   constructor(props) {
@@ -57,8 +57,8 @@ class PlaceOrders extends React.Component {
     this.setState({
       radioButtonsStore: storesAsRadioButtons,
       radioButtonsJobs: jobsAsRadioButtons,
-      radioButtonsDeliveries: radioButtonsDelivery,
-      radioButtonsHours: radioButtonsHour,
+      radioButtonsDeliveries: [...radioButtonsDelivery],
+      radioButtonsHours: [...radioButtonsHour],
     });
   }
 
@@ -111,11 +111,22 @@ class PlaceOrders extends React.Component {
   };
 
   changeSearchText = (text) => {
-    this.setState({ searchJob: text });
+    this.onChangeSearch(text);
+  };
 
-    if (text == '') {
-      this.handleSearch(1);
-    }
+  onChangeSearch = async (textSearch) => {
+    await this.getDataPetition.getInfo(
+      `${endPoints.jobs}?search=${textSearch}&expand=products`,
+      this.loadData,
+      10,
+    );
+  };
+
+  loadData = (data = []) => {
+    let jobs = this.setRadioButtons(data);
+    this.setState({
+      radioButtonsJobs: jobs,
+    });
   };
 
   handleSearch = async (page) => {
@@ -192,7 +203,23 @@ class PlaceOrders extends React.Component {
     }));
   };
 
+  resetValueSelect = (listData = []) => {
+    return listData.map((item) => {
+      return {
+        ...item,
+        selected: false,
+      };
+    });
+  };
+
   resetFields = () => {
+    console.log("==>restet")
+    const radioButtonsStoreClear = this.resetValueSelect(this.state.radioButtonsStore);
+    const radioButtonsDeliveriesClear = this.resetValueSelect(this.state.radioButtonsDeliveries);
+    const radioButtonsHoursClear = this.resetValueSelect(this.state.radioButtonsHours);
+
+    console.log("==>radioButtonsDeliveriesClear",radioButtonsDeliveriesClear)
+    
     this.setState({
       isDatePickerVisible: false,
       isTimePickerVisible: false,
@@ -213,7 +240,11 @@ class PlaceOrders extends React.Component {
       deliveryTypeError: false,
       storeError: false,
       locationError: false,
-      resetSelects: true,
+      resetSelects: false,
+
+      radioButtonsStore: radioButtonsStoreClear,
+      radioButtonsDeliveries: radioButtonsDeliveriesClear,
+      radioButtonsHours: radioButtonsHoursClear,
     });
   };
 
@@ -261,20 +292,13 @@ class PlaceOrders extends React.Component {
 
     if (placedOrder) {
       this.resetFields();
-
-      this.setState({
-        resetSelects: false,
-      });
-
       this.props.clearProducts();
       this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
   };
 
   renderOptions = () => {
-    if (this.state.radioButtonsJobs.length === 0) {
-      return null;
-    }
+    console.log('?=>radioButtonsDeliveries', this.state.radioButtonsDeliveries);
 
     return (
       <Block center>
@@ -297,7 +321,6 @@ class PlaceOrders extends React.Component {
             changeTextSearch={(text) => this.changeSearchText(text)}
             search={true}
             icon={true}
-            resetValue={this.state.resetSelects}
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
@@ -331,7 +354,6 @@ class PlaceOrders extends React.Component {
             icon
             renderOptions={this.state.radioButtonsDeliveries}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'delivery')}
-            resetValue={this.state.resetSelects}
           />
           {this.state.delivery?.value === 'delivery' && (
             <>
@@ -376,7 +398,6 @@ class PlaceOrders extends React.Component {
             size={25}
             renderOptions={this.state.radioButtonsHours}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'time')}
-            resetValue={this.state.resetSelects}
           />
           {this.state.time?.label === 'Anytime' && (
             <>
@@ -413,7 +434,6 @@ class PlaceOrders extends React.Component {
             icon
             renderOptions={this.state.radioButtonsStore}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'store')}
-            resetValue={this.state.resetSelects}
           />
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
             Notes to Store
