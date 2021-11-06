@@ -1,34 +1,38 @@
 import React, { createRef } from 'react';
-import {
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Text,
-  View,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, ScrollView, Dimensions } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import nowTheme from '@constants/Theme';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Search from '@custom-elements/Search';
 import { Block, Text, theme } from 'galio-framework';
+import ActionSheet from 'react-native-actions-sheet';
 
 const { width, height } = Dimensions.get('screen');
 const actionSheetRadioButtonRef = createRef();
 
 class PickerButton extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       error: this.props.error,
-      renderOptions: props.options,
+      renderOptions: [],
       optionSelected: null,
       picked: false,
       textSearch: '',
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount() {
+    this.setState({
+      renderOptions: this.props.renderOptions
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    console.log("=>prevProps",prevProps.renderOptions)
+
     if (prevProps.error !== this.props.error) {
       this.setState({
         error: this.props.error,
@@ -64,6 +68,38 @@ class PickerButton extends React.Component {
     actionSheetRadioButtonRef.current?.setModalVisible();
   };
 
+  rendetOptionsSelected = () => {
+    if (this.state.renderOptions === null || this.state.renderOptions?.length === 0) {
+      return <Text>No exists options</Text>;
+    }
+
+    return (
+      <View style={{ height: height / 2 }}>
+        {this.props.search ? (
+          <Search
+            placeholder="Search..."
+            value={this.state.textSearch}
+            onChangeText={(text) => this.changeSearchText(text)}
+            onSearch={() => this.handleSearch(1)}
+            style={styles.search}
+            inputStyle={styles.searchInput}
+          />
+        ) : null}
+        <ScrollView
+          style={{ width: width, marginHorizontal: 16 }}
+          contentContainerStyle={{ alignItems: 'flex-start' }}
+        >
+          <RadioGroup
+            radioButtons={this.state.renderOptions}
+            color={nowTheme.COLORS.INFO}
+            onPress={(items) => this.onPressRadioButton(items)}
+            containerStyle={styles.radioStyle}
+          />
+        </ScrollView>
+      </View>
+    );
+  };
+
   render() {
     const { style, placeholder, text, icon, iconName, size } = this.props;
     const { picked } = this.state;
@@ -96,29 +132,7 @@ class PickerButton extends React.Component {
 
         <ActionSheet ref={actionSheetRadioButtonRef} headerAlwaysVisible>
           <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
-            <View style={{ height: height / 2 }}>
-              {this.props.search ? (
-                <Search
-                  placeholder="Search..."
-                  value={this.state.textSearch}
-                  onChangeText={(text) => this.changeSearchText(text)}
-                  onSearch={() => this.handleSearch(1)}
-                  style={styles.search}
-                  inputStyle={styles.searchInput}
-                />
-              ) : null}
-              <ScrollView
-                style={{ width: width, marginHorizontal: 16 }}
-                contentContainerStyle={{ alignItems: 'flex-start' }}
-              >
-                <RadioGroup
-                  radioButtons={this.state.renderOptions}
-                  color={nowTheme.COLORS.INFO}
-                  onPress={(items) => this.onPressRadioButton(items)}
-                  containerStyle={styles.radioStyle}
-                />
-              </ScrollView>
-            </View>
+            {this.rendetOptionsSelected()}
           </Block>
         </ActionSheet>
       </>
