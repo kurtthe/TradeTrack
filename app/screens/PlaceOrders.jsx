@@ -213,13 +213,10 @@ class PlaceOrders extends React.Component {
   };
 
   resetFields = () => {
-    console.log("==>restet")
     const radioButtonsStoreClear = this.resetValueSelect(this.state.radioButtonsStore);
     const radioButtonsDeliveriesClear = this.resetValueSelect(this.state.radioButtonsDeliveries);
     const radioButtonsHoursClear = this.resetValueSelect(this.state.radioButtonsHours);
 
-    console.log("==>radioButtonsDeliveriesClear",radioButtonsDeliveriesClear)
-    
     this.setState({
       isDatePickerVisible: false,
       isTimePickerVisible: false,
@@ -298,8 +295,6 @@ class PlaceOrders extends React.Component {
   };
 
   renderOptions = () => {
-    console.log('?=>radioButtonsDeliveries', this.state.radioButtonsDeliveries);
-
     return (
       <Block center>
         <Block
