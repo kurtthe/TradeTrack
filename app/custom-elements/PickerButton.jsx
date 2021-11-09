@@ -29,16 +29,26 @@ class PickerButton extends Component {
       this.setState({
         error: this.props.error,
       });
-      return
+      return;
     }
 
-    if (this.props.renderOptions !== prevProps.renderOptions) {
-      this.setState({
-        renderOptions: this.props.renderOptions,
-      });
+    if (JSON.stringify(this.props.renderOptions) !== JSON.stringify(prevProps.renderOptions)) {
+      this.resetValueSelect(this.props.renderOptions);
     }
-
   }
+
+  resetValueSelect = (listData = []) => {
+    const newData = listData.map((item) => {
+      return {
+        ...item,
+        selected: false,
+      };
+    });
+
+    this.setState({
+      renderOptions: newData,
+    });
+  };
 
   onPressRadioButton = (options) => {
     const selected = options.find((option) => option.selected);
