@@ -433,15 +433,14 @@ class PlaceOrders extends React.Component {
         >
           <PickerButton
             label="Store"
-            text="Select Store"
-            error
+            errorLabel
             placeholder={'Select store'}
             icon
             renderOptions={this.state.radioButtonsStore}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'store')}
           />
           <Text style={{ fontSize: 14, paddingVertical: 10, color: nowTheme.COLORS.PRETEXT }}>
-            Notes to Store
+            Notes
           </Text>
           <Input
             left
@@ -478,7 +477,31 @@ class PlaceOrders extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  text: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.PRETEXT,
+  },
+  errorText: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.ERROR,
+    fontWeight: 'bold',
+  },
+  orderName: {
+    width: 'auto',
+    paddingVertical: 10,
+    height: 43,
+  },
+  notes: {
+    height: 100,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: nowTheme.COLORS.PICKERTEXT,
+    paddingTop: 10,
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
+});
 
 const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,

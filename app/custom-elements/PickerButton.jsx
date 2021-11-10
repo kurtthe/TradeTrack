@@ -117,13 +117,20 @@ class PickerButton extends Component {
     return (
       <>
         <View style={styles.wholeContainer}>
-          <Text style={{ fontWeight: 'bold' }}>{label}</Text>
-          <Block row>
-            <Text size={14} style={styles.text}>
-              {text}
-            </Text>
-            {this.state.error && <Text style={styles.errorText}> * </Text>}
-          </Block>
+          {label && 
+            <Block row>
+              <Text style={[styles.text,{ fontWeight: 'bold' }]}>{label}</Text>
+              {this.props.errorLabel && <Text style={styles.errorText}> * </Text>}
+            </Block>
+          }
+          {text && 
+            <Block row>
+              <Text size={14} style={styles.text}>
+                {text}
+              </Text>
+              {this.state.error && <Text style={styles.errorText}> * </Text>}
+            </Block>
+          }
           <TouchableWithoutFeedback style={buttonStyles} onPress={() => this.openAction()}>
             <Block row space={'between'} style={styles.container}>
               <Text style={[styles.placeholder, picked && styles.pickedPlaceholder]}>
