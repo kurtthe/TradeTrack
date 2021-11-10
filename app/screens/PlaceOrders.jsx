@@ -138,7 +138,6 @@ class PlaceOrders extends React.Component {
   };
 
   handleSearch = async (page) => {
-    console.log(page)
     this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
       `${endPoints.jobs}?search=${this.state.search}&expand=products`,

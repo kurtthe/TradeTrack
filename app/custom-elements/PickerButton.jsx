@@ -17,7 +17,6 @@ class PickerButton extends Component {
       renderOptions: props.renderOptions || [],
       optionSelected: null,
       picked: false,
-      textSearch: '',
       search: props.search || false,
     };
 
@@ -62,8 +61,6 @@ class PickerButton extends Component {
   };
 
   changeSearchText = (text) => {
-    this.setState({ textSearch: text });
-
     this.props.changeSearchText && this.props.changeSearchText(text);
   };
 
