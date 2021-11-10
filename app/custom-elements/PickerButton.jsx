@@ -78,7 +78,7 @@ class PickerButton extends Component {
 
   rendetOptionsSelected = () => {
     return (
-      <View style={{ maxHeight: height / 2 }}>
+      <Block left style={{ height: this.state.search ? height / 2 : 'auto', padding: 5, paddingBottom: 40}}>
         {this.state.search ? (
           <Search
             placeholder="Search..."
@@ -105,7 +105,7 @@ class PickerButton extends Component {
             />
           )}
         </ScrollView>
-      </View>
+      </Block>
     );
   };
 
@@ -141,9 +141,7 @@ class PickerButton extends Component {
         </View>
 
         <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40, flexWrap: 'wrap' }}>
             {this.rendetOptionsSelected()}
-          </Block>
         </ActionSheet>
       </>
     );
@@ -153,7 +151,6 @@ class PickerButton extends Component {
 const styles = StyleSheet.create({
   scrollOptions: {
     width: width - 16, 
-    height: '95%'
   },
   sortContent: {
     paddingHorizontal: 10,
