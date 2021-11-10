@@ -41,6 +41,7 @@ class PlaceOrders extends React.Component {
       store: null,
       location: null,
       resetSelects: false,
+      page: 1,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -111,7 +112,11 @@ class PlaceOrders extends React.Component {
   };
 
   changeSearchText = (text) => {
-    this.onChangeSearch(text);
+    this.setState({search: text})
+
+    if(text == '') {
+      this.handleSearch(1)
+    }
   };
 
   onChangeSearch = async (textSearch) => {
@@ -122,19 +127,23 @@ class PlaceOrders extends React.Component {
     );
   };
 
-  loadData = (data = []) => {
+  loadData = (data = [], page) => {
     let jobs = this.setRadioButtons(data);
     this.setState({
-      radioButtonsJobs: jobs,
+      radioButtonsJobs: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
     });
+    if (page == 1) {
+      this.handleSearch(2)
+    }
   };
 
   handleSearch = async (page) => {
-    this.setState({ page: page + 1 });
+    console.log(page)
+    this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
-      `${endPoints.jobs}?search=${this.state.searchJob}&expand=products`,
+      `${endPoints.jobs}?search=${this.state.search}&expand=products`,
       this.loadData,
-      page,
+      page
     );
   };
 
@@ -312,10 +321,12 @@ class PlaceOrders extends React.Component {
             placeholder={this.state.job || 'Select or search job'}
             renderOptions={this.state.radioButtonsJobs}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'job')}
-            onSearch={() => this.handleSearch()}
-            changeTextSearch={(text) => this.changeSearchText(text)}
+            handleSearch={(page) => this.handleSearch(page)}
+            changeSearchText={(text) => this.changeSearchText(text)}
             search={true}
             icon={true}
+            page={this.state.page}
+            textSearch={this.state.search}
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>

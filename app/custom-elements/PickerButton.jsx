@@ -64,11 +64,11 @@ class PickerButton extends Component {
   changeSearchText = (text) => {
     this.setState({ textSearch: text });
 
-    this.props.changeTextSearch && this.props.changeTextSearch(text);
+    this.props.changeSearchText && this.props.changeSearchText(text);
   };
 
-  handleSearch = () => {
-    this.props.onSearch && this.props.onSearch();
+  handleSearch = (page) => {
+    this.props.handleSearch && this.props.handleSearch(page);
   };
 
   openAction = () => {
@@ -85,14 +85,18 @@ class PickerButton extends Component {
         {this.state.search ? (
           <Search
             placeholder="Search..."
-            value={this.state.textSearch}
+            value={this.props.textSearch}
             onChangeText={(text) => this.changeSearchText(text)}
             onSearch={() => this.handleSearch(1)}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
         ) : null}
-        <ScrollView style={styles.scrollOptions} contentContainerStyle={styles.sortContent}>
+        <ScrollView 
+          style={styles.scrollOptions} 
+          contentContainerStyle={styles.sortContent} 
+          onMomentumScrollEnd={() => this.handleSearch(this.props.page)}
+        >
           {this.state.renderOptions?.length === 0 ? (
             <Text>No exists options</Text>
           ) : (
@@ -151,11 +155,11 @@ class PickerButton extends Component {
 
 const styles = StyleSheet.create({
   scrollOptions: {
-    width: width - 20,
-    maxHeight: height / 2,
+    width: width - 16, 
+    height: '95%'
   },
   sortContent: {
-    flexGrow: 1,
+    paddingHorizontal: 10,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
