@@ -90,7 +90,7 @@ class PickerButton extends Component {
           />
         ) : null}
         <ScrollView 
-          style={styles.scrollOptions} 
+          style={[styles.scrollOptions, this.state.search && {height: '95%'}]} 
           contentContainerStyle={styles.sortContent} 
           onMomentumScrollEnd={() => this.handleSearch(this.props.page)}
         >
@@ -157,7 +157,7 @@ class PickerButton extends Component {
 
 const styles = StyleSheet.create({
   scrollOptions: {
-    width: width - 16, 
+    width: width - 16,
   },
   sortContent: {
     paddingHorizontal: 10,
