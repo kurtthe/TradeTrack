@@ -24,6 +24,7 @@ class Search extends React.Component {
             {...this.props}
             right
             color="black"
+            autoFocus={false}
             autoCorrect={false}
             autoCapitalize="none"
             iconContent={
