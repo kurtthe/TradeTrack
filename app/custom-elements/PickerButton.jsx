@@ -17,7 +17,6 @@ class PickerButton extends Component {
       renderOptions: props.renderOptions || [],
       optionSelected: null,
       picked: false,
-      textSearch: '',
       search: props.search || false,
     };
 
@@ -62,13 +61,11 @@ class PickerButton extends Component {
   };
 
   changeSearchText = (text) => {
-    this.setState({ textSearch: text });
-
-    this.props.changeTextSearch && this.props.changeTextSearch(text);
+    this.props.changeSearchText && this.props.changeSearchText(text);
   };
 
-  handleSearch = () => {
-    this.props.onSearch && this.props.onSearch();
+  handleSearch = (page) => {
+    this.props.handleSearch && this.props.handleSearch(page);
   };
 
   openAction = () => {
@@ -81,18 +78,22 @@ class PickerButton extends Component {
 
   rendetOptionsSelected = () => {
     return (
-      <View style={{ maxHeight: height / 2 }}>
+      <Block left style={{ height: this.state.search ? height / 2 : 'auto', padding: 5, paddingBottom: 40}}>
         {this.state.search ? (
           <Search
             placeholder="Search..."
-            value={this.state.textSearch}
+            value={this.props.textSearch}
             onChangeText={(text) => this.changeSearchText(text)}
             onSearch={() => this.handleSearch(1)}
             style={styles.search}
             inputStyle={styles.searchInput}
           />
         ) : null}
-        <ScrollView style={styles.scrollOptions} contentContainerStyle={styles.sortContent}>
+        <ScrollView 
+          style={styles.scrollOptions} 
+          contentContainerStyle={styles.sortContent} 
+          onMomentumScrollEnd={() => this.handleSearch(this.props.page)}
+        >
           {this.state.renderOptions?.length === 0 ? (
             <Text>No exists options</Text>
           ) : (
@@ -104,7 +105,7 @@ class PickerButton extends Component {
             />
           )}
         </ScrollView>
-      </View>
+      </Block>
     );
   };
 
@@ -116,13 +117,20 @@ class PickerButton extends Component {
     return (
       <>
         <View style={styles.wholeContainer}>
-          <Text style={{ fontWeight: 'bold' }}>{label}</Text>
-          <Block row>
-            <Text size={14} style={styles.text}>
-              {text}
-            </Text>
-            {this.state.error && <Text style={styles.errorText}> * </Text>}
-          </Block>
+          {label && 
+            <Block row>
+              <Text style={[styles.text,{ fontWeight: 'bold' }]}>{label}</Text>
+              {this.props.errorLabel && <Text style={styles.errorText}> * </Text>}
+            </Block>
+          }
+          {text && 
+            <Block row>
+              <Text size={14} style={styles.text}>
+                {text}
+              </Text>
+              {this.state.error && <Text style={styles.errorText}> * </Text>}
+            </Block>
+          }
           <TouchableWithoutFeedback style={buttonStyles} onPress={() => this.openAction()}>
             <Block row space={'between'} style={styles.container}>
               <Text style={[styles.placeholder, picked && styles.pickedPlaceholder]}>
@@ -140,9 +148,7 @@ class PickerButton extends Component {
         </View>
 
         <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
-          <Block left style={{ height: 'auto', padding: 5, paddingBottom: 40, flexWrap: 'wrap' }}>
             {this.rendetOptionsSelected()}
-          </Block>
         </ActionSheet>
       </>
     );
@@ -151,11 +157,10 @@ class PickerButton extends Component {
 
 const styles = StyleSheet.create({
   scrollOptions: {
-    width: width - 20,
-    maxHeight: height / 2,
+    width: width - 16, 
   },
   sortContent: {
-    flexGrow: 1,
+    paddingHorizontal: 10,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
