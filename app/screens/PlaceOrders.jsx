@@ -132,7 +132,7 @@ class PlaceOrders extends React.Component {
     this.setState({
       radioButtonsJobs: page == 1 ? jobs : this.state.radioButtonsJobs.concat(jobs),
     });
-    if (page == 1) {
+    if (page == 1 && jobs.length == 6) {
       this.handleSearch(2)
     }
   };
@@ -140,7 +140,7 @@ class PlaceOrders extends React.Component {
   handleSearch = async (page) => {
     this.setState({page: page + 1})
     await this.getDataPetition.getInfo(
-      `${endPoints.jobs}?search=${this.state.search}&expand=products`,
+      `${endPoints.jobs}?search=${this.state.search}`,
       this.loadData,
       page
     );
