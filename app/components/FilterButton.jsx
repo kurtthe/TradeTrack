@@ -10,7 +10,7 @@ class FilterButton extends React.Component {
 
     return (
       <ArButton small color={'white'} style={styles.button} onPress={onPress}>
-        {icon && <Image style={{ margin: 5 }} source={icon} />}
+        {icon && <Image style={styles.icon} source={icon} />}
         {isActive && <Image style={styles.image} source={require('../../assets/category.png')} />}
         <Text style={styles.text}>{text}</Text>
       </ArButton>
@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: nowTheme.COLORS.LIGHTGRAYTEXT,
+  },
+  icon: {
+    maxWidth: 25,
+    maxHeight: 25,
+    margin: 5,
   },
 });
 
