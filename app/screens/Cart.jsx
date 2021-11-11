@@ -13,7 +13,6 @@ import Tabs from '@custom-elements/Tabs';
 import ProductCart from '@custom-elements/ProductCart';
 import { AlertService } from '@core/services/alert.service';
 
-
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
   constructor(props) {
@@ -22,7 +21,7 @@ class Cart extends React.Component {
     this.state = {
       customStyleIndex: 0,
       deleteAction: false,
-      myPrice: false
+      myPrice: false,
     };
 
     this.alertService = new AlertService();
@@ -30,11 +29,11 @@ class Cart extends React.Component {
     this.productCartService = ProductCartService.getInstance(props.cartProducts);
   }
 
-  componentDidMount(){
-    if(!!this.props.cartProducts[0]?.myPrice){
+  componentDidMount() {
+    if (!!this.props.cartProducts[0]?.myPrice) {
       this.setState({
-        myPrice: this.props.cartProducts[0]?.myPrice
-      })
+        myPrice: this.props.cartProducts[0]?.myPrice,
+      });
     }
   }
 
@@ -42,18 +41,19 @@ class Cart extends React.Component {
     if (JSON.stringify(this.props.cartProducts) !== JSON.stringify(prevProps.cartProducts)) {
       this.productCartService = ProductCartService.getInstance(this.props.cartProducts);
 
-      if(!!this.props.cartProducts[0]?.myPrice ||
+      if (
+        !!this.props.cartProducts[0]?.myPrice ||
         this.props.cartProducts[0]?.myPrice !== prevProps.cartProducts[0]?.myPrice
-        ){
+      ) {
         this.setState({
-          myPrice: this.props.cartProducts[0]?.myPrice
-        })
+          myPrice: this.props.cartProducts[0]?.myPrice,
+        });
       }
     }
   }
 
   onCheckoutPressed() {
-    if(this.state.myPrice){
+    if (this.state.myPrice) {
       this.alertService.show('Alert!', 'Cannot checkout in client mode, please disable');
       return;
     }
@@ -89,13 +89,11 @@ class Cart extends React.Component {
   );
 
   renderPreviousOrder = () => (
-    <FlatList
-      data={this.state.productsPreviousCart}
-      renderItem={this.renderProducts}
-      keyExtractor={(item, index) => `${index}-${item.id}`}
-      ListEmptyComponent={this.renderEmpty()}
-      style={{ width: width }}
-    />
+    <Block style={styles.container_empty}>
+      <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
+        Is coming soon!
+      </Text>
+    </Block>
   );
 
   renderFoother = () => {
@@ -103,7 +101,7 @@ class Cart extends React.Component {
       return null;
     }
 
-    const titleOrder = this.state.myPrice? 'Total RRP (ex-GST)' : 'Total (ex-GST)'
+    const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST)' : 'Total (ex-GST)';
 
     return (
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
@@ -131,11 +129,11 @@ class Cart extends React.Component {
         <Tabs
           optionsTabsRender={[
             {
-              labelTab: 'Current orders',
+              labelTab: 'Current order',
               component: this.renderCurrentOrder(),
             },
             {
-              labelTab: 'Previous orders',
+              labelTab: 'Previous order',
               component: this.renderPreviousOrder(),
             },
           ]}
