@@ -381,7 +381,8 @@ class PlaceOrders extends React.Component {
           <>
             <PickerButton
               text={`${this.state.deliveryText} Date`}
-              placeholder={'Select date'}
+              placeholder={this.state?.date?.label || "Select date"}
+              pickDate={this.state.date != null}
               icon
               iconName={'calendar-today'}
               size={25}
@@ -404,23 +405,6 @@ class PlaceOrders extends React.Component {
             renderOptions={this.state.radioButtonsHours}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'time')}
           />
-          {this.state.time?.label === 'Anytime' && (
-            <>
-              <Block row>
-                <Text style={styles.text}>Time</Text>
-              </Block>
-              <Input
-                left
-                color="black"
-                style={styles.orderName}
-                placeholder="Enter time"
-                onChangeText={(t) => this.setState({ time: { label: 'Anytime', value: t } })}
-                value={this.state.time?.value}
-                placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
-                textInputStyle={{ flex: 1 }}
-              />
-            </>
-          )}
         </Block>
         <Block
           card

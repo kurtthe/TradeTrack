@@ -110,7 +110,7 @@ class PickerButton extends Component {
   };
 
   render() {
-    const { style, placeholder, text, icon, iconName, size, label } = this.props;
+    const { style, placeholder, text, icon, iconName, size, label, pickDate } = this.props;
     const { picked, optionSelected } = this.state;
     const buttonStyles = [styles.button, { ...style }];
 
@@ -119,13 +119,13 @@ class PickerButton extends Component {
         <View style={styles.wholeContainer}>
           {label && 
             <Block row>
-              <Text style={[styles.text,{ fontWeight: 'bold' }]}>{label}</Text>
+              <Text style={[styles.text, { fontWeight: 'bold' }]}>{label}</Text>
               {this.props.errorLabel && <Text style={styles.errorText}> * </Text>}
             </Block>
           }
           {text && 
             <Block row>
-              <Text size={14} style={styles.text}>
+              <Text size={14} style={[styles.text, styles.grayText]}>
                 {text}
               </Text>
               {this.state.error && <Text style={styles.errorText}> * </Text>}
@@ -133,8 +133,8 @@ class PickerButton extends Component {
           }
           <TouchableWithoutFeedback style={buttonStyles} onPress={() => this.openAction()}>
             <Block row space={'between'} style={styles.container}>
-              <Text style={[styles.placeholder, picked && styles.pickedPlaceholder]}>
-                {!picked ? placeholder : optionSelected?.label}
+              <Text style={[styles.placeholder, (picked || pickDate) && styles.pickedPlaceholder]}>
+                {(!picked || !pickDate) ? placeholder : optionSelected?.label}
               </Text>
               {icon && (
                 <MaterialIcons
@@ -170,6 +170,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     paddingVertical: 10,
+  },
+  grayText: {
     color: nowTheme.COLORS.PRETEXT,
   },
   errorText: {
