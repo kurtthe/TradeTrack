@@ -190,7 +190,7 @@ class FilterProducts extends Component {
             <FilterButton
               text={(this.state.categoryActive)?'Clear': 'Filters'}
               onPress={() => this.handleResetFilter()}
-              icon={(this.state.categoryActive)?require('@assets/nuk-icons/png/2x/simple-remove.png'):require('@assets/nuk-icons/png/2x/filter.png')}
+              icon={(this.state.categoryActive)?require('@assets/nuk-icons/png/2x/clear.png'):require('@assets/nuk-icons/png/2x/filter.png')}
             />
             <FilterButton
               text={'Category'}
