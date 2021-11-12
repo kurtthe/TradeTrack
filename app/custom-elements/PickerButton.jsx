@@ -120,7 +120,7 @@ class PickerButton extends Component {
   };
 
   render() {
-    const { style, placeholder, text, icon, iconName, size, label, pickDate } = this.props;
+    const { style, placeholder, text, icon, iconName, size, label, pickDate, deleteOption = false } = this.props;
     const { picked, optionSelected } = this.state;
     const buttonStyles = [styles.button, { ...style }];
 
@@ -149,10 +149,10 @@ class PickerButton extends Component {
             </TouchableWithoutFeedback>
             {icon && (
               <MaterialIcons
-                name={iconName || optionSelected === null ? 'expand-more' : 'clear'}
+                name={iconName ? iconName : optionSelected !== null && deleteOption ? 'clear' : 'expand-more'}
                 color={nowTheme.COLORS.ICONPICKER}
-                size={size || optionSelected === null ? 30 : 20}
-                onPress={optionSelected === null ? () => this.openAction() : () => this.onDeleteSelected()}
+                size={size ? size : optionSelected !== null && deleteOption ? 20 : 30}
+                onPress={optionSelected !== null && deleteOption ? () => this.onDeleteSelected() : () => this.openAction()}
               />
             )}
           </Block>
