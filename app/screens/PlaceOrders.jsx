@@ -326,6 +326,7 @@ class PlaceOrders extends React.Component {
             icon={true}
             page={this.state.page}
             textSearch={this.state.search}
+            deleteOption
           />
           <Block row>
             <Text style={styles.text}>Order Name</Text>
