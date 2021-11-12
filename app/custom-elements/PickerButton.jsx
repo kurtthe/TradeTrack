@@ -60,6 +60,16 @@ class PickerButton extends Component {
     this.actionSheetRadioButtonRef.current?.setModalVisible(false);
   };
 
+  onDeleteSelected = () => {
+    this.setState({
+      optionSelected: null,
+      picked: false,
+    });
+    this.props.changeSearchText && this.props.changeSearchText('')
+    this.props.onChangeOption && this.props.onChangeOption(null);
+    this.actionSheetRadioButtonRef.current?.setModalVisible(false);
+  };
+
   changeSearchText = (text) => {
     this.props.changeSearchText && this.props.changeSearchText(text);
   };
@@ -131,20 +141,21 @@ class PickerButton extends Component {
               {this.state.error && <Text style={styles.errorText}> * </Text>}
             </Block>
           }
-          <TouchableWithoutFeedback style={buttonStyles} onPress={() => this.openAction()}>
-            <Block row space={'between'} style={styles.container}>
+          <Block row space={'between'} style={styles.container}>
+            <TouchableWithoutFeedback style={buttonStyles} onPress={() => this.openAction()}>
               <Text style={[styles.placeholder, (picked || pickDate) && styles.pickedPlaceholder]}>
                 {(!picked || !pickDate) ? placeholder : optionSelected?.label}
               </Text>
-              {icon && (
-                <MaterialIcons
-                  name={iconName || 'expand-more'}
-                  color={nowTheme.COLORS.ICONPICKER}
-                  size={size || 40}
-                />
-              )}
-            </Block>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+            {icon && (
+              <MaterialIcons
+                name={iconName || optionSelected === null ? 'expand-more' : 'clear'}
+                color={nowTheme.COLORS.ICONPICKER}
+                size={size || optionSelected === null ? 30 : 20}
+                onPress={optionSelected === null ? () => this.openAction() : () => this.onDeleteSelected()}
+              />
+            )}
+          </Block>
         </View>
 
         <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
@@ -181,6 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   placeholder: {
+    width: '90%',
     color: nowTheme.COLORS.PICKERTEXT,
   },
   pickedPlaceholder: {
