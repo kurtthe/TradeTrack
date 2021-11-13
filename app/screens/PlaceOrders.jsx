@@ -177,6 +177,8 @@ class PlaceOrders extends React.Component {
       !this.state.orderName ||
       !this.state.delivery?.value ||
       !this.state.store ||
+      !this.state.date ||
+      !this.state.time ||
       (this.state.delivery?.value === 'delivery' && this.state.location === '');
 
     this.setState({
@@ -384,6 +386,7 @@ class PlaceOrders extends React.Component {
               placeholder={this.state?.date?.label || "Select date"}
               pickDate={this.state.date != null}
               icon
+              error
               iconName={'calendar-today'}
               size={25}
               onPress={this.showDatePicker}
@@ -400,6 +403,7 @@ class PlaceOrders extends React.Component {
             text={`${this.state.deliveryText} Time`}
             placeholder={this.state.time?.label || 'Select time'}
             icon
+            error
             iconName={'lock-clock'}
             size={25}
             renderOptions={this.state.radioButtonsHours}
