@@ -61,9 +61,14 @@ class PickerButton extends Component {
   };
 
   onDeleteSelected = () => {
+    let newOptions = this.state.renderOptions
+    for (let i = 0; i < newOptions.length; i++) {
+      newOptions[i].selected = false;
+    }
     this.setState({
       optionSelected: null,
       picked: false,
+      renderOptions: newOptions
     });
     this.props.changeSearchText && this.props.changeSearchText('')
     this.props.onChangeOption && this.props.onChangeOption(null);
