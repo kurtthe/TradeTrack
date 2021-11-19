@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Burdens (07_)",
+    "name": "Burdens",
     "slug": "Trade-Track",
     "privacy": "public",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "0.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.trade.Burdens",
+      "buildNumber": "1.0"
+    },
+    "android": {
+      "package": "com.trade.Burdens",
+      "versionCode": 1
     },
     "description": "Coded by Digital Basis"
   }
