@@ -138,12 +138,14 @@ class PlaceOrders extends React.Component {
   };
 
   handleSearch = async (page) => {
-    this.setState({page: page + 1})
-    await this.getDataPetition.getInfo(
-      `${endPoints.jobs}?search=${this.state.search}`,
-      this.loadData,
-      page
-    );
+    if(this.state.search !== null) {
+      this.setState({page: page + 1})
+      await this.getDataPetition.getInfo(
+        `${endPoints.jobs}?search=${this.state.search}`,
+        this.loadData,
+        page
+      );
+    }
   };
 
   showDatePicker = () => {
