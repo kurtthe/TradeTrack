@@ -38,7 +38,10 @@ const Product = (props) => {
   const productCart = ProductCart.getInstance(props.cartProducts);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onAddPressed = (productItem) => {
+  const onAddPressed = async (productItem) => {
+    if (productItem.cost_price < 0 ){
+      props.handleNewPrice && await props.handleNewPrice(props.product.id)
+    }
     const addProduct = {
       ...productItem,
       quantity: 1,
@@ -48,7 +51,10 @@ const Product = (props) => {
     productCart.addCart(addProduct, props.updateProducts);
   };
 
-  const onProductPressed = (productItem) => {
+  const onProductPressed = async (productItem) => {
+    if (productItem.cost_price < 0 ){
+      props.handleNewPrice && await props.handleNewPrice(props.product.id)
+    }
     props.navigation?.navigate('Product', {
       hideMyPrice: props.myPrice,
       product: productItem,
@@ -59,7 +65,7 @@ const Product = (props) => {
   return (
     <>
       <Block key={`Card-${props.product.name}`} style={styles.Card}>
-        <TouchableWithoutFeedback onPress={async () => {await props.handleNewPrice(props.product.id), onProductPressed(props.product)}}>
+        <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
           <Image
             resizeMode="contain"
             style={styles.image}
@@ -67,7 +73,7 @@ const Product = (props) => {
           />
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress={async () => {await props.handleNewPrice(props.product.id), onProductPressed(props.product)}}>
+        <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
           <Block flex space="between" style={{ paddingBottom: 7 }}>
             <Block row>
               <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
@@ -128,7 +134,7 @@ const Product = (props) => {
             color="warning"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
-            onPress={async () => {await props.handleNewPrice(props.product.id), onAddPressed(props.product)}}
+            onPress={() => onAddPressed(props.product)}
             
           >
             Add
