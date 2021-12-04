@@ -20,4 +20,5 @@ export const endPoints = {
   products: `${environment.api}products?supplier_id=:id`,
   suppliers: `${environment.api}burdens/supplier`,
   categories: `${environment.api}burdens/categories?expand=products`,
+  newPrice: `${environment.api}products/:id/price`,
 };
