@@ -48,7 +48,7 @@ class FilterProducts extends Component {
     const getCategoriesResponse = await this.generalRequest.get(
       `${endPoints.categories}&search=${nameCategory}`,
     );
-    const getOptionsCategories = await this.categoriesToRadioButton(getCategoriesResponse);
+    const getOptionsCategories = this.categoriesToRadioButton(getCategoriesResponse);
 
     this.setState({
       radioButtonsCategories: getOptionsCategories,
