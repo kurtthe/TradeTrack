@@ -48,7 +48,7 @@ class FilterProducts extends Component {
     const getCategoriesResponse = await this.generalRequest.get(
       `${endPoints.categories}&search=${nameCategory}`,
     );
-    const getOptionsCategories = this.categoriesToRadioButton(getCategoriesResponse);
+    const getOptionsCategories = await this.categoriesToRadioButton(getCategoriesResponse);
 
     this.setState({
       radioButtonsCategories: getOptionsCategories,
@@ -67,6 +67,7 @@ class FilterProducts extends Component {
       label: category.name,
       value: category.name,
       containerStyle: styles.styleRadio,
+      selected: false,
     }));
   };
 
@@ -90,13 +91,13 @@ class FilterProducts extends Component {
     const getSubCategories = await this.generalRequest.get(url);
     const subcategories = this.categoriesToRadioButton(getSubCategories);
     this.setState({
-      categoryActive: true,
       selectedCategory: optionSelected,
+      categoryActive: true,
       radioButtonsSubCategories: subcategories,
       noSubCategoriesFound: getSubCategories.length === 0,
       selectedSubCategory: null,
       subCategoryActive: false,
-      loadingCategories: false
+      loadingCategories: false,
     });
     this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef.current?.setModalVisible(false);
@@ -178,8 +179,9 @@ class FilterProducts extends Component {
               text={'Category'}
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
-                console.log(this.state.radioButtonsCategories.length)
-                this.state.radioButtonsCategories.length <= 0 && this.getCategories()
+                if (this.state.radioButtonsCategories.length <= 0) {
+                  this.getCategories()
+                }
               }}
               isActive={this.state.categoryActive}
             />
