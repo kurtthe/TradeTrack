@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 
 import { Button } from '@components';
@@ -17,6 +18,7 @@ import { FormatMoneyService } from '@core/services/format-money.service';
 import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -34,8 +36,12 @@ const sizeConstant =
 
 const Product = (props) => {
   const productCart = ProductCart.getInstance(props.cartProducts);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const onAddPressed = (productItem) => {
+  const onAddPressed = async (productItem) => {
+    if (productItem.cost_price < 0 ){
+      props.handleNewPrice && await props.handleNewPrice(props.product.id)
+    }
     const addProduct = {
       ...productItem,
       quantity: 1,
@@ -45,7 +51,10 @@ const Product = (props) => {
     productCart.addCart(addProduct, props.updateProducts);
   };
 
-  const onProductPressed = (productItem) => {
+  const onProductPressed = async (productItem) => {
+    if (productItem.cost_price < 0 ){
+      props.handleNewPrice && await props.handleNewPrice(props.product.id)
+    }
     props.navigation?.navigate('Product', {
       hideMyPrice: props.myPrice,
       product: productItem,
@@ -99,9 +108,21 @@ const Product = (props) => {
                   ></View>
                   <Block flex>
                     <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                      My Price
+                      {props.product.cost_price < 0 ? 'Get Price ': 'My Price'}
                     </Text>
-                    <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
+                    <Block row>
+                        <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
+                        {props.product.cost_price < 0 && 
+                          <TouchableOpacity onPress={() => props.handleNewPrice(props.product.id)}>
+                            <MaterialIcons 
+                              name="autorenew" 
+                              size={15} 
+                              color={nowTheme.COLORS.LIGHTGRAY} 
+                              style={{marginLeft: 5}}
+                            />
+                          </TouchableOpacity>
+                        }
+                    </Block>
                   </Block>
                 </>
               )}
@@ -114,6 +135,7 @@ const Product = (props) => {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => onAddPressed(props.product)}
+            
           >
             Add
           </Button>

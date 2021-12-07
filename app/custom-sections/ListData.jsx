@@ -2,12 +2,15 @@ import React, { cloneElement } from 'react';
 import { StyleSheet, Dimensions, ScrollView, View } from 'react-native';
 import { theme, Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
 import { Button } from '@components';
 import Filters from '@custom-elements/filters/Filters';
 import FilterProducts from '@custom-elements/filters/FilterProducts';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 import nowTheme from '@constants/Theme';
 import { isEmpty } from 'rxjs';
+import { array } from 'prop-types';
 
 const { width } = Dimensions.get('screen');
 
@@ -25,9 +28,11 @@ class ListData extends React.Component {
       page: 1,
       urlPetition: null,
       filter: false,
+      isLoadingNewPrice: false
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
+    this.generalRequest = GeneralRequestService.getInstance();
   }
 
   async componentDidMount() {
@@ -136,6 +141,17 @@ class ListData extends React.Component {
     this.setState({ showLoadMore: !dataFilter });
   };
 
+  getNewPrice = async data => {
+    this.setState({isLoadingNewPrice: true})
+    const getNewPrice = await this.generalRequest.get(
+      endPoints.newPrice.replace(':id', data),
+    );
+    let arrayData = this.state.data
+    const index = arrayData.findIndex(a => a.id == data)
+    arrayData[index].cost_price = getNewPrice.cost_price
+    this.setState({ data: arrayData, isLoadingNewPrice: false });
+  };
+
   renderFilter = () => {
     if (!this.props.filters) {
       return null;
@@ -202,7 +218,7 @@ class ListData extends React.Component {
                     { backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white' },
                   ]}
                 >
-                  {cloneElement(children, { data: this.state.data })}
+                  {cloneElement(children, { data: this.state.data, handleNewPrice: this.getNewPrice, isLoadingNewPrice: this.state.isLoadingNewPrice})}
                 </View>
                 {this.putLoadingMore()}
               </>

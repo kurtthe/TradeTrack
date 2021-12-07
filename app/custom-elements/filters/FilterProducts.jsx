@@ -45,10 +45,10 @@ class FilterProducts extends Component {
   }
 
   getCategories = async (nameCategory = '') => {
-    const getCategories = await this.generalRequest.get(
+    const getCategoriesResponse = await this.generalRequest.get(
       `${endPoints.categories}&search=${nameCategory}`,
     );
-    const getOptionsCategories = this.categoriesToRadioButton(getCategories);
+    const getOptionsCategories = this.categoriesToRadioButton(getCategoriesResponse);
 
     this.setState({
       radioButtonsCategories: getOptionsCategories,
@@ -67,6 +67,7 @@ class FilterProducts extends Component {
       label: category.name,
       value: category.name,
       containerStyle: styles.styleRadio,
+      selected: false,
     }));
   };
 
@@ -84,25 +85,25 @@ class FilterProducts extends Component {
   }
 
   onPressRadioButtonCategory = async (options) => {
+    this.setState({loadingCategories: true})
     const optionSelected = options.find((option) => option.selected);
     const url = endPoints.subcategories.replace(':codeCategoryId', optionSelected?.id);
-
     const getSubCategories = await this.generalRequest.get(url);
     const subcategories = this.categoriesToRadioButton(getSubCategories);
-
     this.setState({
-      categoryActive: true,
       selectedCategory: optionSelected,
+      categoryActive: true,
       radioButtonsSubCategories: subcategories,
       noSubCategoriesFound: getSubCategories.length === 0,
       selectedSubCategory: null,
       subCategoryActive: false,
+      loadingCategories: false,
     });
     this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef.current?.setModalVisible(false);
   };
 
-  onPressRadioButtonSubCategory = (options) => {
+  onPressRadioButtonSubCategory = (options) => { 
     const optionSelected = options.find((option) => option.selected);
 
     this.setState({
@@ -120,23 +121,6 @@ class FilterProducts extends Component {
 
     this.props.getProducts && this.props.getProducts(optionSelected?.products, true);
     actionSheetRef2.current?.setModalVisible(false);
-  };
-
-  changeSearchText = (text) => {
-    this.setState({
-      searchValue: text,
-    });
-
-    if (text == '') {
-      this.handleSearch();
-    }
-  };
-
-  handleSearch = async () => {
-    this.setState({
-      loadingCategories: true,
-    });
-    await this.getCategories(this.state.searchValue);
   };
 
   clearFilterSelected = (listData = [], idSelected) => {
@@ -167,11 +151,10 @@ class FilterProducts extends Component {
     );
 
     this.setState({
-      radioButtonsCategories: categoriesClear,
-      radioButtonsSubCategories: subCategoriesClear,
+      radioButtonsCategories: [],
+      radioButtonsSubCategories: [],
       categoryActive: false,
       subCategoryActive: false,
-      searchValue: '',
       selectedCategory: null,
       selectedSubCategory: null,
       loadingCategories: true,
@@ -196,7 +179,9 @@ class FilterProducts extends Component {
               text={'Category'}
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
-                this.getCategories();
+                if (this.state.radioButtonsCategories.length <= 0) {
+                  this.getCategories()
+                }
               }}
               isActive={this.state.categoryActive}
             />
@@ -217,15 +202,7 @@ class FilterProducts extends Component {
         </View>
 
         <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
-          <Search
-            placeholder="Search"
-            value={this.state.searchValue}
-            onChangeText={(text) => this.changeSearchText(text)}
-            onSearch={() => this.handleSearch()}
-            style={styles.search}
-            inputStyle={styles.searchInput}
-          />
-          <Block style={{ height: 250, padding: 5, paddingBottom: 40 }}>
+          <Block style={{ height: 300, padding: 5, paddingBottom: 40 }}>
             {this.state.loadingCategories ? (
               <LoadingComponent />
             ) : this.state.noCategoriesFound ? (
@@ -235,7 +212,7 @@ class FilterProducts extends Component {
                 <RadioGroup
                   radioButtons={this.state.radioButtonsCategories}
                   color={nowTheme.COLORS.INFO}
-                  onPress={(pick) => this.onPressRadioButtonCategory(pick)}
+                  onPress={pick => this.onPressRadioButtonCategory(pick)}
                 />
               </ScrollView>
             )}
