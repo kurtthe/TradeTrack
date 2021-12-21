@@ -425,7 +425,7 @@ class PlaceOrders extends React.Component {
           <PickerButton
             label="Store"
             errorLabel
-            placeholder={'Select store'}
+            placeholder={this.state.store || 'Select store'}
             icon
             renderOptions={this.state.radioButtonsStore}
             onChangeOption={(option) => this.handleChangeOptionSelected(option, 'store')}

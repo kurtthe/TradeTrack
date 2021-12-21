@@ -96,7 +96,7 @@ class Help extends React.Component {
                             size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
 
                           >
-                           This app is only for Burbend Trade Costumers.
+                           This app is only for Burdens Trade Customers.
                           </Text>
 
                           
@@ -115,7 +115,7 @@ class Help extends React.Component {
                           size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 15 :20) :  (Dimensions.get('window').height < 870) ? 15: 20}
 
                         >
-                        If you need help to get access to your trade account or open one, Please contact us on:
+                        If you need help to get access to your trade account or to open one, please contact us on:
                         </Text>
 
 
@@ -140,7 +140,7 @@ class Help extends React.Component {
 
                           style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}}
                           >
-                          help@burdens.com.au
+                          burdensdirect@burdens.com.au 
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
@@ -164,7 +164,7 @@ class Help extends React.Component {
 
                           style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}} 
                           >
-                         03 9999 3333
+                         03 9703 8400
                           </Text>
                        </TouchableWithoutFeedback>
                         </Block>

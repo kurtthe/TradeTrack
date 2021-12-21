@@ -40,7 +40,7 @@ export const loginSlice = createSlice({
       }
     },
     logout: (state) => {
-      state.token= null
+      state.api_key= null
     },
   },
 })
