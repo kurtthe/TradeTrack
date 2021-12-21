@@ -92,7 +92,7 @@ class SignUp extends React.Component {
                             size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :20) :  (Dimensions.get('window').height < 870) ? 18: 20}
 
                           >
-                          To access the Burdens Portal, please contact via:
+                          To get access to the Burdens Portal, please contact as via:
                           </Text>
                       <Block flex={0.20} style={{marginTop:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 40 :40) :  (Dimensions.get('window').height < 870) ? 40: 80, }} >
                           <Text
@@ -114,7 +114,7 @@ class SignUp extends React.Component {
 
                           style={{textDecorationLine: 'underline',}}
                           >
-                          help@burdens.com.au
+                          burdensdirect@burdens.com.au 
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
@@ -138,7 +138,7 @@ class SignUp extends React.Component {
 
                           style={{textDecorationLine: 'underline',}}
                           >
-                         03 9999 3333
+                        03 9703 8400
                           </Text>
                        </TouchableWithoutFeedback>
                         </Block>

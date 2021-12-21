@@ -267,11 +267,18 @@ class Login extends React.Component {
                         <Text color={'#444857'} size={15}>
                           Don't have an account yet?
                         </Text>
-                        <SimpleButton onPress={() => navigation.navigate('SignUp')}>
-                          {' '}
-                          Learn how to open
-                        </SimpleButton>
+                        
                       </Block>
+
+                      <Block style={{ top: 20 }} row middle space="between">
+                      <SimpleButton onPress={() => navigation.navigate('SignUp')}>
+                          {' '}
+                          Learn how to open a new account
+                        </SimpleButton>
+                        
+                      </Block>
+
+                    
                     </Block>
                   </Block>
                 </Block>
