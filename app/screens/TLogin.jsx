@@ -27,7 +27,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import { connect } from 'react-redux';
-import { sign } from '@core/module/store/auth/reducers/login';
+import { sign, logout } from '@core/module/store/auth/reducers/login';
 import * as SecureStore from 'expo-secure-store';
 
 const DismissKeyboard = ({ children }) => (
@@ -65,6 +65,11 @@ class Login extends React.Component {
   async componentDidUpdate(prevProps) {
     if (this.props.token_login !== prevProps.token_login) {
       this.redirectLogin();
+    }
+    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+    if(!tokenStorageExist){
+      this.props.logout();
+      return;
     }
   }
 
@@ -358,6 +363,6 @@ const mapStateToProps = (state) => ({
   token_login: state.loginReducer.api_key,
 });
 
-const mapDispatchToProps = { sign };
+const mapDispatchToProps = { sign, logout };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
