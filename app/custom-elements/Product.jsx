@@ -110,19 +110,20 @@ const Product = (props) => {
                     <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                       {props.product.cost_price < 0 ? 'Get Price ': 'My Price'}
                     </Text>
-                    <Block row>
-                        <Text style={styles.price}>{formatMoney.format(props.product.cost_price)}</Text>
-                        {props.product.cost_price < 0 && 
-                          <TouchableOpacity onPress={() => props.handleNewPrice(props.product.id)}>
-                            <MaterialIcons 
-                              name="autorenew" 
-                              size={15} 
-                              color={nowTheme.COLORS.LIGHTGRAY} 
-                              style={{marginLeft: 5}}
-                            />
-                          </TouchableOpacity>
-                        }
-                    </Block>
+                      {props.product.cost_price > 0 ? 
+                        <Text style={styles.price}>
+                          {formatMoney.format(props.product.cost_price)}
+                        </Text> :
+                        <TouchableOpacity 
+                          style={{width: '100%', alignItems: 'center'}}
+                           onPress={() => props.handleNewPrice(props.product.id)}>
+                          <MaterialIcons 
+                            name="autorenew" 
+                            size={20} 
+                            color={nowTheme.COLORS.LIGHTGRAY} 
+                          />
+                        </TouchableOpacity>
+                      }
                   </Block>
                 </>
               )}
