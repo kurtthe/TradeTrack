@@ -153,7 +153,7 @@ class Login extends React.Component {
                         : 20
                     }
                   >
-                    Welcome. Back,{'\n'}
+                    Welcome Back,{'\n'}
                     Please sign in with your account
                   </Text>
                 </Block>

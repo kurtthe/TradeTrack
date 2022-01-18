@@ -140,7 +140,7 @@ class Help extends React.Component {
 
                           style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}}
                           >
-                          burdensdirect@burdens.com.au 
+                         help@burdens.com.au
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>
@@ -157,7 +157,7 @@ class Help extends React.Component {
                           </Text>
                         </Block>
                         <Block width={width * 0.9} >
-                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('0399993333')}}>
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={()=>{this.dialCall('03 9703 8400')}}>
                         <Text
                           color={'#444857'}
                           size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
