@@ -101,7 +101,7 @@ class Cart extends React.Component {
       return null;
     }
 
-    const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST)' : 'Total (ex-GST)';
+    const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST) ' : 'Total (ex-GST)';
 
     return (
       <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
