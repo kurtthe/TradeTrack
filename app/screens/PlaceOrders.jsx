@@ -50,12 +50,14 @@ class PlaceOrders extends React.Component {
   }
 
   async componentDidMount() {
+    let preferredStore = await this.generalRequest.get(endPoints.preferredStore);
     let stores = await this.generalRequest.get(endPoints.stores);
     let jobs = await this.generalRequest.get(endPoints.jobs);
-    let storesAsRadioButtons = this.setRadioButtons(stores.locations);
+    let storesAsRadioButtons = this.setRadioButtons(stores.locations, preferredStore);
     let jobsAsRadioButtons = this.setRadioButtons(jobs);
 
     this.setState({
+      store: preferredStore.name,
       radioButtonsStore: storesAsRadioButtons,
       radioButtonsJobs: jobsAsRadioButtons,
       radioButtonsDeliveries: [...radioButtonsDelivery],
@@ -63,7 +65,7 @@ class PlaceOrders extends React.Component {
     });
   }
 
-  setRadioButtons = (stores) => {
+  setRadioButtons = (stores, preferredStore) => {
     stores.sort(function (a, b) {
       var textA = a.name.toUpperCase();
       var textB = b.name.toUpperCase();
@@ -77,6 +79,7 @@ class PlaceOrders extends React.Component {
         labelStyle: { fontWeight: 'bold' },
         label: c.name,
         value: c.name,
+        selected: preferredStore && c.id == preferredStore.id ? true : false,
       }));
     return radioButtonsValues;
   };
