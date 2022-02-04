@@ -79,7 +79,7 @@ class PlaceOrders extends React.Component {
         labelStyle: { fontWeight: 'bold' },
         label: c.name,
         value: c.name,
-        selected: preferredStore && c.id == preferredStore.id ? true : false,
+        selected: preferredStore && c.name == preferredStore.name && c.id == preferredStore.id ? true : false,
       }));
     return radioButtonsValues;
   };
