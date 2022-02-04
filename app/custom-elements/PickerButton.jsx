@@ -38,6 +38,16 @@ class PickerButton extends Component {
 
   resetValueSelect = (listData = []) => {
     const newData = listData.map((item) => {
+      if (item.selected) {
+        this.setState({
+          optionSelected: item,
+          picked: true,
+        });
+        return {
+          ...item,
+          selected: item.selected,
+        };
+      }
       return {
         ...item,
         selected: false,
