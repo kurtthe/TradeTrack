@@ -313,9 +313,9 @@ class PlaceOrders extends React.Component {
   handleOrderShare = async (id) => {
     const data = {
         emails: [
-          "vanedepontes@gmail.com", "solanojefferson@gmail.com", this.props.email
+          "burdens.orders@tradetrak.com.au", "matt.celima@burdens.com.au",  "owenm@tradetrak.com.au", this.props.email
         ],
-        message: "Shared from the app"
+        message: "Thanks for your order - it has been received by our team. An email notification will be sent to the account owner when it has been processed by the store. Please contact us at 03 9703 8400. Thank you, the Burdens App Team."
     };
 
     const url = endPoints.shareOrder.replace(':id', id);
