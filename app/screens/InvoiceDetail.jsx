@@ -122,7 +122,7 @@ class InvoiceDetails extends React.Component {
             </Block>
           </Block>
           <Text style={styles.text}>Branch</Text>
-          <Text>{validateEmptyField(this.state.invoiceDetail.storeLocation.name)}</Text>
+          <Text>{this.state.invoiceDetail.storeLocation === null? "N/A": validateEmptyField(this.state.invoiceDetail.storeLocation.name) }</Text>
         </Block>
         <Block
           card
