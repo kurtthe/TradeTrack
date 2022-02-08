@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { cart, nowTheme } from '@constants/index';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import { endPoints } from '@shared/dictionaries/end-points';
+import * as SecureStore from 'expo-secure-store';
 
 const { width } = Dimensions.get('screen');
 
@@ -303,10 +304,24 @@ class PlaceOrders extends React.Component {
     const placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
 
     if (placedOrder) {
+      this.handleOrderShare(placedOrder.order.id);
       this.resetFields();
       this.props.clearProducts();
-      this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order, email: this.props.email });
+      this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
+  };
+
+  handleOrderShare = async (id) => {
+    const data = {
+        emails: [
+          "vanedepontes@gmail.com", "solanojefferson@gmail.com", this.props.email
+        ],
+        message: "Shared from the app"
+    };
+
+    const url = endPoints.shareOrder.replace(':id', id);
+    const shareOrder = await this.generalRequest.post(url, data);
+    console.log('shareOrder::', shareOrder, url, data)
   };
 
   renderOptions = () => {

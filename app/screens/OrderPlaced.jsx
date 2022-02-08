@@ -29,26 +29,6 @@ class OrderPlaced extends React.Component {
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  handleOrderShare = async () => {
-    const data = {
-      data: {
-        emails: [
-          "vanedepontes@gmail.com", "solanojefferson@gmail.com", this.props.route.params.email
-        ],
-        message: "text message"
-      },
-    };
-
-    const url = endPoints.shareOrder.replace(':id', this.state.orderNumber.id);
-    const shareOrder = await this.generalRequest.post(url, data);
-    if (shareOrder) {
-      Alert.alert(
-        shareOrder.message,
-        '',
-      );
-    }
-  };
-
   render() {
     const { navigation } = this.props;
 
@@ -114,14 +94,6 @@ class OrderPlaced extends React.Component {
                     onPress={() => navigation.navigate('Cart')}
                   >
                     Back to Home
-                  </Button>
-                  <Button
-                    color="warning"
-                    textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
-                    style={styles.button}
-                    onPress={() => this.handleOrderShare() }
-                  >
-                    Share Order
                   </Button>
                 </Block>
               </Block>
