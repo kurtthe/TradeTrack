@@ -33,7 +33,7 @@ class OrderPlaced extends React.Component {
     const data = {
       data: {
         emails: [
-          "vanedepontes@gmail.com", "solanojefferson@gmail", this.props.route.params.email
+          "vanedepontes@gmail.com", "solanojefferson@gmail.com", this.props.route.params.email
         ],
         message: "text message"
       },
