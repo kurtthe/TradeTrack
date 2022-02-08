@@ -21,5 +21,6 @@ export const endPoints = {
   suppliers: `${environment.api}burdens/supplier`,
   categories: `${environment.api}burdens/categories?expand=products`,
   newPrice: `${environment.api}products/:id/price`,
-  preferredStore: `${environment.api}burdens/stores/preferred`
+  preferredStore: `${environment.api}burdens/stores/preferred`,
+  shareOrder: `${environment.api}material-orders/:id/share`,
 };

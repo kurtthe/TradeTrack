@@ -305,7 +305,7 @@ class PlaceOrders extends React.Component {
     if (placedOrder) {
       this.resetFields();
       this.props.clearProducts();
-      this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
+      this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order, email: this.props.email });
     }
   };
 
@@ -499,6 +499,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
+  email: state.loginReducer.email,
 });
 
 const mapDispatchToProps = { clearProducts };
