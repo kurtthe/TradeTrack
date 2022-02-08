@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import { cart, nowTheme } from '@constants/index';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import { endPoints } from '@shared/dictionaries/end-points';
-import * as SecureStore from 'expo-secure-store';
 
 const { width } = Dimensions.get('screen');
 
