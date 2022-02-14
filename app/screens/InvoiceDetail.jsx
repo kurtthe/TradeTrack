@@ -95,8 +95,8 @@ class InvoiceDetails extends React.Component {
           marginTop={15}
           marginBottom={5}
         >
-          <Text style={styles.text}>Customer</Text>
-          <Text>Skilled PGF Maintance P/L</Text>
+          {/* <Text style={styles.text}>Customer</Text>
+          <Text>Skilled PGF Maintance P/L</Text> */}
           <Text style={styles.text}>Delivery Address</Text>
           <Text>{validateEmptyField(this.state.invoiceDetail.address)}</Text>
           <Text style={styles.text}>Delivery Date</Text>
