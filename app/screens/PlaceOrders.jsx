@@ -50,12 +50,14 @@ class PlaceOrders extends React.Component {
   }
 
   async componentDidMount() {
+    let preferredStore = await this.generalRequest.get(endPoints.preferredStore);
     let stores = await this.generalRequest.get(endPoints.stores);
     let jobs = await this.generalRequest.get(endPoints.jobs);
-    let storesAsRadioButtons = this.setRadioButtons(stores.locations);
+    let storesAsRadioButtons = this.setRadioButtons(stores.locations, preferredStore);
     let jobsAsRadioButtons = this.setRadioButtons(jobs);
 
     this.setState({
+      store: preferredStore.name,
       radioButtonsStore: storesAsRadioButtons,
       radioButtonsJobs: jobsAsRadioButtons,
       radioButtonsDeliveries: [...radioButtonsDelivery],
@@ -63,7 +65,7 @@ class PlaceOrders extends React.Component {
     });
   }
 
-  setRadioButtons = (stores) => {
+  setRadioButtons = (stores, preferredStore) => {
     stores.sort(function (a, b) {
       var textA = a.name.toUpperCase();
       var textB = b.name.toUpperCase();
@@ -77,6 +79,7 @@ class PlaceOrders extends React.Component {
         labelStyle: { fontWeight: 'bold' },
         label: c.name,
         value: c.name,
+        selected: preferredStore && c.name == preferredStore.name && c.id == preferredStore.id ? true : false,
       }));
     return radioButtonsValues;
   };
@@ -300,10 +303,24 @@ class PlaceOrders extends React.Component {
     const placedOrder = await this.generalRequest.put(endPoints.generateOrder, data);
 
     if (placedOrder) {
+      this.handleOrderShare(placedOrder.order.id);
       this.resetFields();
       this.props.clearProducts();
       this.props.navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
+  };
+
+  handleOrderShare = async (id) => {
+    const data = {
+        emails: [
+          "burdens.orders@tradetrak.com.au", "matt.celima@burdens.com.au",  "owenm@tradetrak.com.au", this.props.email
+        ],
+        message: "Thanks for your order - it has been received by our team. An email notification will be sent to the account owner when it has been processed by the store. Please contact us at 03 9703 8400. Thank you, the Burdens App Team."
+    };
+
+    const url = endPoints.shareOrder.replace(':id', id);
+    const shareOrder = await this.generalRequest.post(url, data);
+    console.log('shareOrder::', shareOrder, url, data)
   };
 
   renderOptions = () => {
@@ -496,6 +513,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
+  email: state.loginReducer.email,
 });
 
 const mapDispatchToProps = { clearProducts };

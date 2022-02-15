@@ -97,8 +97,10 @@ class InvoiceDetails extends React.Component {
           marginTop={15}
           marginBottom={5}
         >
+
           <Text style={styles.text}>Customer</Text>
-          <Text>{this.state.invoiceDetail.company || 'Skilled PGF Maintance P/L'}</Text>
+          <Text>{this.state.invoiceDetail.company || 'N/A'}</Text>
+
           <Text style={styles.text}>Delivery Address</Text>
           <Text>{validateEmptyField(this.state.invoiceDetail.address)}</Text>
           <Text style={styles.text}>Delivery Date</Text>
@@ -124,7 +126,7 @@ class InvoiceDetails extends React.Component {
             </Block>
           </Block>
           <Text style={styles.text}>Branch</Text>
-          <Text>{validateEmptyField(this.state.invoiceDetail.storeLocation.name)}</Text>
+          <Text>{this.state.invoiceDetail.storeLocation === null? "N/A": validateEmptyField(this.state.invoiceDetail.storeLocation.name) }</Text>
         </Block>
         <Block
           card
