@@ -4,6 +4,7 @@ import {
   Image,
   Dimensions,
   Platform,
+  Alert,
 } from 'react-native';
 import { Block, Text, Button as GaButton, theme } from 'galio-framework';
 
@@ -16,6 +17,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import { endPoints } from '@shared/dictionaries/end-points';
+import { GeneralRequestService } from '@core/services/general-request.service';
 
 class OrderPlaced extends React.Component {
   constructor(props) {
@@ -23,6 +26,7 @@ class OrderPlaced extends React.Component {
     this.state = {
       orderNumber: this.props.route.params.placedOrder,
     };
+    this.generalRequest = GeneralRequestService.getInstance();
   }
 
   render() {
