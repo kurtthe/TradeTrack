@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.1",
+    "version": "1.4.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,7 +24,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1.4.1"
+      "buildNumber": "1.4.2"
     },
     "android": {
       "package": "com.tradetrak.Burdens",
