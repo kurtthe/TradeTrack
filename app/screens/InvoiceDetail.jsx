@@ -52,8 +52,10 @@ class InvoiceDetails extends React.Component {
     const url = endPoints.invoicesDetail.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
-    const dataInvoice = await this.getDataPetition.getInfo(url);
-    this.setState({ invoiceDetail: dataInvoice });
+    const dataInvoice = await this.getDataPetition.getInfoWithHeaders(url);
+    this.setState({
+      invoiceDetail: { ...dataInvoice.body, company: dataInvoice.headers['tradetrak-company'] },
+    });
 
     this.props.navigation.setParams({
       urlDownloadFile,
@@ -95,8 +97,10 @@ class InvoiceDetails extends React.Component {
           marginTop={15}
           marginBottom={5}
         >
-          {/* <Text style={styles.text}>Customer</Text>
-          <Text>Skilled PGF Maintance P/L</Text> */}
+
+          <Text style={styles.text}>Customer</Text>
+          <Text>{this.state.invoiceDetail.company || 'N/A'}</Text>
+
           <Text style={styles.text}>Delivery Address</Text>
           <Text>{validateEmptyField(this.state.invoiceDetail.address)}</Text>
           <Text style={styles.text}>Delivery Date</Text>

@@ -20,19 +20,17 @@ export class GeneralRequestService {
     return GeneralRequestService.instance;
   }
 
-
-  async getToken(){
+  async getToken() {
     try {
-      const data =  await SecureStore.getItemAsync('data_user');
-      const dataParse = JSON.parse(data)
-      return dataParse?.api_key
-    } catch (e){
-      console.error(e)
+      const data = await SecureStore.getItemAsync('data_user');
+      const dataParse = JSON.parse(data);
+      return dataParse?.api_key;
+    } catch (e) {
+      console.error(e);
     }
   }
-  
-  async post(endpoint, data, saveToken) {
 
+  async post(endpoint, data, saveToken) {
     try {
       const response = await this.httpService.post(endpoint, data, {
         headers: { 'ttrak-key': this.tokeAuth || '' },
@@ -46,13 +44,28 @@ export class GeneralRequestService {
     }
   }
 
-  async get(endpoint, options={}) {
+  async get(endpoint, options = {}) {
     try {
       const response = await this.httpService.get(endpoint, {
         headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options,
       });
       return response.data;
+    } catch (err) {
+      this.httpCommonService.handleError(err);
+    }
+  }
+
+  async getWithHeaders(endpoint, options = {}) {
+    try {
+      const response = await this.httpService.get(endpoint, {
+        headers: { 'ttrak-key': this.tokeAuth || '' },
+        ...options,
+      });
+      return {
+        body: response.data,
+        headers: response.headers,
+      };
     } catch (err) {
       this.httpCommonService.handleError(err);
     }
