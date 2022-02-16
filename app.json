@@ -28,7 +28,7 @@
     },
     "android": {
       "package": "com.tradetrak.Burdens",
-      "versionCode": 6,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAc6X51bEHbjRHrraPgnd7NvURFWe5poQY"
