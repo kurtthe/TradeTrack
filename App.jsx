@@ -8,13 +8,13 @@ import { NavigationContainer } from '@react-navigation/native';
 
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
+enableScreens();
 
 import AppStack from '@navigation/index';
 import { Images, nowTheme } from '@constants/index';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
-import { QueryClient, QueryClientProvider } from "react-query";
 // cache app images
 const assetImages = [
   Images.Onboarding,
@@ -29,8 +29,6 @@ const assetImages = [
   Images.RegisterBackground,
   Images.ProfileBackground,
 ];
-
-enableScreens();
 
 const cacheImages = (images) =>
   images?.map((image) => {
@@ -68,12 +66,8 @@ export default class App extends React.Component {
           onFinish={this._handleFinishLoading}
         />
       );
-    }
-
-    const queryClient = new QueryClient();
-
-    return (
-      <QueryClientProvider client={queryClient}>
+    } else {
+      return (
         <NavigationContainer>
           <Provider store={store}>
             <GalioProvider theme={nowTheme}>
@@ -85,10 +79,8 @@ export default class App extends React.Component {
             </GalioProvider>
           </Provider>
         </NavigationContainer>
-      </QueryClientProvider>
-
-    );
-
+      );
+    }
   }
 
   _loadResourcesAsync = async () => {
