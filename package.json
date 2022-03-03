@@ -51,6 +51,7 @@
     "react-native-skeleton-content": "^1.0.22",
     "react-native-svg": "12.1.0",
     "react-native-webview": "11.2.3",
+    "react-query": "^3.34.16",
     "react-redux": "^7.2.4",
     "rn-pdf-reader-js": "^4.1.1",
     "rxjs": "^7.3.0"
