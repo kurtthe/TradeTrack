@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
 import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
-import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { ProductCart as ProductCartService } from '@core/services/product-cart.service';
@@ -10,13 +9,14 @@ import { ProductCart as ProductCartService } from '@core/services/product-cart.s
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
-import ProductCart from '@custom-elements/ProductCart';
 import { AlertService } from '@core/services/alert.service';
+import PreviousOrder from '@custom-sections/PreviousOrder'
+import ListCart from '@custom-sections/ListCart'
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       customStyleIndex: 0,
@@ -65,38 +65,18 @@ class Cart extends React.Component {
     return `${this.formatMoney.format(total)}`;
   };
 
-  renderEmpty() {
-    return (
-      <Block style={styles.container_empty}>
-        <Ionicons name="cart" color={'#828489'} size={60} />
-        <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
-          Your cart is empty!
-        </Text>
-      </Block>
-    );
-  }
 
-  renderProducts = ({ item }) => <ProductCart product={item} />;
+
 
   renderCurrentOrder = () => (
-    <FlatList
-      data={this.props.cartProducts}
-      renderItem={this.renderProducts}
-      keyExtractor={(item, index) => `${index}-${item.id}`}
-      ListEmptyComponent={this.renderEmpty()}
-      style={{ width: width }}
-    />
+    <ListCart />
   );
 
   renderPreviousOrder = () => (
-    <Block style={styles.container_empty}>
-      <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
-        Is coming soon!
-      </Text>
-    </Block>
+    <PreviousOrder />
   );
 
-  renderFoother = () => {
+  renderFooter = () => {
     if (!this.props.cartProducts || this.props.cartProducts.length === 0) {
       return null;
     }
@@ -140,7 +120,7 @@ class Cart extends React.Component {
           tabIndexSelected={this.state.customStyleIndex}
           changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
         />
-        {this.renderFoother()}
+        {this.renderFooter()}
       </Block>
     );
   }
@@ -151,12 +131,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-  },
-  container_empty: {
-    height: hp('60%'),
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   detailOrders: {
     backgroundColor: 'white',
