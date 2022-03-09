@@ -12,6 +12,10 @@ import Tabs from '@custom-elements/Tabs';
 import { AlertService } from '@core/services/alert.service';
 import PreviousOrder from '@custom-sections/PreviousOrder'
 import ListCart from '@custom-sections/ListCart'
+import { getOrders } from '@core/module/store/orders/orders';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import { endPoints } from '@shared/dictionaries/end-points';
+
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
@@ -27,14 +31,17 @@ class Cart extends React.Component {
     this.alertService = new AlertService();
     this.formatMoney = FormatMoneyService.getInstance();
     this.productCartService = ProductCartService.getInstance(props.cartProducts);
+    this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (!!this.props.cartProducts[0]?.myPrice) {
       this.setState({
         myPrice: this.props.cartProducts[0]?.myPrice,
       });
     }
+
+    await this.getDataPetition.getInfo(endPoints.orders, this.props.getOrders);
   }
 
   componentDidUpdate(prevProps) {
@@ -64,9 +71,6 @@ class Cart extends React.Component {
     const total = this.productCartService.totalOrder();
     return `${this.formatMoney.format(total)}`;
   };
-
-
-
 
   renderCurrentOrder = () => (
     <ListCart />
@@ -152,4 +156,7 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
 });
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = { getOrders };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

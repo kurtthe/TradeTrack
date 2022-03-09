@@ -1,11 +1,12 @@
 import React from 'react';
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet, FlatList } from 'react-native'
 import ProductCart from '@custom-elements/ProductCart';
 import { Ionicons } from '@expo/vector-icons';
 import { Block, Text } from 'galio-framework';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+const { width } = Dimensions.get('screen');
 
-const ListCart = () => {
-  const { width } = Dimensions.get('screen');
+const ListCart = (props) => {
   const renderProducts = ({ item }) => <ProductCart product={item} />;
 
   const renderEmpty = () => {
