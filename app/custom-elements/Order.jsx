@@ -1,13 +1,86 @@
 import React from 'react'
-import { Block, Text, theme } from 'galio-framework';
+import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { Block, Text } from 'galio-framework';
+import { nowTheme } from '@constants';
+import { validateEmptyField } from '@core/utils/validate-empty-field';
+import Icon from '@components/Icon';
 
+const Order = (props) => {
 
-const Order = () => {
+  const handleShowDetails = () => {
+    console.log("==>bl")
+  };
+
   return (
-    <Block>
-      <Text>order ble</Text>
+    <Block style={styles.container}>
+      <TouchableWithoutFeedback onPress={() => handleShowDetails()}>
+        <Block row>
+          <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
+            <Block row space="between" style={{ height: 20 }}>
+              <Block row>
+              <Text
+                  color={nowTheme.COLORS.DEFAULT}
+                  style={{ fontFamily: nowTheme.FONT.primaryBold }}
+                  size={14}
+                >
+                  Material Order No
+                </Text>
+                <Text
+                  color={nowTheme.COLORS.INFO}
+                  style={{ fontFamily: nowTheme.FONT.primaryBold, left: 10 }}
+                  size={14}
+                >
+                  {validateEmptyField(props.product)}
+                </Text>
+              </Block>
+              <Block row>
+                <Text
+                  color={nowTheme.COLORS.TIME}
+                  style={{
+                    fontFamily: nowTheme.FONT.primaryRegular,
+                    paddingRight: 10,
+                  }}
+                  size={14}
+                >
+                  {validateEmptyField(props.issued_on)}
+                </Text>
+              </Block>
+            </Block>
+            <Block row justifyContent="space-between" style={{ top: 8 }}>
+              <Text
+                color={nowTheme.COLORS.HEADER}
+                size={13}
+                style={{ fontFamily: nowTheme.FONT.primaryRegular }}
+              >
+                {validateEmptyField(props.name)}
+              </Text>
+              <Icon
+                style={{ left: -20 }}
+                size={14}
+                color={nowTheme.COLORS.LIGHTGRAY}
+                name="right"
+                family="AntDesign"
+              />
+            </Block>
+          </Block>
+        </Block>
+      </TouchableWithoutFeedback>
     </Block>
   )
 }
-
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 10,
+    backgroundColor: nowTheme.COLORS.WHITE,
+    shadowColor: nowTheme.COLORS.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    shadowOpacity: 0.1,
+    elevation: 2,
+    zIndex: 2,
+    height: 'auto',
+    borderRadius: 3,
+    marginBottom: 5,
+  },
+})
 export default Order

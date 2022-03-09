@@ -23,4 +23,5 @@ export const endPoints = {
   newPrice: `${environment.api}products/:id/price`,
   preferredStore: `${environment.api}burdens/stores/preferred`,
   shareOrder: `${environment.api}material-orders/:id/share`,
+  orders: `${environment.api}material-orders?sort=id_desc`
 };
