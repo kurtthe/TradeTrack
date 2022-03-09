@@ -5,7 +5,7 @@ import { nowTheme } from '@constants';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import Icon from '@components/Icon';
 
-const Order = (props) => {
+const Order = ({item}) => {
 
   const handleShowDetails = () => {
     console.log("==>bl")
@@ -30,7 +30,7 @@ const Order = (props) => {
                   style={{ fontFamily: nowTheme.FONT.primaryBold, left: 10 }}
                   size={14}
                 >
-                  {validateEmptyField(props.product)}
+                  {validateEmptyField(item.order_number)}
                 </Text>
               </Block>
               <Block row>
@@ -42,7 +42,7 @@ const Order = (props) => {
                   }}
                   size={14}
                 >
-                  {validateEmptyField(props.issued_on)}
+                  {validateEmptyField(item.issued_on)}
                 </Text>
               </Block>
             </Block>
@@ -52,7 +52,7 @@ const Order = (props) => {
                 size={13}
                 style={{ fontFamily: nowTheme.FONT.primaryRegular }}
               >
-                {validateEmptyField(props.name)}
+                {validateEmptyField(item.name)}
               </Text>
               <Icon
                 style={{ left: -20 }}
@@ -70,7 +70,7 @@ const Order = (props) => {
 }
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     backgroundColor: nowTheme.COLORS.WHITE,
     shadowColor: nowTheme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },

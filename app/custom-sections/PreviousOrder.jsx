@@ -21,6 +21,8 @@ const PreviousOrder = () => {
     </>
   )
 
+  console.log(orders)
+
   return (
     <FlatList
       data={orders}
