@@ -14,7 +14,7 @@ const OrdersBought = ({ route }) => {
   return (
     <Block style={styles.container}>
       <ListCart cartProducts={products?.items} messageCartEmpty='No have products in this order' />
-      <Block style={styles.footer}>
+      {(products?.items?.length > 0) ? (<Block style={styles.footer}>
         <Button
           shadowless
           color={nowTheme.COLORS.INFO}
@@ -24,7 +24,8 @@ const OrdersBought = ({ route }) => {
             Add to cart
           </Text>
         </Button>
-      </Block>
+      </Block>) : null}
+
     </Block>
   )
 }
