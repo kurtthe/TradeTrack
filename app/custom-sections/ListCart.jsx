@@ -7,9 +7,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const { width } = Dimensions.get('screen');
 
 const ListCart = (props) => {
-  console.log("=0<cartProducts",props.cartProducts)
-  
-  const renderProducts = ({ item }) => <ProductCart product={item} />;
+  const renderProducts = ({ item }) => <ProductCart product={item} bought={props.bought} />;
 
   const renderEmpty = () => {
     return (
