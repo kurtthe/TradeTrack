@@ -353,7 +353,7 @@ class PlaceOrders extends React.Component {
             deleteOption
           />
           <Block row>
-            <Text style={styles.text}>Order Name</Text>
+            <Text style={styles.text}>Job/Order Number</Text>
             <Text style={styles.errorText}> * </Text>
           </Block>
           <Input
