@@ -1,7 +1,6 @@
 import React from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Block } from 'galio-framework';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { nowTheme } from '@constants';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
@@ -63,7 +62,6 @@ class Account extends React.Component {
 
   render() {
     return (
-      <SafeAreaView>
         <ScrollView>
           <LiveBalance />
           <Tabs
@@ -81,7 +79,6 @@ class Account extends React.Component {
             changeIndexSelected={(index)=>this.setState({customStyleIndex: index})}
           />
         </ScrollView>
-      </SafeAreaView>
     );
   }
 }
