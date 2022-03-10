@@ -6,9 +6,11 @@ import ListCart from '@custom-sections/ListCart'
 const OrdersBought = ({ route }) => {
   const { products } = route.params
 
+  console.log("=0<products",products?.items)
+
   return (
     <Block style={styles.container}>
-      <ListCart cartProducts={products} messageCartEmpty='No have products in this order' />
+      <ListCart cartProducts={products?.items} messageCartEmpty='No have products in this order' />
     </Block>
   )
 }

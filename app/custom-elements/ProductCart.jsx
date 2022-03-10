@@ -55,21 +55,11 @@ const ProductCartComponent = (props) => {
             >
               {getPriceProduct()}
             </Text>
-            {props.previusProduct ? (
-              <Button
-                color="warning"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color: '#0E3A90' }}
-                style={styles.buttonOrder}
-              >
-                Re-Order
-              </Button>
-            ) : (
-              <QuantityCounterWithInput
-                delete={() => handleDelete(props.product.id)}
-                quantity={props.product.quantity}
-                quantityHandler={(cant) => handleUpdateQuantity(cant)}
-              />
-            )}
+            <QuantityCounterWithInput
+              delete={() => handleDelete(props.product.id)}
+              quantity={props.product.quantity}
+              quantityHandler={(cant) => handleUpdateQuantity(cant)}
+            />
           </Block>
         </Block>
       </Block>
