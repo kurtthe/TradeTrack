@@ -15,15 +15,21 @@ export class ProductCart {
     return ProductCart.instance;
   }
 
-  addCart(addProduct, action) {
+  addCart(addProduct, action=null) {
     const index = this.cartProducts.findIndex((item) => item.id === addProduct.id);
 
     if (index === -1) {
-      action && action([...this.cartProducts, addProduct]);
+      this.cartProducts = [...this.cartProducts, addProduct]
+      action && action(this.cartProducts);
       return;
     }
 
     this.alertService.show('Alert!', `Product with SKU: ${addProduct.sku} is already added.`);
+  }
+
+  addMultipleCart(products) {
+    products?.forEach((product) => this.addCart(product))
+    return this.cartProducts
   }
 
   updateCant(IdProduct, newCant, action) {
@@ -41,7 +47,7 @@ export class ProductCart {
     action && action(newArrayProducts);
     return newArrayProducts;
   }
-  
+
   changePrice(myPrice = false, action) {
     if (!this.cartProducts || this.cartProducts.length === 0) {
       return;
@@ -58,7 +64,7 @@ export class ProductCart {
   }
 
   totalOrder() {
-    if(!this.cartProducts || this.cartProducts.length === 0){
+    if (!this.cartProducts || this.cartProducts.length === 0) {
       return
     } else {
       const prices = this.cartProducts?.map((product) => {

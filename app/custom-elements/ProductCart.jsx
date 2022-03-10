@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
-import { Block, Text, theme, Button } from 'galio-framework';
+import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { ProductCart } from '@core/services/product-cart.service';
@@ -19,7 +19,9 @@ const ProductCartComponent = (props) => {
 
   const handleUpdateQuantity = (newCant) => {
     const newArrayCant = productCart.updateCant(props.product.id, newCant);
-    dispatch(updateProducts(newArrayCant));
+    if (!props.bought) {
+      dispatch(updateProducts(newArrayCant));
+    }
   };
 
   const getPriceProduct = () => {

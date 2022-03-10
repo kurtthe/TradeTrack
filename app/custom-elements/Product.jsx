@@ -36,7 +36,6 @@ const sizeConstant =
 
 const Product = (props) => {
   const productCart = ProductCart.getInstance(props.cartProducts);
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const onAddPressed = async (productItem) => {
     if (productItem.cost_price < 0 ){

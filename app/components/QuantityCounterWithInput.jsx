@@ -14,8 +14,6 @@ const sizeConstant =
 
 const QuantityCounterWithInput = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
-  const [disabledPlus, setDisabledPlus] = useState(false);
-  const [disabledMinus, setDisabledMinus] = useState(false);
 
   useEffect(() => {
     if (quantity == 0 && !props.product) {
@@ -31,17 +29,14 @@ const QuantityCounterWithInput = (props) => {
           {
             text: 'OK',
             onPress: () => {
-              setDisabledMinus(true);
               deleteItem();
             },
           },
         ],
         { cancelable: false },
       );
-    } else setDisabledMinus(false);
+    }
     props.quantityHandler(quantity);
-    // if (quantity == 100) setDisabledPlus(true)
-    // else setDisabledPlus(false)
   }, [quantity]);
 
   const plusCounter = () => {
