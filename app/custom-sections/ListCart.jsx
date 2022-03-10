@@ -14,7 +14,7 @@ const ListCart = (props) => {
       <Block style={styles.container_empty}>
         <Ionicons name="cart" color={'#828489'} size={60} />
         <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
-          Your cart is empty!
+          {props.messageCartEmpty || 'Your cart is empty!'}
         </Text>
       </Block>
     );

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import WebViewComponent from '@custom-elements/WebView';
 import { GeneralRequestService } from '@core/services/general-request.service';
 
-const { height } = Dimensions.get('screen');
 const generalRequestService = GeneralRequestService.getInstance();
 
 const Register = () => {
@@ -21,16 +20,15 @@ const Register = () => {
   };
 
   return (
-    <SafeAreaView style={styles.webViewContainer}>
+    <View style={styles.webViewContainer}>
       <WebViewComponent url={urlView} />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   webViewContainer: {
     flex: 1,
-    paddingTop: height * 0.12,
   },
 });
 

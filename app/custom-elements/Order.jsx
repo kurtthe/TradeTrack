@@ -4,11 +4,17 @@ import { Block, Text } from 'galio-framework';
 import { nowTheme } from '@constants';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import Icon from '@components/Icon';
+import { useNavigation } from '@react-navigation/native'
+
 
 const Order = ({item}) => {
 
+  const {navigate} = useNavigation();
+  
   const handleShowDetails = () => {
-    console.log("==>bl")
+    navigate('OrderBought', {
+      products: item.structure?.items || []
+    })
   };
 
   return (
