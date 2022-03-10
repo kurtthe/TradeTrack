@@ -13,7 +13,7 @@ const Order = ({item}) => {
   
   const handleShowDetails = () => {
     navigate('OrderBought', {
-      products: item.structure?.items || []
+      products: item.structure?.sections[0] || [],
     })
   };
 
