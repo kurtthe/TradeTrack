@@ -165,7 +165,7 @@ class ListData extends React.Component {
       );
     }
 
-    return <Filters getValues={(values) => this.getValuesFilters(values)} />;
+    return <Filters getValues={(values) => this.getValuesFilters(values)} hideFilterType={this.props.hideFilterType}/>;
   };
 
   renderNotFound = () => {
