@@ -41,22 +41,30 @@ const ProductCartComponent = (props) => {
       <Block flex row>
         <Image source={{ uri: props.product.cover_image }} style={styles.imageHorizontal} />
         <Block flex style={styles.productDescription}>
-          <Block row>
-            <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
-            <Text color={nowTheme.COLORS.INFO}>{props.product.sku}</Text>
-          </Block>
+          {
+            (!props.bought) && (
+              <Block row>
+                <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
+                <Text color={nowTheme.COLORS.INFO}>{props.product.sku}</Text>
+              </Block>
+            )
+          }
 
           <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-            {props.product.name}
+            {(!props.bought) ? props.product.name : props.product.description}
           </Text>
-          <Block flex left row space="between">
-            <Text
-              style={{ fontWeight: 'bold', marginTop: 10 }}
-              color={nowTheme.COLORS.ORANGE}
-              size={20}
-            >
-              {getPriceProduct()}
-            </Text>
+          <Block style={(!props.bought? styles.productCart: styles.productBought)}>
+            {
+              (!props.bought) && (
+                <Text
+                  style={{ fontWeight: 'bold', marginTop: 10 }}
+                  color={nowTheme.COLORS.ORANGE}
+                  size={20}
+                >
+                  {getPriceProduct()}
+                </Text>
+              )
+            }
             <QuantityCounterWithInput
               delete={() => handleDelete(props.product.id)}
               quantity={props.product.quantity}
@@ -103,6 +111,16 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 30,
   },
+  productCart:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  productBought:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  }
 });
 
 export default ProductCartComponent;

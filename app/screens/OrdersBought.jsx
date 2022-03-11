@@ -16,7 +16,6 @@ const OrdersBought = ({ route }) => {
 
   const handleAddCart = () => {
     const newProducts = productCart.addMultipleCart(products?.items)
-    console.log("=>newProducts",newProducts)
     dispatch(updateProducts(newProducts))
   }
 
