@@ -81,6 +81,7 @@ class Cart extends React.Component {
     <ListData
       filters={true}
       endpoint={endPoints.orders}
+      hideFilterType={true}
       children={<PreviousOrder data={this.props.orders} />}
     />
   );
