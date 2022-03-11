@@ -15,6 +15,7 @@ import ListCart from '@custom-sections/ListCart'
 import { getOrders } from '@core/module/store/orders/orders';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import ListData from '@custom-sections/ListData';
 
 
 const { width } = Dimensions.get('screen');
@@ -77,7 +78,11 @@ class Cart extends React.Component {
   );
 
   renderPreviousOrder = () => (
-    <PreviousOrder />
+    <ListData
+      filters={true}
+      endpoint={endPoints.orders}
+      children={<PreviousOrder data={this.props.orders} />}
+    />
   );
 
   renderFooter = () => {
@@ -154,6 +159,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
+  orders: state.ordersReducer.orders
 });
 
 const mapDispatchToProps = { getOrders };
