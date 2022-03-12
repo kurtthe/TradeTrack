@@ -79,10 +79,9 @@ class Cart extends React.Component {
 
   renderPreviousOrder = () => (
     <ListData
-      filters={true}
       endpoint={endPoints.orders}
-      hideFilterType={true}
       children={<PreviousOrder data={this.props.orders} />}
+      heightContent={500}
     />
   );
 

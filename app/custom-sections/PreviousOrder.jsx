@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { Block } from 'galio-framework';
 import InvoicesSkeleton from '@custom-elements/skeletons/Invoices';
 
@@ -21,16 +21,13 @@ const PreviousOrder = (props) => {
   };
 
   return (
-    <Block style={styles.container}>
+    <ScrollView style={{ bottom: 10 }}>
+
       {putContent()}
-    </Block>
-  );
+    </ScrollView>
+  )
 };
 
-const styles = StyleSheet.create({
-  container: {
-    height: '90%'
-  }
-})
+
 
 export default PreviousOrder;
