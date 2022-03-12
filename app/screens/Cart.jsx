@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { connect } from 'react-redux';
@@ -78,11 +78,12 @@ class Cart extends React.Component {
   );
 
   renderPreviousOrder = () => (
-    <ListData
-      endpoint={endPoints.orders}
-      children={<PreviousOrder data={this.props.orders} />}
-      heightContent={500}
-    />
+    <Block style={{height: hp('70%')}}>
+      <ListData
+        endpoint={endPoints.orders}
+        children={<PreviousOrder data={this.props.orders} />}
+      />
+    </Block>
   );
 
   renderFooter = () => {
