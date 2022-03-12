@@ -83,10 +83,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.1,
     elevation: 2,
-    zIndex: 2,
-    height: 'auto',
     borderRadius: 3,
-    marginBottom: 5,
+    marginBottom: 2,
   },
 })
 export default Order
