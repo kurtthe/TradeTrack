@@ -216,7 +216,6 @@ class ListData extends React.Component {
                   style={[
                     styles.content,
                     { backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white' },
-                    (!!this.props.heightContent) && {height: this.props.heightContent}
                   ]}
                 >
                   {cloneElement(children, { data: this.state.data, handleNewPrice: this.getNewPrice, isLoadingNewPrice: this.state.isLoadingNewPrice})}
