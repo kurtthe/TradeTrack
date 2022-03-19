@@ -84,7 +84,7 @@ class Cart extends React.Component {
       renderItem={this.renderProducts}
       keyExtractor={(item, index) => `${index}-${item.id}`}
       ListEmptyComponent={this.renderEmpty()}
-      style={{ width: width }}
+      style={{ width: width, height: '80%'}}
     />
   );
 
