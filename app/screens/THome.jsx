@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
 import { Button } from '@components';
@@ -24,14 +24,27 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      refreshing: false,
+    };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
   async componentDidMount() {
+   await this.fetchData();
+  }
+
+  fetchData = async () => {
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.fetchData().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   render() {
@@ -39,7 +52,16 @@ class Home extends React.Component {
 
     return (
       <Block flex center style={styles.home}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.articles}>
+        <ScrollView 
+          showsVerticalScrollIndicator={false} 
+          contentContainerStyle={styles.articles}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
           <LiveBalance button={true} />
           <ListInvoices data={this.props.invoices} title={true} />
           
