@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import { Block } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { nowTheme } from '@constants';
@@ -16,6 +16,7 @@ import Tabs from '@custom-elements/Tabs';
 
 import { getStatements } from '@core/module/store/statements/statements';
 import { getBalance } from '@core/module/store/balance/liveBalance';
+import { getInvoices } from '@core/module/store/balance/invoices';
 
 import { connect } from 'react-redux';
 
@@ -25,6 +26,7 @@ class Account extends React.Component {
 
     this.state = {
       customStyleIndex: 0,
+      refreshing: false,
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -36,6 +38,18 @@ class Account extends React.Component {
       });
     }
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+  }
+
+  fetchData = async () => {
+    await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
+    await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.fetchData().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   renderAccountDetails = () => (
@@ -64,7 +78,14 @@ class Account extends React.Component {
   render() {
     return (
       <SafeAreaView>
-        <ScrollView>
+        <ScrollView 
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
           <LiveBalance />
           <Tabs
             optionsTabsRender={[
@@ -92,7 +113,7 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
 });
 
-const mapDispatchToProps = { getStatements, getBalance };
+const mapDispatchToProps = { getStatements, getBalance, getInvoices};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
 
