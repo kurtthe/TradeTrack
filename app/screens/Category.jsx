@@ -9,17 +9,18 @@ import ListProducts from '@custom-sections/ListProducts';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import LoadingComponent from '@custom-elements/Loading';
+import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 
 class Category extends React.Component {
+
   constructor(props) {
     super(props);
     this.generalRequest = GeneralRequestService.getInstance();
 
     this.state = {
       urlProducts: '',
-      myPriceActive: false
     };
   }
 
@@ -30,7 +31,6 @@ class Category extends React.Component {
 
     this.setState({
       urlProducts: newUrl,
-      myPriceActive: this.props.route.params.myPrice
     });
   }
 
@@ -40,18 +40,20 @@ class Category extends React.Component {
     }
 
     return (
-      <>
-        <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
-          <ListData
-            perPage={20}
-            filters={'products'}
-            endpoint={this.state.urlProducts}
-            children={<ListProducts myPrice={this.state.myPriceActive}/>}
-          />
-        </Block>
-      </>
+      <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
+        <ListData
+          perPage={20}
+          filters={'products'}
+          endpoint={this.state.urlProducts}
+          children={<ListProducts myPrice={this.props.clientFriendly} />}
+        />
+      </Block>
     );
   }
 }
 
-export default Category;
+const mapStateToProps = (state) => ({
+  clientFriendly: state.productsReducer.clientFriendly,
+});
+
+export default connect(mapStateToProps)(Category);

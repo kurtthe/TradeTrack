@@ -8,7 +8,7 @@ import { Card } from '@components';
 import Switch from '@custom-elements/Switch';
 import { ProductCart } from '@core/services/product-cart.service';
 import { connect } from 'react-redux';
-import { updateProducts } from '@core/module/store/cart/cart';
+import { updateProducts, changeClientFriendly } from '@core/module/store/cart/cart';
 
 const { width } = Dimensions.get('screen');
 
@@ -22,20 +22,17 @@ const cardInfo = {
 class TProducts extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeSwitch: false,
-    };
 
     this.productCart = ProductCart.getInstance(props.cartProducts);
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.cartProducts !== prevProps.cartProducts || !this.productCart ){
+  componentDidUpdate(prevProps) {
+    if (this.props.cartProducts !== prevProps.cartProducts || !this.productCart) {
       this.productCart = ProductCart.getInstance(this.props.cartProducts);
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.productCart = undefined;
   }
 
@@ -46,7 +43,6 @@ class TProducts extends React.Component {
           categoryCard
           onPress={() =>
             this.props.navigation.navigate('Category', {
-              myPrice: this.state.activeSwitch,
               headerTitle: 'All Products',
             })
           }
@@ -58,7 +54,7 @@ class TProducts extends React.Component {
   };
 
   handleChangeSwitch = (value) => {
-    this.setState({ activeSwitch: !value });
+    this.props.changeClientFriendly(!value)
     this.productCart.changePrice(!value, this.props.updateProducts);
   };
 
@@ -109,6 +105,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
 });
 
-const mapDispatchToProps = { updateProducts };
+const mapDispatchToProps = { updateProducts, changeClientFriendly };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TProducts);
