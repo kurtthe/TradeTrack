@@ -31,14 +31,14 @@ const sizeConstant =
       ? 12
       : 14
     : Dimensions.get('window').height < 870
-    ? 11.5
-    : 15;
+      ? 11.5
+      : 15;
 
 const Product = (props) => {
   const productCart = ProductCart.getInstance(props.cartProducts);
 
   const onAddPressed = async (productItem) => {
-    if (productItem.cost_price < 0 ){
+    if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
     const addProduct = {
@@ -51,7 +51,7 @@ const Product = (props) => {
   };
 
   const onProductPressed = async (productItem) => {
-    if (productItem.cost_price < 0 ){
+    if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
     props.navigation?.navigate('Product', {
@@ -107,22 +107,22 @@ const Product = (props) => {
                   ></View>
                   <Block flex>
                     <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                      {props.product.cost_price < 0 ? 'Get Price ': 'My Price'}
+                      {props.product.cost_price < 0 ? 'Get Price ' : 'My Price'}
                     </Text>
-                      {props.product.cost_price > 0 ? 
-                        <Text style={styles.price}>
-                          {formatMoney.format(props.product.cost_price)}
-                        </Text> :
-                        <TouchableOpacity 
-                          style={{width: '100%', alignItems: 'center'}}
-                           onPress={() => props.handleNewPrice(props.product.id)}>
-                          <MaterialIcons 
-                            name="autorenew" 
-                            size={20} 
-                            color={nowTheme.COLORS.LIGHTGRAY} 
-                          />
-                        </TouchableOpacity>
-                      }
+                    {props.product.cost_price > 0 ?
+                      <Text style={styles.price}>
+                        {formatMoney.format(props.product.cost_price)}
+                      </Text> :
+                      <TouchableOpacity
+                        style={{ width: '100%', alignItems: 'center' }}
+                        onPress={() => props.handleNewPrice(props.product.id)}>
+                        <MaterialIcons
+                          name="autorenew"
+                          size={20}
+                          color={nowTheme.COLORS.LIGHTGRAY}
+                        />
+                      </TouchableOpacity>
+                    }
                   </Block>
                 </>
               )}
@@ -135,7 +135,7 @@ const Product = (props) => {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => onAddPressed(props.product)}
-            
+
           >
             Add
           </Button>
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
           ? 12
           : 14
         : Dimensions.get('window').height < 870
-        ? 11.5
-        : 15,
+          ? 11.5
+          : 15,
     color: nowTheme.COLORS.ORANGE,
   },
 
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
           ? width - 240
           : width - 265
         : Dimensions.get('window').height < 870
-        ? width - 220
-        : width - 300,
+          ? width - 220
+          : width - 300,
     top: 10,
   },
 });
