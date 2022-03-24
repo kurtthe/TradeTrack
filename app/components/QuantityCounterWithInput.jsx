@@ -73,7 +73,7 @@ const QuantityCounterWithInput = (props) => {
         textAlign="center"
         style={styles.quantityButtons}
         keyboardType="number-pad"
-        value={quantity.toString()}
+        value={quantity?.toString()}
         onChangeText={(q) => setQuantity(Number(q))}
       />
       <Button

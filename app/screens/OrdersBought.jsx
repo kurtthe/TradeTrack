@@ -14,7 +14,7 @@ const OrdersBought = ({ route }) => {
   const productCart = ProductCart.getInstance(productsInCart);
   const { products } = route.params
 
-  console.log("=>products",products)
+  console.log("=>products",products.items)
 
   const handleAddCart = () => {
     const newProducts = productCart.addMultipleCart(products?.items)
