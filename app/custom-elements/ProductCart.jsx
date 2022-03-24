@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants/index';
@@ -12,21 +12,30 @@ const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
 
 const ProductCartComponent = (props) => {
+  const [product, setProduct] = useState({})
+
+  useEffect(() => {
+    if (props.bought) {
+      setProduct(props.product.product)
+    } else {
+      setProduct(props.product)
+    }
+  }, [props.product])
   const productsInCart = useSelector((state) => state.productsReducer.products);
   const dispatch = useDispatch();
 
   const productCart = ProductCart.getInstance(productsInCart);
 
   const handleUpdateQuantity = (newCant) => {
-    const newArrayCant = productCart.updateCant(props.product.id, newCant);
+    const newArrayCant = productCart.updateCant(product.id, newCant);
     if (!props.bought) {
       dispatch(updateProducts(newArrayCant));
     }
   };
 
   const getPriceProduct = () => {
-    const price = props.product.myPrice ? props.product.rrp : props.product.cost_price;
-    const totalPrice = parseFloat(price) * parseFloat(props.product.quantity);
+    const price = product.myPrice ? product.rrp : product.cost_price;
+    const totalPrice = parseFloat(price) * parseFloat(product.quantity);
 
     return formatMoney.format(totalPrice);
   };
@@ -36,22 +45,20 @@ const ProductCartComponent = (props) => {
     dispatch(updateProducts(updatedCart));
   };
 
+  console.log("=>props", product)
+
   return (
     <Block card shadow style={styles.product}>
       <Block flex row>
-        <Image source={{ uri: props.product.cover_image }} style={styles.imageHorizontal} />
+        <Image source={{ uri: product.cover_image }} style={styles.imageHorizontal} />
         <Block flex style={styles.productDescription}>
-          {
-            (!props.bought) && (
-              <Block row>
-                <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
-                <Text color={nowTheme.COLORS.INFO}>{props.product.sku}</Text>
-              </Block>
-            )
-          }
+          <Block row>
+            <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
+            <Text color={nowTheme.COLORS.INFO}>{product.sku}</Text>
+          </Block>
 
           <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-            {(!props.bought) ? props.product.name : props.product.description}
+            {product.name}
           </Text>
           <Block style={(!props.bought ? styles.productCart : styles.productBought)}>
             {
@@ -66,8 +73,8 @@ const ProductCartComponent = (props) => {
               )
             }
             <QuantityCounterWithInput
-              delete={() => handleDelete(props.product.id)}
-              quantity={(!props.bought) ? props.product.quantity : props.product.default_quantity}
+              delete={() => handleDelete(product.id)}
+              quantity={(!props.bought) ? product.quantity : product.default_quantity}
               quantityHandler={(cant) => handleUpdateQuantity(cant)}
             />
           </Block>
