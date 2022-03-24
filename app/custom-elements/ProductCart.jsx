@@ -53,7 +53,7 @@ const ProductCartComponent = (props) => {
           <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
             {(!props.bought) ? props.product.name : props.product.description}
           </Text>
-          <Block style={(!props.bought? styles.productCart: styles.productBought)}>
+          <Block style={(!props.bought ? styles.productCart : styles.productBought)}>
             {
               (!props.bought) && (
                 <Text
@@ -67,7 +67,7 @@ const ProductCartComponent = (props) => {
             }
             <QuantityCounterWithInput
               delete={() => handleDelete(props.product.id)}
-              quantity={props.product.quantity}
+              quantity={(!props.bought) ? props.product.quantity : props.product.default_quantity}
               quantityHandler={(cant) => handleUpdateQuantity(cant)}
             />
           </Block>
@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 30,
   },
-  productCart:{
+  productCart: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
   },
-  productBought:{
+  productBought: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end'
