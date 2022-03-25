@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants/index';
@@ -11,16 +11,8 @@ import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
 const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
 
-const ProductCartComponent = (props) => {
-  const [product, setProduct] = useState({})
+const ProductCartComponent = ({ product, bought }) => {
 
-  useEffect(() => {
-    if (props.bought) {
-      setProduct(props.product.product)
-    } else {
-      setProduct(props.product)
-    }
-  }, [props.product])
   const productsInCart = useSelector((state) => state.productsReducer.products);
   const dispatch = useDispatch();
 
@@ -28,7 +20,7 @@ const ProductCartComponent = (props) => {
 
   const handleUpdateQuantity = (newCant) => {
     const newArrayCant = productCart.updateCant(product.id, newCant);
-    if (!props.bought) {
+    if (!bought) {
       dispatch(updateProducts(newArrayCant));
     }
   };
@@ -45,8 +37,6 @@ const ProductCartComponent = (props) => {
     dispatch(updateProducts(updatedCart));
   };
 
-  console.log("=>props", product)
-
   return (
     <Block card shadow style={styles.product}>
       <Block flex row>
@@ -60,9 +50,9 @@ const ProductCartComponent = (props) => {
           <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
             {product.name}
           </Text>
-          <Block style={(!props.bought ? styles.productCart : styles.productBought)}>
+          <Block style={(!bought ? styles.productCart : styles.productBought)}>
             {
-              (!props.bought) && (
+              (!bought) && (
                 <Text
                   style={{ fontWeight: 'bold', marginTop: 10 }}
                   color={nowTheme.COLORS.ORANGE}
@@ -74,7 +64,7 @@ const ProductCartComponent = (props) => {
             }
             <QuantityCounterWithInput
               delete={() => handleDelete(product.id)}
-              quantity={(!props.bought) ? product.quantity : product.default_quantity}
+              quantity={(!bought) ? product.quantity : product.default_quantity || 1}
               quantityHandler={(cant) => handleUpdateQuantity(cant)}
             />
           </Block>

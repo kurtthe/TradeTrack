@@ -15,16 +15,20 @@ export class ProductCart {
     return ProductCart.instance;
   }
 
-  addCart(addProduct, action=null) {
-    const index = this.cartProducts.findIndex((item) => item.id === addProduct.id);
+  getProductData(product) {
+    return this.cartProducts.find((item) => item.id === product.id);
+  }
 
-    if (index === -1) {
-      this.cartProducts = [...this.cartProducts, addProduct]
-      action && action(this.cartProducts);
-      return;
+  addCart(addProduct, action = null) {
+    const getProduct = this.getProductData(addProduct)
+
+    if (!getProduct) {
+      this.cartProducts = [...this.cartProducts, {...addProduct, quantity: 1}]
+    } else {
+      const newCant = parseInt(getProduct.quantity) + 1
+      this.cartProducts = [...this.cartProducts, {...addProduct, quantity: newCant}]
     }
-
-    this.alertService.show('Alert!', `Product with SKU: ${addProduct.sku} is already added.`);
+    action && action(this.cartProducts);
   }
 
   addMultipleCart(products) {

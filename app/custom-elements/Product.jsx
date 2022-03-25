@@ -43,7 +43,6 @@ const Product = (props) => {
     }
     const addProduct = {
       ...productItem,
-      quantity: 1,
       myPrice: props.myPrice,
     };
 
