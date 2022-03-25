@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Block, Button, Text } from 'galio-framework';
 import { StyleSheet } from 'react-native';
 import ListCart from '@custom-sections/ListCart'
@@ -9,21 +9,33 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const OrdersBought = ({ route }) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
+  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly);
+
+  const [productOrder, setProductOrder] = useState([])
   const dispatch = useDispatch();
 
   const productCart = ProductCart.getInstance(productsInCart);
   const { products } = route.params
 
-  console.log("=>products",products.items)
+  useEffect(() => {
+    const mappingData = () => {
+      const dataProduct = products?.items.map((item) => {
+        const priceProduct = clientFriendly ? item.rrp : item.cost_price;
+        return { ...item.product, myPrice: clientFriendly, price: priceProduct }
+      })
+      setProductOrder(dataProduct)
+    }
+    mappingData()
+  }, [products?.items])
 
   const handleAddCart = () => {
-    const newProducts = productCart.addMultipleCart(products?.items)
+    const newProducts = productCart.addMultipleCart(productOrder)
     dispatch(updateProducts(newProducts))
   }
 
   return (
     <Block style={styles.container}>
-      <ListCart cartProducts={products?.items} messageCartEmpty='No have products in this order' bought={true} />
+      <ListCart cartProducts={productOrder} messageCartEmpty='No have products in this order' bought={true} />
       {(products?.items?.length > 0) ? (<Block style={styles.footer}>
         <Button
           shadowless
