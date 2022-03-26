@@ -18,8 +18,8 @@ import { FormatMoneyService } from '@core/services/format-money.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { MaterialIcons } from '@expo/vector-icons';
-import Toast from 'react-native-toast-message';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from '@core/services/toast.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -41,11 +41,6 @@ const Product = (props) => {
   const dispatch = useDispatch();
 
   const onAddPressed = async (productItem) => {
-    Toast.show({
-      type: 'success',
-      text1: 'Product add',
-    });
-    
     if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
@@ -55,6 +50,7 @@ const Product = (props) => {
     };
     const productAdd = productCart.addCart(addProduct);
     dispatch(updateProducts(productAdd))
+    Toast.show('Product added!')
   };
 
   const onProductPressed = async (productItem) => {

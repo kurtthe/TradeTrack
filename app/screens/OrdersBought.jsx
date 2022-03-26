@@ -6,6 +6,7 @@ import { nowTheme } from '@constants/index';
 import { ProductCart } from '@core/services/product-cart.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { useSelector, useDispatch } from 'react-redux';
+import Toast from '@core/services/toast.service';
 
 const OrdersBought = ({ route }) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
@@ -21,7 +22,7 @@ const OrdersBought = ({ route }) => {
     const mappingData = () => {
       const dataProduct = products?.items?.map((item) => {
         const priceProduct = clientFriendly ? item.rrp : item.cost_price;
-        return { ...item.product, myPrice: clientFriendly, price: priceProduct }
+        return { ...item.product, myPrice: clientFriendly, price: priceProduct, quantity:1 }
       })
       setProductOrder(dataProduct)
     }
@@ -31,6 +32,7 @@ const OrdersBought = ({ route }) => {
   const handleAddCart = () => {
     const newProducts = productCart.addMultipleCart(productOrder)
     dispatch(updateProducts(newProducts))
+    Toast.show('Products added!')
   }
 
   return (
