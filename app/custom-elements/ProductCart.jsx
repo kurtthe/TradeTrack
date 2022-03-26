@@ -7,13 +7,16 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 
 const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
 
 const ProductCartComponent = ({ product, bought }) => {
 
-  const productsInCart = useSelector((state) => state.productsReducer.products);
+  const productsInCart = useSelector((state) => (
+    (!bought) ? state.productsReducer.products : state.preCartReducer.products));
+
   const dispatch = useDispatch();
 
   const productCart = ProductCart.getInstance(productsInCart);
@@ -22,7 +25,9 @@ const ProductCartComponent = ({ product, bought }) => {
     const newArrayCant = productCart.updateCant(product.sku, newCant);
     if (!bought) {
       dispatch(updateProducts(newArrayCant));
+      return
     }
+    dispatch(updatePreOrder(newArrayCant));
   };
 
   const getPriceProduct = () => {
