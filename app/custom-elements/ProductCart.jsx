@@ -19,7 +19,7 @@ const ProductCartComponent = ({ product, bought }) => {
   const productCart = ProductCart.getInstance(productsInCart);
 
   const handleUpdateQuantity = (newCant) => {
-    const newArrayCant = productCart.updateCant(product.id, newCant);
+    const newArrayCant = productCart.updateCant(product.sku, newCant);
     if (!bought) {
       dispatch(updateProducts(newArrayCant));
     }
@@ -66,6 +66,7 @@ const ProductCartComponent = ({ product, bought }) => {
               delete={() => handleDelete(product.id)}
               quantity={(!bought) ? product.quantity : product.default_quantity || 1}
               quantityHandler={(cant) => handleUpdateQuantity(cant)}
+              bought={bought}
             />
           </Block>
         </Block>

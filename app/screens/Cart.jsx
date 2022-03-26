@@ -74,11 +74,13 @@ class Cart extends React.Component {
   };
 
   renderCurrentOrder = () => (
-    <ListCart cartProducts={this.props.cartProducts} />
+    <Block style={{ height: hp('65%') }}>
+      <ListCart cartProducts={this.props.cartProducts} />
+    </Block>
   );
 
   renderPreviousOrder = () => (
-    <Block style={{height: hp('70%')}}>
+    <Block style={{ height: hp('70%') }}>
       <ListData
         endpoint={endPoints.orders}
         children={<PreviousOrder data={this.props.orders} />}
@@ -94,13 +96,13 @@ class Cart extends React.Component {
     const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST) ' : 'Total (ex-GST)';
 
     return (
-      <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
+      <TouchableWithoutFeedback >
         <Block row style={styles.detailOrders}>
           <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
 
           <Button
             shadowless
-            style={(styles.addToCart, { left: 10 })}
+            style={{ left: 10 }}
             color={nowTheme.COLORS.INFO}
             onPress={() => this.onCheckoutPressed()}
           >
