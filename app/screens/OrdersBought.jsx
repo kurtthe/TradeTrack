@@ -5,14 +5,15 @@ import ListCart from '@custom-sections/ListCart'
 import { nowTheme } from '@constants/index';
 import { ProductCart } from '@core/services/product-cart.service';
 import { updateProducts } from '@core/module/store/cart/cart';
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 import { useSelector, useDispatch } from 'react-redux';
 import Toast from '@core/services/toast.service';
 
 const OrdersBought = ({ route }) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly);
+  const productsToCart = useSelector((state) => state.preCartReducer.products);
 
-  const [productOrder, setProductOrder] = useState([])
   const dispatch = useDispatch();
 
   const productCart = ProductCart.getInstance(productsInCart);
@@ -22,22 +23,26 @@ const OrdersBought = ({ route }) => {
     const mappingData = () => {
       const dataProduct = products?.items?.map((item) => {
         const priceProduct = clientFriendly ? item.rrp : item.cost_price;
-        return { ...item.product, myPrice: clientFriendly, price: priceProduct, quantity:1 }
+        if(!item.product.hasOwnProperty('quantity')){
+          item.product['quantity'] = 1
+        }
+        return { ...item.product, myPrice: clientFriendly, price: priceProduct}
       })
-      setProductOrder(dataProduct)
+      dispatch(updatePreOrder(dataProduct))
     }
     mappingData()
   }, [products?.items])
 
   const handleAddCart = () => {
-    const newProducts = productCart.addMultipleCart(productOrder)
+
+    const newProducts = productCart.addMultipleCart(productsToCart)
     dispatch(updateProducts(newProducts))
-    Toast.show('Products added!')
+    Toast.show('Product added!')
   }
 
   return (
     <Block style={styles.container}>
-      <ListCart cartProducts={productOrder} messageCartEmpty='No have products in this order' bought={true} />
+      <ListCart cartProducts={productsToCart} messageCartEmpty='No have products in this order' bought={true} />
       {(products?.items?.length > 0) ? (<Block style={styles.footer}>
         <Button
           shadowless
