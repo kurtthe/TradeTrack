@@ -64,7 +64,7 @@ const ProductCartComponent = ({ product, bought }) => {
             }
             <QuantityCounterWithInput
               delete={() => handleDelete(product.id)}
-              quantity={(!bought) ? product.quantity : product.default_quantity || 1}
+              quantity={product.quantity}
               quantityHandler={(cant) => handleUpdateQuantity(cant)}
               bought={bought}
             />
