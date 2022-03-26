@@ -30,8 +30,6 @@ export class ProductCart {
       this.cartProducts = [...this.cartProducts, addProduct]
     } else {
       const newCant = parseInt(getProduct.quantity) + 1
-      console.log("=>getProduct", newCant)
-      console.log("=>getProduct.sku", getProduct.sku)
       this.cartProducts = this.updateCant(getProduct.sku, newCant)
     }
     action && action(this.cartProducts);
