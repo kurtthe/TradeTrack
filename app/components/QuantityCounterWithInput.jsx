@@ -9,14 +9,15 @@ const sizeConstant =
       ? 30
       : 40
     : Dimensions.get('window').height < 870
-    ? 30
-    : 40;
+      ? 30
+      : 40;
 
 const QuantityCounterWithInput = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
 
   useEffect(() => {
-    if (quantity == 0 && !props.product) {
+
+    if (quantity == 0 && !props.product && !props.bought) {
       Alert.alert(
         'Are you sure you want to remove the product for your cart?',
         '',
@@ -40,7 +41,6 @@ const QuantityCounterWithInput = (props) => {
   }, [quantity]);
 
   const plusCounter = () => {
-    console.log('PLUS', quantity);
     const quantity1 = quantity;
     if (quantity1 != 100) {
       const plus = quantity1 + 1;
@@ -50,12 +50,13 @@ const QuantityCounterWithInput = (props) => {
   };
 
   const minusCounter = () => {
-    console.log('MINUS', quantity);
+
     const quantity1 = quantity;
     const minVal = props.product ? 1 : 0;
     if (quantity1 != minVal) {
       const minus = quantity1 - 1;
-      setQuantity(minus);
+
+      setQuantity((props.bought && minus === 0) ? 1 : minus);
       props.quantityHandler(minus);
     }
   };

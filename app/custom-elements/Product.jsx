@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
   StyleSheet,
@@ -15,10 +15,11 @@ import { withNavigation } from '@react-navigation/compat';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { MaterialIcons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import { useSelector, useDispatch } from 'react-redux';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -35,9 +36,16 @@ const sizeConstant =
       : 15;
 
 const Product = (props) => {
-  const productCart = ProductCart.getInstance(props.cartProducts);
+  const cartProducts = useSelector((state) => state.productsReducer.products);
+  const productCart = ProductCart.getInstance(cartProducts);
+  const dispatch = useDispatch();
 
   const onAddPressed = async (productItem) => {
+    Toast.show({
+      type: 'success',
+      text1: 'Product add',
+    });
+    
     if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
@@ -45,8 +53,8 @@ const Product = (props) => {
       ...productItem,
       myPrice: props.myPrice,
     };
-
-    productCart.addCart(addProduct, props.updateProducts);
+    const productAdd = productCart.addCart(addProduct);
+    dispatch(updateProducts(productAdd))
   };
 
   const onProductPressed = async (productItem) => {
@@ -190,10 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => ({
-  cartProducts: state.productsReducer.products,
-});
-
-const mapDispatchToProps = { updateProducts };
-
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Product));
+export default withNavigation(Product);

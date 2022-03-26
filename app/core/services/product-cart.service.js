@@ -16,19 +16,26 @@ export class ProductCart {
   }
 
   getProductData(product) {
-    return this.cartProducts.find((item) => item.id === product.id);
+    return this.cartProducts.find((item) => item.sku === product.sku);
   }
 
-  addCart(addProduct, action = null) {
+  addCart(addProduct, action) {
     const getProduct = this.getProductData(addProduct)
 
     if (!getProduct) {
-      this.cartProducts = [...this.cartProducts, {...addProduct, quantity: 1}]
+      if (!addProduct.hasOwnProperty('quantity')) {
+        addProduct['quantity'] = 1
+      }
+
+      this.cartProducts = [...this.cartProducts, addProduct]
     } else {
       const newCant = parseInt(getProduct.quantity) + 1
-      this.cartProducts = [...this.cartProducts, {...addProduct, quantity: newCant}]
+      console.log("=>getProduct", newCant)
+      console.log("=>getProduct.sku", getProduct.sku)
+      this.cartProducts = this.updateCant(getProduct.sku, newCant)
     }
     action && action(this.cartProducts);
+    return this.cartProducts
   }
 
   addMultipleCart(products) {
@@ -36,9 +43,9 @@ export class ProductCart {
     return this.cartProducts
   }
 
-  updateCant(IdProduct, newCant, action) {
+  updateCant(skuProduct, newCant, action) {
     const newArrayProducts = this.cartProducts.map((item) => {
-      if (item.id !== IdProduct) {
+      if (item.sku !== skuProduct) {
         return item;
       }
 

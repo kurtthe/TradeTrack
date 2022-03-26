@@ -19,7 +19,7 @@ const OrdersBought = ({ route }) => {
 
   useEffect(() => {
     const mappingData = () => {
-      const dataProduct = products?.items.map((item) => {
+      const dataProduct = products?.items?.map((item) => {
         const priceProduct = clientFriendly ? item.rrp : item.cost_price;
         return { ...item.product, myPrice: clientFriendly, price: priceProduct }
       })
