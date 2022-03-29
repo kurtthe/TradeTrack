@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
-import { Block, theme, Text } from 'galio-framework';
-import { nowTheme } from '@constants/';
+import { Block, theme } from 'galio-framework';
+import debounce from "lodash.debounce";
 
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -10,6 +10,7 @@ import ListProducts from '@custom-sections/ListProducts';
 import LoadingComponent from '@custom-elements/Loading';
 import ListData from '@custom-sections/ListData';
 import Search from '@custom-elements/Search';
+import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('screen');
 
@@ -18,11 +19,9 @@ class SearchProduct extends React.Component {
     super(props);
 
     this.state = {
-      myPriceActive: false,
-      textSearch: '',
       urlProducts: '',
-      isEmpty: true,
       search: '',
+      empty: true
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -34,23 +33,14 @@ class SearchProduct extends React.Component {
 
     this.setState({
       urlProducts: newUrl,
-      myPriceActive: this.props.route.params.myPrice,
     });
   }
 
   changeSearchText = (text) => {
-    this.setState({search: text})
-    if(text == '') {
-      this.handleSearch() 
-      this.setState({isEmpty: true})
-    }
+    this.setState({ search: text, empty: text == '' })
   };
 
-  handleSearch = () => {
-    this.setState({
-      textSearch: this.state.search, isEmpty: false
-    });
-  };
+  debouncedOnChange = debounce(this.changeSearchText, 300)
 
   render() {
     if (this.state.urlProducts === '') {
@@ -61,21 +51,23 @@ class SearchProduct extends React.Component {
       <View>
         <Search
           placeholder="What are you looking for?"
-          onChangeText={(text) => this.changeSearchText(text)}
-          onSearch={() => this.handleSearch()}
+          onChangeText={this.debouncedOnChange}
           style={styles.search}
           inputStyle={styles.searchInput}
         />
-          <Block style={{height:"90%"}}>
-          <ListData
-            perPage={20}
-            endpoint={`${this.state.urlProducts}&search=${this.state.textSearch}`}
-            isEmpty={this.state.isEmpty}
-            children={<ListProducts myPrice={this.state.myPriceActive} isEmpty={this.state.isEmpty}/>}
-          />
+        {(!this.state.empty) && (
+          <Block style={{ height: "90%" }}>
+            <ListData
+              isEmpty={this.state.empty}
+              perPage={20}
+              endpoint={`${this.state.urlProducts}&search=${this.state.search}`}
+              children={<ListProducts myPrice={this.props.clientFriendly} />
+              }
+            />
           </Block>
+        )}
       </View>
-      
+
     );
   }
 }
@@ -90,7 +82,7 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.SIZES.BASE,
     marginBottom: theme.SIZES.BASE * 4,
     borderRadius: 30,
-    
+
   },
   notfound: {
     padding: 15,
@@ -98,4 +90,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchProduct;
+const mapStateToProps = (state) => ({
+  clientFriendly: state.productsReducer.clientFriendly,
+});
+
+
+export default connect(mapStateToProps)(SearchProduct);
