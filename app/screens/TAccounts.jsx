@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import { Block } from 'galio-framework';
 import { nowTheme } from '@constants';
 
@@ -15,6 +15,7 @@ import Tabs from '@custom-elements/Tabs';
 
 import { getStatements } from '@core/module/store/statements/statements';
 import { getBalance } from '@core/module/store/balance/liveBalance';
+import { getInvoices } from '@core/module/store/balance/invoices';
 
 import { connect } from 'react-redux';
 
@@ -24,6 +25,7 @@ class Account extends React.Component {
 
     this.state = {
       customStyleIndex: 0,
+      refreshing: false,
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -35,6 +37,18 @@ class Account extends React.Component {
       });
     }
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+  }
+
+  fetchData = async () => {
+    await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
+    await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
+  }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.fetchData().then(() => {
+      this.setState({refreshing: false});
+    });
   }
 
   renderAccountDetails = () => (
@@ -60,9 +74,17 @@ class Account extends React.Component {
     </Block>
   );
 
-  render() {
+   render() {
     return (
-        <ScrollView>
+      <SafeAreaView>
+        <ScrollView 
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
           <LiveBalance />
           <Tabs
             optionsTabsRender={[
@@ -79,6 +101,7 @@ class Account extends React.Component {
             changeIndexSelected={(index)=>this.setState({customStyleIndex: index})}
           />
         </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -89,7 +112,7 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
 });
 
-const mapDispatchToProps = { getStatements, getBalance };
+const mapDispatchToProps = { getStatements, getBalance, getInvoices};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
 

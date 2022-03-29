@@ -42,6 +42,7 @@ class PlaceOrders extends React.Component {
       location: null,
       resetSelects: false,
       page: 1,
+      emailStore: '',
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -58,6 +59,7 @@ class PlaceOrders extends React.Component {
 
     this.setState({
       store: preferredStore.name,
+      emailStore: preferredStore.email,
       radioButtonsStore: storesAsRadioButtons,
       radioButtonsJobs: jobsAsRadioButtons,
       radioButtonsDeliveries: [...radioButtonsDelivery],
@@ -109,6 +111,7 @@ class PlaceOrders extends React.Component {
 
     if (type === 'store') {
       this.setState({
+        emailStore: option?.email,
         store: option?.value,
       });
     }
@@ -313,7 +316,7 @@ class PlaceOrders extends React.Component {
   handleOrderShare = async (id) => {
     const data = {
         emails: [
-          "burdens.orders@tradetrak.com.au", "matt.celima@burdens.com.au",  "owenm@tradetrak.com.au", this.props.email
+          "burdens.orders@tradetrak.com.au", "matt.celima@burdens.com.au",  "owenm@tradetrak.com.au", this.props.email, this.state.emailStore,
         ],
         message: "Thanks for your order - it has been received by our team. An email notification will be sent to the account owner when it has been processed by the store. Please contact us at 03 9703 8400. Thank you, the Burdens App Team."
     };
@@ -350,7 +353,7 @@ class PlaceOrders extends React.Component {
             deleteOption
           />
           <Block row>
-            <Text style={styles.text}>Order Name</Text>
+            <Text style={styles.text}>Job/Order Number</Text>
             <Text style={styles.errorText}> * </Text>
           </Block>
           <Input

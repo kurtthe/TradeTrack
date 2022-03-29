@@ -72,7 +72,7 @@ class Cart extends React.Component {
     const total = this.productCartService.totalOrder();
     return `${this.formatMoney.format(total)}`;
   };
-
+  
   renderCurrentOrder = () => (
     <Block style={{ height: hp('65%') }}>
       <ListCart cartProducts={this.props.cartProducts} />
