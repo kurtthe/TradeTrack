@@ -20,7 +20,7 @@ const ListProducts = (props) => {
       );
     }
 
-    return props.data.map((item, index) => 
+    return props.data.map((item) => 
       <Product 
         key={item.id} 
         product={item} 

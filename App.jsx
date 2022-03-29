@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, SafeAreaView, StyleSheet } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
@@ -51,6 +51,12 @@ const theme = {
   },
 };
 
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+});
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
@@ -68,20 +74,24 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <NavigationContainer>
-          <Provider store={store}>
-            <GalioProvider theme={nowTheme}>
-              <PaperProvider theme={theme}>
-                <Block flex>
-                  <AppStack />
-                </Block>
-              </PaperProvider>
-            </GalioProvider>
-          </Provider>
-        </NavigationContainer>
+        <SafeAreaView style={styles.safeArea}>
+          <NavigationContainer>
+            <Provider store={store}>
+              <GalioProvider theme={nowTheme}>
+                <PaperProvider theme={theme}>
+                  <Block flex>
+                    <AppStack />
+                  </Block>
+                </PaperProvider>
+              </GalioProvider>
+            </Provider>
+          </NavigationContainer>
+        </SafeAreaView>
+
       );
     }
   }
+
 
   _loadResourcesAsync = async () => {
     await Font.loadAsync({
@@ -105,3 +115,4 @@ export default class App extends React.Component {
     }
   };
 }
+

@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
-import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { ProductCart as ProductCartService } from '@core/services/product-cart.service';
@@ -10,13 +9,19 @@ import { ProductCart as ProductCartService } from '@core/services/product-cart.s
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
-import ProductCart from '@custom-elements/ProductCart';
 import { AlertService } from '@core/services/alert.service';
+import PreviousOrder from '@custom-sections/PreviousOrder'
+import ListCart from '@custom-sections/ListCart'
+import { getOrders } from '@core/module/store/orders/orders';
+import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import { endPoints } from '@shared/dictionaries/end-points';
+import ListData from '@custom-sections/ListData';
+
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       customStyleIndex: 0,
@@ -27,14 +32,17 @@ class Cart extends React.Component {
     this.alertService = new AlertService();
     this.formatMoney = FormatMoneyService.getInstance();
     this.productCartService = ProductCartService.getInstance(props.cartProducts);
+    this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (!!this.props.cartProducts[0]?.myPrice) {
       this.setState({
         myPrice: this.props.cartProducts[0]?.myPrice,
       });
     }
+
+    await this.getDataPetition.getInfo(endPoints.orders, this.props.getOrders);
   }
 
   componentDidUpdate(prevProps) {
@@ -64,39 +72,23 @@ class Cart extends React.Component {
     const total = this.productCartService.totalOrder();
     return `${this.formatMoney.format(total)}`;
   };
-
-  renderEmpty() {
-    return (
-      <Block style={styles.container_empty}>
-        <Ionicons name="cart" color={'#828489'} size={60} />
-        <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
-          Your cart is empty!
-        </Text>
-      </Block>
-    );
-  }
-
-  renderProducts = ({ item }) => <ProductCart product={item} />;
-
+  
   renderCurrentOrder = () => (
-    <FlatList
-      data={this.props.cartProducts}
-      renderItem={this.renderProducts}
-      keyExtractor={(item, index) => `${index}-${item.id}`}
-      ListEmptyComponent={this.renderEmpty()}
-      style={{ width: width, height: '80%'}}
-    />
-  );
-
-  renderPreviousOrder = () => (
-    <Block style={styles.container_empty}>
-      <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
-        Is coming soon!
-      </Text>
+    <Block style={{ height: hp('65%') }}>
+      <ListCart cartProducts={this.props.cartProducts} />
     </Block>
   );
 
-  renderFoother = () => {
+  renderPreviousOrder = () => (
+    <Block style={{ height: hp('70%') }}>
+      <ListData
+        endpoint={endPoints.orders}
+        children={<PreviousOrder data={this.props.orders} />}
+      />
+    </Block>
+  );
+
+  renderFooter = () => {
     if (!this.props.cartProducts || this.props.cartProducts.length === 0) {
       return null;
     }
@@ -104,13 +96,13 @@ class Cart extends React.Component {
     const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST) ' : 'Total (ex-GST)';
 
     return (
-      <TouchableWithoutFeedback style={{ position: 'absolute', top: hp('80%') }}>
+      <TouchableWithoutFeedback >
         <Block row style={styles.detailOrders}>
           <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
 
           <Button
             shadowless
-            style={(styles.addToCart, { left: 10 })}
+            style={{ left: 10 }}
             color={nowTheme.COLORS.INFO}
             onPress={() => this.onCheckoutPressed()}
           >
@@ -140,7 +132,7 @@ class Cart extends React.Component {
           tabIndexSelected={this.state.customStyleIndex}
           changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
         />
-        {this.renderFoother()}
+        {this.renderFooter()}
       </Block>
     );
   }
@@ -151,12 +143,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-  },
-  container_empty: {
-    height: hp('60%'),
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   detailOrders: {
     backgroundColor: 'white',
@@ -176,6 +162,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
+  orders: state.ordersReducer.orders
 });
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = { getOrders };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

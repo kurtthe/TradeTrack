@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
   StyleSheet,
@@ -15,10 +15,11 @@ import { withNavigation } from '@react-navigation/compat';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
-import { connect } from 'react-redux';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux';
+import Toast from '@core/services/toast.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -31,28 +32,29 @@ const sizeConstant =
       ? 12
       : 14
     : Dimensions.get('window').height < 870
-    ? 11.5
-    : 15;
+      ? 11.5
+      : 15;
 
 const Product = (props) => {
-  const productCart = ProductCart.getInstance(props.cartProducts);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const cartProducts = useSelector((state) => state.productsReducer.products);
+  const productCart = ProductCart.getInstance(cartProducts);
+  const dispatch = useDispatch();
 
   const onAddPressed = async (productItem) => {
-    if (productItem.cost_price < 0 ){
+    if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
     const addProduct = {
       ...productItem,
-      quantity: 1,
       myPrice: props.myPrice,
     };
-
-    productCart.addCart(addProduct, props.updateProducts);
+    const productAdd = productCart.addCart(addProduct);
+    dispatch(updateProducts(productAdd))
+    Toast.show('Product added!')
   };
 
   const onProductPressed = async (productItem) => {
-    if (productItem.cost_price < 0 ){
+    if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
     props.navigation?.navigate('Product', {
@@ -108,22 +110,22 @@ const Product = (props) => {
                   ></View>
                   <Block flex>
                     <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
-                      {props.product.cost_price < 0 ? 'Get Price ': 'My Price'}
+                      {props.product.cost_price < 0 ? 'Get Price ' : 'My Price'}
                     </Text>
-                      {props.product.cost_price > 0 ? 
-                        <Text style={styles.price}>
-                          {formatMoney.format(props.product.cost_price)}
-                        </Text> :
-                        <TouchableOpacity 
-                          style={{width: '100%', alignItems: 'center'}}
-                           onPress={() => props.handleNewPrice(props.product.id)}>
-                          <MaterialIcons 
-                            name="autorenew" 
-                            size={20} 
-                            color={nowTheme.COLORS.LIGHTGRAY} 
-                          />
-                        </TouchableOpacity>
-                      }
+                    {props.product.cost_price > 0 ?
+                      <Text style={styles.price}>
+                        {formatMoney.format(props.product.cost_price)}
+                      </Text> :
+                      <TouchableOpacity
+                        style={{ width: '100%', alignItems: 'center' }}
+                        onPress={() => props.handleNewPrice(props.product.id)}>
+                        <MaterialIcons
+                          name="autorenew"
+                          size={20}
+                          color={nowTheme.COLORS.LIGHTGRAY}
+                        />
+                      </TouchableOpacity>
+                    }
                   </Block>
                 </>
               )}
@@ -136,7 +138,7 @@ const Product = (props) => {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => onAddPressed(props.product)}
-            
+
           >
             Add
           </Button>
@@ -174,8 +176,8 @@ const styles = StyleSheet.create({
           ? 12
           : 14
         : Dimensions.get('window').height < 870
-        ? 11.5
-        : 15,
+          ? 11.5
+          : 15,
     color: nowTheme.COLORS.ORANGE,
   },
 
@@ -186,16 +188,10 @@ const styles = StyleSheet.create({
           ? width - 240
           : width - 265
         : Dimensions.get('window').height < 870
-        ? width - 220
-        : width - 300,
+          ? width - 220
+          : width - 300,
     top: 10,
   },
 });
 
-const mapStateToProps = (state) => ({
-  cartProducts: state.productsReducer.products,
-});
-
-const mapDispatchToProps = { updateProducts };
-
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Product));
+export default withNavigation(Product);

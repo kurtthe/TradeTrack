@@ -175,6 +175,11 @@ class Filters extends Component {
   };
 
   typeSearch = () => {
+
+    if (this.props.hideFilterType) {
+      return null;
+    }
+
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -262,10 +267,10 @@ const styles = StyleSheet.create({
           ? width * 0.5
           : width * 0.6
         : Dimensions.get('window').height < 595
-        ? width * 0.5
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? width * 0.5
-        : width * 0.6,
+          ? width * 0.5
+          : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+            ? width * 0.5
+            : width * 0.6,
     marginHorizontal: theme.SIZES.BASE,
     borderRadius: 30,
   },

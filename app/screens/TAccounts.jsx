@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import { Block } from 'galio-framework';
-import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { nowTheme } from '@constants';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
@@ -75,7 +74,7 @@ class Account extends React.Component {
     </Block>
   );
 
-  render() {
+   render() {
     return (
       <SafeAreaView>
         <ScrollView 

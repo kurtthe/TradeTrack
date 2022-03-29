@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  clientFriendly: false,
   products: [],
 };
 
@@ -17,10 +18,13 @@ export const productsSlice = createSlice({
     },
     clearProducts: (state) => {
       state.products = [];
+    },
+    changeClientFriendly: (state, { payload }) => {
+      state.clientFriendly = payload
     }
   },
 });
 
-export const { updateProducts, clearProducts } = productsSlice.actions;
+export const { updateProducts, clearProducts, changeClientFriendly } = productsSlice.actions;
 
 export default productsSlice.reducer;
