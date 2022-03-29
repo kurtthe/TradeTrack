@@ -85,20 +85,12 @@ class ListData extends React.Component {
   };
 
   loadData = (data) => {
-    if (!data || data?.length < 1) {
-      this.setState({
-        loadingMoreData: false,
-        showLoadMore: false,
-        notFound: this.state.filter ? true : false,
-      });
-    } else {
-      this.setState({
-        data: data,
-        notFound: false,
-        loadingMoreData: false,
-        showLoadMore: true,
-      });
-    }
+    this.setState({
+      data: data,
+      notFound: (!data?.length < 1)? false: this.state.filter ,
+      loadingMoreData: false,
+      showLoadMore: !data?.length < 1,
+    });
 
     this.props.actionData && this.props.actionData(data);
   };
