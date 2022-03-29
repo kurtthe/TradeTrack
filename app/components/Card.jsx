@@ -1,11 +1,11 @@
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, Dimensions, View } from 'react-native';
+import { StyleSheet, Image, TouchableWithoutFeedback, ImageBackground, View } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
 import { nowTheme } from '@constants';
-const { width } = Dimensions.get("screen");
+
 
 class Card extends React.Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class Card extends React.Component {
 
   render() {
     const {
-      navigation,
       item,
       horizontal,
       full,
@@ -28,7 +27,7 @@ class Card extends React.Component {
     } = this.props;
 
     const imageStyles = [full ? styles.fullImage : styles.horizontalImage, imageStyle];
-    const titleStyles = [styles.cardTitle, titleStyle];
+    const titleStyles = [styles.cardTitle, titleStyle, {}];
     const cardContainer = [styles.card, styles.shadow, style];
     const imgContainer = [
       styles.imageContainer,
@@ -40,7 +39,7 @@ class Card extends React.Component {
       return categoryCard ?
         <ImageBackground
           source={{
-           // uri: this.props.item.image,
+            // uri: this.props.item.image,
             uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
           }}
           style={styles.imageBlock}
@@ -53,14 +52,13 @@ class Card extends React.Component {
             {this.props.item.title.toString()}
           </Text>
         </ImageBackground>
-      :
+        :
         <Text
-            style={{ fontFamily: 'montserrat-regular' }}
-            size={14}
-            style={titleStyles}
-            color={nowTheme.COLORS.SECONDARY}
-          >
-            {this.props.item.title.toString()}
+          size={14}
+          style={[titleStyles, { fontFamily: 'montserrat-regular' }]}
+          color={nowTheme.COLORS.SECONDARY}
+        >
+          {this.props.item.title.toString()}
         </Text>
     }
 
@@ -69,12 +67,12 @@ class Card extends React.Component {
         <Block row={horizontal} card flex style={cardContainer}>
           <>
             <View style={imgContainer}>
-              <Image resizeMode="cover" source={{uri: item.image}} style={imageStyles} />
+              <Image resizeMode="cover" source={{ uri: item.image }} style={imageStyles} />
             </View>
             <Block flex space="between" style={!categoryCard && styles.cardDescription}>
               <Block flex>
                 {title()}
-                {item.subtitle && 
+                {item.subtitle &&
                   <Block flex center>
                     <Text
                       style={{ fontFamily: 'montserrat-regular' }}
@@ -85,7 +83,7 @@ class Card extends React.Component {
                     </Text>
                   </Block>
                 }
-                {this.props.item.description.toString() && !categoryCard && 
+                {this.props.item.description.toString() && !categoryCard &&
                   <Block flex center>
                     <Text
                       style={{ fontFamily: 'montserrat-regular', textAlign: 'left', padding: 10 }}
@@ -184,7 +182,7 @@ const styles = StyleSheet.create({
   verticalStyles: {
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
-    
+
   },
   fullImage: {
     height: 215

@@ -15,20 +15,35 @@ export class ProductCart {
     return ProductCart.instance;
   }
 
-  addCart(addProduct, action) {
-    const index = this.cartProducts.findIndex((item) => item.id === addProduct.id);
-
-    if (index === -1) {
-      action && action([...this.cartProducts, addProduct]);
-      return;
-    }
-
-    this.alertService.show('Alert!', `Product with SKU: ${addProduct.sku} is already added.`);
+  getProductData(product) {
+    return this.cartProducts.find((item) => item.sku === product.sku);
   }
 
-  updateCant(IdProduct, newCant, action) {
+  addCart(addProduct, action) {
+    const getProduct = this.getProductData(addProduct)
+
+    if (!getProduct) {
+      if (!addProduct.hasOwnProperty('quantity')) {
+        addProduct['quantity'] = 1
+      }
+
+      this.cartProducts = [...this.cartProducts, addProduct]
+    } else {
+      const newCant = parseInt(getProduct.quantity) + 1
+      this.cartProducts = this.updateCant(getProduct.sku, newCant)
+    }
+    action && action(this.cartProducts);
+    return this.cartProducts
+  }
+
+  addMultipleCart(products) {
+    products?.forEach((product) => this.addCart(product))
+    return this.cartProducts
+  }
+
+  updateCant(skuProduct, newCant, action) {
     const newArrayProducts = this.cartProducts.map((item) => {
-      if (item.id !== IdProduct) {
+      if (item.sku !== skuProduct) {
         return item;
       }
 
@@ -41,7 +56,7 @@ export class ProductCart {
     action && action(newArrayProducts);
     return newArrayProducts;
   }
-  
+
   changePrice(myPrice = false, action) {
     if (!this.cartProducts || this.cartProducts.length === 0) {
       return;
@@ -58,7 +73,7 @@ export class ProductCart {
   }
 
   totalOrder() {
-    if(!this.cartProducts || this.cartProducts.length === 0){
+    if (!this.cartProducts || this.cartProducts.length === 0) {
       return
     } else {
       const prices = this.cartProducts?.map((product) => {

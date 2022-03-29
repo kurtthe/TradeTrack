@@ -1,30 +1,38 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native';
-import { Block, Text, theme, Button } from 'galio-framework';
+import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 
 const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
 
-const ProductCartComponent = (props) => {
-  const productsInCart = useSelector((state) => state.productsReducer.products);
+const ProductCartComponent = ({ product, bought }) => {
+
+  const productsInCart = useSelector((state) => (
+    (!bought) ? state.productsReducer.products : state.preCartReducer.products));
+
   const dispatch = useDispatch();
 
   const productCart = ProductCart.getInstance(productsInCart);
 
   const handleUpdateQuantity = (newCant) => {
-    const newArrayCant = productCart.updateCant(props.product.id, newCant);
-    dispatch(updateProducts(newArrayCant));
+    const newArrayCant = productCart.updateCant(product.sku, newCant);
+    if (!bought) {
+      dispatch(updateProducts(newArrayCant));
+      return
+    }
+    dispatch(updatePreOrder(newArrayCant));
   };
 
   const getPriceProduct = () => {
-    const price = props.product.myPrice ? props.product.rrp : props.product.cost_price;
-    const totalPrice = parseFloat(price) * parseFloat(props.product.quantity);
+    const price = product.myPrice ? product.rrp : product.cost_price;
+    const totalPrice = parseFloat(price) * parseFloat(product.quantity);
 
     return formatMoney.format(totalPrice);
   };
@@ -37,39 +45,34 @@ const ProductCartComponent = (props) => {
   return (
     <Block card shadow style={styles.product}>
       <Block flex row>
-        <Image source={{ uri: props.product.cover_image }} style={styles.imageHorizontal} />
+        <Image source={{ uri: product.cover_image }} style={styles.imageHorizontal} />
         <Block flex style={styles.productDescription}>
           <Block row>
             <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
-            <Text color={nowTheme.COLORS.INFO}>{props.product.sku}</Text>
+            <Text color={nowTheme.COLORS.INFO}>{product.sku}</Text>
           </Block>
 
           <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-            {props.product.name}
+            {product.name}
           </Text>
-          <Block flex left row space="between">
-            <Text
-              style={{ fontWeight: 'bold', marginTop: 10 }}
-              color={nowTheme.COLORS.ORANGE}
-              size={20}
-            >
-              {getPriceProduct()}
-            </Text>
-            {props.previusProduct ? (
-              <Button
-                color="warning"
-                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 14, color: '#0E3A90' }}
-                style={styles.buttonOrder}
-              >
-                Re-Order
-              </Button>
-            ) : (
-              <QuantityCounterWithInput
-                delete={() => handleDelete(props.product.id)}
-                quantity={props.product.quantity}
-                quantityHandler={(cant) => handleUpdateQuantity(cant)}
-              />
-            )}
+          <Block style={(!bought ? styles.productCart : styles.productBought)}>
+            {
+              (!bought) && (
+                <Text
+                  style={{ fontWeight: 'bold', marginTop: 10 }}
+                  color={nowTheme.COLORS.ORANGE}
+                  size={20}
+                >
+                  {getPriceProduct()}
+                </Text>
+              )
+            }
+            <QuantityCounterWithInput
+              delete={() => handleDelete(product.id)}
+              quantity={product.quantity}
+              quantityHandler={(cant) => handleUpdateQuantity(cant)}
+              bought={bought}
+            />
           </Block>
         </Block>
       </Block>
@@ -111,6 +114,16 @@ const styles = StyleSheet.create({
     width: '35%',
     height: 30,
   },
+  productCart: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  productBought: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  }
 });
 
 export default ProductCartComponent;
