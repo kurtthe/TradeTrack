@@ -7,7 +7,6 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { updatePreOrder } from '@core/module/store/cart/preCart';
 import { useSelector, useDispatch } from 'react-redux';
-import Toast from '@core/services/toast.service';
 
 const OrdersBought = ({ route }) => {
   const productsInCart = useSelector((state) => state.productsReducer.products);
@@ -23,8 +22,6 @@ const OrdersBought = ({ route }) => {
     const mappingData = () => {
       const dataProduct = products?.items?.map((item) => {
 
-        console.log("=>item.default_quantity",item.item.default_quantity)
-        
         const priceProduct = clientFriendly ? item.rrp : item.cost_price;
         return {
           ...item.product,
@@ -42,13 +39,12 @@ const OrdersBought = ({ route }) => {
 
     const newProducts = productCart.addMultipleCart(productsToCart)
     dispatch(updateProducts(newProducts))
-    Toast.show('Product added!')
   }
 
   return (
     <Block style={styles.container}>
       <ListCart cartProducts={productsToCart} messageCartEmpty='No have products in this order' bought={true} />
-      {(products?.items?.length > 0) ? (<Block style={styles.footer}>
+      {(productsToCart?.length > 0) ? (<Block style={styles.footer}>
         <Button
           shadowless
           color={nowTheme.COLORS.INFO}

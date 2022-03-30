@@ -14,8 +14,12 @@ const formatMoney = FormatMoneyService.getInstance();
 
 const ProductCartComponent = ({ product, bought }) => {
 
-  const productsInCart = useSelector((state) => (
-    (!bought) ? state.productsReducer.products : state.preCartReducer.products));
+  const productsInCart = useSelector((state) => {
+    if (!bought) {
+      return state.productsReducer.products
+    }
+    return state.preCartReducer.products
+  });
 
   const dispatch = useDispatch();
 
