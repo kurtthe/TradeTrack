@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, StyleSheet, FlatList } from 'react-native'
+import { Dimensions, StyleSheet, FlatList, Platform } from 'react-native'
 import ProductCart from '@custom-elements/ProductCart';
 import { Ionicons } from '@expo/vector-icons';
 import { Block, Text } from 'galio-framework';
@@ -26,7 +26,7 @@ const ListCart = (props) => {
       renderItem={renderProducts}
       keyExtractor={(item, index) => `${index}-${item.id}`}
       ListEmptyComponent={renderEmpty}
-      style={{ width: width }}
+      style={{ width: width, height: Platform.OS == 'ios' ? '80%' : '84%'}}
     />
   )
 }
