@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { connect } from 'react-redux';
@@ -74,13 +74,11 @@ class Cart extends React.Component {
   };
   
   renderCurrentOrder = () => (
-    <Block style={{ height: hp('65%') }}>
       <ListCart cartProducts={this.props.cartProducts} />
-    </Block>
   );
 
   renderPreviousOrder = () => (
-    <Block style={{ height: hp('70%') }}>
+    <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%')  }}>
       <ListData
         endpoint={endPoints.orders}
         children={<PreviousOrder data={this.props.orders} />}
@@ -96,7 +94,6 @@ class Cart extends React.Component {
     const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST) ' : 'Total (ex-GST)';
 
     return (
-      <TouchableWithoutFeedback >
         <Block row style={styles.detailOrders}>
           <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
 
@@ -111,7 +108,6 @@ class Cart extends React.Component {
             </Text>
           </Button>
         </Block>
-      </TouchableWithoutFeedback>
     );
   };
 
@@ -150,6 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: width,
+    height: 60,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     shadowColor: 'black',
