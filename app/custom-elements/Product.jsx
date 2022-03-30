@@ -19,7 +19,6 @@ import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import Toast from '@core/services/toast.service';
 
 const formatMoney = FormatMoneyService.getInstance();
 
@@ -50,7 +49,6 @@ const Product = (props) => {
     };
     const productAdd = productCart.addCart(addProduct);
     dispatch(updateProducts(productAdd))
-    Toast.show('Product added!')
   };
 
   const onProductPressed = async (productItem) => {
