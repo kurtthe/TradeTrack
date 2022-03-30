@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.2",
+    "version": "1.4.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -24,11 +24,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1.4.2"
+      "buildNumber": "1.4.3"
     },
     "android": {
       "package": "com.tradetrak.Burdens",
-      "versionCode": 4,
+      "versionCode": 6,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBo1S1NNk3JpmZaiPM_kZSq0yz0vVbf194"
