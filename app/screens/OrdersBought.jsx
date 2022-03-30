@@ -22,11 +22,16 @@ const OrdersBought = ({ route }) => {
   useEffect(() => {
     const mappingData = () => {
       const dataProduct = products?.items?.map((item) => {
+
+        console.log("=>item.default_quantity",item.item.default_quantity)
+        
         const priceProduct = clientFriendly ? item.rrp : item.cost_price;
-        if(!item.product.hasOwnProperty('quantity')){
-          item.product['quantity'] = 1
+        return {
+          ...item.product,
+          myPrice: clientFriendly,
+          price: priceProduct,
+          quantity: item.item.default_quantity
         }
-        return { ...item.product, myPrice: clientFriendly, price: priceProduct}
       })
       dispatch(updatePreOrder(dataProduct))
     }
