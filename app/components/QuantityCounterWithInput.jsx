@@ -38,7 +38,7 @@ const QuantityCounterWithInput = (props) => {
       );
     }
 
-  }, [quantity, props.quantity]);
+  }, [quantity]);
 
   const plusCounter = () => {
     const quantity1 = quantity;
