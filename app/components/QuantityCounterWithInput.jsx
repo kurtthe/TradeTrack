@@ -13,12 +13,10 @@ const sizeConstant =
       : 40;
 
 const QuantityCounterWithInput = (props) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(props.quantity);
 
   useEffect(() => {
 
-    const initialState=()=>setQuantity(props.quantity)
-    
     if (quantity == 0 && !props.product && !props.bought) {
       Alert.alert(
         'Are you sure you want to remove the product for your cart?',
@@ -40,8 +38,7 @@ const QuantityCounterWithInput = (props) => {
       );
     }
 
-    initialState()
-  }, [quantity, props.quantity]);
+  }, [quantity]);
 
   const plusCounter = () => {
     const quantity1 = quantity;
@@ -68,6 +65,11 @@ const QuantityCounterWithInput = (props) => {
     props.delete();
   };
 
+  const handleChangeText = (cantProducts) => {
+    setQuantity(cantProducts)
+    props.quantityHandler(cantProducts);
+  }
+
   return (
     <Block row center>
       <Button shadowless style={styles.quantityButtons} color={'#f0f0f0'} onPress={minusCounter}>
@@ -77,7 +79,7 @@ const QuantityCounterWithInput = (props) => {
         textAlign="center"
         keyboardType="number-pad"
         value={quantity?.toString()}
-        onChangeText={(q) => setQuantity(Number(q))}
+        onChangeText={(q) => handleChangeText(parseInt(q))}
       />
       <Button
         shadowless
