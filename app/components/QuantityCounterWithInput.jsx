@@ -66,8 +66,14 @@ const QuantityCounterWithInput = (props) => {
   };
 
   const handleChangeText = (cantProducts) => {
-    setQuantity(cantProducts)
-    props.quantityHandler(cantProducts);
+
+    if(cantProducts === ''){
+      return
+    }
+
+    const cantValue = parseInt(cantProducts)
+    setQuantity(cantValue)
+    props.quantityHandler(cantValue);
   }
 
   return (
@@ -79,7 +85,7 @@ const QuantityCounterWithInput = (props) => {
         textAlign="center"
         keyboardType="number-pad"
         value={quantity?.toString()}
-        onChangeText={(q) => handleChangeText(parseInt(q))}
+        onChangeText={(q) => handleChangeText(q)}
       />
       <Button
         shadowless
@@ -99,6 +105,8 @@ var styles = StyleSheet.create({
   quantityButtons: {
     width: sizeConstant,
     height: sizeConstant,
+    marginLeft:20,
+    marginRight:10
   },
   quantityTexts: {
     fontWeight: 'bold',
