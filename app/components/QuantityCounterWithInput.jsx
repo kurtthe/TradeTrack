@@ -105,6 +105,8 @@ var styles = StyleSheet.create({
   quantityButtons: {
     width: sizeConstant,
     height: sizeConstant,
+    marginLeft:20,
+    marginRight:10
   },
   quantityTexts: {
     fontWeight: 'bold',
