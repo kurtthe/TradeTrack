@@ -24,11 +24,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1.4.3"
+      "buildNumber": "1.4.4"
     },
     "android": {
       "package": "com.tradetrak.Burdens",
-      "versionCode": 10,
+      "versionCode": 11,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBo1S1NNk3JpmZaiPM_kZSq0yz0vVbf194"
