@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dimensions, StyleSheet, FlatList, Platform } from 'react-native'
 import ProductCart from '@custom-elements/ProductCart';
+import SimpleButton from '@components/SimpleButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Block, Text } from 'galio-framework';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -16,6 +17,11 @@ const ListCart = (props) => {
         <Text style={{ fontFamily: 'montserrat-regular', fontSize: 24 }} color={'#000'}>
           {props.messageCartEmpty || 'Your cart is empty!'}
         </Text>
+        <Block style={{ top: 100 }} middle >
+          <SimpleButton onPress={() => props.navigation.navigate('Products')}>
+            Browse products
+          </SimpleButton>
+        </Block>
       </Block>
     );
   }
