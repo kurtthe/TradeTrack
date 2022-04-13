@@ -15,6 +15,9 @@ import { Images, nowTheme } from '@constants/index';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { store } from '@core/module/store/index';
 import { Provider } from 'react-redux';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from '@shared/lib'
+
 // cache app images
 const assetImages = [
   Images.Onboarding,
@@ -76,15 +79,17 @@ export default class App extends React.Component {
       return (
         <SafeAreaView style={styles.safeArea}>
           <NavigationContainer>
-            <Provider store={store}>
-              <GalioProvider theme={nowTheme}>
-                <PaperProvider theme={theme}>
-                  <Block flex>
-                    <AppStack />
-                  </Block>
-                </PaperProvider>
-              </GalioProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+              <Provider store={store}>
+                <GalioProvider theme={nowTheme}>
+                  <PaperProvider theme={theme}>
+                    <Block flex>
+                      <AppStack />
+                    </Block>
+                  </PaperProvider>
+                </GalioProvider>
+              </Provider>
+            </QueryClientProvider>
           </NavigationContainer>
         </SafeAreaView>
 
