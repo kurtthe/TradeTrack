@@ -26,6 +26,7 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
+      company: '',
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -38,6 +39,10 @@ class Home extends React.Component {
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
+    const dataHeader = await this.getDataPetition.getInfoWithHeaders(endPoints.news);
+    this.setState({
+      company: dataHeader.headers['tradetrak-company'],
+    })
   }
 
   _onRefresh = () => {
@@ -62,7 +67,7 @@ class Home extends React.Component {
             />
           }
         >
-          <LiveBalance button={true} />
+          <LiveBalance button={true} company={this.state.company}/>
           <ListInvoices data={this.props.invoices} title={true} />
           
           <Block style={styles.cardHeader}>
