@@ -20,15 +20,28 @@ const ListProducts = (props) => {
       );
     }
 
-    return props.data.map((item) => 
-      <Product 
-        key={item.id} 
-        product={item} 
-        myPrice={props.myPrice} 
-        handleNewPrice={props.handleNewPrice} 
-        isLoadingNewPrice={props.isLoadingNewPrice}
-      />);
-  };
+    return props.data.map((item) => {
+      if (props.isAllProducts) {
+        return (<Product
+          key={item.id}
+          product={item}
+          myPrice={props.myPrice}
+          handleNewPrice={props.handleNewPrice}
+          isLoadingNewPrice={props.isLoadingNewPrice}
+        />)
+      }
+
+      return item.products?.map((itemProductsCategory) => (
+        <Product
+          key={itemProductsCategory.id}
+          product={itemProductsCategory}
+          myPrice={props.myPrice}
+          handleNewPrice={props.handleNewPrice}
+          isLoadingNewPrice={props.isLoadingNewPrice}
+        />
+      ))
+    });
+  }
 
   return (
     <ScrollView horizontal={false} style={{ bottom: 10 }}>
