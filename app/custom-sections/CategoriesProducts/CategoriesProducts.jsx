@@ -10,9 +10,11 @@ const CategoriesProducts = (props) => {
 
   const styles = makeStyles(theme)
 
-  const handleCategory = () => {
+  const handleCategory = (item) => {
     props.navigation.navigate('Category', {
-      headerTitle: 'All Products',
+      headerTitle: `${item.name}`,
+      allProducts: item.name === cardInfo.name,
+      category: item
     })
   }
 
@@ -29,6 +31,7 @@ const CategoriesProducts = (props) => {
       <CategoryItem
         title={cardInfo.name}
         image={cardInfo.image}
+        onPress={() => handleCategory(cardInfo)}
       />
       <FlatList
         data={categories}
