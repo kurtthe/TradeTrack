@@ -49,9 +49,7 @@ class TProducts extends React.Component {
             />
           </Block>
 
-          <CategoriesProducts
-            navigation={this.props.navigation}
-          />
+          <CategoriesProducts/>
         </ScrollView>
       </Block>
     );

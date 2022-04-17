@@ -4,15 +4,23 @@ import { Block, theme } from 'galio-framework';
 import { makeStyles } from './CategoriesProducts.styles'
 import { categories, cardInfo } from './CategoriesProducts.model'
 import { CategoryItem } from './components'
+import { withNavigation } from '@react-navigation/compat';
 
-const CategoriesProducts = ({ navigation }) => {
+const CategoriesProducts = (props) => {
 
   const styles = makeStyles(theme)
+
+  const handleCategory = () => {
+    props.navigation.navigate('Category', {
+      headerTitle: 'All Products',
+    })
+  }
 
   const renderCategory = ({ item }) => (
     <CategoryItem
       title={item.name}
       image={item.image}
+      onPress={() => handleCategory(item)}
     />
   )
 
@@ -32,4 +40,4 @@ const CategoriesProducts = ({ navigation }) => {
   )
 }
 
-export default CategoriesProducts
+export default withNavigation(CategoriesProducts)

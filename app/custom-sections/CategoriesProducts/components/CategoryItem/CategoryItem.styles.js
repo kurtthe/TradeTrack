@@ -9,7 +9,8 @@ export const makeStyles = () =>
       marginVertical: theme.SIZES.BASE,
       marginHorizontal: 5,
       borderWidth: 0,
-      marginBottom: 4
+      marginBottom: 4,
+      flex: 1,
     },
     cardTitle: {
       fontFamily: 'montserrat-bold',
