@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
+import { nowTheme } from '@constants';
 
-export const makeStyles = () =>
+export const makeStyles = (theme) =>
   StyleSheet.create({
     switchBlock: {
       paddingHorizontal: theme.SIZES.BASE * 0.7,
@@ -20,4 +21,5 @@ export const makeStyles = () =>
     group: {
       padding: 14,
     },
+    
   });
