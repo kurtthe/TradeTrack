@@ -1,13 +1,12 @@
-import {images} from '@assets/imgs/categories'
+import { images } from '@assets/imgs/categories'
 
 export const cardInfo = {
-  title: 'All products',
-  image: 'https://live.staticflickr.com/65535/51356873868_2db763db5b_w.jpg',
-  description: 'Bathroom',
-  cta: 'View article',
-};
+  name: 'All products',
+  image: { uri: 'https://live.staticflickr.com/65535/51356873868_2db763db5b_w.jpg' },
+}
 
 export const categories = [
+
   {
     id: 3189,
     name: "PVC",

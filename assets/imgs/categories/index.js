@@ -1,5 +1,5 @@
 export const images = {
-  hot_water: require('@assets/imgs/categories/HOT_WATER.pnh'),
+  hot_water: require('@assets/imgs/categories/HOT_WATER.png'),
   pipe: require('@assets/imgs/categories/PIPE.png'),
   pipe_pex: require('@assets/imgs/categories/PIPEPEX.png'),
   poly: require('@assets/imgs/categories/POLY.png'),
