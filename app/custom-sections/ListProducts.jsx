@@ -1,52 +1,64 @@
-import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
 import { Block } from 'galio-framework';
 
 import Product from '@custom-elements/Product';
 import SkeletonProduct from '@custom-elements/skeletons/Product';
 
 const ListProducts = (props) => {
-  const putProducts = () => {
-    if (props.data.length === 0 && !props.isEmpty) {
-      return (
-        <>
-          <SkeletonProduct />
-          <SkeletonProduct />
-          <SkeletonProduct />
-          <SkeletonProduct />
-          <SkeletonProduct />
-          <SkeletonProduct />
-        </>
-      );
+  const [dataProducts, setDataProducts] = useState([])
+
+  useEffect(() => {
+    const serialize = () => {
+      if (!props.isAllProducts) {
+        let data = []
+
+        props.data.map((category) => {
+          data = [...data, ...category.products]
+        })
+        setDataProducts(data)
+        return
+      }
+      setDataProducts(props.data)
+
     }
 
-    return props.data.map((item) => {
-      if (props.isAllProducts) {
-        return (<Product
-          key={item.id}
-          product={item}
-          myPrice={props.myPrice}
-          handleNewPrice={props.handleNewPrice}
-          isLoadingNewPrice={props.isLoadingNewPrice}
-        />)
-      }
+    serialize()
+  }, [props.isAllProducts, props.data])
 
-      return item.products?.map((itemProductsCategory) => (
-        <Product
-          key={itemProductsCategory.id}
-          product={itemProductsCategory}
-          myPrice={props.myPrice}
-          handleNewPrice={props.handleNewPrice}
-          isLoadingNewPrice={props.isLoadingNewPrice}
-        />
-      ))
-    });
+  const renderItem = ({ item }) => {
+    return (<Product
+      product={item}
+      myPrice={props.myPrice}
+      handleNewPrice={props.handleNewPrice}
+      isLoadingNewPrice={props.isLoadingNewPrice}
+    />
+    )
   }
 
+  const emptyData = () => (
+    <>
+      <SkeletonProduct />
+      <SkeletonProduct />
+      <SkeletonProduct />
+      <SkeletonProduct />
+      <SkeletonProduct />
+      <SkeletonProduct />
+    </>
+  )
+
+  const putProducts = () => (
+    <FlatList
+      data={dataProducts}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => `${item.id}-${index}`}
+      ListEmptyComponent={emptyData}
+      numColumns={2}
+    />
+  );
+
   return (
-    <ScrollView horizontal={false} style={{ bottom: 10 }}>
-      <Block style={styles.contentProducts}>{putProducts()}</Block>
-    </ScrollView>
+    <Block style={styles.contentProducts}>{putProducts()}</Block>
   );
 };
 

@@ -147,9 +147,10 @@ const Product = (props) => {
 };
 const styles = StyleSheet.create({
   Card: {
+    flex: 1,
     backgroundColor: 'white',
     width: cardWidth,
-    marginHorizontal: '2%',
+    marginHorizontal: 10,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 7 },
     shadowRadius: 10,

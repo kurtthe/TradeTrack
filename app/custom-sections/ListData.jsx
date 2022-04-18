@@ -84,10 +84,8 @@ class ListData extends React.Component {
   };
 
   loadData = (data, _) => {
-    console.log("=>data.headers", data.headers);
-
     this.setState({
-      data: [...data.body],
+      data: [this.state.data, ...data.body],
       page: parseInt(data.headers['x-pagination-current-page']) || 1,
       totalPage: parseInt(data.headers['x-pagination-page-count']) || 2,
       notFound: (!data.body?.length < 1) ? false : this.state.filter,
