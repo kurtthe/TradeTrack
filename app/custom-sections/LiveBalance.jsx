@@ -12,7 +12,7 @@ const formatMoney = FormatMoneyService.getInstance();
 const { width } = Dimensions.get('screen');
 
 const LiveBalance = (props) => {
-  const balance = useSelector((state) => state.liveBalanceReducer)
+  const balance = useSelector((state) => state.liveBalanceReducer);  
 
   return (
     <Block flex card center shadow style={styles.category}>
@@ -27,13 +27,6 @@ const LiveBalance = (props) => {
         }}
       >
         <Block style={styles.categoryTitle}>
-          <Text
-            color={nowTheme.COLORS.TIME}
-            style={{ fontFamily: 'montserrat-bold', paddingLeft: 0 }}
-            size={14}
-          >
-            Balance
-          </Text>
           <Block
             row
             middle
@@ -41,25 +34,7 @@ const LiveBalance = (props) => {
             style={{ marginBottom: theme.SIZES.BASE, paddingLeft: 0, paddingRight: 6 }}
           >
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {formatMoney.format(balance.total)}
-            </Text>
-            {props.button ? (
-              <TouchableOpacity
-                style={{ backgroundColor: '#4D76C8', padding: 5, borderRadius: 7 }}
-                onPress={() => props.navigation.navigate('Account')}
-              >
-                <MaterialIcons name="request-quote" color={theme.COLORS.WHITE} size={32} />
-              </TouchableOpacity>
-            ) : null}
-          </Block>
-          <Block row middle space="between" style={styles.bottomView}>
-            <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
-              {' '}
-              Overdue Balance{' '}
-            </Text>
-            <Text size={14} bold color={theme.COLORS.WHITE} style={{ left: 0 }}>
-              {' '}
-              {formatMoney.format(balance.overdue)}{' '}
+              {props.company}
             </Text>
           </Block>
         </Block>
