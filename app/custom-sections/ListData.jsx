@@ -23,7 +23,7 @@ class ListData extends React.Component {
       loadingMoreData: false,
       showLoadMore: true,
       page: 1,
-      totalPage:2,
+      totalPage: 2,
       urlPetition: null,
       filter: false,
       isLoadingNewPrice: false,
@@ -83,9 +83,11 @@ class ListData extends React.Component {
     }
   };
 
-  loadData = (data,_) => {
+  loadData = (data, _) => {
+    console.log("=>data.headers", data.headers);
+
     this.setState({
-      data: data.body,
+      data: [...data.body],
       page: parseInt(data.headers['x-pagination-current-page']) || 1,
       totalPage: parseInt(data.headers['x-pagination-page-count']) || 2,
       notFound: (!data.body?.length < 1) ? false : this.state.filter,
@@ -98,7 +100,7 @@ class ListData extends React.Component {
 
   handleLoadMore = () => {
     const pageCurrent = this.state.page;
-    this.setState({ page: pageCurrent + 1});
+    this.setState({ page: pageCurrent + 1 });
   };
 
   getValuesFilters = (values) => {
@@ -173,7 +175,7 @@ class ListData extends React.Component {
 
     if (this.state.data.length > 5) {
 
-      const {page,totalPage } = this.state
+      const { page, totalPage } = this.state
 
       return (
         <View style={styles.contentButton}>
