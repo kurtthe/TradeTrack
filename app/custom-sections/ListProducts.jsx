@@ -13,9 +13,12 @@ const ListProducts = (props) => {
       if (!props.isAllProducts) {
         let data = []
 
-        props.data.map((category) => {
-          data = [...data, ...category.products]
-        })
+        props.data?.forEach((dataProduct) => {
+          if(dataProduct.products?.length > 0){
+            data = [...dataProduct.products]
+          }
+        });
+
         setDataProducts(data)
         return
       }
