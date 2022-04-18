@@ -18,7 +18,12 @@ const ListCart = (props) => {
           {props.messageCartEmpty || 'Your cart is empty!'}
         </Text>
         <Block style={{ top: 100 }} middle >
-          <SimpleButton onPress={() => props.navigation.navigate('Products')}>
+          <SimpleButton onPress={() => props.navigation.navigate('Products', {
+              screen: 'Category',
+              params: {
+                headerTitle: 'All Products',
+              },
+            })}>
             Browse products
           </SimpleButton>
         </Block>
