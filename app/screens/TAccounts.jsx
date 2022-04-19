@@ -90,7 +90,7 @@ class Account extends React.Component {
             />
           }
         >
-          <LiveBalance company={this.state.company}/>
+          <LiveBalance />
           <Tabs
             optionsTabsRender={[
               {
