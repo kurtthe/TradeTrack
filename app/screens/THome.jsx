@@ -67,7 +67,7 @@ class Home extends React.Component {
             />
           }
         >
-          <LiveBalance button={true} company={this.state.company}/>
+          <LiveBalance company={this.state.company}/>
           <ListInvoices data={this.props.invoices} title={true} />
           
           <Block style={styles.cardHeader}>
