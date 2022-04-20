@@ -40,7 +40,6 @@ const ListProducts = (props) => {
   }
 
 
-
   const putProducts = () => (
     <FlatList
       data={dataProducts}
