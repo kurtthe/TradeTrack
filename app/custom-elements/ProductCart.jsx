@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Image } from 'react-native';
+import { StyleSheet, Dimensions, Image, Animated } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +8,8 @@ import { FormatMoneyService } from '@core/services/format-money.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import QuantityCounterWithInput from '@components/QuantityCounterWithInput';
 import { updatePreOrder } from '@core/module/store/cart/preCart';
+import { Swipeable } from 'react-native-gesture-handler';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get('screen');
 const formatMoney = FormatMoneyService.getInstance();
@@ -46,41 +48,57 @@ const ProductCartComponent = ({ product, bought }) => {
     dispatch(updateProducts(updatedCart));
   };
 
-  return (
-    <Block card shadow style={styles.product}>
-      <Block flex row>
-        <Image source={{ uri: product.cover_image }} style={styles.imageHorizontal} />
-        <Block flex style={styles.productDescription}>
-          <Block row>
-            <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
-            <Text color={nowTheme.COLORS.INFO}>{product.sku}</Text>
-          </Block>
+  const renderRightActions = () => {
+    return (
+      <Block card style={styles.delButton}>
+        <MaterialCommunityIcons
+          name='trash-can-outline'
+          size={26}
+          color='crimson'
+          onPress={() => handleDelete(product.id)}
+        />
+      </Block>
+    );
+  };
+  
 
-          <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
-            {product.name}
-          </Text>
-          <Block style={(!bought ? styles.productCart : styles.productBought)}>
-            {
-              (!bought) && (
-                <Text
-                  style={{ fontWeight: 'bold', marginTop: 10 }}
-                  color={nowTheme.COLORS.ORANGE}
-                  size={20}
-                >
-                  {getPriceProduct()}
-                </Text>
-              )
-            }
-            <QuantityCounterWithInput
-              delete={() => handleDelete(product.id)}
-              quantity={product.quantity}
-              quantityHandler={(cant) => handleUpdateQuantity(cant)}
-              bought={bought}
-            />
+  return (
+    <Swipeable renderRightActions={renderRightActions}>
+      <Block card shadow style={styles.product}>
+        <Block flex row>
+          <Image source={{ uri: product.cover_image }} style={styles.imageHorizontal} />
+          <Block flex style={styles.productDescription}>
+            <Block row>
+              <Text color={nowTheme.COLORS.LIGHTGRAY}>{`SKU `}</Text>
+              <Text color={nowTheme.COLORS.INFO}>{product.sku}</Text>
+            </Block>
+
+            <Text size={14} style={styles.productTitle} color={nowTheme.COLORS.TEXT}>
+              {product.name}
+            </Text>
+            <Block style={(!bought ? styles.productCart : styles.productBought)}>
+              {
+                (!bought) && (
+                  <Text
+                    style={{ fontWeight: 'bold', marginTop: 10 }}
+                    color={nowTheme.COLORS.ORANGE}
+                    size={20}
+                  >
+                    {getPriceProduct()}
+                  </Text>
+                )
+              }
+              <QuantityCounterWithInput
+                delete={() => handleDelete(product.id)}
+                quantity={product.quantity}
+                quantityHandler={(cant) => handleUpdateQuantity(cant)}
+                bought={bought}
+              />
+            </Block>
           </Block>
         </Block>
       </Block>
-    </Block>
+    </Swipeable>
   );
 };
 
@@ -127,7 +145,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end'
-  }
+  },
+  delButton: {
+    width: width * 0.15,
+    marginVertical: theme.SIZES.BASE * 0.5,
+    marginRight: theme.SIZES.BASE,
+    marginLeft: -theme.SIZES.BASE,
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
+    backgroundColor: theme.COLORS.WHITE,
+    justifyContent: 'center', 
+    alignItems:'center',
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: theme.SIZES.BASE / 4,
+    shadowOpacity: 0.1,
+    elevation: 2,
+  },
 });
 
 export default ProductCartComponent;
