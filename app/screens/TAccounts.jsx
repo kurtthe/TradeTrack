@@ -26,6 +26,7 @@ class Account extends React.Component {
     this.state = {
       customStyleIndex: 0,
       refreshing: false,
+      company: "",
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -37,6 +38,10 @@ class Account extends React.Component {
       });
     }
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    const dataHeader = await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance);
+    this.setState({
+      company: dataHeader.headers['tradetrak-company'],
+    })
   }
 
   fetchData = async () => {
