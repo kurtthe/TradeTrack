@@ -23,24 +23,25 @@ export const categories = [
     image: images.pipe_pex
   },
   {
+    id: 3171,
+    name: "POLY",
+    image: images.poly
+  },
+  {
     id: 3404,
     name: "VALVES",
     image: images.values
-  },
-  {
-    id: 3234,
-    name: "ROOFING (EXCL FLASHINGS)",
-    image: images.roofing
   },
   {
     id: 3069,
     name: "HOT WATER",
     image: images.hot_water
   },
+  
   {
-    id: 3171,
-    name: "POLY",
-    image: images.poly
+    id: 3234,
+    name: "ROOFING (EXCL FLASHINGS)",
+    image: images.roofing
   },
   {
     id: 3010,

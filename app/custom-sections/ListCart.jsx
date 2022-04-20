@@ -5,6 +5,7 @@ import SimpleButton from '@components/SimpleButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Block, Text } from 'galio-framework';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {cardInfo} from './CategoriesProducts/CategoriesProducts.model'
 const { width } = Dimensions.get('screen');
 
 const ListCart = (props) => {
@@ -21,7 +22,9 @@ const ListCart = (props) => {
           <SimpleButton onPress={() => props.navigation.navigate('Products', {
               screen: 'Category',
               params: {
-                headerTitle: 'All Products',
+                headerTitle: cardInfo.name,
+                allProducts: true,
+                item:cardInfo
               },
             })}>
             Browse products

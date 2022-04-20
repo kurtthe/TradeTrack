@@ -60,19 +60,9 @@ class ListData extends React.Component {
   }
 
   getPetitionData = async () => {
-    if (this.props.isEmpty) {
-      this.setState({
-        data: [],
-        notFound: false,
-        loadingMoreData: false,
-        showLoadMore: false,
-      });
-      return;
-    }
-
     this.setState({ loadingMoreData: true });
 
-    if (!!this.state.urlPetition && !this.props.isEmpty) {
+    if (!!this.state.urlPetition) {
       await this.getDataPetition.getInfoWithHeaders(
         this.state.urlPetition,
         this.loadData,
@@ -84,8 +74,11 @@ class ListData extends React.Component {
   };
 
   loadData = (data, _) => {
+    const currentData = this.state.data;
+    const newData = [...currentData, ...data.body]
+
     this.setState({
-      data: [this.state.data, ...data.body],
+      data: newData,
       page: parseInt(data.headers['x-pagination-current-page']) || 1,
       totalPage: parseInt(data.headers['x-pagination-page-count']) || 2,
       notFound: (!data.body?.length < 1) ? false : this.state.filter,
@@ -171,9 +164,8 @@ class ListData extends React.Component {
       return null;
     }
 
-    if (this.state.data.length > 5) {
-
-      const { page, totalPage } = this.state
+    const { page, totalPage } = this.state
+    if (this.state.data.length > 5 && page < totalPage) {
 
       return (
         <View style={styles.contentButton}>
@@ -199,14 +191,14 @@ class ListData extends React.Component {
         <View style={styles.container}>
           <View>{this.renderFilter()}</View>
           <View>
-            {this.state.data.length === 0 && !this.props.isEmpty && !this.state.loadingMoreData ? (
+            {this.state.data.length === 0 && !this.state.loadingMoreData ? (
               this.renderNotFound()
             ) : (
               <>
                 <View
                   style={[
                     styles.content,
-                    { backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white' },
+                    { backgroundColor: nowTheme.COLORS.BACKGROUND },
                   ]}
                 >
                   {cloneElement(children, { data: this.state.data, handleNewPrice: this.getNewPrice, isLoadingNewPrice: this.state.isLoadingNewPrice })}
