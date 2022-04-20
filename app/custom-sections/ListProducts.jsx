@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { Block } from 'galio-framework';
 
 import Product from '@custom-elements/Product';
-import SkeletonProduct from '@custom-elements/skeletons/Product';
+import Loading from '@custom-elements/Loading';
 
 const ListProducts = (props) => {
   const [dataProducts, setDataProducts] = useState([])
@@ -14,7 +14,7 @@ const ListProducts = (props) => {
         let data = []
 
         props.data?.forEach((dataProduct) => {
-          if(dataProduct.products?.length > 0){
+          if (dataProduct.products?.length > 0) {
             data = [...dataProduct.products]
           }
         });
@@ -39,23 +39,14 @@ const ListProducts = (props) => {
     )
   }
 
-  const emptyData = () => (
-    <>
-      <SkeletonProduct />
-      <SkeletonProduct />
-      <SkeletonProduct />
-      <SkeletonProduct />
-      <SkeletonProduct />
-      <SkeletonProduct />
-    </>
-  )
+
 
   const putProducts = () => (
     <FlatList
       data={dataProducts}
       renderItem={renderItem}
       keyExtractor={(item, index) => `${item.id}-${index}`}
-      ListEmptyComponent={emptyData}
+      ListEmptyComponent={<Loading />}
       numColumns={2}
     />
   );
