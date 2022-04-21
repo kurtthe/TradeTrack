@@ -171,11 +171,6 @@ class FilterProducts extends Component {
         <View style={styles.container}>
           <View style={styles.contentFilters}>
             <FilterButton
-              text={(this.state.categoryActive)?'Clear': 'Filters'}
-              onPress={() => this.handleResetFilter()}
-              icon={(this.state.categoryActive)?require('@assets/nuk-icons/png/2x/clear.png'):require('@assets/nuk-icons/png/2x/filter.png')}
-            />
-            <FilterButton
               text={'Category'}
               onPress={() => {
                 actionSheetRef.current?.setModalVisible();
@@ -186,18 +181,27 @@ class FilterProducts extends Component {
               isActive={this.state.categoryActive}
             />
             {this.state.categoryActive && (
-              <FilterButton
-                text={'Sub Category'}
-                onPress={() => {
-                  if (this.state.noSubCategoriesFound) {
-                    this.alertService.show('Alert!', 'No sub categories found');
-                    return;
-                  }
-                  actionSheetRef2.current?.setModalVisible();
-                }}
-                isActive={this.state.subCategoryActive}
-              />
+              <>
+                <FilterButton
+                  text={'Sub Category'}
+                  onPress={() => {
+                    if (this.state.noSubCategoriesFound) {
+                      this.alertService.show('Alert!', 'No sub categories found');
+                      return;
+                    }
+                    actionSheetRef2.current?.setModalVisible();
+                  }}
+                  isActive={this.state.subCategoryActive}
+                />
+                <FilterButton
+                  text='Clear'
+                  onPress={() => this.handleResetFilter()}
+                  icon={require('@assets/nuk-icons/png/2x/clear.png')}
+                />
+              </>
             )}
+
+            
           </View>
         </View>
 
