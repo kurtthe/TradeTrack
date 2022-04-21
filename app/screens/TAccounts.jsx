@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, SafeAreaView, RefreshControl} from 'react-native';
+import { ScrollView, SafeAreaView, RefreshControl } from 'react-native';
 import { Block } from 'galio-framework';
 import { nowTheme } from '@constants';
 
@@ -26,6 +26,7 @@ class Account extends React.Component {
     this.state = {
       customStyleIndex: 0,
       refreshing: false,
+      company: "",
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -37,6 +38,10 @@ class Account extends React.Component {
       });
     }
     await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    const dataHeader = await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance);
+    this.setState({
+      company: dataHeader.headers['tradetrak-company'],
+    })
   }
 
   fetchData = async () => {
@@ -45,9 +50,9 @@ class Account extends React.Component {
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     this.fetchData().then(() => {
-      this.setState({refreshing: false});
+      this.setState({ refreshing: false });
     });
   }
 
@@ -74,10 +79,10 @@ class Account extends React.Component {
     </Block>
   );
 
-   render() {
+  render() {
     return (
       <SafeAreaView>
-        <ScrollView 
+        <ScrollView
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
@@ -98,7 +103,7 @@ class Account extends React.Component {
               },
             ]}
             tabIndexSelected={this.state.customStyleIndex}
-            changeIndexSelected={(index)=>this.setState({customStyleIndex: index})}
+            changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
           />
         </ScrollView>
       </SafeAreaView>
@@ -112,7 +117,7 @@ const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
 });
 
-const mapDispatchToProps = { getStatements, getBalance, getInvoices};
+const mapDispatchToProps = { getStatements, getBalance, getInvoices };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
 
