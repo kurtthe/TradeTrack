@@ -30,9 +30,11 @@ const SwitchComponent = (props) => {
           <Text size={16} style={styles.title}>
             {props.title}
           </Text>
-          <Text style={{ fontFamily: 'montserrat-regular' }} size={14.5} color={'#848893'}>
+          {props.description && (
+            <Text style={{ fontFamily: 'montserrat-regular' }} size={14.5} color={'#848893'}>
             {props.description}
-          </Text>
+          </Text>)}
+
         </Block>
         <Block center style={{ width: '20%', alignItems: 'flex-end' }}>
           {renderSwitch()}

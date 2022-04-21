@@ -37,7 +37,7 @@ class SearchProduct extends React.Component {
   }
 
   changeSearchText = (text) => {
-    this.setState({ search: text, empty: text == '' })
+    this.setState({ search: text, empty: text === '' })
   };
 
   debouncedOnChange = debounce(this.changeSearchText, 300)
@@ -58,10 +58,10 @@ class SearchProduct extends React.Component {
         {(!this.state.empty) && (
           <Block style={{ height: "90%" }}>
             <ListData
-              isEmpty={this.state.empty}
+              searchFilter={true}
               perPage={20}
               endpoint={`${this.state.urlProducts}&search=${this.state.search}`}
-              children={<ListProducts myPrice={this.props.clientFriendly} />
+              children={<ListProducts myPrice={this.props.clientFriendly} isAllProducts={true}/>
               }
             />
           </Block>

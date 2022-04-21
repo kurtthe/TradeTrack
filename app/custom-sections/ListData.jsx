@@ -9,9 +9,6 @@ import FilterProducts from '@custom-elements/filters/FilterProducts';
 import { endPoints } from '@shared/dictionaries/end-points';
 
 import nowTheme from '@constants/Theme';
-import { isEmpty } from 'rxjs';
-import { array } from 'prop-types';
-
 const { width } = Dimensions.get('screen');
 
 class ListData extends React.Component {
@@ -26,9 +23,11 @@ class ListData extends React.Component {
       loadingMoreData: false,
       showLoadMore: true,
       page: 1,
+      totalPage: 2,
       urlPetition: null,
       filter: false,
-      isLoadingNewPrice: false
+      isLoadingNewPrice: false,
+      headers: {}
     };
 
     this.getDataPetition = GetDataPetitionService.getInstance();
@@ -43,7 +42,7 @@ class ListData extends React.Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    if (this.state.perPageData !== prevState.perPageData) {
+    if (this.state.page !== prevState.page) {
       await this.getPetitionData();
       return;
     }
@@ -61,20 +60,10 @@ class ListData extends React.Component {
   }
 
   getPetitionData = async () => {
-    if (this.props.isEmpty) {
-      this.setState({
-        data: [],
-        notFound: false,
-        loadingMoreData: false,
-        showLoadMore: false,
-      });
-      return;
-    }
-
     this.setState({ loadingMoreData: true });
 
-    if (!!this.state.urlPetition && !this.props.isEmpty) {
-      await this.getDataPetition.getInfo(
+    if (!!this.state.urlPetition) {
+      await this.getDataPetition.getInfoWithHeaders(
         this.state.urlPetition,
         this.loadData,
         this.state.page,
@@ -84,25 +73,25 @@ class ListData extends React.Component {
     }
   };
 
-  loadData = (data) => {
+  loadData = (data, _) => {
+    const currentData = this.state.data;
+    const newData = [...currentData, ...data.body]
+
     this.setState({
-      data: data,
-      notFound: (!data?.length < 1)? false: this.state.filter ,
+      data: newData,
+      page: parseInt(data.headers['x-pagination-current-page']) || 1,
+      totalPage: parseInt(data.headers['x-pagination-page-count']) || 2,
+      notFound: (!data.body?.length < 1) ? false : this.state.filter,
       loadingMoreData: false,
-      showLoadMore: !data?.length < 1,
+      showLoadMore: data.body?.length > 5,
     });
 
-    this.props.actionData && this.props.actionData(data);
+    this.props.actionData && this.props.actionData(data.body);
   };
 
   handleLoadMore = () => {
-    if (this.state.perPageData >= 100) {
-      const oldPage = this.state.page;
-      this.setState({ page: oldPage + 1, perPageData: 20 });
-      return;
-    }
-    const oldData = this.state.perPageData;
-    this.setState({ perPageData: oldData + 20 });
+    const pageCurrent = this.state.page;
+    this.setState({ page: pageCurrent + 1 });
   };
 
   getValuesFilters = (values) => {
@@ -134,7 +123,7 @@ class ListData extends React.Component {
   };
 
   getNewPrice = async data => {
-    this.setState({isLoadingNewPrice: true})
+    this.setState({ isLoadingNewPrice: true })
     const getNewPrice = await this.generalRequest.get(
       endPoints.newPrice.replace(':id', data),
     );
@@ -157,7 +146,7 @@ class ListData extends React.Component {
       );
     }
 
-    return <Filters getValues={(values) => this.getValuesFilters(values)} hideFilterType={this.props.hideFilterType}/>;
+    return <Filters getValues={(values) => this.getValuesFilters(values)} hideFilterType={this.props.hideFilterType} />;
   };
 
   renderNotFound = () => {
@@ -175,7 +164,9 @@ class ListData extends React.Component {
       return null;
     }
 
-    if (this.state.data.length > 5) {
+    const { page, totalPage } = this.state
+    if (this.state.data.length > 5 && page < totalPage) {
+
       return (
         <View style={styles.contentButton}>
           <Button
@@ -184,7 +175,7 @@ class ListData extends React.Component {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
             style={styles.button}
             loading={this.state.loadingMoreData}
-            disabled={this.state.loadingMoreData}
+            disabled={totalPage === page}
           >
             Load More...
           </Button>
@@ -200,17 +191,17 @@ class ListData extends React.Component {
         <View style={styles.container}>
           <View>{this.renderFilter()}</View>
           <View>
-            {this.state.data.length === 0 && !this.props.isEmpty && !this.state.loadingMoreData ? (
+            {this.state.data.length === 0 && !this.state.loadingMoreData ? (
               this.renderNotFound()
             ) : (
               <>
                 <View
                   style={[
                     styles.content,
-                    { backgroundColor: !this.props.isEmpty ? nowTheme.COLORS.BACKGROUND : 'white' },
+                    { backgroundColor: nowTheme.COLORS.BACKGROUND },
                   ]}
                 >
-                  {cloneElement(children, { data: this.state.data, handleNewPrice: this.getNewPrice, isLoadingNewPrice: this.state.isLoadingNewPrice})}
+                  {cloneElement(children, { data: this.state.data, handleNewPrice: this.getNewPrice, isLoadingNewPrice: this.state.isLoadingNewPrice })}
                 </View>
                 {this.putLoadingMore()}
               </>

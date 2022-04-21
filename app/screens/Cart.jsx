@@ -74,7 +74,7 @@ class Cart extends React.Component {
   };
   
   renderCurrentOrder = () => (
-      <ListCart cartProducts={this.props.cartProducts} />
+      <ListCart cartProducts={this.props.cartProducts} navigation={this.props.navigation} />
   );
 
   renderPreviousOrder = () => (

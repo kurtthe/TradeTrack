@@ -21,17 +21,27 @@ class Category extends React.Component {
 
     this.state = {
       urlProducts: '',
+      isAllProducts: false
     };
   }
 
   async componentDidMount() {
 
-    const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
-    const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
+    const { allProducts, category } = this.props.route.params
+    const newUrl = await this.getUrlProducts(category);
 
     this.setState({
       urlProducts: newUrl,
+      isAllProducts: allProducts
     });
+  }
+
+  getUrlProducts = async (category = null) => {
+    if (!category.hasOwnProperty('id')) {
+      const getIdSuppliers = await this.generalRequest.get(endPoints.suppliers);
+      return endPoints.products.replace(':id', getIdSuppliers.id)
+    }
+    return endPoints.subcategories.replace(':codeCategoryId', category?.id)
   }
 
   render() {
@@ -43,9 +53,9 @@ class Category extends React.Component {
       <Block style={{ width: width }} flex center backgroundColor={nowTheme.COLORS.BACKGROUND}>
         <ListData
           perPage={20}
-          filters={'products'}
+          filters={(this.state.isAllProducts) ? 'products' : null}
           endpoint={this.state.urlProducts}
-          children={<ListProducts myPrice={this.props.clientFriendly} />}
+          children={<ListProducts myPrice={this.props.clientFriendly} isAllProducts={this.state.isAllProducts} />}
         />
       </Block>
     );

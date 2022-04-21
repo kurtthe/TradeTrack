@@ -38,6 +38,8 @@ const Product = (props) => {
   const cartProducts = useSelector((state) => state.productsReducer.products);
   const productCart = ProductCart.getInstance(cartProducts);
   const dispatch = useDispatch();
+  const added = cartProducts.some((element) => element.id === props.product.id);
+
 
   const onAddPressed = async (productItem) => {
     if (productItem.cost_price < 0) {
@@ -136,9 +138,9 @@ const Product = (props) => {
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
             style={styles.buttonAdd}
             onPress={() => onAddPressed(props.product)}
-
+            disabled={added ? true : false}
           >
-            Add
+            {added ? 'Added' : 'Add'}
           </Button>
         </Block>
       </Block>
