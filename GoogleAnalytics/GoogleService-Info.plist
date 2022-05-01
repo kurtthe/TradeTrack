@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBoVfcqIIuKj4uSW75m0ip1pXamaIWEfZI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>824748762199</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.trade.Burdens</string>
+	<key>PROJECT_ID</key>
+	<string>burdens-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>burdens-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:824748762199:ios:56ccab73da73efdbffaf12</string>
+</dict>
+</plist>
