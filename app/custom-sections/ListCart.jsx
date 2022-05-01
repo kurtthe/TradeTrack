@@ -24,7 +24,7 @@ const ListCart = (props) => {
               params: {
                 headerTitle: cardInfo.name,
                 allProducts: true,
-                item:cardInfo
+                category:cardInfo
               },
             })}>
             Browse products
