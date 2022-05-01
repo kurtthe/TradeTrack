@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "824748762199",
+    "project_id": "burdens-app",
+    "storage_bucket": "burdens-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824748762199:android:97bb9eae145eef51ffaf12",
+        "android_client_info": {
+          "package_name": "com.tradetrak.Burdens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824748762199-l58s0onrr5uibu2fc2lv103rm87o67r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmMF92hwduggTUn9RI1JPsPOcDvDegCEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824748762199-l58s0onrr5uibu2fc2lv103rm87o67r8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trade.Burdens"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
