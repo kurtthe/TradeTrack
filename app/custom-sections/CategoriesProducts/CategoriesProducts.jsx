@@ -1,14 +1,12 @@
 import React from 'react'
 import { FlatList } from 'react-native'
-import { Block, theme } from 'galio-framework';
-import { makeStyles } from './CategoriesProducts.styles'
+import { Block } from 'galio-framework';
 import { categories, cardInfo } from './CategoriesProducts.model'
 import { CategoryItem } from './components'
 import { withNavigation } from '@react-navigation/compat';
 
 const CategoriesProducts = (props) => {
 
-  const styles = makeStyles(theme)
 
   const handleCategory = (item) => {
     props.navigation.navigate('Category', {
@@ -27,7 +25,7 @@ const CategoriesProducts = (props) => {
   )
 
   return (
-    <Block flex style={styles.group}>
+    <Block flex >
       <CategoryItem
         title={cardInfo.name}
         image={cardInfo.image}
