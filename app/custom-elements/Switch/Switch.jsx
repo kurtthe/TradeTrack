@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Block, theme, Text } from 'galio-framework';
-import { Switch, Platform, StyleSheet } from 'react-native';
+import { Block, Text } from 'galio-framework';
+import { Switch, Platform } from 'react-native';
 import { nowTheme } from '@constants';
+import { makeStyles } from './Switch.styles'
 
 const SwitchComponent = (props) => {
   const [isChecked, setIsChecked] = useState(false);
-
+  const styles = makeStyles()
   const handleChange = () => {
     setIsChecked(!isChecked);
     props.onChange && props.onChange(isChecked);
@@ -32,8 +33,8 @@ const SwitchComponent = (props) => {
           </Text>
           {props.description && (
             <Text style={{ fontFamily: 'montserrat-regular' }} size={14.5} color={'#848893'}>
-            {props.description}
-          </Text>)}
+              {props.description}
+            </Text>)}
 
         </Block>
         <Block center style={{ width: '20%', alignItems: 'flex-end' }}>
@@ -46,25 +47,6 @@ const SwitchComponent = (props) => {
   return <>{renderSwitch()}</>;
 };
 
-const styles = StyleSheet.create({
-  switchBlock: {
-    paddingHorizontal: theme.SIZES.BASE * 0.7,
-    backgroundColor: theme.COLORS.WHITE,
-    borderRadius: 8,
-  },
-  textBlock: {
-    width: '80%',
-    paddingVertical: theme.SIZES.BASE * 1.3,
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontFamily: 'montserrat-bold',
-    color: nowTheme.COLORS.HEADER,
-    paddingBottom: 5,
-  },
-  group: {
-    padding: 14,
-  },
-});
+
 
 export default SwitchComponent;
