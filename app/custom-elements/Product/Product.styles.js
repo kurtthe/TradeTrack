@@ -18,12 +18,8 @@ export const makeStyles = ()=>
   StyleSheet.create({
     Card: {
       backgroundColor: 'white',
-      width: cardWidth,
-      marginHorizontal: '2%',
-      shadowColor: 'black',
-      shadowOffset: { width: 0, height: 7 },
-      shadowRadius: 10,
-      shadowOpacity: 0.2,
+      flex:1,
+      marginHorizontal: 5,
       padding: 10,
       paddingVertical: theme.SIZES.BASE,
       borderRadius: 5,
@@ -32,6 +28,7 @@ export const makeStyles = ()=>
     image: {
       width: cardWidth * 0.9,
       height: cardHeight * 0.3,
+      resizeMode: 'contain'
     },
     priceGrayText: {
       fontSize: 13,
@@ -50,14 +47,8 @@ export const makeStyles = ()=>
     },
   
     buttonAdd: {
-      width:
-        Platform.OS === 'ios'
-          ? Dimensions.get('window').height < 670
-            ? width - 240
-            : width - 265
-          : Dimensions.get('window').height < 870
-            ? width - 220
-            : width - 300,
-      top: 10,
+      top:10,
+      flexDirection:'row',
+      justifyContent: 'center',
     },
   })
