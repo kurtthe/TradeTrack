@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { Block } from 'galio-framework';
+import { FlatList } from 'react-native';
 
 import Product from '@custom-elements/Product';
 import Loading from '@custom-elements/Loading';
+import { makeStyles } from './ListProduct.styles'
 
 const ListProducts = (props) => {
   const [dataProducts, setDataProducts] = useState([])
+  const styles = makeStyles()
 
   useEffect(() => {
     const serialize = () => {
       if (!props.isAllProducts) {
         let data = []
-
         props.data?.forEach((dataProduct) => {
           if (dataProduct.products?.length > 0) {
             data = [...dataProduct.products]
           }
         });
-
         setDataProducts(data)
         return
       }
       setDataProducts(props.data)
-
     }
 
     serialize()
@@ -39,8 +37,7 @@ const ListProducts = (props) => {
     )
   }
 
-
-  const putProducts = () => (
+  return (
     <FlatList
       data={dataProducts}
       renderItem={renderItem}
@@ -49,19 +46,6 @@ const ListProducts = (props) => {
       numColumns={2}
     />
   );
-
-  return (
-    <Block style={styles.contentProducts}>{putProducts()}</Block>
-  );
 };
-
-const styles = StyleSheet.create({
-  contentProducts: {
-    padding: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  }
-})
 
 export default ListProducts;
