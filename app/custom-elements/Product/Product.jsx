@@ -127,13 +127,12 @@ const Product = (props) => {
 
         </Block>
 
-
       </TouchableWithoutFeedback>
       <Block style={styles.buttonAdd}>
         <Button
           color="warning"
           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
-          
+
           onPress={() => onAddPressed(props.product)}
           disabled={added ? true : false}
         >
