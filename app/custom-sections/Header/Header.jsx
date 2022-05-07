@@ -2,90 +2,33 @@ import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import {
   TouchableOpacity,
-  StyleSheet,
-  Platform,
-  Dimensions,
+
   Keyboard,
   Image,
   View,
 } from 'react-native';
-import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
+import { Button, Block, NavBar, Text, theme } from 'galio-framework';
 
 import Icon from '@components/Icon';
 import Input from '@components/Input';
 import Tabs from '@components/Tabs';
 import nowTheme from '@constants/Theme';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { Ionicons } from '@expo/vector-icons';
 import { DownloadFile } from '@core/services/download-file.service';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
-import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Loading from '@custom-elements/Loading';
+import { makeStyles } from './Header.styles'
+import {
+  DownloadButton,
+  SearchAccount,
+  SearchHome,
+  SearchProducts,
+} from './component'
 
-const { height, width } = Dimensions.get('window');
-const iPhoneX = () =>
-  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
-
-const SearchHome = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity
-    style={([styles.button, style], { zIndex: 300 })}
-    onPress={async () => {
-      await SecureStore.deleteItemAsync('data_user');
-      Keyboard.dismiss();
-      navigation.navigate('Login');
-    }}
-  >
-    <Ionicons name="log-out-outline" color={'#828489'} size={28} />
-  </TouchableOpacity>
-);
-
-const SearchProducts = ({ isWhite, style, navigation, myPrice }) => (
-  <TouchableOpacity
-    style={([styles.button, style], { zIndex: 300 })}
-    onPress={() => {
-      Keyboard.dismiss();
-      navigation.navigate('SearchProducts', {
-        myPrice,
-      });
-    }}
-  >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
-  </TouchableOpacity>
-);
-
-const SearchAccount = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity
-    style={([styles.button, style], { zIndex: 300 })}
-    onPress={() => {
-      Keyboard.dismiss();
-      navigation.navigate('Search');
-    }}
-  >
-    {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
-  </TouchableOpacity>
-);
-
-const CartButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={([styles.button, style], { zIndex: 300, left: -10 })}>
-    <Ionicons name="cart" color={'#828489'} size={25} />
-  </TouchableOpacity>
-);
-
-const ConfigButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 0 }}>
-    <Ionicons name="ellipsis-vertical-sharp" color={'#828489'} size={25} />
-  </TouchableOpacity>
-);
-
-const DownloadButton = (props) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 15 }} onPress={() => props.onPress()}>
-    <Ionicons name="download" color={'#0E3A90'} size={25} />
-  </TouchableOpacity>
-);
-
+const styles = makeStyles()
 class Header extends React.Component {
   textSearch;
   constructor(props) {
@@ -352,126 +295,5 @@ class Header extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    padding: 12,
-    position: 'relative',
-  },
-  title: {
-    width: '150%',
-    fontSize: Dimensions.get('window').height < 670 ? 22 : 26,
-    fontWeight: 'bold',
-    fontFamily: 'montserrat-bold',
-    left: wp('-12.5%'),
-    textAlign: 'center',
-    top: 5.5,
-  },
-  navbar: {
-    paddingVertical: 0,
-    paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
-    zIndex: 5,
-  },
-  shadow: {
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.2,
-    elevation: 3,
-  },
-  shadowless: {
-    elevation: 0,
-    shadowOpacity: 0,
-    shadowOffset: {
-      height: 0,
-    },
-    shadowRadius: 0,
-  },
-  notify: {
-    backgroundColor: nowTheme.COLORS.SUCCESS,
-    borderRadius: 4,
-    height: theme.SIZES.BASE / 2,
-    width: theme.SIZES.BASE / 2,
-    position: 'absolute',
-    top: 9,
-    right: 12,
-  },
-  header: {
-    backgroundColor: theme.COLORS.WHITE,
-  },
-  divider: {
-    borderRightWidth: 0.3,
-    borderRightColor: theme.COLORS.ICON,
-  },
-  search: {
-    height: 48,
-    width: width - 32,
-    marginHorizontal: 16,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: nowTheme.COLORS.BORDER,
-  },
-  options: {
-    marginBottom: 24,
-    marginTop: 10,
-    elevation: 4,
-  },
-  tab: {
-    backgroundColor: theme.COLORS.TRANSPARENT,
-    width: width * 0.35,
-    borderRadius: 0,
-    borderWidth: 0,
-    height: 24,
-    elevation: 0,
-  },
-  tabTitle: {
-    lineHeight: 19,
-    fontWeight: '400',
-    color: nowTheme.COLORS.HEADER,
-  },
-  social: {
-    width: theme.SIZES.BASE * 3.5,
-    height: theme.SIZES.BASE * 3.5,
-    borderRadius: theme.SIZES.BASE * 1.75,
-    justifyContent: 'center',
-  },
-  introImageStyle: {
-    width:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? 100
-          : 120
-        : Dimensions.get('window').height < 595
-        ? 100
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? 120
-        : -120,
-    height:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? 100
-          : 120
-        : Dimensions.get('window').height < 595
-        ? 100
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? 120
-        : -120,
-    resizeMode: 'contain',
-  },
-
-  image: {
-    width: 27.5,
-    height: 27.5,
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: 'contain',
-    marginLeft: -20,
-    top: -10,
-  },
-  options: {
-    padding: theme.SIZES.BASE / 2,
-  },
-});
 
 export default withNavigation(Header);

@@ -1,5 +1,5 @@
-import {StyleSheet, Dimensions} from 'react-native'
-import {  theme } from 'galio-framework';
+import { StyleSheet, Dimensions } from 'react-native'
+import { theme } from 'galio-framework';
 import { nowTheme } from '@constants';
 
 const { width, height } = Dimensions.get('window');
@@ -14,11 +14,11 @@ export const sizeConstant =
       ? 11.5
       : 15;
 
-export const makeStyles = ()=> 
+export const makeStyles = () =>
   StyleSheet.create({
     Card: {
       backgroundColor: 'white',
-      flex:1,
+      flex: 1,
       marginHorizontal: 5,
       padding: 10,
       paddingVertical: theme.SIZES.BASE,
@@ -45,10 +45,10 @@ export const makeStyles = ()=>
             : 15,
       color: nowTheme.COLORS.ORANGE,
     },
-  
+
     buttonAdd: {
-      top:10,
-      flexDirection:'row',
+      top: 10,
+      flexDirection: 'row',
       justifyContent: 'center',
     },
   })
