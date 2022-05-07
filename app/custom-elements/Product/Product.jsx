@@ -64,7 +64,6 @@ const Product = (props) => {
     <Block key={`Card-${props.product.name}`} style={styles.Card}>
       <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
         <Image
-          resizeMode="contain"
           style={styles.image}
           source={{ uri: props.product.cover_image }}
         />
@@ -130,11 +129,11 @@ const Product = (props) => {
 
 
       </TouchableWithoutFeedback>
-      <Block center>
+      <Block style={styles.buttonAdd}>
         <Button
           color="warning"
           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
-          style={styles.buttonAdd}
+          
           onPress={() => onAddPressed(props.product)}
           disabled={added ? true : false}
         >

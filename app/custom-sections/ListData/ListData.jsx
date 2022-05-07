@@ -148,6 +148,7 @@ const ListData = ({
         ListEmptyComponent={renderNotFound}
         numColumns={numColumns}
         ListFooterComponent={putLoadingMore}
+        columnWrapperStyle={styles.listItems}
       />
     </View>
   );

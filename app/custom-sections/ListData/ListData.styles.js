@@ -26,4 +26,9 @@ StyleSheet.create({
     padding: 15,
     marginVertical: theme.SIZES.BASE * 2,
   },
+  listItems:{
+    padding:5,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  }
 })
