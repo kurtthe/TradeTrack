@@ -1,8 +1,14 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native'
 import { theme } from 'galio-framework';
 const { width } = Dimensions.get('window');
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import nowTheme from '@constants/Theme';
 
-export const makeStyles =
+const iPhoneX = () =>
+  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
+
+
+export const makeStyles = () =>
   StyleSheet.create({
     button: {
       padding: 12,

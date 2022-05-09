@@ -2,8 +2,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native'
 import { makeStyles } from './styles'
 import { Ionicons } from '@expo/vector-icons';
+import * as SecureStore from 'expo-secure-store';
 
-export const SearchHome = ({ isWhite, style, navigation }) => {
+export const SearchHome = ({  style, navigation }) => {
   const styles = makeStyles()
   return(
   <TouchableOpacity

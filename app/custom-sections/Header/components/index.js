@@ -1,6 +1,0 @@
-export * from './CarButton'
-export * from './ConfigButton'
-export * from './DownloadButton'
-export * from './SearchAccount'
-export * from './SearchHome'
-export * from './SearchProducts'

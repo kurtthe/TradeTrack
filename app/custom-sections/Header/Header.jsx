@@ -21,12 +21,7 @@ import PdfViewer from '@custom-elements/PdfViewer';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Loading from '@custom-elements/Loading';
 import { makeStyles } from './Header.styles'
-import {
-  DownloadButton,
-  SearchAccount,
-  SearchHome,
-  SearchProducts,
-} from './component'
+import {Icons} from './components/Icons'
 
 const styles = makeStyles()
 class Header extends React.Component {
@@ -73,74 +68,6 @@ class Header extends React.Component {
       showModalBottom: true,
       loadingLoadPdf: false,
     });
-  };
-
-  renderRight = () => {
-    const { white, title, navigation } = this.props;
-
-    switch (title) {
-      case 'Home':
-        return (
-          <View style={{ top: 5.5 }}>
-            <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
-        );
-
-      case 'Products':
-        return (
-          <View style={{ top: 6.5 }}>
-            <SearchProducts
-              key="basket-deals"
-              navigation={navigation}
-              isWhite={white}
-              myPrice={this.props.scene.route.params?.myPrice}
-            />
-          </View>
-        );
-
-      case 'Account':
-        return (
-          <View style={{ top: 5.5 }}>
-            <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
-        );
-
-      case 'Product':
-        return <Block row style={{ paddingTop: 17.5, width: 50 }} />;
-
-      case 'SearchHome':
-        return <SearchHome key="basket-search" navigation={navigation} isWhite={white} />;
-
-      case 'SearchProducts':
-        return <SearchProducts key="basket-search" navigation={navigation} isWhite={white} />;
-
-      case 'Details':
-        return [
-
-          <View style={{ top: 7, width: 50 }}>
-            {this.state.loadingLoadPdf ? (
-              <Loading />
-            ) : (
-              <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
-            )}
-
-            <BottomModal
-              show={this.state.showModalBottom}
-              close={() => this.setState({ showModalBottom: false })}
-              downloadShared={{
-                url: this.props.scene.route.params?.urlDownloadFile,
-              }}
-            >
-              <View style={{ height: hp('80%') }}>
-                <PdfViewer url={this.state.urlFilePdf} />
-              </View>
-            </BottomModal>
-          </View>
-        ];
-
-      default:
-        break;
-    }
   };
 
   renderHome = () => {
@@ -210,7 +137,7 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
+            <Text size={16} style={[styles.tabTitle, { fontFamily: 'montserrat-regular' }]}>
               {optionLeft || 'Trending'}
             </Text>
           </Block>
@@ -224,7 +151,7 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
+            <Text size={16} style={[styles.tabTitle, { fontFamily: 'montserrat-regular' }]}>
               {optionRight || 'Fashion'}
             </Text>
           </Block>
@@ -280,7 +207,13 @@ class Header extends React.Component {
           title={title == 'Home' ? '' : title}
           style={navbarStyles}
           transparent={transparent}
-          right={this.renderRight()}
+          right={
+            <Icons
+              white={white}
+              title={title}
+              navigation={navigation}
+            />
+          }
           rightStyle={{ alignItems: 'center' }}
           left={this.renderHome()}
           leftStyle={{ paddingVertical: 25, flex: 1.7 }}
