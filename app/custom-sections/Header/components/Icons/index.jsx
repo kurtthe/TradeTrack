@@ -1,12 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View } from 'react-native'
 import { DownloadButton } from './DownloadButton'
 import { SearchAccount } from './SearchAccount'
 import { SearchHome } from './SearchHome'
 import { SearchProducts } from './SearchProducts'
 import { Block } from 'galio-framework';
+import Loading from '@custom-elements/Loading';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import BottomModal from '@custom-elements/BottomModal';
+import PdfViewer from '@custom-elements/PdfViewer';
 
 export const Icons = ({ navigation, title, white }) => {
+
+  const [showModalBottom, setShowModalBottom] = useState(false)
+  const [urlFilePdf, setUrlFilePdf] = useState()
+  const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
+  const [generalRequestService] = useState(GeneralRequestService.getInstance())
+
+  const openViewerPdf = async () => {
+    setLoadingLoadPdf(true)
+    const { urlDownloadFile } = this.props.scene.route.params;
+    const result = await generalRequestService.get(urlDownloadFile);
+
+    setShowModalBottom(true)
+    setUrlFilePdf(result)
+    setLoadingLoadPdf(false)
+  };
+  
   const renderRight = () => {
 
     switch (title) {
@@ -52,12 +72,12 @@ export const Icons = ({ navigation, title, white }) => {
             {this.state.loadingLoadPdf ? (
               <Loading />
             ) : (
-              <DownloadButton isWhite={white} onPress={() => this.openViewerPdf()} />
+              <DownloadButton isWhite={white} onPress={() => openViewerPdf()} />
             )}
 
             <BottomModal
-              show={this.state.showModalBottom}
-              close={() => this.setState({ showModalBottom: false })}
+              show={showModalBottom}
+              close={() => setShowModalBottom(false)}
               downloadShared={{
                 url: this.props.scene.route.params?.urlDownloadFile,
               }}
