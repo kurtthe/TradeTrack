@@ -17,7 +17,8 @@ const ListData = ({
   hideFilterType,
   renderItems,
   numColumns,
-  typeData
+  typeData,
+  categorySelected
 }) => {
   const [dataPetition, setDataPetition] = useState([]);
   const [perPageData] = useState(perPage || 12);
@@ -31,7 +32,13 @@ const ListData = ({
   const [getDataPetition] = useState(GetDataPetitionService.getInstance());
   const styles = makeStyles();
 
-  const loadData = (data) => {
+  const loadData = (data, filterData = false) => {
+
+    if (filterData) {
+      const newData = serializeData[filterData](data)
+      setDataPetition(newData);
+      return
+    }
 
     const currentData = dataPetition;
     const newData = serializeData[typeData]([...currentData, ...data.body])
@@ -85,8 +92,8 @@ const ListData = ({
     setParamsEndPoint()
   }, [valuesFilters])
 
-  const getDataFilterProducts = (data = []) => {
-    console.log(data)
+  const getDataFilterProducts = (data = [], typeDataFilter) => {
+    loadData(data, typeDataFilter)
   }
 
 
@@ -99,6 +106,7 @@ const ListData = ({
       return (
         <FilterProducts
           getProducts={(data) => getDataFilterProducts(data)}
+          categorySelected={categorySelected}
         />
       );
     }
