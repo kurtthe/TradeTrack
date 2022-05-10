@@ -61,6 +61,7 @@ const Category = ({ route, clientFriendly, handleNewPrice, isLoadingNewPrice }) 
     <Block style={styles.container} flex center >
       <ListData
         perPage={20}
+        categorySelected={category}
         filters={'products'}
         endpoint={urlProducts}
         renderItems={renderItems}
