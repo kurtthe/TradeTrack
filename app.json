@@ -21,6 +21,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      "@react-native-firebase/app"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
@@ -35,12 +38,8 @@
         "googleMaps": {
           "apiKey": "AIzaSyBo1S1NNk3JpmZaiPM_kZSq0yz0vVbf194"
         }
-      },
-      "plugins": [
-        "@react-native-firebase/app"
-      ]
+      }
     },
-    
     "description": "Coded by Digital Basis"
   }
 }
