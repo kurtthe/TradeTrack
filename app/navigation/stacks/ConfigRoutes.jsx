@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@custom-sections/Header';
 
-const putHeader = (navigation,scene, header=false) => {
-  if(!header){
+const putHeader = (navigation, scene, header = false) => {
+
+  if (!header) {
     return null;
   }
 
+  const [headerTitle] = useState(
+    (scene.route.params !== undefined && scene.route.params?.hasOwnProperty('headerTitle')) ? scene.route.params.headerTitle : header.title
+  );
+
   return (
     <Header
-      title={header.title}
+      title={headerTitle}
+      headerType={header.title}
       back={header.back}
       search={header.search}
       options={header.options}
@@ -19,7 +25,7 @@ const putHeader = (navigation,scene, header=false) => {
 }
 
 export const screensRoute = (Stack, screens) => {
-  return screens.map(({name, component, colorBackground, header, headerTransparent}, index) => (
+  return screens.map(({ name, component, colorBackground, header, headerTransparent }, index) => (
     <Stack.Screen
       key={index}
       name={name}

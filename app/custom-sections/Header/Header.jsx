@@ -40,7 +40,7 @@ const SearchHome = ({ style, navigation }) => (
   </TouchableOpacity>
 );
 
-const SearchProducts = ({  style, navigation, myPrice }) => (
+const SearchProducts = ({ style, navigation, myPrice }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
@@ -119,9 +119,9 @@ class Header extends React.Component {
   };
 
   renderRight = () => {
-    const { white, title, navigation } = this.props;
+    const { white, headerType, navigation } = this.props;
 
-    switch (title) {
+    switch (headerType) {
       case 'Home':
         return (
           <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
@@ -181,11 +181,11 @@ class Header extends React.Component {
   };
 
   renderHome = () => {
-    const { title, back, white, iconColor } = this.props;
+    const { headerType, back, white, iconColor } = this.props;
 
     return (
       <>
-        {title == 'Home' ? (
+        {headerType == 'Home' ? (
           <Block row style={{ width: wp('62.5%') }}>
             <Block flex middle />
             <Block flex middle style={{ top: 5 }}>
@@ -292,16 +292,12 @@ class Header extends React.Component {
   };
   render() {
     const {
-      back,
       title,
+      headerType,
       white,
       transparent,
       bgColor,
-      iconColor,
       titleColor,
-      navigation,
-      shadowless,
-      ...props
     } = this.props;
     const headerStyles = [
       transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
@@ -312,7 +308,7 @@ class Header extends React.Component {
     return (
       <Block style={[headerStyles]}>
         <NavBar
-          title={title == 'Home' ? '' : title}
+          title={headerType == 'Home' ? '' : title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
