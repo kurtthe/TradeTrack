@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
 import { theme } from 'galio-framework';
+import { nowTheme } from '@constants';
+
 const { width, height } = Dimensions.get('window');
 
 const cardWidth = (width / 2) * 0.87;

@@ -54,12 +54,17 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     const getCategoriesResponse = await generalRequest.get(endPoints.categories);
     const getOptionsCategories = categoriesToRadioButton(getCategoriesResponse);
 
+    const serializeData = getOptionsCategories.map((optionCategory) => ({
+      ...optionCategory,
+      selected: categorySelected?.name === optionCategory.label || false
+    }))
+
     if (!!categorySelected && categorySelected.hasOwnProperty('name')) {
-      const getSelectedCategory = getOptionsCategories.find((category) => categorySelected.name === category.label)
-      setSelectedCategory(getSelectedCategory)
+      getCategoriesForSelected(getOptionsCategories, categorySelected.name)
+
     }
 
-    setRadioButtonsCategories(getOptionsCategories)
+    setRadioButtonsCategories(serializeData)
     setLoadingCategories(false)
     setNoCategoriesFound(getOptionsCategories?.length === 0)
 
@@ -83,10 +88,9 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     return 0;
   }
 
-  const onPressRadioButtonCategory = async (options) => {
-    setLoadingCategories(true)
+  const getCategoriesForSelected = async (options, forName = false) => {
+    const optionSelected = options.find((option) => !forName ? option.selected : forName === option.label);
 
-    const optionSelected = options.find((option) => option.selected);
     const url = endPoints.subcategories.replace(':codeCategoryId', optionSelected?.id);
     const getSubCategories = await generalRequest.get(url);
     const subcategories = categoriesToRadioButton(getSubCategories);
@@ -98,6 +102,16 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     setSelectedSubCategory(null)
     setSubCategoryActive(false)
     setLoadingCategories(false)
+
+    return {
+      optionSelected,
+      subcategories
+    }
+  }
+
+  const onPressRadioButtonCategory = async (options) => {
+    setLoadingCategories(true)
+    const { optionSelected } = getCategoriesForSelected(options)
 
     getProducts && getProducts(optionSelected?.products, ALL_PRODUCTS_FILTER);
     actionSheetRef.current?.setModalVisible(false);
@@ -152,8 +166,15 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     setNoCategoriesFound(false)
     setNoSubCategoriesFound(false)
 
-    getProducts && getProducts(false, false);
+    getProducts && getProducts([], ALL_PRODUCTS_FILTER);
   };
+
+  if (loadingCategories) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading categories...</Text>
+      </View>)
+  }
 
   return (
     <>
@@ -196,9 +217,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
 
       <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
         <Block style={{ height: 300, padding: 5, paddingBottom: 40 }}>
-          {loadingCategories ? (
-            <LoadingComponent />
-          ) : noCategoriesFound ? (
+          {noCategoriesFound ? (
             <Text> No categories found </Text>
           ) : (
             <ScrollView style={{ width: width }}>
