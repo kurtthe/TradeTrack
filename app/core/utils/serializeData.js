@@ -1,11 +1,15 @@
 import {
   ALL_PRODUCTS_FILTER,
-  PRODUCT_CATEGORY
+  PRODUCT_CATEGORY,
+  STATEMENTS,
+  INVOICES
 } from '@shared/dictionaries/typeDataSerialize'
 
 export const serializeData = {
   [ALL_PRODUCTS_FILTER]: (data) => serializeProductsAll(data),
-  [PRODUCT_CATEGORY]: (data) => serializeProducts(data)
+  [PRODUCT_CATEGORY]: (data) => serializeProducts(data),
+  [STATEMENTS]: (data) => serializeProductsAll(data),
+  [INVOICES]: (data) => serializeProductsAll(data),
 }
 
 const serializeProductsAll = (data) => {
