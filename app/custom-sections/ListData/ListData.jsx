@@ -162,7 +162,7 @@ const ListData = ({
         ListEmptyComponent={renderNotFound}
         numColumns={numColumns}
         ListFooterComponent={putLoadingMore}
-        columnWrapperStyle={styles.listItems}
+        columnWrapperStyle={numColumns > 2 && styles.listItems}
       />
     </View>
   );

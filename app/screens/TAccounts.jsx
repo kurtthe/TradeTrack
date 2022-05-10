@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, SafeAreaView, RefreshControl } from 'react-native';
 import { Block } from 'galio-framework';
 import { nowTheme } from '@constants';
@@ -16,99 +16,94 @@ import Tabs from '@custom-elements/Tabs';
 import { getStatements } from '@core/module/store/statements/statements';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
+import Invoice from '@custom-elements/Invoice';
+import Statement from '@custom-elements/Statement';
 
 import { connect } from 'react-redux';
+import {STATEMENTS,INVOICES} from '@shared/dictionaries/typeDataSerialize'
 
-class Account extends React.Component {
-  constructor(props) {
-    super(props);
+const Account = ({ route, getBalance, getStatements, getInvoices }) => {
 
-    this.state = {
-      customStyleIndex: 0,
-      refreshing: false,
-      company: "",
-    };
-    this.getDataPetition = GetDataPetitionService.getInstance();
-  }
+  const [customStyleIndex, setCustomStyleIndex] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
+  const [company, setCompany] = useState("")
+  const [getDataPetition] = useState(GetDataPetitionService.getInstance())
 
-  async componentDidMount() {
-    if (!!this.props.route.params) {
-      this.setState({
-        customStyleIndex: this.props.route.params.tabIndexSelected,
-      });
+  useEffect(() => {
+
+    const initServices = async () => {
+      setCustomStyleIndex(route.params?.tabIndexSelected || 0)
+      const dataHeader = await getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, getBalance);
+      setCompany(dataHeader.headers['tradetrak-company'])
     }
-    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
-    const dataHeader = await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance);
-    this.setState({
-      company: dataHeader.headers['tradetrak-company'],
-    })
+    initServices()
+  }, [])
+
+
+  const fetchData = async () => {
+    await getDataPetition.getInfo(endPoints.statements, getStatements);
+    await getDataPetition.getInfo(endPoints.invoices, getInvoices);
   }
 
-  fetchData = async () => {
-    await this.getDataPetition.getInfo(endPoints.statements, this.props.getStatements);
-    await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
-  }
-
-  _onRefresh = () => {
-    this.setState({ refreshing: true });
-    this.fetchData().then(() => {
-      this.setState({ refreshing: false });
+  const _onRefresh = () => {
+    setRefreshing(true)
+    fetchData().then(() => {
+      setRefreshing(false)
     });
   }
 
-  renderAccountDetails = () => (
+  const renderItemsStatement = ({ item }) => (
+    <Statement
+      statement={item}
+    />
+  )
+
+  const renderAccountDetails = () => (
     <>
       <PaymentDetail />
       <Balance />
 
       <ListData
         endpoint={endPoints.statements}
-        children={<ListStatement />}
-        actionData={this.props.getStatements}
+        renderItems={renderItemsStatement}
+        actionData={getStatements}
+        typeData={STATEMENTS}
       />
     </>
   );
 
-  renderInvoices = () => (
-    <Block flex backgroundColor={nowTheme.COLORS.BACKGROUND}>
-      <ListData
-        filters={true}
-        endpoint={endPoints.searchInvoices}
-        children={<ListInvoices data={this.props.invoices} title={false} backAccount={true} />}
-      />
-    </Block>
+  const renderItemsInvoices = ({ item }) => (
+    <Invoice invoice={item} isAccount={true} />
+  )
+
+  const renderInvoices = () => (
+    <ListData
+      filters={true}
+      endpoint={endPoints.searchInvoices}
+      renderItems={renderItemsInvoices}
+      typeData={INVOICES}
+    />
   );
 
-  render() {
-    return (
-      <SafeAreaView>
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
-          <LiveBalance />
-          <Tabs
-            optionsTabsRender={[
-              {
-                labelTab: 'Statements',
-                component: this.renderAccountDetails(),
-              },
-              {
-                labelTab: 'Transactions',
-                component: this.renderInvoices(),
-              },
-            ]}
-            tabIndexSelected={this.state.customStyleIndex}
-            changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
-          />
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+  return (
+    <ScrollView>
+      <LiveBalance />
+      <Tabs
+        optionsTabsRender={[
+          {
+            labelTab: 'Statements',
+            component: renderAccountDetails(),
+          },
+          {
+            labelTab: 'Transactions',
+            component: renderInvoices(),
+          },
+        ]}
+        tabIndexSelected={customStyleIndex}
+        changeIndexSelected={(index) => setCustomStyleIndex(index)}
+      />
+    </ScrollView>
+  );
 }
 
 const mapStateToProps = (state) => ({
