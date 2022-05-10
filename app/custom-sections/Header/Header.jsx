@@ -332,7 +332,7 @@ class Header extends React.Component {
     const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor }];
 
     return (
-      <Block style={(headerStyles, { height: theme.SIZES.BASE * 6.5 })}>
+      <Block style={[headerStyles]}>
         <NavBar
           title={title == 'Home' ? '' : title}
           style={navbarStyles}
@@ -365,12 +365,9 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-bold',
     left: wp('-12.5%'),
     textAlign: 'center',
-    top: 5.5,
   },
   navbar: {
-    paddingVertical: 0,
-    paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
+    paddingVertical: (Platform.OS === 'ios')? 0: theme.SIZES.BASE * 3,
     zIndex: 5,
   },
   shadow: {
