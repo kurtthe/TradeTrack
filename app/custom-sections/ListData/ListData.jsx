@@ -32,6 +32,7 @@ const ListData = ({
   const styles = makeStyles();
 
   const loadData = (data) => {
+
     const currentData = dataPetition;
     const newData = serializeData[typeData]([...currentData, ...data.body])
 
@@ -45,19 +46,20 @@ const ListData = ({
     actionData && actionData(data.body);
   };
 
-  useEffect(() => {
-    const getPetitionData = async () => {
-      if (urlPetition === undefined) {
-        return
-      }
+  const getPetitionData = async () => {
+    if (urlPetition === undefined) {
+      return
+    }
 
-      await getDataPetition.getInfoWithHeaders(
-        urlPetition,
-        loadData,
-        page,
-        perPageData,
-      );
-    };
+    await getDataPetition.getInfoWithHeaders(
+      urlPetition,
+      loadData,
+      page,
+      perPageData,
+    );
+  };
+
+  useEffect(() => {
     getPetitionData()
   }, [urlPetition, page])
 
@@ -83,6 +85,10 @@ const ListData = ({
     setParamsEndPoint()
   }, [valuesFilters])
 
+  const getDataFilterProducts = (data = []) => {
+    console.log(data)
+  }
+
 
   const renderFilter = () => {
     if (!filters) {
@@ -92,7 +98,7 @@ const ListData = ({
     if (filters === 'products') {
       return (
         <FilterProducts
-          getProducts={(data, dataFilter) => null}
+          getProducts={(data) => getDataFilterProducts(data)}
         />
       );
     }
