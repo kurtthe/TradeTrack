@@ -13,6 +13,7 @@ import {
   ALL_PRODUCTS_FILTER,
 } from '@shared/dictionaries/typeDataSerialize'
 import { makeStyles } from './FilterProducts.styles'
+import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
 
 const { width } = Dimensions.get('window');
 
@@ -59,7 +60,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
       selected: categorySelected?.name === optionCategory.label || false
     }))
 
-    if (!!categorySelected && categorySelected.hasOwnProperty('name')) {
+    if (!!categorySelected && categorySelected.hasOwnProperty('name') && categorySelected.name !== cardInfo.name) {
       getCategoriesForSelected(getOptionsCategories, categorySelected.name)
 
     }

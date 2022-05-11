@@ -13,7 +13,7 @@ const putHeader = (navigation, scene, header = false) => {
 
   return (
     <Header
-      title={headerTitle}
+      title={header.title}
       headerType={header.title}
       back={header.back}
       search={header.search}
