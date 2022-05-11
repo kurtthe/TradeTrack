@@ -22,7 +22,10 @@ export const makeStyles = () =>
       marginVertical: theme.SIZES.BASE * 2,
     },
     contentProducts: {
-      backgroundColor: nowTheme.COLORS.LIGHTGRAY,
       height: "90%"
+    },
+    container: { 
+      backgroundColor: nowTheme.COLORS.BACKGROUND,
+      flex:1
     }
   });

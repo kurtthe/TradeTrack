@@ -34,14 +34,14 @@ const SearchProduct = () => {
     initUrl()
   }, [])
 
-  
+
   const changeSearchText = (text) => {
     setSearch(text)
     setEmpty(text === '')
   };
-  
+
   const debouncedOnChange = debounce(changeSearchText, 300)
-  
+
   const renderItems = ({ item }) => (
     <Product
       product={item}
@@ -54,7 +54,7 @@ const SearchProduct = () => {
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <Search
         placeholder="What are you looking for?"
         onChangeText={debouncedOnChange}
@@ -72,7 +72,7 @@ const SearchProduct = () => {
           />
         </View>
       )}
-    </>
+    </View>
 
   );
 }
