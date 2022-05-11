@@ -53,22 +53,20 @@ const ListData = ({
     actionData && actionData(data.body);
   };
 
+  const getPetitionData = async () => {
+    if (urlPetition === undefined) {
+      return
+    }
 
+    await getDataPetition.getInfoWithHeaders(
+      urlPetition,
+      loadData,
+      page,
+      perPageData,
+    );
+  };
 
   useEffect(() => {
-    const getPetitionData = async () => {
-      if (urlPetition === undefined) {
-        return
-      }
-
-      await getDataPetition.getInfoWithHeaders(
-        urlPetition,
-        loadData,
-        page,
-        perPageData,
-      );
-    };
-
     getPetitionData()
   }, [urlPetition, page])
 
@@ -100,7 +98,11 @@ const ListData = ({
     setValuesFilters(values);
   };
 
-  const getDataFilterProducts = (data = [], typeDataFilter) => {
+  const getDataFilterProducts = async(data = [], typeDataFilter, refetch = false) => {
+    if (refetch) {
+      await getPetitionData()
+      return
+    }
     loadData(data, typeDataFilter)
   }
 
@@ -112,7 +114,7 @@ const ListData = ({
     if (filters === 'products') {
       return (
         <FilterProducts
-          getProducts={(data) => getDataFilterProducts(data)}
+          getProducts={(data, typeData, refetch) => getDataFilterProducts(data, typeData, refetch)}
           categorySelected={categorySelected}
         />
       );
