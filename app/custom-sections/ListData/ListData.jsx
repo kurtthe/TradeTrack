@@ -28,7 +28,7 @@ const ListData = ({
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [urlPetition, setUrlPetition] = useState(endpoint || undefined);
+  const [urlPetition, setUrlPetition] = useState(undefined);
   const [getDataPetition] = useState(GetDataPetitionService.getInstance());
   const styles = makeStyles();
 
@@ -53,30 +53,34 @@ const ListData = ({
     actionData && actionData(data.body);
   };
 
-  const getPetitionData = async () => {
-    if (urlPetition === undefined) {
-      return
-    }
 
-    await getDataPetition.getInfoWithHeaders(
-      urlPetition,
-      loadData,
-      page,
-      perPageData,
-    );
-  };
 
   useEffect(() => {
+    const getPetitionData = async () => {
+      if (urlPetition === undefined) {
+        return
+      }
+
+      await getDataPetition.getInfoWithHeaders(
+        urlPetition,
+        loadData,
+        page,
+        perPageData,
+      );
+    };
+
     getPetitionData()
   }, [urlPetition, page])
+
+  useEffect(() => {
+    const updateEndPoint = () => setUrlPetition(endpoint);
+    updateEndPoint()
+  }, [endpoint])
 
   const handleLoadMore = () => {
     setPage(page + 1)
   };
 
-  const getValuesFilters = (values) => {
-    setValuesFilters(values);
-  };
 
   useEffect(() => {
     const setParamsEndPoint = async () => {
@@ -92,10 +96,13 @@ const ListData = ({
     setParamsEndPoint()
   }, [valuesFilters])
 
+  const getValuesFilters = (values) => {
+    setValuesFilters(values);
+  };
+
   const getDataFilterProducts = (data = [], typeDataFilter) => {
     loadData(data, typeDataFilter)
   }
-
 
   const renderFilter = () => {
     if (!filters) {
