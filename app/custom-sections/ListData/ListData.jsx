@@ -98,11 +98,7 @@ const ListData = ({
     setValuesFilters(values);
   };
 
-  const getDataFilterProducts = async(data = [], typeDataFilter, refetch = false) => {
-    if (refetch) {
-      await getPetitionData()
-      return
-    }
+  const getDataFilterProducts = async(data = [], typeDataFilter) => {
     loadData(data, typeDataFilter)
   }
 
