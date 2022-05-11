@@ -61,8 +61,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     }))
 
     if (!!categorySelected && categorySelected.hasOwnProperty('name') && categorySelected.name !== cardInfo.name) {
-      getCategoriesForSelected(getOptionsCategories, categorySelected.name)
-
+      await getCategoriesForSelected(getOptionsCategories, categorySelected.name)
     }
 
     setRadioButtonsCategories(serializeData)
@@ -111,8 +110,8 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
   }
 
   const onPressRadioButtonCategory = async (options) => {
-    setLoadingCategories(true)
-    const { optionSelected } = getCategoriesForSelected(options)
+
+    const { optionSelected } = await getCategoriesForSelected(options)
 
     getProducts && getProducts(optionSelected?.products, ALL_PRODUCTS_FILTER);
     actionSheetRef.current?.setModalVisible(false);
@@ -132,7 +131,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
       return;
     }
 
-    getProducts && getProducts(optionSelected?.products,ALL_PRODUCTS_FILTER);
+    getProducts && getProducts(optionSelected?.products, ALL_PRODUCTS_FILTER);
     actionSheetRef2.current?.setModalVisible(false);
   };
 
@@ -150,6 +149,10 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
   };
 
   const handleResetFilter = () => {
+    if (categorySelected.name !== cardInfo.name) {
+      return
+    }
+
     setCategoryActive(false)
 
     clearFilterSelected(radioButtonsCategories, selectedCategory?.id);
@@ -164,8 +167,22 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
     setNoCategoriesFound(false)
     setNoSubCategoriesFound(false)
 
-    getProducts && getProducts([], ALL_PRODUCTS_FILTER, true);
+    getProducts && getProducts([], ALL_PRODUCTS_FILTER);
   };
+
+  const handleShowCategories = () => {
+    if (categorySelected.name === cardInfo.name) {
+      actionSheetRef.current?.setModalVisible();
+    }
+  }
+
+  const handleShowSubCategories = () => {
+    if (noSubCategoriesFound) {
+      alertService.show('Alert!', 'No sub categories found');
+      return;
+    }
+    actionSheetRef2.current?.setModalVisible();
+  }
 
   if (loadingCategories) {
     return (
@@ -180,29 +197,23 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
         <View style={styles.contentFilters}>
           <FilterButton
             text={'Category'}
-            onPress={() => {
-              actionSheetRef.current?.setModalVisible();
-            }}
+            onPress={() => handleShowCategories()}
             isActive={categoryActive}
           />
           {categoryActive && (
             <>
               <FilterButton
                 text={'Sub Category'}
-                onPress={() => {
-                  if (noSubCategoriesFound) {
-                    alertService.show('Alert!', 'No sub categories found');
-                    return;
-                  }
-                  actionSheetRef2.current?.setModalVisible();
-                }}
+                onPress={() => handleShowSubCategories()}
                 isActive={subCategoryActive}
               />
-              <FilterButton
-                text='Clear'
-                onPress={() => handleResetFilter()}
-                icon={require('@assets/nuk-icons/png/2x/clear.png')}
-              />
+              {(categorySelected.name === cardInfo.name) && (
+                <FilterButton
+                  text='Clear'
+                  onPress={() => handleResetFilter()}
+                  icon={require('@assets/nuk-icons/png/2x/clear.png')}
+                />
+              )}
             </>
           )}
 
