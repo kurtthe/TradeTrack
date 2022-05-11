@@ -132,7 +132,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
       return;
     }
 
-    getProducts && getProducts(optionSelected?.products,);
+    getProducts && getProducts(optionSelected?.products,ALL_PRODUCTS_FILTER);
     actionSheetRef2.current?.setModalVisible(false);
   };
 
@@ -150,6 +150,7 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
   };
 
   const handleResetFilter = () => {
+    setCategoryActive(false)
 
     clearFilterSelected(radioButtonsCategories, selectedCategory?.id);
     clearFilterSelected(
@@ -157,17 +158,13 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
       selectedSubCategory?.id,
     );
 
-    setRadioButtonsCategories([])
-    setRadioButtonsSubCategories([])
-    setCategoryActive(false)
     setSubCategoryActive(false)
     setSelectedCategory(null)
     setSelectedSubCategory(null)
-    setLoadingCategories(true)
     setNoCategoriesFound(false)
     setNoSubCategoriesFound(false)
 
-    getProducts && getProducts([], ALL_PRODUCTS_FILTER);
+    getProducts && getProducts([], ALL_PRODUCTS_FILTER, true);
   };
 
   if (loadingCategories) {
@@ -185,9 +182,6 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
             text={'Category'}
             onPress={() => {
               actionSheetRef.current?.setModalVisible();
-              if (radioButtonsCategories.length <= 0) {
-                getCategories()
-              }
             }}
             isActive={categoryActive}
           />
