@@ -6,7 +6,7 @@ export const makeStyles = () =>
   StyleSheet.create({
     card: {
       backgroundColor: theme.COLORS.WHITE,
-      marginVertical: theme.SIZES.BASE,
+      marginVertical: 8,
       marginHorizontal: 5,
       borderWidth: 0,
       marginBottom: 4,

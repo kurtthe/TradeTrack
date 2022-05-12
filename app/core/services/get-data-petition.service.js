@@ -26,7 +26,7 @@ export class GetDataPetitionService {
     const response = await this.generalRequest.getWithHeaders(endpoint, {
       params: { page, 'per-page': perPage, ...paramsMore },
     });
-    action && action(response, page);
+    action && action(response);
     return response;
   }
 }

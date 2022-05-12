@@ -216,7 +216,6 @@ export default class Search extends React.Component {
         <Block center style={styles.header}>
           {this.renderSearch()}
         </Block>
-        <View>{this.renderResults()}</View>
       </Block>
     );
   }

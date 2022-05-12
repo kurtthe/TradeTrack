@@ -9,7 +9,7 @@ import {
   Image,
   View,
 } from 'react-native';
-import { Button, Block, NavBar, Text, theme, Button as GaButton } from 'galio-framework';
+import { Button, Block, NavBar, Text, theme } from 'galio-framework';
 
 import Icon from '@components/Icon';
 import Input from '@components/Input';
@@ -25,11 +25,9 @@ import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Loading from '@custom-elements/Loading';
 
-const { height, width } = Dimensions.get('window');
-const iPhoneX = () =>
-  Platform.OS === 'ios' && (height === 812 || width === 812 || height === 896 || width === 896);
+const { width } = Dimensions.get('window');
 
-const SearchHome = ({ isWhite, style, navigation }) => (
+const SearchHome = ({ style, navigation }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={async () => {
@@ -42,7 +40,7 @@ const SearchHome = ({ isWhite, style, navigation }) => (
   </TouchableOpacity>
 );
 
-const SearchProducts = ({ isWhite, style, navigation, myPrice }) => (
+const SearchProducts = ({ style, navigation, myPrice }) => (
   <TouchableOpacity
     style={([styles.button, style], { zIndex: 300 })}
     onPress={() => {
@@ -65,18 +63,6 @@ const SearchAccount = ({ isWhite, style, navigation }) => (
     }}
   >
     {/* <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />  */}
-  </TouchableOpacity>
-);
-
-const CartButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={([styles.button, style], { zIndex: 300, left: -10 })}>
-    <Ionicons name="cart" color={'#828489'} size={25} />
-  </TouchableOpacity>
-);
-
-const ConfigButton = ({ isWhite, style, navigation }) => (
-  <TouchableOpacity style={{ zIndex: 300, left: 0 }}>
-    <Ionicons name="ellipsis-vertical-sharp" color={'#828489'} size={25} />
   </TouchableOpacity>
 );
 
@@ -133,37 +119,31 @@ class Header extends React.Component {
   };
 
   renderRight = () => {
-    const { white, title, navigation } = this.props;
+    const { white, headerType, navigation } = this.props;
 
-    switch (title) {
+    switch (headerType) {
       case 'Home':
         return (
-          <View style={{ top: 5.5 }}>
-            <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
+          <SearchHome key="basket-home" navigation={navigation} isWhite={white} />
         );
 
       case 'Products':
         return (
-          <View style={{ top: 6.5 }}>
-            <SearchProducts
-              key="basket-deals"
-              navigation={navigation}
-              isWhite={white}
-              myPrice={this.props.scene.route.params?.myPrice}
-            />
-          </View>
+          <SearchProducts
+            key="basket-deals"
+            navigation={navigation}
+            isWhite={white}
+            myPrice={this.props.scene.route.params?.myPrice}
+          />
         );
 
       case 'Account':
         return (
-          <View style={{ top: 5.5 }}>
-            <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
-          </View>
+          <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
         );
 
       case 'Product':
-        return <Block row style={{ paddingTop: 17.5, width: 50 }} />;
+        return <Block row style={{ width: 50 }} />;
 
       case 'SearchHome':
         return <SearchHome key="basket-search" navigation={navigation} isWhite={white} />;
@@ -174,7 +154,7 @@ class Header extends React.Component {
       case 'Details':
         return [
 
-          <View style={{ top: 7, width: 50 }}>
+          <View style={{ width: 50 }}>
             {this.state.loadingLoadPdf ? (
               <Loading />
             ) : (
@@ -201,11 +181,11 @@ class Header extends React.Component {
   };
 
   renderHome = () => {
-    const { title, back, white, iconColor } = this.props;
+    const { headerType, back, white, iconColor } = this.props;
 
     return (
       <>
-        {title == 'Home' ? (
+        {headerType == 'Home' ? (
           <Block row style={{ width: wp('62.5%') }}>
             <Block flex middle />
             <Block flex middle style={{ top: 5 }}>
@@ -267,7 +247,7 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
+            <Text size={16} style={[styles.tabTitle, { fontFamily: 'montserrat-regular' }]}>
               {optionLeft || 'Trending'}
             </Text>
           </Block>
@@ -281,7 +261,7 @@ class Header extends React.Component {
               style={{ paddingRight: 8 }}
               color={nowTheme.COLORS.HEADER}
             />
-            <Text style={{ fontFamily: 'montserrat-regular' }} size={16} style={styles.tabTitle}>
+            <Text size={16} style={[styles.tabTitle, { fontFamily: 'montserrat-regular' }]}>
               {optionRight || 'Fashion'}
             </Text>
           </Block>
@@ -312,29 +292,23 @@ class Header extends React.Component {
   };
   render() {
     const {
-      back,
       title,
+      headerType,
       white,
       transparent,
       bgColor,
-      iconColor,
       titleColor,
-      navigation,
-      shadowless,
-      ...props
     } = this.props;
-    const noShadow = ['Search', 'Categories', 'Deals', 'Pro', 'Profile'].includes(title);
     const headerStyles = [
-      !noShadow ? styles.shadow : null,
       transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null,
     ];
 
     const navbarStyles = [styles.navbar, bgColor && { backgroundColor: bgColor }];
 
     return (
-      <Block style={(headerStyles, { height: theme.SIZES.BASE * 6.5 })}>
+      <Block style={[headerStyles]}>
         <NavBar
-          title={title == 'Home' ? '' : title}
+          title={headerType == 'Home' ? '' : title}
           style={navbarStyles}
           transparent={transparent}
           right={this.renderRight()}
@@ -365,21 +339,12 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-bold',
     left: wp('-12.5%'),
     textAlign: 'center',
-    top: 5.5,
   },
   navbar: {
-    paddingVertical: 0,
-    paddingBottom: theme.SIZES.BASE * 1.5,
-    paddingTop: iPhoneX ? theme.SIZES.BASE * 4 : theme.SIZES.BASE,
+    paddingVertical: (Platform.OS === 'ios') ? 0 : theme.SIZES.BASE * 3,
     zIndex: 5,
   },
   shadow: {
-    backgroundColor: theme.COLORS.WHITE,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.2,
-    elevation: 3,
   },
   shadowless: {
     elevation: 0,
@@ -444,20 +409,20 @@ const styles = StyleSheet.create({
           ? 100
           : 120
         : Dimensions.get('window').height < 595
-        ? 100
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? 120
-        : -120,
+          ? 100
+          : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+            ? 120
+            : -120,
     height:
       Platform.OS === 'ios'
         ? Dimensions.get('window').height < 670
           ? 100
           : 120
         : Dimensions.get('window').height < 595
-        ? 100
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? 120
-        : -120,
+          ? 100
+          : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+            ? 120
+            : -120,
     resizeMode: 'contain',
   },
 
