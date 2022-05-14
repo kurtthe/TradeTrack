@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import {
   Image,
   TouchableWithoutFeedback,
@@ -8,7 +8,7 @@ import {
 
 import { Button } from '@components';
 import { Block, Text } from 'galio-framework';
-import { withNavigation } from '@react-navigation/compat';
+import { useNavigation } from '@react-navigation/native';
 
 import { nowTheme } from '@constants';
 import { FormatMoneyService } from '@core/services/format-money.service';
@@ -26,6 +26,7 @@ const Product = (props) => {
   const [formatMoney] = useState(FormatMoneyService.getInstance());
   const [added, setProductAdded] = useState(false)
   const styles = makeStyles()
+  const navigation = useNavigation();
 
   useEffect(() => {
 
@@ -53,7 +54,7 @@ const Product = (props) => {
     if (productItem.cost_price < 0) {
       props.handleNewPrice && await props.handleNewPrice(props.product.id)
     }
-    props.navigation?.navigate('Product', {
+    navigation?.navigate('Product', {
       hideMyPrice: props.myPrice,
       product: productItem,
       headerTitle: 'Product',
@@ -128,7 +129,7 @@ const Product = (props) => {
         </Block>
 
       </TouchableWithoutFeedback>
-      <Block style={styles.buttonAdd}>
+      <Block>
         <Button
           color="warning"
           textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16, color: '#0E3A90' }}
@@ -144,4 +145,4 @@ const Product = (props) => {
 };
 
 
-export default withNavigation(Product);
+export default memo(Product);
