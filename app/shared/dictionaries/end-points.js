@@ -17,7 +17,7 @@ export const endPoints = {
   stores: `${environment.api}burdens/stores`,
   jobs: `${environment.api}jobs`,
   subcategories: `${environment.api}products/categories?per-page=50&expand=products&parent_category_id=:codeCategoryId`,
-  products: `${environment.api}products?supplier_id=:id`,
+  products: `${environment.api}products`,
   suppliers: `${environment.api}burdens/supplier`,
   categories: `${environment.api}burdens/categories?expand=products`,
   newPrice: `${environment.api}products/:id/price`,
