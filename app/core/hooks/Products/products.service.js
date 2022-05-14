@@ -4,7 +4,11 @@ import { endPoints } from '@shared/dictionaries/end-points';
 const generalRequestService = GeneralRequestService.getInstance()
 
 export const getProducts = async (options) => {
-  const response = await generalRequestService.getWithHeaders(endPoints.products, {}, options)
+  const response = await generalRequestService.getWithHeaders(endPoints.products, {},
+    {
+      'per-page': 20,
+      ...options
+    })
   return Promise.resolve(response)
 }
 
