@@ -14,7 +14,6 @@ const CategoryItem = ({ title,
   const cardContainer = [styles.card, styles.shadow];
   const imgContainer = [
     styles.imageContainer,
-    styles.verticalStyles,
     styles.shadow
   ];
 
@@ -24,28 +23,22 @@ const CategoryItem = ({ title,
 
   return (
     <TouchableOpacity onPress={() => handlePress()} style={cardContainer}>
-      <View style={imgContainer}>
-        <Image resizeMode="cover" source={image} style={imageStyles} />
-      </View>
-      <Block flex space="between">
-        <Block flex>
-          <ImageBackground
-            source={{
-              uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
-            }}
-            style={styles.imageBlock}
-          >
-            <Text
-              style={titleStyles}
-              size={14}
-              color={'white'}
-            >
-              {title}
-            </Text>
-          </ImageBackground>
-        </Block>
+      <Image source={image} style={imageStyles} />
+      <ImageBackground
+        source={{
+          uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
+        }}
+        style={styles.imageBlock}
+      >
+        <Text
+          style={titleStyles}
+          size={14}
+          color={'white'}
+        >
+          {title}
+        </Text>
+      </ImageBackground>
 
-      </Block>
     </TouchableOpacity>
   );
 }
