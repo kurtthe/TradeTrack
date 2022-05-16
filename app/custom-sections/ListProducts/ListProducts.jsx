@@ -6,6 +6,7 @@ import Product from '@custom-elements/Product';
 import { makeStyles } from './ListProduct.styles'
 import { useGetProducts } from '@core/hooks/Products'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
+import Filters from './components/Filters'
 
 const ListProducts = ({ categorySelected, allProducts }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
@@ -67,15 +68,19 @@ const ListProducts = ({ categorySelected, allProducts }) => {
   }
 
   return (
-    <FlatList
-      data={dataProducts}
-      renderItem={memoizedValue}
-      keyExtractor={(item, index) => `${item.sku}-${index}`}
-      numColumns={2}
-      contentContainerStyle={styles.container}
-      refreshing={isLoading}
-      ListFooterComponent={getButtonLoadingMore}
-    />
+    <>
+      <Filters />
+      <FlatList
+        data={dataProducts}
+        renderItem={memoizedValue}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        refreshing={isLoading}
+        ListFooterComponent={getButtonLoadingMore}
+      />
+    </>
+
   );
 };
 

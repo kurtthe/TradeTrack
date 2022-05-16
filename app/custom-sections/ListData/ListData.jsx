@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
-import { Filters, FilterProducts } from './components';
+import { Filters } from './components';
 import { makeStyles } from './ListData.styles'
 import nowTheme from '@constants/Theme';
 import { serializeData } from '@core/utils/serializeData'
@@ -18,7 +18,6 @@ const ListData = ({
   renderItems,
   numColumns,
   typeData,
-  categorySelected
 }) => {
   const [dataPetition, setDataPetition] = useState([]);
   const [perPageData] = useState(perPage || 12);
@@ -98,22 +97,13 @@ const ListData = ({
     setValuesFilters(values);
   };
 
-  const getDataFilterProducts = async(data = [], typeDataFilter) => {
+  const getDataFilterProducts = async (data = [], typeDataFilter) => {
     loadData(data, typeDataFilter)
   }
 
   const renderFilter = () => {
     if (!filters) {
       return null;
-    }
-
-    if (filters === 'products') {
-      return (
-        <FilterProducts
-          getProducts={(data, typeData, refetch) => getDataFilterProducts(data, typeData, refetch)}
-          categorySelected={categorySelected}
-        />
-      );
     }
 
     return <Filters

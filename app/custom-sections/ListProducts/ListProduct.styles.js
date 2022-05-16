@@ -11,6 +11,6 @@ StyleSheet.create({
   },
   container: { 
     backgroundColor:nowTheme.COLORS.BACKGROUND,
-    paddingVertical:  theme.SIZES.BASE
+    padding: 5
   }
 })

@@ -12,13 +12,13 @@ import { AlertService } from '@core/services/alert.service';
 import {
   ALL_PRODUCTS_FILTER,
 } from '@shared/dictionaries/typeDataSerialize'
-import { makeStyles } from './FilterProducts.styles'
+import { makeStyles } from './Filters.styles'
 import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
 
 const { width } = Dimensions.get('window');
 
 
-const FilterProducts = ({ getProducts, categorySelected }) => {
+export const FilterProducts = ({ getProducts, categorySelected }) => {
   const actionSheetRef = createRef();
   const actionSheetRef2 = createRef();
 
@@ -256,6 +256,3 @@ const FilterProducts = ({ getProducts, categorySelected }) => {
   );
 }
 
-
-
-export default FilterProducts;
