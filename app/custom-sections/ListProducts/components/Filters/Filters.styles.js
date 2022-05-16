@@ -15,7 +15,7 @@ export const makeStyles = () =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      backgroundColor:nowTheme.COLORS.BACKGROUND,
+      backgroundColor: nowTheme.COLORS.BACKGROUND,
     },
     contentFilters: {
       flexDirection: 'row',
