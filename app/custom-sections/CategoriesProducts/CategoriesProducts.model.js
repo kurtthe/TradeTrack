@@ -6,7 +6,11 @@ export const cardInfo = {
 }
 
 export const categories = [
-
+  {
+    id: 3189,
+    name: "PVC",
+    image: images.pvc
+  },
   {
     id: 3125,
     name: "METAL PIPE & FITTINGS",
@@ -18,19 +22,19 @@ export const categories = [
     image: images.pipe_pex
   },
   {
+    id: 3404,
+    name: "VALVES",
+    image: images.values
+  },
+  {
     id: 3234,
     name: "ROOFING (EXCL FLASHINGS)",
     image: images.roofing
   },
   {
-    id: 3010,
-    name: "FASTENERS, GLUES, SILICON",
-    image: images.silicon
-  },
-  {
-    id: 3189,
-    name: "PVC",
-    image: images.pvc
+    id: 3069,
+    name: "HOT WATER",
+    image: images.hot_water
   },
   {
     id: 3171,
@@ -38,13 +42,8 @@ export const categories = [
     image: images.poly
   },
   {
-    id: 3404,
-    name: "VALVES",
-    image: images.values
-  },
-  {
-    id: 3069,
-    name: "HOT WATER",
-    image: images.hot_water
+    id: 3010,
+    name: "FASTENERS, GLUES, SILICON",
+    image: images.silicon
   },
 ]
