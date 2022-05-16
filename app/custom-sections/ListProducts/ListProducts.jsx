@@ -1,50 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import Product from '@custom-elements/Product';
-import Loading from '@custom-elements/Loading';
 import { makeStyles } from './ListProduct.styles'
+import { useGetProducts } from '@core/hooks/Products'
+import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
+import Filters from './components/Filters'
 
-const ListProducts = (props) => {
+const ListProducts = ({ categorySelected, allProducts }) => {
+  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [dataProducts, setDataProducts] = useState([])
+  const [optionsProducts, setOptionsProducts] = useState({
+    page: 1,
+  });
+
+  const {
+    data: products,
+    refetch,
+    isLoading } = useGetProducts(optionsProducts)
   const styles = makeStyles()
 
   useEffect(() => {
-    const serialize = () => {
-      if (!props.isAllProducts) {
-        let data = []
-        props.data?.forEach((dataProduct) => {
-          if (dataProduct.products?.length > 0) {
-            data = [...dataProduct.products]
-          }
-        });
-        setDataProducts(data)
+    refetch();
+  }, [optionsProducts])
+
+  useEffect(() => {
+    const updateListProducts = (newProducts) => {
+      if (!newProducts) {
         return
       }
-      setDataProducts(props.data)
-    }
 
-    serialize()
-  }, [props.isAllProducts, props.data])
+      if (dataProducts.length > 0) {
+        setDataProducts([...dataProducts, ...newProducts])
+        return
+      }
+      setDataProducts(newProducts)
+    }
+    updateListProducts(products?.body)
+  }, [products?.body])
 
   const renderItem = ({ item }) => {
     return (<Product
       product={item}
-      myPrice={props.myPrice}
-      handleNewPrice={props.handleNewPrice}
-      isLoadingNewPrice={props.isLoadingNewPrice}
+      myPrice={clientFriendly}
     />
     )
   }
 
-  return (
-    <FlatList
-      data={dataProducts}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => `${item.id}-${index}`}
-      ListEmptyComponent={<Loading />}
-      numColumns={2}
+  const memoizedValue = useMemo(() => renderItem, [dataProducts])
+
+  const handleLoadingMore = () => {
+    const { page } = optionsProducts;
+    setOptionsProducts({
+      page: page + 1
+    });
+  }
+
+  const getButtonLoadingMore = () => {
+    if (dataProducts.length < 5) {
+      return null
+    }
+    return <ButtonLoadingMore
+      loading={isLoading}
+      handleLoadMore={handleLoadingMore}
     />
+  }
+
+  return (
+    <>
+      <Filters />
+      <FlatList
+        data={dataProducts}
+        renderItem={memoizedValue}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        refreshing={isLoading}
+        ListFooterComponent={getButtonLoadingMore}
+      />
+    </>
+
   );
 };
 
