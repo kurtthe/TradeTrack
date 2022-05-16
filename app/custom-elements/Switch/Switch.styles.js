@@ -4,7 +4,7 @@ import { nowTheme } from '@constants';
 
 export const makeStyles = () => StyleSheet.create({
   switchBlock: {
-    paddingVertical: 15,
+    paddingVertical: 5,
     paddingHorizontal: theme.SIZES.BASE * 0.7,
     backgroundColor: theme.COLORS.WHITE,
     borderRadius: 8,
