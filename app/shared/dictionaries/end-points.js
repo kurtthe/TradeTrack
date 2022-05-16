@@ -19,7 +19,7 @@ export const endPoints = {
   subcategories: `${environment.api}products/categories?per-page=50&expand=products&parent_category_id=:codeCategoryId`,
   products: `${environment.api}products`,
   suppliers: `${environment.api}burdens/supplier`,
-  categories: `${environment.api}burdens/categories?expand=products`,
+  categories: `${environment.api}burdens/categories`,
   newPrice: `${environment.api}products/:id/price`,
   preferredStore: `${environment.api}burdens/stores/preferred`,
   shareOrder: `${environment.api}material-orders/:id/share`,
