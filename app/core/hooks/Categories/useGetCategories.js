@@ -1,11 +1,11 @@
-import {useQuery} from 'react-query';
-import {queryKey, getCategories} from './categories.service'
+import { useQuery } from 'react-query';
+import { queryKey, getCategories } from './categories.service'
 
 export const useGetCategories = (
   options
-)=> useQuery({
+) => useQuery({
   queryKey: queryKey.queryKey,
-  queryFn: () => {
-    return getCategories(options)
+  queryFn: async () => {
+    return await getCategories(options)
   }
 })

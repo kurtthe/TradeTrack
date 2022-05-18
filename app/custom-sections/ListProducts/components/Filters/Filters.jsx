@@ -18,6 +18,7 @@ export const FilterProducts = ({
   pageProducts
 }) => {
   const [alertService] = useState(new AlertService())
+  const [categoryParentSelected, setCategoryParentSelected] = useState(categorySelected.id || '')
   const [categoryActive, setCategoryActive] = useState(categorySelected?.name !== cardInfo.name)
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
@@ -26,7 +27,7 @@ export const FilterProducts = ({
 
   const [optionsProducts, setOptionsProducts] = useState({
     page: pageProducts,
-    parent_category_id: categorySelected.id || ''
+    parent_category_id: categoryParentSelected
   });
 
   const actionSheetRef = createRef();
@@ -40,7 +41,7 @@ export const FilterProducts = ({
     refetch
   } = useGetCategories(optionsProducts)
 
-  const sortNameCategories = (x, y) => {
+  const sortNameCategories = useCallback((x, y) => {
     const first = x.name?.toLowerCase();
     const second = y.name?.toLowerCase();
 
@@ -51,9 +52,9 @@ export const FilterProducts = ({
       return 1;
     }
     return 0;
-  }
+  }, [])
 
-  const categoriesToRadioButton = (categoriesList) => {
+  const categoriesToRadioButton = useCallback((categoriesList) => {
     const serializeData = categoriesList
       ?.sort(sortNameCategories)
       ?.map((category) => ({
@@ -63,20 +64,24 @@ export const FilterProducts = ({
         label: category.name,
         value: category.name,
         containerStyle: styles.styleRadio,
-        selected: false,
+        selected: (categoryParentSelected) ? categoryParentSelected === category.id : false,
       }));
 
-    if (optionsProducts.parent_category_id) {
+    if (categoryParentSelected) {
       setRadioButtonsSubCategories(serializeData)
       setNoSubCategoriesFound(serializeData.length === 0)
       return
     }
     setRadioButtonsCategories(serializeData)
-  };
+  }, [categoryParentSelected, sortNameCategories])
 
   useEffect(() => {
     categoriesToRadioButton(listCategories?.body)
-  }, [listCategories?.body])
+  }, [listCategories?.body, categoriesToRadioButton])
+
+  useEffect(() => {
+    refetch();
+  }, [categoryParentSelected])
 
   if (isLoading) {
     return (
@@ -112,9 +117,18 @@ export const FilterProducts = ({
 
   const onPressRadioButtonCategory = (options) => {
     const optionSelected = getCategoriesForSelected(options);
+
+    if (!optionSelected || optionSelected?.products?.length === 0) {
+      alertService.show(
+        'Alert!',
+        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
+      );
+      return;
+    }
+
+    setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
-    refetch();
-    getProducts(optionSelected?.products);
+    getProducts(optionSelected?.products || []);
     actionSheetRef.current?.setModalVisible(false);
   };
 
@@ -128,13 +142,13 @@ export const FilterProducts = ({
       );
       return;
     }
-    
+
     setSubCategoryActive(true)
-    getProducts(optionSelected?.products);
+    getProducts(optionSelected?.products || []);
     actionSheetRef2.current?.setModalVisible(false);
   }
 
-  const clearFilterSelected = (listData = [], idSelected) => {
+  const clearFilterSelected = (listData = []) => {
     return listData.map((item) => ({
       ...item,
       selected: false,
@@ -142,19 +156,17 @@ export const FilterProducts = ({
   };
 
   const handleResetFilter = () => {
-    if (categorySelected.name !== cardInfo.name) {
-      setSubCategoryActive(false)
-      clearFilterSelected(radioButtonsSubCategories)
-      return 
-    }
-    setCategoryActive(false)
-
     setSubCategoryActive(false)
-    clearFilterSelected(radioButtonsCategories);
-    clearFilterSelected(radioButtonsSubCategories)
+    setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
     setNoSubCategoriesFound(false)
 
-    getProducts([], true);
+    if (categorySelected.name === cardInfo.name) {
+      setCategoryActive(false)
+      setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
+      getProducts([], true);
+      setCategoryParentSelected(null)
+    }
+
   };
 
   return (

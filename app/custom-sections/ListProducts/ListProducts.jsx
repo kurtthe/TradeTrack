@@ -11,6 +11,7 @@ import LoadingComponent from '@custom-elements/Loading';
 
 const ListProducts = ({ categorySelected }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
+  const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
@@ -32,7 +33,7 @@ const ListProducts = ({ categorySelected }) => {
         return
       }
 
-      if (dataProducts.length > 0) {
+      if (keeData) {
         setDataProducts([...dataProducts, ...newProducts])
         return
       }
@@ -56,10 +57,11 @@ const ListProducts = ({ categorySelected }) => {
     setOptionsProducts({
       page: page + 1
     });
+    setKeepData(true)
   }
 
   const getButtonLoadingMore = () => {
-    if (dataProducts.length < 5) {
+    if (!dataProducts || dataProducts?.length < 5) {
       return null
     }
     return <ButtonLoadingMore
@@ -69,6 +71,8 @@ const ListProducts = ({ categorySelected }) => {
   }
 
   const getDataFilterProducts = (productFiltered, reset = false) => {
+    setKeepData(false);
+    
     if (reset) {
       refetch()
       return
