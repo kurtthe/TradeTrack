@@ -15,7 +15,7 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
   const [dataProducts, setDataProducts] = useState([])
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
-    search: textSearch|| ''
+    search: textSearch || ''
   });
 
   const {
@@ -73,7 +73,7 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
 
   const getDataFilterProducts = (productFiltered, reset = false) => {
     setKeepData(false);
-    
+
     if (reset) {
       refetch()
       return
@@ -89,7 +89,7 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
     return (
       <View style={styles.notfound}>
         <Text style={styles.textNotFount}>
-          No results found for search options selected.
+          No found products.
         </Text>
       </View>
     );
@@ -101,11 +101,11 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
 
   return (
     <>
-      {showFilter && <Filters
+      <Filters
         pageProducts={optionsProducts.page}
         categorySelected={categorySelected}
         getProducts={(productFiltered) => getDataFilterProducts(productFiltered)}
-      />}
+      />
       <FlatList
         data={dataProducts}
         renderItem={memoizedValue}
