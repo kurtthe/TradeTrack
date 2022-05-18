@@ -7,7 +7,6 @@ const Category = ({ route }) => {
   return (
     <ListProducts
       categorySelected={category}
-      showFilter={true}
     />
   );
 }
