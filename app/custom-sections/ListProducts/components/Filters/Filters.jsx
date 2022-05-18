@@ -6,10 +6,9 @@ import { AlertService } from '@core/services/alert.service';
 
 import { makeStyles } from './Filters.styles'
 import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
-import { useGetCategories } from '@core/hooks/Categories'
+import { getCategoriesService } from '@core/hooks/Categories'
 import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
-import LoadingComponent from '@custom-elements/Loading';
 
 export const FilterProducts = ({
   categorySelected,
@@ -24,11 +23,7 @@ export const FilterProducts = ({
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
   const [radioButtonsCategories, setRadioButtonsCategories] = useState([])
   const [radioButtonsSubCategories, setRadioButtonsSubCategories] = useState([])
-
-  const [optionsProducts, setOptionsProducts] = useState({
-    page: pageProducts,
-    parent_category_id: categoryParentSelected
-  });
+  const [isLoading, setIsLoading] = useState(true)
 
   const actionSheetRef = createRef();
   const actionSheetRef2 = createRef();
@@ -69,12 +64,21 @@ export const FilterProducts = ({
     setRadioButtonsCategories(serializeData)
   }, [categoryParentSelected, sortNameCategories])
 
+  const loadCategories = async () => {
+    const categories = await getCategoriesService({
+      page: pageProducts,
+      parent_category_id: categoryParentSelected
+    })
+    setIsLoading(false)
+    categoriesToRadioButton(categories?.body)
+  }
+
   useEffect(() => {
-    categoriesToRadioButton(listCategories?.body)
-  }, [listCategories?.body, categoriesToRadioButton])
+    loadCategories()
+  }, [])
 
   const handleShowCategories = () => {
-    if (categorySelected?.name === cardInfo.name) {
+    if (categorySelected?.name === cardInfo.name && !isLoading) {
       actionSheetRef.current?.setModalVisible();
     }
   }
@@ -96,7 +100,7 @@ export const FilterProducts = ({
         `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
       );
     }
-    
+
     return optionSelected
   }
 
@@ -140,13 +144,6 @@ export const FilterProducts = ({
     }
   };
 
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <LoadingComponent />
-      </View>
-    )
-  }
 
   return (
     <>
@@ -156,6 +153,7 @@ export const FilterProducts = ({
             text={'Category'}
             onPress={() => handleShowCategories()}
             isActive={categoryActive}
+            isLoading={isLoading}
           />
           {categoryActive && (
             <>
