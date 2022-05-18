@@ -1,6 +1,5 @@
 import React, { useEffect, useState, createRef, useCallback } from 'react';
 import { View } from 'react-native';
-import { Text } from 'galio-framework';
 import ActionSheet from 'react-native-actions-sheet';
 import FilterButton from '@components/FilterButton';
 import { AlertService } from '@core/services/alert.service';
@@ -10,12 +9,13 @@ import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
 import { useGetCategories } from '@core/hooks/Categories'
 import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
-
+import LoadingComponent from '@custom-elements/Loading';
 
 export const FilterProducts = ({
-  getProducts,
   categorySelected,
-  pageProducts
+  pageProducts,
+  onSelectCategory,
+  onSelectSubCategory
 }) => {
   const [alertService] = useState(new AlertService())
   const [categoryParentSelected, setCategoryParentSelected] = useState(categorySelected.id)
@@ -34,12 +34,6 @@ export const FilterProducts = ({
   const actionSheetRef2 = createRef();
 
   const styles = makeStyles()
-
-  const {
-    isLoading,
-    data: listCategories,
-    refetch
-  } = useGetCategories(optionsProducts)
 
   const sortNameCategories = useCallback((x, y) => {
     const first = x.name?.toLowerCase();
@@ -79,18 +73,6 @@ export const FilterProducts = ({
     categoriesToRadioButton(listCategories?.body)
   }, [listCategories?.body, categoriesToRadioButton])
 
-  useEffect(() => {
-    refetch();
-  }, [optionsProducts.parent_category_id])
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading categories...</Text>
-      </View>
-    )
-  }
-
   const handleShowCategories = () => {
     if (categorySelected?.name === cardInfo.name) {
       actionSheetRef.current?.setModalVisible();
@@ -105,50 +87,41 @@ export const FilterProducts = ({
     actionSheetRef2.current?.setModalVisible();
   }
 
-  const getCategoriesForSelected = (options, forName = false) => {
+  const getCategoriesForSelected = (options) => {
     const optionSelected = options.find((option) => !forName ? option.selected : forName === option.label);
-    setOptionsProducts({
-      ...optionsProducts,
-      parent_category_id: optionSelected.id
-    })
 
+    if (optionSelected?.products.length === 0) {
+      alertService.show(
+        'Alert!',
+        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
+      );
+    }
+    
     return optionSelected
   }
 
   const onPressRadioButtonCategory = (options) => {
     const optionSelected = getCategoriesForSelected(options);
 
-    if (optionSelected?.products.length === 0) {
-      alertService.show(
-        'Alert!',
-        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
-      );
-      return;
-    }
-
+    setOptionsProducts({
+      ...optionsProducts,
+      parent_category_id: optionSelected.id
+    })
     setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
-    getProducts(optionSelected?.products);
+    onSelectCategory(optionSelected)
     actionSheetRef.current?.setModalVisible(false);
   };
 
   const onPressRadioButtonSubCategory = (options) => {
-    const optionSelected = options.find((option) => option.selected);
-
-    if (optionSelected?.products.length === 0) {
-      alertService.show(
-        'Alert!',
-        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
-      );
-      return;
-    }
+    const optionSelected = getCategoriesForSelected(options)
 
     setSubCategoryActive(true)
-    getProducts(optionSelected?.products);
+    onSelectSubCategory(optionSelected)
     actionSheetRef2.current?.setModalVisible(false);
   }
 
-  const clearFilterSelected = (listData = [], idSelected) => {
+  const clearFilterSelected = (listData = []) => {
     return listData.map((item) => ({
       ...item,
       selected: false,
@@ -163,11 +136,17 @@ export const FilterProducts = ({
     if (categorySelected.name === cardInfo.name) {
       setCategoryActive(false)
       setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
-      getProducts([], true);
       setCategoryParentSelected(null)
     }
-
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <LoadingComponent />
+      </View>
+    )
+  }
 
   return (
     <>

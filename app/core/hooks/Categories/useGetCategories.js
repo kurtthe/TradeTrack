@@ -5,7 +5,5 @@ export const useGetCategories = (
   options
 ) => useQuery({
   queryKey: queryKey.queryKey,
-  queryFn: async () => {
-    return await getCategories(options)
-  }
+  queryFn: () => getCategories(options),
 })
