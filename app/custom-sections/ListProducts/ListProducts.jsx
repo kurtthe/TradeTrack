@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import Product from '@custom-elements/Product';
@@ -9,12 +9,13 @@ import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import Filters from './components/Filters'
 import LoadingComponent from '@custom-elements/Loading';
 
-const ListProducts = ({ categorySelected }) => {
+const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
+    search: textSearch|| ''
   });
 
   const {
@@ -84,17 +85,27 @@ const ListProducts = ({ categorySelected }) => {
     setDataProducts(productFiltered);
   }
 
+  const renderNotFound = () => {
+    return (
+      <View style={styles.notfound}>
+        <Text style={styles.textNotFount}>
+          No results found for search options selected.
+        </Text>
+      </View>
+    );
+  };
+
   if (isLoading) {
     return <LoadingComponent />
   }
 
   return (
     <>
-      <Filters
+      {showFilter && <Filters
         pageProducts={optionsProducts.page}
         categorySelected={categorySelected}
         getProducts={(productFiltered) => getDataFilterProducts(productFiltered)}
-      />
+      />}
       <FlatList
         data={dataProducts}
         renderItem={memoizedValue}
@@ -102,6 +113,7 @@ const ListProducts = ({ categorySelected }) => {
         numColumns={2}
         contentContainerStyle={styles.container}
         ListFooterComponent={getButtonLoadingMore}
+        ListEmptyComponent={renderNotFound}
       />
     </>
 
