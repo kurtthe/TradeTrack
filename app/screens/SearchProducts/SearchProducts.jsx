@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { View, FlatList, Text} from 'react-native'
+import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
 import Search from '@custom-elements/Search';
@@ -15,6 +15,7 @@ export const SearchProducts = () => {
   const [dataProducts, setDataProducts] = useState([])
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
+  const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
     search: ''
@@ -28,7 +29,7 @@ export const SearchProducts = () => {
   const styles = makeStyles()
 
   useEffect(() => {
-    if(optionsProducts.search){
+    if (optionsProducts.search) {
       refetch();
     }
   }, [optionsProducts])
@@ -48,6 +49,10 @@ export const SearchProducts = () => {
     updateListProducts(products?.body)
   }, [products?.body])
 
+useEffect(()=>{
+  setShowLoadingMore(optionsProducts.page >= products?.headers['X-Pagination-Page-Count'])
+},[products?.headers])
+
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
     setOptionsProducts({
@@ -58,19 +63,19 @@ export const SearchProducts = () => {
   }
 
   const getButtonLoadingMore = () => {
-    if (!dataProducts || dataProducts?.length < 5) {
-      return null
+    if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
+      return <ButtonLoadingMore
+        loading={isLoading}
+        handleLoadMore={handleLoadingMore}
+      />
     }
-    return <ButtonLoadingMore
-      loading={isLoading}
-      handleLoadMore={handleLoadingMore}
-    />
+    return null
   }
 
   const changeSearchText = (text) => {
     setKeepData(false)
     setOptionsProducts({
-      ...optionsProducts,
+      page: 1,
       search: text
     })
     setEmpty(text === '')
@@ -106,15 +111,15 @@ export const SearchProducts = () => {
         style={styles.search}
         inputStyle={styles.searchInput}
       />
-        {!empty && <FlatList
-          data={dataProducts}
-          renderItem={memoizedValue}
-          keyExtractor={(item, index) => `${item.sku}-${index}`}
-          numColumns={2}
-          contentContainerStyle={styles.container}
-          ListFooterComponent={getButtonLoadingMore}
-          ListEmptyComponent={renderNotFound}
-        />}
+      {!empty && <FlatList
+        data={dataProducts}
+        renderItem={memoizedValue}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        ListFooterComponent={getButtonLoadingMore}
+        ListEmptyComponent={renderNotFound}
+      />}
     </>
 
   );

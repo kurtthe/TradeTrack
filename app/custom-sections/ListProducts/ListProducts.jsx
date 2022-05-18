@@ -9,14 +9,14 @@ import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import Filters from './components/Filters'
 import LoadingComponent from '@custom-elements/Loading';
 
-const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
+const ListProducts = ({ categorySelected}) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
-    search: textSearch || ''
   });
+  const [showLoadingMore, setShowLoadingMore] = useState(false)
 
   const {
     data: products,
@@ -27,6 +27,10 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
   useEffect(() => {
     refetch();
   }, [optionsProducts])
+
+  useEffect(()=>{
+    setShowLoadingMore(optionsProducts.page >= products?.headers['X-Pagination-Page-Count'])
+  },[products?.headers])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
@@ -62,13 +66,13 @@ const ListProducts = ({ categorySelected, textSearch, showFilter }) => {
   }
 
   const getButtonLoadingMore = () => {
-    if (!dataProducts || dataProducts?.length < 5) {
-      return null
+    if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
+      return <ButtonLoadingMore
+        loading={isLoading}
+        handleLoadMore={handleLoadingMore}
+      />
     }
-    return <ButtonLoadingMore
-      loading={isLoading}
-      handleLoadMore={handleLoadingMore}
-    />
+    return null
   }
 
   const getDataFilterProducts = (productFiltered, reset = false) => {
