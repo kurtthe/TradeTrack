@@ -5,6 +5,7 @@ export const useGetProducts = (
   options
 )=> useQuery({
   queryKey: queryKey.queryKey,
+  keepPreviousData : true,
   queryFn: () => {
     return getProducts(options)
   }

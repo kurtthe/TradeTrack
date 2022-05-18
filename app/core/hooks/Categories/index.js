@@ -1,1 +1,2 @@
-export * from './useGetCategories'
+export * from './ParentCategories'
+export * from './SubCategories'
