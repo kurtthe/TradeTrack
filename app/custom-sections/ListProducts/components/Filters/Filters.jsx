@@ -26,7 +26,7 @@ export const FilterProducts = ({
 
   const [optionsProducts, setOptionsProducts] = useState({
     page: pageProducts,
-    parent_category_id: ''
+    parent_category_id: categorySelected.id || ''
   });
 
   const actionSheetRef = createRef();
@@ -39,7 +39,6 @@ export const FilterProducts = ({
     data: listCategories,
     refetch
   } = useGetCategories(optionsProducts)
-
 
   const sortNameCategories = (x, y) => {
     const first = x.name?.toLowerCase();
@@ -69,6 +68,7 @@ export const FilterProducts = ({
 
     if (optionsProducts.parent_category_id) {
       setRadioButtonsSubCategories(serializeData)
+      setNoSubCategoriesFound(serializeData.length === 0)
       return
     }
     setRadioButtonsCategories(serializeData)
@@ -106,7 +106,6 @@ export const FilterProducts = ({
       ...optionsProducts,
       parent_category_id: optionSelected.id
     })
-    refetch();
 
     return optionSelected
   }
@@ -114,11 +113,49 @@ export const FilterProducts = ({
   const onPressRadioButtonCategory = (options) => {
     const optionSelected = getCategoriesForSelected(options);
     setCategoryActive(true)
+    refetch();
     getProducts(optionSelected?.products);
     actionSheetRef.current?.setModalVisible(false);
   };
 
-  const onPressRadioButtonSubCategory = () => null
+  const onPressRadioButtonSubCategory = (options) => {
+    const optionSelected = options.find((option) => option.selected);
+
+    if (optionSelected?.products.length === 0) {
+      alertService.show(
+        'Alert!',
+        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
+      );
+      return;
+    }
+    
+    setSubCategoryActive(true)
+    getProducts(optionSelected?.products);
+    actionSheetRef2.current?.setModalVisible(false);
+  }
+
+  const clearFilterSelected = (listData = [], idSelected) => {
+    return listData.map((item) => ({
+      ...item,
+      selected: false,
+    }));
+  };
+
+  const handleResetFilter = () => {
+    if (categorySelected.name !== cardInfo.name) {
+      setSubCategoryActive(false)
+      clearFilterSelected(radioButtonsSubCategories)
+      return 
+    }
+    setCategoryActive(false)
+
+    setSubCategoryActive(false)
+    clearFilterSelected(radioButtonsCategories);
+    clearFilterSelected(radioButtonsSubCategories)
+    setNoSubCategoriesFound(false)
+
+    getProducts([], true);
+  };
 
   return (
     <>
@@ -138,7 +175,7 @@ export const FilterProducts = ({
               />
               <FilterButton
                 text='Clear'
-                onPress={() => null}
+                onPress={() => handleResetFilter()}
                 icon={require('@assets/nuk-icons/png/2x/clear.png')}
               />
             </>
