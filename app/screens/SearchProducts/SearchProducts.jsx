@@ -50,8 +50,8 @@ export const SearchProducts = () => {
   }, [products?.body])
 
 useEffect(()=>{
-  setShowLoadingMore(optionsProducts.page >= products?.headers['X-Pagination-Page-Count'])
-},[products?.headers])
+  setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
+},[products?.headers, optionsProducts.page])
 
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
@@ -91,7 +91,7 @@ useEffect(()=>{
     )
   }
 
-  const memoizedValue = useMemo(() => renderItem, [dataProducts])
+  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const renderNotFound = () => {
     return (

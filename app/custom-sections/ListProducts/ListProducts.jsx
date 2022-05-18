@@ -29,8 +29,8 @@ const ListProducts = ({ categorySelected}) => {
   }, [optionsProducts])
 
   useEffect(()=>{
-    setShowLoadingMore(optionsProducts.page >= products?.headers['X-Pagination-Page-Count'])
-  },[products?.headers])
+    setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
+  },[products?.headers, optionsProducts.page])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
@@ -55,7 +55,7 @@ const ListProducts = ({ categorySelected}) => {
     )
   }
 
-  const memoizedValue = useMemo(() => renderItem, [dataProducts])
+  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
