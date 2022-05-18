@@ -7,7 +7,7 @@ import { AlertService } from '@core/services/alert.service';
 
 import { makeStyles } from './Filters.styles'
 import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
-import { useGetCategories, useGetSubCategories } from '@core/hooks/Categories'
+import { useGetCategories } from '@core/hooks/Categories'
 import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
 
@@ -18,8 +18,7 @@ export const FilterProducts = ({
   pageProducts
 }) => {
   const [alertService] = useState(new AlertService())
-  const [categoryParentSelected, setCategoryParentSelected] = useState(undefined)
-  const [categoryActive, setCategoryActive] = useState(false)
+  const [categoryActive, setCategoryActive] = useState(categorySelected?.name !== cardInfo.name)
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
   const [radioButtonsCategories, setRadioButtonsCategories] = useState([])
@@ -27,6 +26,7 @@ export const FilterProducts = ({
 
   const [optionsProducts, setOptionsProducts] = useState({
     page: pageProducts,
+    parent_category_id: ''
   });
 
   const actionSheetRef = createRef();
@@ -37,14 +37,9 @@ export const FilterProducts = ({
   const {
     isLoading,
     data: listCategories,
+    refetch
   } = useGetCategories(optionsProducts)
 
-  const {
-    data: listSubCategories,
-    refetch
-  } = useGetSubCategories(categoryParentSelected?.id)
-
-  console.log("=>listCategories", listCategories?.headers)
 
   const sortNameCategories = (x, y) => {
     const first = x.name?.toLowerCase();
@@ -59,7 +54,7 @@ export const FilterProducts = ({
     return 0;
   }
 
-  const categoriesToRadioButton = (categoriesList, callback) => {
+  const categoriesToRadioButton = (categoriesList) => {
     const serializeData = categoriesList
       ?.sort(sortNameCategories)
       ?.map((category) => ({
@@ -71,16 +66,17 @@ export const FilterProducts = ({
         containerStyle: styles.styleRadio,
         selected: false,
       }));
-    callback(serializeData)
+
+    if (optionsProducts.parent_category_id) {
+      setRadioButtonsSubCategories(serializeData)
+      return
+    }
+    setRadioButtonsCategories(serializeData)
   };
 
   useEffect(() => {
-    categoriesToRadioButton(listCategories?.body, setRadioButtonsCategories)
+    categoriesToRadioButton(listCategories?.body)
   }, [listCategories?.body])
-
-  useEffect(() => {
-    categoriesToRadioButton(listSubCategories?.body, setRadioButtonsSubCategories)
-  }, [listSubCategories?.body])
 
   if (isLoading) {
     return (
@@ -104,26 +100,20 @@ export const FilterProducts = ({
     actionSheetRef2.current?.setModalVisible();
   }
 
-  const getSubCategories = () => {
-
-  }
-
   const getCategoriesForSelected = (options, forName = false) => {
-    options.forEach((option) => {
-      if (forName && forName === option.label) {
-        setCategoryParentSelected(option)
-      }
-
-      if (option.selected) {
-        setCategoryParentSelected(option)
-      }
+    const optionSelected = options.find((option) => !forName ? option.selected : forName === option.label);
+    setOptionsProducts({
+      ...optionsProducts,
+      parent_category_id: optionSelected.id
     })
+    refetch();
 
+    return optionSelected
   }
 
   const onPressRadioButtonCategory = (options) => {
-    const { optionSelected } = getCategoriesForSelected(options)
-
+    const optionSelected = getCategoriesForSelected(options);
+    setCategoryActive(true)
     getProducts(optionSelected?.products);
     actionSheetRef.current?.setModalVisible(false);
   };

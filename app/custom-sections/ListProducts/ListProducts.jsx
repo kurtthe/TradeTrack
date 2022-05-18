@@ -67,11 +67,19 @@ const ListProducts = ({ categorySelected, allProducts }) => {
     />
   }
 
+  const getDataFilterProducts = (productFiltered) => {
+    setOptionsProducts({
+      page: 1,
+    })
+    setDataProducts(productFiltered);
+  }
+
   return (
     <>
       <Filters
+        pageProducts={optionsProducts.page}
         categorySelected={categorySelected}
-
+        getProducts={(productFiltered) => getDataFilterProducts(productFiltered)}
       />
       <FlatList
         data={dataProducts}
