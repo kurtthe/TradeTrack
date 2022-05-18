@@ -69,7 +69,10 @@ const ListProducts = ({ categorySelected, allProducts }) => {
 
   return (
     <>
-      <Filters />
+      <Filters
+        categorySelected={categorySelected}
+
+      />
       <FlatList
         data={dataProducts}
         renderItem={memoizedValue}

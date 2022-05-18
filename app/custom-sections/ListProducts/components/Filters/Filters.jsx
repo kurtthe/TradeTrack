@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef } from 'react';
+import React, { useEffect, useState, createRef, useCallback } from 'react';
 import { View } from 'react-native';
 import { Text } from 'galio-framework';
 import ActionSheet from 'react-native-actions-sheet';
@@ -7,7 +7,7 @@ import { AlertService } from '@core/services/alert.service';
 
 import { makeStyles } from './Filters.styles'
 import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
-import { useGetCategories } from '@core/hooks/Categories'
+import { useGetCategories, useGetSubCategories } from '@core/hooks/Categories'
 import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
 
@@ -18,7 +18,7 @@ export const FilterProducts = ({
   pageProducts
 }) => {
   const [alertService] = useState(new AlertService())
-  const [categoriesData, setCategoriesData] = useState([])
+  const [categoryParentSelected, setCategoryParentSelected] = useState(undefined)
   const [categoryActive, setCategoryActive] = useState(false)
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
@@ -39,6 +39,11 @@ export const FilterProducts = ({
     data: listCategories,
   } = useGetCategories(optionsProducts)
 
+  const {
+    data: listSubCategories,
+    refetch
+  } = useGetSubCategories(categoryParentSelected?.id)
+
   console.log("=>listCategories", listCategories?.headers)
 
   const sortNameCategories = (x, y) => {
@@ -54,23 +59,28 @@ export const FilterProducts = ({
     return 0;
   }
 
+  const categoriesToRadioButton = (categoriesList, callback) => {
+    const serializeData = categoriesList
+      ?.sort(sortNameCategories)
+      ?.map((category) => ({
+        ...category,
+        color: nowTheme.COLORS.INFO,
+        labelStyle: { fontWeight: 'bold' },
+        label: category.name,
+        value: category.name,
+        containerStyle: styles.styleRadio,
+        selected: false,
+      }));
+    callback(serializeData)
+  };
+
   useEffect(() => {
-    const categoriesToRadioButton = (categoriesList) => {
-      const serializeData = categoriesList
-        ?.sort(sortNameCategories)
-        ?.map((category) => ({
-          ...category,
-          color: nowTheme.COLORS.INFO,
-          labelStyle: { fontWeight: 'bold' },
-          label: category.name,
-          value: category.name,
-          containerStyle: styles.styleRadio,
-          selected: false,
-        }));
-      setRadioButtonsCategories(serializeData)
-    };
-    categoriesToRadioButton(listCategories?.body)
+    categoriesToRadioButton(listCategories?.body, setRadioButtonsCategories)
   }, [listCategories?.body])
+
+  useEffect(() => {
+    categoriesToRadioButton(listSubCategories?.body, setRadioButtonsSubCategories)
+  }, [listSubCategories?.body])
 
   if (isLoading) {
     return (
@@ -81,7 +91,7 @@ export const FilterProducts = ({
   }
 
   const handleShowCategories = () => {
-    if (categorySelected.name === cardInfo.name) {
+    if (categorySelected?.name === cardInfo.name) {
       actionSheetRef.current?.setModalVisible();
     }
   }
@@ -93,6 +103,32 @@ export const FilterProducts = ({
     }
     actionSheetRef2.current?.setModalVisible();
   }
+
+  const getSubCategories = () => {
+
+  }
+
+  const getCategoriesForSelected = (options, forName = false) => {
+    options.forEach((option) => {
+      if (forName && forName === option.label) {
+        setCategoryParentSelected(option)
+      }
+
+      if (option.selected) {
+        setCategoryParentSelected(option)
+      }
+    })
+
+  }
+
+  const onPressRadioButtonCategory = (options) => {
+    const { optionSelected } = getCategoriesForSelected(options)
+
+    getProducts(optionSelected?.products);
+    actionSheetRef.current?.setModalVisible(false);
+  };
+
+  const onPressRadioButtonSubCategory = () => null
 
   return (
     <>
