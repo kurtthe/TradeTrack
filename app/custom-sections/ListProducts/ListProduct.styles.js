@@ -12,5 +12,14 @@ StyleSheet.create({
   container: { 
     backgroundColor:nowTheme.COLORS.BACKGROUND,
     padding: 5
+  },
+  notfound:{
+    padding: 15,
+    marginVertical: theme.SIZES.BASE * 2,
+  },
+  textNotFount:{
+    fontFamily: 'montserrat-regular',
+    fontSize: 18,
+    color: nowTheme.COLORS.TEXT
   }
 })

@@ -1,3 +1,3 @@
-import SearchProducts from './SearchProducts'
+import {SearchProducts} from './SearchProducts'
 
 export default SearchProducts
