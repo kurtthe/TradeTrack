@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 
 import Filters from './components/Filters'
 import Products from './components/Products';
+import LoadingComponent from '@custom-elements/Loading';
 
 const ListProducts = ({ categorySelected }) => {
   const [productsFiltered, setProductsFiltered] = useState([])
 
-  const handleChangeCategory = (dataProducts, reset=false) => {
-    console.log("=>dataProducts",dataProducts)
-    
+  const handleChangeCategory = (dataProducts, reset = false) => {
     if (reset) {
       setProductsFiltered([])
       return
@@ -16,16 +15,19 @@ const ListProducts = ({ categorySelected }) => {
     setProductsFiltered(dataProducts)
   }
 
-
   return (
     <>
       <Filters
         categorySelected={categorySelected}
         onSelectCategory={(products, reset) => handleChangeCategory(products, reset)}
       />
-      <Products 
-        productsFiltered={productsFiltered}
-      />
+      {
+        (categorySelected.id !== '' && productsFiltered.length === 0) ?
+          <LoadingComponent /> :
+          <Products
+            productsFiltered={productsFiltered}
+          />
+      }
     </>
 
   );

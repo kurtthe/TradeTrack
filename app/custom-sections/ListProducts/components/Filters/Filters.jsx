@@ -22,6 +22,9 @@ export const FilterProducts = ({
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
   const [radioButtonsCategories, setRadioButtonsCategories] = useState([])
   const [radioButtonsSubCategories, setRadioButtonsSubCategories] = useState([])
+  const [productsCategory, setProductsCategory] = useState([])
+  const [productsSubCategory, setProductsSubCategory] = useState([])
+
   const [isLoading, setIsLoading] = useState(true)
 
   const actionSheetRef = createRef();
@@ -43,15 +46,15 @@ export const FilterProducts = ({
   }, [])
 
   const validateIfSelected = (category) => {
-    if(categoryParentSelected === category){
-      onSelectCategory(category?.products)
+    if (categoryParentSelected === category.id) {
+      onSelectCategory(category.products)
       setCategoryActive(true)
       return true;
     }
     return false;
   }
 
-  const categoriesToRadioButton = useCallback((categoriesList) => {
+  const categoriesToRadioButton = useCallback((categoriesList, isSub = false) => {
     const serializeData = categoriesList
       ?.sort(sortNameCategories)
       ?.map((category) => ({
@@ -64,9 +67,9 @@ export const FilterProducts = ({
         selected: (categoryParentSelected) ? validateIfSelected(category) : false,
       }));
 
-    if (categoryParentSelected) {
+    if (isSub) {
       setRadioButtonsSubCategories(serializeData)
-      setNoSubCategoriesFound(serializeData.length === 0)
+      setNoSubCategoriesFound(serializeData?.length === 0)
       return
     }
     setRadioButtonsCategories(serializeData)
@@ -75,14 +78,26 @@ export const FilterProducts = ({
   const loadCategories = async () => {
     const categories = await getCategoriesService({
       page: pageProducts,
+    })
+    categorySelected === '' && setIsLoading(false)
+    categoriesToRadioButton(categories?.body)
+  }
+
+  const loadSubCategories = () => {
+    const categories = getCategoriesService({
+      page: pageProducts,
       parent_category_id: categoryParentSelected
     })
     setIsLoading(false)
-    categoriesToRadioButton(categories?.body)
+    categoriesToRadioButton(categories?.body, true)
   }
 
   useEffect(() => {
     loadCategories()
+  }, [])
+
+  useEffect(() => {
+    loadSubCategories()
   }, [categoryParentSelected])
 
   const handleShowCategories = () => {
@@ -117,7 +132,7 @@ export const FilterProducts = ({
 
     setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
-    onSelectCategory(optionSelected?.products)
+    setProductsCategory(optionSelected?.products)
     actionSheetRef.current?.setModalVisible(false);
   };
 
@@ -125,7 +140,7 @@ export const FilterProducts = ({
     const optionSelected = getCategoriesForSelected(options)
 
     setSubCategoryActive(true)
-    onSelectCategory(optionSelected.products)
+    setProductsSubCategory(optionSelected.products)
     actionSheetRef2.current?.setModalVisible(false);
   }
 
@@ -137,16 +152,24 @@ export const FilterProducts = ({
   };
 
   const handleResetFilter = () => {
+    if (categorySelected !== '') {
+      setSubCategoryActive(false)
+      setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
+      setNoSubCategoriesFound(false)
+      setProductsSubCategory([])
+      onSelectCategory(productsCategory)
+      return
+    }
+
     setSubCategoryActive(false)
     setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
     setNoSubCategoriesFound(false)
+    setProductsSubCategory([])
     onSelectCategory([], true)
+    setCategoryActive(false)
+    setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
+    setCategoryParentSelected(null)
 
-    if (categorySelected.name === cardInfo.name) {
-      setCategoryActive(false)
-      setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
-      setCategoryParentSelected(null)
-    }
   };
 
 
