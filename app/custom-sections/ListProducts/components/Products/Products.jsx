@@ -8,7 +8,7 @@ import { useGetProducts } from '@core/hooks/Products'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
 
-export const Products = ({ categorySelected }) => {
+export const Products = ({ productsFiltered }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
@@ -33,6 +33,11 @@ export const Products = ({ categorySelected }) => {
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
+      if (productsFiltered.length > 0) {
+        setDataProducts(productsFiltered)
+        return
+      }
+
       if (!newProducts) {
         return
       }
@@ -44,7 +49,7 @@ export const Products = ({ categorySelected }) => {
       setDataProducts(newProducts)
     }
     updateListProducts(products?.body)
-  }, [products?.body])
+  }, [products?.body, productsFiltered])
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -78,7 +83,7 @@ export const Products = ({ categorySelected }) => {
     return (
       <View style={styles.notfound}>
         <Text style={styles.textNotFount}>
-          No found products.
+          No results found for filter selected.
         </Text>
       </View>
     );

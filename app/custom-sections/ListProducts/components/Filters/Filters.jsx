@@ -14,7 +14,6 @@ export const FilterProducts = ({
   categorySelected,
   pageProducts,
   onSelectCategory,
-  onSelectSubCategory
 }) => {
   const [alertService] = useState(new AlertService())
   const [categoryParentSelected, setCategoryParentSelected] = useState(categorySelected.id)
@@ -43,6 +42,15 @@ export const FilterProducts = ({
     return 0;
   }, [])
 
+  const validateIfSelected = (category) => {
+    if(categoryParentSelected === category){
+      onSelectCategory(category?.products)
+      setCategoryActive(true)
+      return true;
+    }
+    return false;
+  }
+
   const categoriesToRadioButton = useCallback((categoriesList) => {
     const serializeData = categoriesList
       ?.sort(sortNameCategories)
@@ -53,7 +61,7 @@ export const FilterProducts = ({
         label: category.name,
         value: category.name,
         containerStyle: styles.styleRadio,
-        selected: (categoryParentSelected) ? categoryParentSelected === category.id : false,
+        selected: (categoryParentSelected) ? validateIfSelected(category) : false,
       }));
 
     if (categoryParentSelected) {
@@ -75,7 +83,7 @@ export const FilterProducts = ({
 
   useEffect(() => {
     loadCategories()
-  }, [])
+  }, [categoryParentSelected])
 
   const handleShowCategories = () => {
     if (categorySelected?.name === cardInfo.name && !isLoading) {
@@ -92,12 +100,12 @@ export const FilterProducts = ({
   }
 
   const getCategoriesForSelected = (options) => {
-    const optionSelected = options.find((option) => !forName ? option.selected : forName === option.label);
+    const optionSelected = options.find((option) => option.selected);
 
-    if (optionSelected?.products.length === 0) {
+    if (optionSelected.products?.length === 0) {
       alertService.show(
         'Alert!',
-        `Category ${optionSelected?.name?.toLowerCase()} haven't products`,
+        `Category ${optionSelected.name?.toLowerCase()} haven't products`,
       );
     }
 
@@ -107,13 +115,9 @@ export const FilterProducts = ({
   const onPressRadioButtonCategory = (options) => {
     const optionSelected = getCategoriesForSelected(options);
 
-    setOptionsProducts({
-      ...optionsProducts,
-      parent_category_id: optionSelected.id
-    })
     setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
-    onSelectCategory(optionSelected)
+    onSelectCategory(optionSelected?.products)
     actionSheetRef.current?.setModalVisible(false);
   };
 
@@ -121,7 +125,7 @@ export const FilterProducts = ({
     const optionSelected = getCategoriesForSelected(options)
 
     setSubCategoryActive(true)
-    onSelectSubCategory(optionSelected)
+    onSelectCategory(optionSelected.products)
     actionSheetRef2.current?.setModalVisible(false);
   }
 
@@ -136,6 +140,7 @@ export const FilterProducts = ({
     setSubCategoryActive(false)
     setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
     setNoSubCategoriesFound(false)
+    onSelectCategory([], true)
 
     if (categorySelected.name === cardInfo.name) {
       setCategoryActive(false)
