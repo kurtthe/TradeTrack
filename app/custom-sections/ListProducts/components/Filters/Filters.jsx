@@ -23,8 +23,6 @@ export const FilterProducts = ({
   const [radioButtonsCategories, setRadioButtonsCategories] = useState([])
   const [radioButtonsSubCategories, setRadioButtonsSubCategories] = useState([])
   const [productsCategory, setProductsCategory] = useState([])
-  const [productsSubCategory, setProductsSubCategory] = useState([])
-
   const [isLoading, setIsLoading] = useState(true)
 
   const actionSheetRef = createRef();
@@ -83,8 +81,8 @@ export const FilterProducts = ({
     categoriesToRadioButton(categories?.body)
   }
 
-  const loadSubCategories = () => {
-    const categories = getCategoriesService({
+  const loadSubCategories = async () => {
+    const categories = await getCategoriesService({
       page: pageProducts,
       parent_category_id: categoryParentSelected
     })
@@ -133,6 +131,7 @@ export const FilterProducts = ({
     setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
     setProductsCategory(optionSelected?.products)
+    onSelectCategory(optionSelected.products)
     actionSheetRef.current?.setModalVisible(false);
   };
 
@@ -140,7 +139,7 @@ export const FilterProducts = ({
     const optionSelected = getCategoriesForSelected(options)
 
     setSubCategoryActive(true)
-    setProductsSubCategory(optionSelected.products)
+    onSelectCategory(optionSelected.products)
     actionSheetRef2.current?.setModalVisible(false);
   }
 
@@ -156,7 +155,6 @@ export const FilterProducts = ({
       setSubCategoryActive(false)
       setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
       setNoSubCategoriesFound(false)
-      setProductsSubCategory([])
       onSelectCategory(productsCategory)
       return
     }
@@ -164,7 +162,6 @@ export const FilterProducts = ({
     setSubCategoryActive(false)
     setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
     setNoSubCategoriesFound(false)
-    setProductsSubCategory([])
     onSelectCategory([], true)
     setCategoryActive(false)
     setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
