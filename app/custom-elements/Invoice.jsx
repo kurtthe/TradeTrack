@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { Block, Text, theme } from 'galio-framework';
 import Icon from '@components/Icon';
@@ -103,6 +103,7 @@ const Invoice = (props) => {
           </Block>
         </Block>
       </Block>
+      {Platform.OS === 'ios' && <Block style={styles.line} />}
     </TouchableOpacity>
   );
 };
@@ -124,7 +125,13 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginBottom: 5,
   },
-
+  line: {
+    borderBottomWidth: .75,
+    borderBottomColor: 'gray',
+    alignSelf: 'center',
+    width: '95%',
+    marginTop: 14,
+  },
   bg_green: {
     width: wp('20%'),
     height: 25,
