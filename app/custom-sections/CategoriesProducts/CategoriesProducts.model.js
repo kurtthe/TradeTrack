@@ -2,7 +2,7 @@ import { images } from '@assets/imgs/categories'
 
 export const cardInfo = {
   id: '',
-  name: 'All products',
+  name: 'ALL PRODUCTS',
   image: { uri: 'https://live.staticflickr.com/65535/51356873868_2db763db5b_w.jpg' },
 }
 
