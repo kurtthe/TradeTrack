@@ -22,8 +22,8 @@ export const FilterProducts = ({
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
   const [radioButtonsCategories, setRadioButtonsCategories] = useState([])
   const [radioButtonsSubCategories, setRadioButtonsSubCategories] = useState([])
-  const [productsCategory, setProductsCategory] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoadingSubCategories, setIsLoadingSubCategories] = useState(true)
 
   const actionSheetRef = createRef();
   const actionSheetRef2 = createRef();
@@ -77,7 +77,7 @@ export const FilterProducts = ({
     const categories = await getCategoriesService({
       page: pageProducts,
     })
-    categorySelected === '' && setIsLoading(false)
+    setIsLoading(false)
     categoriesToRadioButton(categories?.body)
   }
 
@@ -86,7 +86,7 @@ export const FilterProducts = ({
       page: pageProducts,
       parent_category_id: categoryParentSelected
     })
-    setIsLoading(false)
+    setIsLoadingSubCategories(false)
     categoriesToRadioButton(categories?.body, true)
   }
 
@@ -96,12 +96,11 @@ export const FilterProducts = ({
 
   useEffect(() => {
     loadSubCategories()
+    setIsLoadingSubCategories(true)
   }, [categoryParentSelected])
 
   const handleShowCategories = () => {
-    if (categorySelected?.name === cardInfo.name && !isLoading) {
-      actionSheetRef.current?.setModalVisible();
-    }
+    actionSheetRef.current?.setModalVisible();
   }
 
   const handleShowSubCategories = () => {
@@ -130,7 +129,6 @@ export const FilterProducts = ({
 
     setCategoryParentSelected(optionSelected.id)
     setCategoryActive(true)
-    setProductsCategory(optionSelected?.products)
     onSelectCategory(optionSelected.products)
     actionSheetRef.current?.setModalVisible(false);
   };
@@ -151,14 +149,6 @@ export const FilterProducts = ({
   };
 
   const handleResetFilter = () => {
-    if (categorySelected !== '') {
-      setSubCategoryActive(false)
-      setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
-      setNoSubCategoriesFound(false)
-      onSelectCategory(productsCategory)
-      return
-    }
-
     setSubCategoryActive(false)
     setRadioButtonsSubCategories(clearFilterSelected(radioButtonsSubCategories));
     setNoSubCategoriesFound(false)
@@ -166,9 +156,7 @@ export const FilterProducts = ({
     setCategoryActive(false)
     setRadioButtonsCategories(clearFilterSelected(radioButtonsCategories));
     setCategoryParentSelected(null)
-
   };
-
 
   return (
     <>
@@ -186,6 +174,7 @@ export const FilterProducts = ({
                 text='Sub Category'
                 onPress={() => handleShowSubCategories()}
                 isActive={subCategoryActive}
+                isLoading={isLoadingSubCategories}
               />
               <FilterButton
                 text='Clear'
