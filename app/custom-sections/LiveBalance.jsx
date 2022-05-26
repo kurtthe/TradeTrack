@@ -29,7 +29,7 @@ const LiveBalance = (props) => {
         <Block style={styles.categoryTitle}>
           {props.company ? (
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {props.company}
+              {props.nameCompany}
             </Text>
           ) : (
             <>

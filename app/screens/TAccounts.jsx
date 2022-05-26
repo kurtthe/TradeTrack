@@ -87,7 +87,7 @@ const Account = ({ route, getBalance, getStatements, getInvoices }) => {
 
   return (
     <ScrollView>
-      <LiveBalance />
+      <LiveBalance company={false} />
       <Tabs
         optionsTabsRender={[
           {
