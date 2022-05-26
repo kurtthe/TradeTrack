@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Burdens",
+    "name": "Burdens 20 May",
     "slug": "Trade-Track",
     "privacy": "public",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.4.6",
+    "version": "1.4.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,12 +27,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1.4.6",
+      "buildNumber": "1.4.7",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist"
     },
     "android": {
       "package": "com.tradetrak.Burdens",
-      "versionCode": 13,
+      "versionCode": 14,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
