@@ -22,19 +22,15 @@ import { makeStyles, sizeConstant } from './Product.styles'
 const Product = (props) => {
   const cartProducts = useSelector((state) => state.productsReducer.products);
   const dispatch = useDispatch()
-  const [productCart] = useState(ProductCart.getInstance(cartProducts))
-  const [formatMoney] = useState(FormatMoneyService.getInstance());
+  const productCart = ProductCart.getInstance(cartProducts)
+  const formatMoney = FormatMoneyService.getInstance();
   const [added, setProductAdded] = useState(false)
   const styles = makeStyles()
   const navigation = useNavigation();
 
   useEffect(() => {
-
-    const initServices = () => {
       const addedProduct = cartProducts.some((element) => element.id === props.product.id);
       setProductAdded(addedProduct);
-    }
-    initServices()
   }, [cartProducts])
 
 
