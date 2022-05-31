@@ -6,7 +6,9 @@ export const makeStyles = () =>
     actionSheet: {
       height: 300,
       width: width,
-      padding: 5,
-      paddingBottom: 40
     },
+    listRadios:{
+      paddingHorizontal: 5,
+      paddingVertical: 15
+    }
   })

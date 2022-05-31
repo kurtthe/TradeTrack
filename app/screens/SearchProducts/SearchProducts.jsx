@@ -1,94 +1,126 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native'
+import React, { useEffect, useState, useMemo } from 'react';
+import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
-import { GeneralRequestService } from '@core/services/general-request.service';
-import { endPoints } from '@shared/dictionaries/end-points';
-
-import LoadingComponent from '@custom-elements/Loading';
-import ListData from '@custom-sections/ListData';
 import Search from '@custom-elements/Search';
-import Product from '@custom-elements/Product';
-import {
-  ALL_PRODUCTS_FILTER,
-} from '@shared/dictionaries/typeDataSerialize'
+import { useGetProducts } from '@core/hooks/Products'
+
 import { makeStyles } from './SearchProducts.styles'
+import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
+import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 
-const SearchProduct = () => {
-  const [baseurlProducts, setBaseUrlProducts] = useState(undefined)
-  const [urlProducts, setUrlProducts] = useState(undefined)
-  const [loading, setLoading] = useState(true)
+export const SearchProducts = () => {
+  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
+  const [dataProducts, setDataProducts] = useState([])
   const [empty, setEmpty] = useState(true)
-  const [generalRequest] = useState(GeneralRequestService.getInstance())
+  const [keeData, setKeepData] = useState(false)
+  const [showLoadingMore, setShowLoadingMore] = useState(false)
+  const [optionsProducts, setOptionsProducts] = useState({
+    page: 1,
+    search: ''
+  });
 
-  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly);
+  const {
+    data: products,
+    refetch,
+    isLoading } = useGetProducts(optionsProducts)
 
   const styles = makeStyles()
 
   useEffect(() => {
-    const initUrl = async () => {
-      const getIdSuppliers = await generalRequest.get(endPoints.suppliers);
-      const newUrl = endPoints.products.replace(':id', getIdSuppliers.id);
-      setBaseUrlProducts(newUrl)
-      setLoading(false)
+    if (optionsProducts.search) {
+      refetch();
     }
-    initUrl()
-  }, [])
+  }, [optionsProducts])
 
-  const debouncedOnChange = debounce((url) => {
-    setUrlProducts(url)
-    setLoading(false)
-  }, 300)
+  useEffect(() => {
+    const updateListProducts = (newProducts) => {
+      if (!newProducts) {
+        return
+      }
 
-  const changeSearchText = (text) => {
-    setLoading(true)
-    setEmpty(text === '')
-    debouncedOnChange(`${baseurlProducts}&search=${text}`)
-  };
-
-
-  const renderItems = ({ item }) => (
-    <Product
-      product={item}
-      myPrice={clientFriendly}
-    />
-  )
-
-  const putContent = () => {
-    if (loading) {
-      return (
-        <LoadingComponent />
-      )
+      if (keeData) {
+        setDataProducts([...dataProducts, ...newProducts])
+        return
+      }
+      setDataProducts(newProducts)
     }
+    updateListProducts(products?.body)
+  }, [products?.body])
 
-    if (!empty) {
-      return (<ListData
-        perPage={20}
-        endpoint={urlProducts}
-        renderItems={renderItems}
-        typeData={ALL_PRODUCTS_FILTER}
-        numColumns={2}
-      />)
+useEffect(()=>{
+  setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
+},[products?.headers, optionsProducts.page])
+
+  const handleLoadingMore = () => {
+    const { page } = optionsProducts;
+    setOptionsProducts({
+      ...optionsProducts,
+      page: page + 1
+    });
+    setKeepData(true)
+  }
+
+  const getButtonLoadingMore = () => {
+    if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
+      return <ButtonLoadingMore
+        loading={isLoading}
+        handleLoadMore={handleLoadingMore}
+      />
     }
-
     return null
   }
 
+  const changeSearchText = (text) => {
+    setKeepData(false)
+    setOptionsProducts({
+      page: 1,
+      search: text
+    })
+    setEmpty(text === '')
+  };
+
+  const debouncedOnChange = debounce(changeSearchText, 300)
+
+  const renderItem = ({ item }) => {
+    return (<Product
+      product={item}
+      myPrice={clientFriendly}
+    />
+    )
+  }
+
+  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
+
+  const renderNotFound = () => {
+    return (
+      <View style={styles.notfound}>
+        <Text style={styles.textNotFount}>
+          No results found for search.
+        </Text>
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
+    <>
       <Search
         placeholder="What are you looking for?"
-        onChangeText={changeSearchText}
+        onChangeText={debouncedOnChange}
         style={styles.search}
         inputStyle={styles.searchInput}
       />
-      <View style={styles.contentProducts}>
-        {putContent()}
-      </View>
-    </View>
+      {!empty && <FlatList
+        data={dataProducts}
+        renderItem={memoizedValue}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        ListFooterComponent={getButtonLoadingMore}
+        ListEmptyComponent={renderNotFound}
+      />}
+    </>
 
   );
 }
-
-export default SearchProduct;

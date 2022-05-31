@@ -32,6 +32,7 @@
     "expo-font": "~10.0.3",
     "expo-secure-store": "~11.0.3",
     "expo-sharing": "~10.0.3",
+    "expo-updates": "~0.10.15",
     "format-money-js": "^1.4.3",
     "galio-framework": "^0.7.1",
     "moment": "^2.29.1",
