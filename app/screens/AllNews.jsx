@@ -1,17 +1,21 @@
 import React from 'react';
 import { endPoints } from '@shared/dictionaries/end-points';
 
-import ListNews from '@custom-sections/ListNewsVertical';
 import ListData from '@custom-sections/ListData';
+import News from '@custom-elements/News';
+import { DEFAULT } from '@shared/dictionaries/typeDataSerialize'
 
-class AllNews extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const AllNews = () => {
 
-  render() {
-    return <ListData endpoint={endPoints.news} children={<ListNews/>} />;
-  }
+  const renderItems = ({ item }) => (
+    <News news={item} vertical={true} />
+  )
+
+  return <ListData
+    endpoint={endPoints.news}
+    renderItems={renderItems}
+    typeData={DEFAULT}
+  />;
 }
 
 export default AllNews;

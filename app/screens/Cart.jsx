@@ -10,12 +10,14 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Tabs from '@custom-elements/Tabs';
 import { AlertService } from '@core/services/alert.service';
-import PreviousOrder from '@custom-sections/PreviousOrder'
+import Order from '@custom-elements/Order';
+
 import ListCart from '@custom-sections/ListCart'
 import { getOrders } from '@core/module/store/orders/orders';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListData from '@custom-sections/ListData';
+import {ORDERS} from '@shared/dictionaries/typeDataSerialize'
 
 
 const { width } = Dimensions.get('screen');
@@ -77,11 +79,16 @@ class Cart extends React.Component {
       <ListCart cartProducts={this.props.cartProducts} navigation={this.props.navigation} />
   );
 
+  renderItemsPrevious = ({item}) => (
+    <Order item={item} />
+  )
+
   renderPreviousOrder = () => (
     <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%')  }}>
       <ListData
         endpoint={endPoints.orders}
-        children={<PreviousOrder data={this.props.orders} />}
+        renderItems={this.renderItemsPrevious}
+        typeData={ORDERS}
       />
     </Block>
   );

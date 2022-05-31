@@ -35,5 +35,6 @@ export const makeStyles = () =>
       alignItems: 'center',
       paddingHorizontal: 9,
       paddingVertical: 7,
+      height: 48
     }
   });
