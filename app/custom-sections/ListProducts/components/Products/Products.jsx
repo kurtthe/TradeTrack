@@ -12,6 +12,7 @@ export const Products = ({ productsFiltered }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
+  const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
   });
@@ -24,6 +25,7 @@ export const Products = ({ productsFiltered }) => {
   const styles = makeStyles()
 
   useEffect(() => {
+    setLoadingMoreData(true)
     refetch();
   }, [optionsProducts])
 
@@ -33,6 +35,8 @@ export const Products = ({ productsFiltered }) => {
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
+      setLoadingMoreData(false)
+
       if (productsFiltered.length > 0) {
         setDataProducts(productsFiltered)
         return
@@ -72,7 +76,7 @@ export const Products = ({ productsFiltered }) => {
   const getButtonLoadingMore = () => {
     if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
       return <ButtonLoadingMore
-        loading={isLoading}
+        loading={loadingMoreData}
         handleLoadMore={handleLoadingMore}
       />
     }
