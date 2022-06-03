@@ -109,6 +109,5 @@ export const Products = ({ productsFiltered, onLoadingMore }) => {
       ListFooterComponent={getButtonLoadingMore}
       ListEmptyComponent={renderNotFound}
     />
-
   );
 };
