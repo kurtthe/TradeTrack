@@ -8,7 +8,7 @@ import { useGetProducts } from '@core/hooks/Products'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
 
-export const Products = ({ productsFiltered }) => {
+export const Products = ({ productsFiltered, onLoadingMore }) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [keeData, setKeepData] = useState(false)
   const [dataProducts, setDataProducts] = useState([])
@@ -36,13 +36,9 @@ export const Products = ({ productsFiltered }) => {
   useEffect(() => {
     const updateListProducts = (newProducts) => {
       setLoadingMoreData(false)
-
+      
       if (productsFiltered.length > 0) {
         setDataProducts(productsFiltered)
-        return
-      }
-
-      if (!newProducts) {
         return
       }
 
@@ -50,6 +46,7 @@ export const Products = ({ productsFiltered }) => {
         setDataProducts([...dataProducts, ...newProducts])
         return
       }
+
       setDataProducts(newProducts)
     }
     updateListProducts(products?.body)
@@ -66,6 +63,11 @@ export const Products = ({ productsFiltered }) => {
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const handleLoadingMore = () => {
+    if(onLoadingMore){
+      onLoadingMore()
+      return
+    }
+    
     const { page } = optionsProducts;
     setOptionsProducts({
       page: page + 1
