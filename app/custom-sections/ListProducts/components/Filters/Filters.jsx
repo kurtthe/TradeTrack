@@ -5,7 +5,6 @@ import FilterButton from '@components/FilterButton';
 import { AlertService } from '@core/services/alert.service';
 
 import { makeStyles } from './Filters.styles'
-import { cardInfo } from '../../../CategoriesProducts/CategoriesProducts.model'
 import { getCategoriesService } from '@core/hooks/Categories'
 import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
@@ -88,12 +87,17 @@ export const FilterProducts = () => {
     dispatch(getCategories(serializeData))
   }, [categoryParentSelected, sortNameCategories])
 
+  const setPages = (headers) => {
+    dispatch(getAllPages(headers['x-pagination-page-count']))
+  }
+
   const loadCategories = async () => {
     const categories = await getCategoriesService({
       page: page,
     })
     setIsLoading(false)
     categoriesToRadioButton(categories?.body)
+    setPages(categories?.headers)
   }
 
   const loadSubCategories = async () => {
@@ -103,10 +107,11 @@ export const FilterProducts = () => {
     })
     setIsLoadingSubCategories(false)
     categoriesToRadioButton(categories?.body, true)
+    setPages(categories?.headers)
   }
 
   useEffect(() => {
-    if(listCategories.length === 0){
+    if (listCategories.length === 0) {
       loadCategories()
     }
   }, [listCategories])
@@ -173,6 +178,7 @@ export const FilterProducts = () => {
   const handleResetFilter = () => {
     setCategoryActive(false)
     setSubCategoryActive(false)
+    dispatch(resetCategories())
   };
 
   return (
