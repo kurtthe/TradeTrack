@@ -45,6 +45,9 @@ export const filterStatementsSlice = createSlice({
       state.keepData = false
       state.page = 1
       state.pagesTotal = 1
+    },
+    resetPage: (state) => {
+      state.page= 1
     }
   }
 })

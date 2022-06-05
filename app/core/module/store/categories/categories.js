@@ -14,13 +14,18 @@ export const categoriesSlice = createSlice({
     },
     getSubCategories: (state, action) => {
       state.listSubCategories = action.payload
+    },
+    resetCategories: (state) => {
+      state.listCategories = []
+      state.listSubCategories = []
     }
   }
 })
 
 export const {
   getCategories,
-  getSubCategories
+  getSubCategories,
+  resetCategories
 } = categoriesSlice.actions
 
 export default categoriesSlice.reducer
