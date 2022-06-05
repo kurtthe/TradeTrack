@@ -20,11 +20,15 @@ export const filterStatementsSlice = createSlice({
       state.subCategorySelected = action.payload
     },
     getProducts: (state, action) => {
+      if (action.payload === undefined) {
+        return
+      }
+
       if (state.keepData) {
         state.products = [...state.products, action.payload]
         return
       }
-      state.products = [action.payload]
+      state.products = action.payload
     },
     changeKeepData: (state) => {
       state.keepData = !state.keepData
@@ -47,7 +51,7 @@ export const filterStatementsSlice = createSlice({
       state.pagesTotal = 1
     },
     resetPage: (state) => {
-      state.page= 1
+      state.page = 1
     }
   }
 })

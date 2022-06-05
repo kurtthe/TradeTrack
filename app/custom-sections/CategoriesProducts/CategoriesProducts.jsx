@@ -4,16 +4,17 @@ import { Block } from 'galio-framework';
 import { categories, cardInfo } from './CategoriesProducts.model'
 import { CategoryItem } from './components'
 import { withNavigation } from '@react-navigation/compat';
+import { useDispatch } from 'react-redux';
+import {
+  selectedCategory,
+} from '@core/module/store/filter/filter';
 
 const CategoriesProducts = (props) => {
-
+  const dispatch = useDispatch()
 
   const handleCategory = (item) => {
-    props.navigation.navigate('Category', {
-      headerTitle: `${item.name}`,
-      allProducts: item.name === cardInfo.name,
-      category: item
-    })
+    dispatch(selectedCategory(item.id))
+    props.navigation.navigate('Category')
   }
 
   const renderCategory = ({ item }) => (

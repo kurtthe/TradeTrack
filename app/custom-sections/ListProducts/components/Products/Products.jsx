@@ -18,7 +18,9 @@ export const Products = ({ onLoadingMore }) => {
 
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const dataProducts = useSelector((state) => state.filterReducer.products)
-  
+
+  console.log("=>dataProducts", dataProducts.length)
+
   const page = useSelector((state) => state.filterReducer.page)
   const pagesTotal = useSelector((state) => state.filterReducer.pagesTotal)
 
@@ -28,26 +30,30 @@ export const Products = ({ onLoadingMore }) => {
   const {
     data: products,
     refetch,
-    isLoading } = useGetProducts(optionsProducts)
+    isLoading } = useGetProducts({
+      page
+    })
   const styles = makeStyles()
 
   useEffect(() => {
     setLoadingMoreData(true)
     refetch();
-  }, [optionsProducts])
+  }, [page])
 
   useEffect(() => {
     setShowLoadingMore(page < pagesTotal)
-    if(pagesTotal !== products?.headers['x-pagination-page-count']){
+    if (pagesTotal !== products?.headers['x-pagination-page-count']) {
       dispatch(getAllPages(products?.headers['x-pagination-page-count']))
     }
   }, [products?.headers, page])
 
+  const updateListProducts = (newProducts) => {
+    console.log("newProducts", newProducts?.length)
+    setLoadingMoreData(false)
+    dispatch(getProducts(newProducts))
+  }
+
   useEffect(() => {
-    const updateListProducts = (newProducts) => {
-      setLoadingMoreData(false)
-      dispatch(getProducts(newProducts))
-    }
     updateListProducts(products?.body)
   }, [products?.body])
 
