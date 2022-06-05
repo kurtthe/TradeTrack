@@ -30,10 +30,21 @@ export const filterStatementsSlice = createSlice({
       state.keepData = !state.keepData
     },
     nextPage: (state) => {
+      if (!state.keepData) {
+        state.keepData = true
+      }
       state.page = state.page + 1
     },
     getAllPages: (state, action) => {
       state.pagesTotal = action.payload
+    },
+    reset: (state) => {
+      state.categorySelected = ''
+      state.subCategorySelected = ''
+      state.products = []
+      state.keepData = false
+      state.page = 1
+      state.pagesTotal = 1
     }
   }
 })
@@ -44,7 +55,8 @@ export const {
   changeKeepData,
   selectedSubCategory,
   nextPage,
-  getAllPages
+  getAllPages,
+  reset
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

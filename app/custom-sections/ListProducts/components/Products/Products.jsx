@@ -1,21 +1,28 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Product from '@custom-elements/Product';
 import { makeStyles } from './Products.styles'
 import { useGetProducts } from '@core/hooks/Products'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
+import {
+  getProducts,
+  nextPage,
+  getAllPages
+} from '@core/module/store/filter/filter';
 
-export const Products = ({ productsFiltered, onLoadingMore }) => {
+export const Products = ({ onLoadingMore }) => {
+  const dispatch = useDispatch();
+
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
-  const [keeData, setKeepData] = useState(false)
-  const [dataProducts, setDataProducts] = useState([])
+  const dataProducts = useSelector((state) => state.filterReducer.products)
+  
+  const page = useSelector((state) => state.filterReducer.page)
+  const pagesTotal = useSelector((state) => state.filterReducer.pagesTotal)
+
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const [optionsProducts, setOptionsProducts] = useState({
-    page: 1,
-  });
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
   const {
@@ -30,27 +37,19 @@ export const Products = ({ productsFiltered, onLoadingMore }) => {
   }, [optionsProducts])
 
   useEffect(() => {
-    setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
-  }, [products?.headers, optionsProducts.page])
+    setShowLoadingMore(page < pagesTotal)
+    if(pagesTotal !== products?.headers['x-pagination-page-count']){
+      dispatch(getAllPages(products?.headers['x-pagination-page-count']))
+    }
+  }, [products?.headers, page])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
       setLoadingMoreData(false)
-      
-      if (productsFiltered.length > 0) {
-        setDataProducts(productsFiltered)
-        return
-      }
-
-      if (keeData) {
-        setDataProducts([...dataProducts, ...newProducts])
-        return
-      }
-
-      setDataProducts(newProducts)
+      dispatch(getProducts(newProducts))
     }
     updateListProducts(products?.body)
-  }, [products?.body, productsFiltered])
+  }, [products?.body])
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -63,16 +62,12 @@ export const Products = ({ productsFiltered, onLoadingMore }) => {
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const handleLoadingMore = () => {
-    if(onLoadingMore){
+    if (onLoadingMore) {
       onLoadingMore()
       return
     }
-    
-    const { page } = optionsProducts;
-    setOptionsProducts({
-      page: page + 1
-    });
-    setKeepData(true)
+
+    dispatch(nextPage())
   }
 
   const getButtonLoadingMore = () => {
