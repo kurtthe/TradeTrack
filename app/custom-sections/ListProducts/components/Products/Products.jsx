@@ -46,7 +46,7 @@ export const Products = ({ onLoadingMore }) => {
   }, [products?.headers, page])
 
   const updateListProducts = (newProducts) => {
-    setLoadingMoreData(false)
+    setLoadingMoreData(newProducts?.length > 10)
     dispatch(getProducts(newProducts))
   }
 
@@ -74,7 +74,7 @@ export const Products = ({ onLoadingMore }) => {
   }
 
   const getButtonLoadingMore = () => {
-    if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
+    if (showLoadingMore) {
       return <ButtonLoadingMore
         loading={loadingMoreData}
         handleLoadMore={handleLoadingMore}
