@@ -39,6 +39,10 @@ export const Products = ({ onLoadingMore }) => {
   }, [page])
 
   useEffect(() => {
+    console.log("=>page < pagesTotal", page < pagesTotal)
+    console.log("=>page", page)
+    console.log("=>pagesTotal", pagesTotal)
+
     setShowLoadingMore(page < pagesTotal)
     if (pagesTotal !== products?.headers['x-pagination-page-count']) {
       dispatch(getAllPages(products?.headers['x-pagination-page-count']))
@@ -46,7 +50,6 @@ export const Products = ({ onLoadingMore }) => {
   }, [products?.headers, page])
 
   const updateListProducts = (newProducts) => {
-    setLoadingMoreData(newProducts?.length > 10)
     dispatch(getProducts(newProducts))
   }
 
@@ -75,6 +78,7 @@ export const Products = ({ onLoadingMore }) => {
 
   const getButtonLoadingMore = () => {
     if (showLoadingMore) {
+      console.log("=> button loading more")
       return <ButtonLoadingMore
         loading={loadingMoreData}
         handleLoadMore={handleLoadingMore}

@@ -7,7 +7,6 @@ export const getCategoriesService = async (options) => {
   const response = await generalRequestService.getWithHeaders(endPoints.categories, {},
     {
       'per-page': 20,
-      'expand': 'products',
       ...options
     })
 

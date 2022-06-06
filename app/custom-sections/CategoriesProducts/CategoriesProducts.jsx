@@ -3,18 +3,20 @@ import { FlatList } from 'react-native'
 import { Block } from 'galio-framework';
 import { categories, cardInfo } from './CategoriesProducts.model'
 import { CategoryItem } from './components'
-import { withNavigation } from '@react-navigation/compat';
 import { useDispatch } from 'react-redux';
 import {
   selectedCategory,
 } from '@core/module/store/filter/filter';
+import { useNavigation } from '@react-navigation/native';
 
-const CategoriesProducts = (props) => {
+const CategoriesProducts = () => {
   const dispatch = useDispatch()
+  const navigation = useNavigation();
 
   const handleCategory = (item) => {
+    console.log("=>item.id", item.id)
     dispatch(selectedCategory(item.id))
-    props.navigation.navigate('Category')
+    navigation.navigate('Category')
   }
 
   const renderCategory = ({ item }) => (
@@ -42,4 +44,4 @@ const CategoriesProducts = (props) => {
   )
 }
 
-export default withNavigation(CategoriesProducts)
+export default CategoriesProducts

@@ -33,6 +33,8 @@ export const FilterProducts = () => {
   const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected)
 
   const [alertService] = useState(new AlertService())
+  console.log("=>[categorySelected]",categorySelected)
+  console.log("=>[categorySelected =>]",!!categorySelected)
   const [categoryActive, setCategoryActive] = useState(categorySelected !== '')
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
