@@ -6,7 +6,6 @@ const generalRequestService = GeneralRequestService.getInstance()
 export const getCategoriesService = async (options) => {
   const response = await generalRequestService.getWithHeaders(endPoints.categories, {},
     {
-      'per-page': 20,
       ...options
     })
 
@@ -14,5 +13,5 @@ export const getCategoriesService = async (options) => {
 }
 
 export const queryKey = {
-  get_categories_products: 'get_categories_products'
+  get_categories: 'get_categories'
 }

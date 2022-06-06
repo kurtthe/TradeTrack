@@ -14,7 +14,6 @@ const CategoriesProducts = () => {
   const navigation = useNavigation();
 
   const handleCategory = (item) => {
-    console.log("=>item.id", item.id)
     dispatch(selectedCategory(item.id))
     navigation.navigate('Category')
   }
