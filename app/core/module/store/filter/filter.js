@@ -63,7 +63,8 @@ export const {
   selectedSubCategory,
   nextPage,
   getAllPages,
-  reset
+  reset,
+  resetPage
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

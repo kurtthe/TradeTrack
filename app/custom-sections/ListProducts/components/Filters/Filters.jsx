@@ -10,11 +10,14 @@ import ListRadioButton from '../ListRadioButton'
 import { nowTheme } from '@constants';
 
 import {
-  categorySelected,
-  subCategorySelected,
+  selectedCategory,
   getProducts,
-  resetPage,
-  getAllPages
+  changeKeepData,
+  selectedSubCategory,
+  nextPage,
+  getAllPages,
+  reset,
+  resetPage
 } from '@core/module/store/filter/filter';
 
 import {
@@ -33,9 +36,7 @@ export const FilterProducts = () => {
   const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected)
 
   const [alertService] = useState(new AlertService())
-  console.log("=>[categorySelected]",categorySelected)
-  console.log("=>[categorySelected =>]",!!categorySelected)
-  const [categoryActive, setCategoryActive] = useState(categorySelected !== '')
+  const [categoryActive, setCategoryActive] = useState(categoryParentSelected !== '')
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -89,33 +90,28 @@ export const FilterProducts = () => {
     dispatch(getCategories(serializeData))
   }, [categoryParentSelected, sortNameCategories])
 
-  const setPages = (headers) => {
-    dispatch(getAllPages(headers['x-pagination-page-count']))
-  }
+
 
   const loadCategories = async () => {
-    const categories = await getCategoriesService({
-      page: page,
-    })
+    if (listCategories.length > 0) {
+      return
+    }
+
+    const categories = await getCategoriesService()
     setIsLoading(false)
     categoriesToRadioButton(categories?.body)
-    setPages(categories?.headers)
   }
 
   const loadSubCategories = async () => {
     const categories = await getCategoriesService({
-      page: page,
       parent_category_id: categoryParentSelected
     })
     setIsLoadingSubCategories(false)
     categoriesToRadioButton(categories?.body, true)
-    setPages(categories?.headers)
   }
 
   useEffect(() => {
-    if (listCategories.length === 0) {
-      loadCategories()
-    }
+    loadCategories()
   }, [listCategories])
 
   useEffect(() => {
