@@ -4,7 +4,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 const generalRequestService = GeneralRequestService.getInstance()
 
 export const getProducts = async (options) => {
-  const { category_id, page } = options
+  const { category_id, page, search } = options
 
   const paramsPetition = {
     page
@@ -13,8 +13,9 @@ export const getProducts = async (options) => {
   if (options.category_id) {
     paramsPetition['category_id'] = category_id
   }
-
-  console.log("=>paramsPetition", paramsPetition)
+  if (options.search) {
+    paramsPetition['search'] = search
+  }
 
   const response = await generalRequestService.getWithHeaders(endPoints.products, {},
     {
