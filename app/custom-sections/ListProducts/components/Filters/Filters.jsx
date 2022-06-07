@@ -39,8 +39,9 @@ export const FilterProducts = () => {
   const validateIfSelected = (category) => {
     if (categoryParentSelected === category.id) {
       setCategoryActive(true)
-      setNoSubCategoriesFound(category?.sub_categories?.length )
-      setSubCategories(category?.sub_categories)
+      setNoSubCategoriesFound(category?.sub_categories?.length === 0)
+      const subCategoriesSerialized = categoriesToRadioButton(category?.sub_categories)
+      setSubCategories(subCategoriesSerialized)
       return true;
     }
     return false;
