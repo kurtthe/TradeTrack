@@ -36,11 +36,10 @@ export const SearchProducts = () => {
   useEffect(() => {
     setLoadingData(true)
     refetch();
-  }, [optionsProducts])
+  }, [optionsProducts.page,optionsProducts.search, optionsProducts.category_id ])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
-      console.log("=>newProducts", newProducts)
       setLoadingData(false)
 
       if (keeData) {
