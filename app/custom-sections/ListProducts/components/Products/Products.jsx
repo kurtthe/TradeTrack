@@ -1,59 +1,67 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Product from '@custom-elements/Product';
 import { makeStyles } from './Products.styles'
 import { useGetProducts } from '@core/hooks/Products'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
+import {
+  getProducts,
+  nextPage,
+  getAllPages
+} from '@core/module/store/filter/filter';
 
-export const Products = ({ productsFiltered }) => {
+export const Products = () => {
+  const dispatch = useDispatch();
+
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
-  const [keeData, setKeepData] = useState(false)
-  const [dataProducts, setDataProducts] = useState([])
+  const dataProducts = useSelector((state) => state.filterReducer.products)
+  const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
+
+  const page = useSelector((state) => state.filterReducer.page)
+
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const [optionsProducts, setOptionsProducts] = useState({
-    page: 1,
-  });
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
   const {
     data: products,
     refetch,
-    isLoading } = useGetProducts(optionsProducts)
+    isLoading } = useGetProducts({
+      page,
+      category_id: categorySelected
+    })
   const styles = makeStyles()
 
   useEffect(() => {
     setLoadingMoreData(true)
-    refetch();
-  }, [optionsProducts])
+    setTimeout(() => refetch(), 500);
+  }, [page, categorySelected])
 
   useEffect(() => {
-    setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
-  }, [products?.headers, optionsProducts.page])
+    
+    if(products?.headers && products?.headers['x-pagination-page-count']){
+      const currentlyTotal = parseInt(page)
+      const newTotalPages = parseInt(products?.headers['x-pagination-page-count'])
 
-  useEffect(() => {
-    const updateListProducts = (newProducts) => {
-      setLoadingMoreData(false)
-
-      if (productsFiltered.length > 0) {
-        setDataProducts(productsFiltered)
-        return
+      setShowLoadingMore(currentlyTotal < newTotalPages)
+      
+      if (currentlyTotal !== newTotalPages) {
+        dispatch(getAllPages(newTotalPages))
       }
-
-      if (!newProducts) {
-        return
-      }
-
-      if (keeData) {
-        setDataProducts([...dataProducts, ...newProducts])
-        return
-      }
-      setDataProducts(newProducts)
     }
+
+  }, [products?.headers, page])
+
+  const updateListProducts = (newProducts) => {
+    dispatch(getProducts(newProducts))
+    setLoadingMoreData(false)
+  }
+
+  useEffect(() => {
     updateListProducts(products?.body)
-  }, [products?.body, productsFiltered])
+  }, [products?.body])
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -66,15 +74,11 @@ export const Products = ({ productsFiltered }) => {
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const handleLoadingMore = () => {
-    const { page } = optionsProducts;
-    setOptionsProducts({
-      page: page + 1
-    });
-    setKeepData(true)
+    dispatch(nextPage())
   }
 
   const getButtonLoadingMore = () => {
-    if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
+    if (showLoadingMore) {
       return <ButtonLoadingMore
         loading={loadingMoreData}
         handleLoadMore={handleLoadingMore}
@@ -107,6 +111,5 @@ export const Products = ({ productsFiltered }) => {
       ListFooterComponent={getButtonLoadingMore}
       ListEmptyComponent={renderNotFound}
     />
-
   );
 };
