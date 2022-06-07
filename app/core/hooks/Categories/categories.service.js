@@ -3,17 +3,15 @@ import { endPoints } from '@shared/dictionaries/end-points';
 
 const generalRequestService = GeneralRequestService.getInstance()
 
-export const getCategoriesService = async (options) => {
+export const getCategoriesService = async () => {
   const response = await generalRequestService.getWithHeaders(endPoints.categories, {},
     {
-      'per-page': 20,
-      'expand': 'products',
-      ...options
+      expand: 'sub_categories',
     })
 
-  return response
+  return Promise.resolve(response.body)
 }
 
 export const queryKey = {
-  get_categories_products: 'get_categories_products'
+  get_categories: 'get_categories'
 }
