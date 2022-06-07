@@ -39,6 +39,8 @@ export const FilterProducts = () => {
   const validateIfSelected = (category) => {
     if (categoryParentSelected === category.id) {
       setCategoryActive(true)
+      setNoSubCategoriesFound(category?.sub_categories?.length )
+      setSubCategories(category?.sub_categories)
       return true;
     }
     return false;
@@ -134,8 +136,8 @@ export const FilterProducts = () => {
   };
 
   const handleResetFilter = () => {
-    setCategories(clearFilterSelected(categoryActive))
-    setSubCategories(clearFilterSelected(subCategoryActive))
+    setCategories(clearFilterSelected(categories))
+    setSubCategories(clearFilterSelected(subCategories))
 
     setCategoryActive(false)
     setSubCategoryActive(false)
