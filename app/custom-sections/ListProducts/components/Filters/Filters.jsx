@@ -11,7 +11,7 @@ import { nowTheme } from '@constants';
 
 import {
   selectedCategory,
-  resetPage
+  reset
 } from '@core/module/store/filter/filter';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -97,9 +97,9 @@ export const FilterProducts = () => {
   }
 
   const categorySelected = (options) => {
+    dispatch(reset())
     const optionSelected = options.find((option) => option.selected);
     dispatch(selectedCategory(optionSelected.id))
-    dispatch(resetPage())
     return optionSelected
   }
 
@@ -141,7 +141,7 @@ export const FilterProducts = () => {
 
     setCategoryActive(false)
     setSubCategoryActive(false)
-    dispatch(selectedCategory(''))
+    dispatch(reset())
   };
 
   return (

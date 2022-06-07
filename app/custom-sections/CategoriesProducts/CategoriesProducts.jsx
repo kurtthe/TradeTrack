@@ -6,6 +6,7 @@ import { CategoryItem } from './components'
 import { useDispatch } from 'react-redux';
 import {
   selectedCategory,
+  reset
 } from '@core/module/store/filter/filter';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,8 +15,9 @@ const CategoriesProducts = () => {
   const navigation = useNavigation();
 
   const handleCategory = (item) => {
-    dispatch(selectedCategory(item.id))
+    dispatch(reset())
     navigation.navigate('Category')
+    dispatch(selectedCategory(item.id))
   }
 
   const renderCategory = ({ item }) => (

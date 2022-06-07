@@ -41,14 +41,23 @@ export const Products = ({ onLoadingMore }) => {
   }, [page, categorySelected])
 
   useEffect(() => {
-    setShowLoadingMore(page < pagesTotal)
-    if (pagesTotal !== products?.headers['x-pagination-page-count']) {
-      dispatch(getAllPages(products?.headers['x-pagination-page-count']))
+    
+    if(products?.headers && products?.headers['x-pagination-page-count']){
+      const currentlyTotal = parseInt(pagesTotal)
+      const newTotalPages = parseInt(products?.headers['x-pagination-page-count'] || currentlyTotal)
+      setShowLoadingMore(currentlyTotal < newTotalPages)
+      
+      if (currentlyTotal !== newTotalPages) {
+        dispatch(getAllPages(newTotalPages))
+      }
     }
+
   }, [products?.headers, page])
 
   const updateListProducts = (newProducts) => {
+    console.log("=>newProducts",newProducts)
     dispatch(getProducts(newProducts))
+    setLoadingMoreData(false)
   }
 
   useEffect(() => {
