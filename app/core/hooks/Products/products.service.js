@@ -14,8 +14,6 @@ export const getProducts = async (options) => {
     paramsPetition['category_id'] = category_id
   }
 
-  console.log("=>paramsPetition", paramsPetition)
-
   const response = await generalRequestService.getWithHeaders(endPoints.products, {},
     {
       'per-page': 20,

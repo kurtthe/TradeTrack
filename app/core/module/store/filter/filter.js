@@ -12,6 +12,9 @@ export const filterStatementsSlice = createSlice({
   initialState,
   reducers: {
     selectedCategory: (state, action) => {
+      state.products = []
+      state.page = 1
+      state.pagesTotal = 1
       state.categorySelected = action.payload
     },
     getProducts: (state, action) => {
