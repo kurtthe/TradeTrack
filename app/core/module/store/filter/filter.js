@@ -21,7 +21,7 @@ export const filterStatementsSlice = createSlice({
       if (action.payload === undefined) {
         return
       }
-      if (state.products.length > 0) {
+      if (state.page > 1) {
         state.products = [...state.products, ...action.payload]
         return
       }
