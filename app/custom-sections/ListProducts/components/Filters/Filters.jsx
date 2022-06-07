@@ -11,21 +11,13 @@ import { nowTheme } from '@constants';
 
 import {
   selectedCategory,
-  getProducts,
-  changeKeepData,
-  selectedSubCategory,
-  nextPage,
-  getAllPages,
-  reset,
   resetPage
 } from '@core/module/store/filter/filter';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { sortNameCategories } from './utils'
 
 export const FilterProducts = () => {
   const dispatch = useDispatch();
-  const pageProducts = useSelector((state) => state.filterReducer.page)
   const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected)
 
   const [alertService] = useState(new AlertService())
@@ -52,7 +44,20 @@ export const FilterProducts = () => {
     return false;
   }
 
-  const categoriesToRadioButton = (categoriesList) => {
+  const sortNameCategories = (x, y) => {
+    const first = x.name?.toLowerCase();
+    const second = y.name?.toLowerCase();
+
+    if (first < second) {
+      return -1;
+    }
+    if (first > second) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const categoriesToRadioButton = (categoriesList=[]) => {
     return categoriesList
       ?.sort(sortNameCategories)
       ?.map((category) => ({
@@ -66,13 +71,15 @@ export const FilterProducts = () => {
       }));
   }
 
-  const initialCategories = useCallback(() => {
-    const categoriesSerialized = categoriesToRadioButton()
+  const initialCategories = (categoriesGet) => {
+    const categoriesSerialized = categoriesToRadioButton(categoriesGet)
     setCategories(categoriesSerialized)
-  }, [categoriesToRadioButton])
+  }
 
   useEffect(() => {
-    initialCategories()
+    if(listCategories?.length > 0){
+      initialCategories(listCategories)
+    }
   }, [listCategories])
 
   const handleShowCategories = () => {
@@ -87,38 +94,34 @@ export const FilterProducts = () => {
     actionSheetRef2.current?.setModalVisible();
   }
 
-  const getSubCategories = (options) => {
+  const categorySelected = (options) => {
     const optionSelected = options.find((option) => option.selected);
+    dispatch(selectedCategory(optionSelected.id))
+    dispatch(resetPage())
+    return optionSelected
+  }
+
+  const onPressRadioButtonCategory = (options) => {
+    const optionSelected = categorySelected(options);
 
     if (optionSelected.sub_categories?.length === 0) {
       setNoSubCategoriesFound(true)
       alertService.show(
         'Alert!',
-        `Category ${optionSelected.name?.toLowerCase()} haven't products`,
+        `Category ${optionSelected.name?.toLowerCase()} haven't subCategories`,
       );
-      return []
+      return
     }
-
-    setNoSubCategoriesFound(false)
-    dispatch(categorySelected(optionSelected.id))
-
-    const subCategoriesSerialized = categoriesToRadioButton(optionSelected.sub_categories)
+    const subCategoriesSerialized = categoriesToRadioButton(optionSelected?.sub_categories)
     setSubCategories(subCategoriesSerialized)
-  }
 
-  const onPressRadioButtonCategory = (options) => {
-    getSubCategories(options);
     setCategoryActive(true)
+    setNoSubCategoriesFound(false)
     actionSheetRef.current?.setModalVisible(false);
   };
 
   const onPressRadioButtonSubCategory = (options) => {
-    const optionSelected = getCategoriesForSelected(options)
-
-    dispatch(subCategorySelected(optionSelected.id))
-    dispatch(getProducts(optionSelected.products))
-    dispatch(resetPage())
-
+    categorySelected(options);
     actionSheetRef2.current?.setModalVisible(false);
     setSubCategoryActive(true)
   }
@@ -133,9 +136,10 @@ export const FilterProducts = () => {
   const handleResetFilter = () => {
     setCategories(clearFilterSelected(categoryActive))
     setSubCategories(clearFilterSelected(subCategoryActive))
-    
+
     setCategoryActive(false)
     setSubCategoryActive(false)
+    dispatch(selectedCategory(''))
   };
 
   return (

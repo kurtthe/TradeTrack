@@ -9,7 +9,7 @@ export const getCategoriesService = async () => {
       expand: 'sub_categories',
     })
 
-  return response
+  return Promise.resolve(response.body)
 }
 
 export const queryKey = {
