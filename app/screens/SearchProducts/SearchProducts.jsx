@@ -9,6 +9,7 @@ import { makeStyles } from './SearchProducts.styles'
 import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
+import LoadingComponent from '@custom-elements/Loading';
 
 export const SearchProducts = () => {
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
@@ -18,10 +19,11 @@ export const SearchProducts = () => {
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
+  const [loadingData, setLoadingData] = useState(true)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
     search: '',
-    category_id: categorySelected 
+    category_id: categorySelected
   });
 
   const {
@@ -32,16 +34,14 @@ export const SearchProducts = () => {
   const styles = makeStyles()
 
   useEffect(() => {
-    if (optionsProducts.search) {
-      refetch();
-    }
+    setLoadingData(true)
+    refetch();
   }, [optionsProducts])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
-      if (!newProducts) {
-        return
-      }
+      console.log("=>newProducts", newProducts)
+      setLoadingData(false)
 
       if (keeData) {
         setDataProducts([...dataProducts, ...newProducts])
@@ -52,9 +52,9 @@ export const SearchProducts = () => {
     updateListProducts(products?.body)
   }, [products?.body])
 
-useEffect(()=>{
-  setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
-},[products?.headers, optionsProducts.page])
+  useEffect(() => {
+    setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
+  }, [products?.headers, optionsProducts.page])
 
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
@@ -78,6 +78,7 @@ useEffect(()=>{
   const changeSearchText = (text) => {
     setKeepData(false)
     setOptionsProducts({
+      ...optionsProducts,
       page: 1,
       search: text
     })
@@ -106,6 +107,21 @@ useEffect(()=>{
     );
   };
 
+  const putContent = () => {
+    if (loadingData) {
+      return <LoadingComponent />
+    }
+    return <FlatList
+      data={dataProducts}
+      renderItem={memoizedValue}
+      keyExtractor={(item, index) => `${item.sku}-${index}`}
+      numColumns={2}
+      contentContainerStyle={styles.container}
+      ListFooterComponent={getButtonLoadingMore}
+      ListEmptyComponent={renderNotFound}
+    />
+  }
+
   return (
     <>
       <Search
@@ -114,15 +130,7 @@ useEffect(()=>{
         style={styles.search}
         inputStyle={styles.searchInput}
       />
-      {!empty && <FlatList
-        data={dataProducts}
-        renderItem={memoizedValue}
-        keyExtractor={(item, index) => `${item.sku}-${index}`}
-        numColumns={2}
-        contentContainerStyle={styles.container}
-        ListFooterComponent={getButtonLoadingMore}
-        ListEmptyComponent={renderNotFound}
-      />}
+      {!empty && putContent()}
     </>
 
   );
