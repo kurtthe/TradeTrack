@@ -15,8 +15,9 @@ const CategoriesProducts = () => {
   const navigation = useNavigation();
 
   const handleCategory = (item) => {
-    navigation.navigate('Category')
+
     dispatch(selectedCategory(item.id))
+    setTimeout(() => navigation.navigate('Category'), 500)
   }
 
   const renderCategory = ({ item }) => (
