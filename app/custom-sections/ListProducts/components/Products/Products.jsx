@@ -13,7 +13,7 @@ import {
   getAllPages
 } from '@core/module/store/filter/filter';
 
-export const Products = ({ onLoadingMore }) => {
+export const Products = () => {
   const dispatch = useDispatch();
 
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
@@ -37,14 +37,15 @@ export const Products = ({ onLoadingMore }) => {
 
   useEffect(() => {
     setLoadingMoreData(true)
-    refetch();
+    setTimeout(() => refetch(), 500);
   }, [page, categorySelected])
 
   useEffect(() => {
     
     if(products?.headers && products?.headers['x-pagination-page-count']){
-      const currentlyTotal = parseInt(pagesTotal)
-      const newTotalPages = parseInt(products?.headers['x-pagination-page-count'] || currentlyTotal)
+      const currentlyTotal = parseInt(page)
+      const newTotalPages = parseInt(products?.headers['x-pagination-page-count'])
+
       setShowLoadingMore(currentlyTotal < newTotalPages)
       
       if (currentlyTotal !== newTotalPages) {
@@ -55,7 +56,6 @@ export const Products = ({ onLoadingMore }) => {
   }, [products?.headers, page])
 
   const updateListProducts = (newProducts) => {
-    console.log("=>newProducts",newProducts)
     dispatch(getProducts(newProducts))
     setLoadingMoreData(false)
   }
@@ -75,17 +75,11 @@ export const Products = ({ onLoadingMore }) => {
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const handleLoadingMore = () => {
-    if (onLoadingMore) {
-      onLoadingMore()
-      return
-    }
-
     dispatch(nextPage())
   }
 
   const getButtonLoadingMore = () => {
     if (showLoadingMore) {
-      console.log("=> button loading more")
       return <ButtonLoadingMore
         loading={loadingMoreData}
         handleLoadMore={handleLoadingMore}
