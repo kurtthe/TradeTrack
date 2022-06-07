@@ -3,10 +3,10 @@ import { endPoints } from '@shared/dictionaries/end-points';
 
 const generalRequestService = GeneralRequestService.getInstance()
 
-export const getCategoriesService = async (options) => {
+export const getCategoriesService = async () => {
   const response = await generalRequestService.getWithHeaders(endPoints.categories, {},
     {
-      ...options
+      expand: 'sub_categories',
     })
 
   return response
