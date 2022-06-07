@@ -6,7 +6,6 @@ import { CategoryItem } from './components'
 import { useDispatch } from 'react-redux';
 import {
   selectedCategory,
-  reset
 } from '@core/module/store/filter/filter';
 import { useNavigation } from '@react-navigation/native';
 
