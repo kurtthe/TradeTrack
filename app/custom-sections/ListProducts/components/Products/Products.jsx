@@ -21,7 +21,6 @@ export const Products = () => {
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
 
   const page = useSelector((state) => state.filterReducer.page)
-  const pagesTotal = useSelector((state) => state.filterReducer.pagesTotal)
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
