@@ -2,9 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   categorySelected: '',
-  subCategorySelected: '',
   products: [],
-  keepData: false,
   page: 1,
   pagesTotal: 1
 }

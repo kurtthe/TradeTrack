@@ -11,14 +11,17 @@ import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 
 export const SearchProducts = () => {
+  const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
+
   const [dataProducts, setDataProducts] = useState([])
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
-    search: ''
+    search: '',
+    category_id: categorySelected 
   });
 
   const {
