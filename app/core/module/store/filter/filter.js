@@ -14,27 +14,17 @@ export const filterStatementsSlice = createSlice({
     selectedCategory: (state, action) => {
       state.categorySelected = action.payload
     },
-    selectedSubCategory: (state, action) => {
-      state.subCategorySelected = action.payload
-    },
     getProducts: (state, action) => {
       if (action.payload === undefined) {
         return
       }
-
-      if (state.keepData) {
-        state.products = [...state.products, action.payload]
+      if (state.products.length > 0) {
+        state.products = [...state.products, ...action.payload]
         return
       }
       state.products = action.payload
     },
-    changeKeepData: (state) => {
-      state.keepData = !state.keepData
-    },
     nextPage: (state) => {
-      if (!state.keepData) {
-        state.keepData = true
-      }
       state.page = state.page + 1
     },
     getAllPages: (state, action) => {
@@ -42,23 +32,16 @@ export const filterStatementsSlice = createSlice({
     },
     reset: (state) => {
       state.categorySelected = ''
-      state.subCategorySelected = ''
       state.products = []
-      state.keepData = false
       state.page = 1
       state.pagesTotal = 1
     },
-    resetPage: (state) => {
-      state.page = 1
-    }
   }
 })
 
 export const {
   selectedCategory,
   getProducts,
-  changeKeepData,
-  selectedSubCategory,
   nextPage,
   getAllPages,
   reset,
