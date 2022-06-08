@@ -38,7 +38,7 @@ export const Products = () => {
   useEffect(() => {
     setIsLoading(true)
     setLoadingMoreData(true)
-    setTimeout(() => refetch(), 500);
+    setTimeout(() => refetch(), 600);
   }, [page, categorySelected])
 
   useEffect(() => {
