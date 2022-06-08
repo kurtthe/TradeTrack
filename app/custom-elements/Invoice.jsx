@@ -27,6 +27,7 @@ const Invoice = (props) => {
   };
 
   return (
+    <>
     <TouchableOpacity onPress={() => handleShowDetails()} style={styles.container}>
       <Block row>
         <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
@@ -103,8 +104,9 @@ const Invoice = (props) => {
           </Block>
         </Block>
       </Block>
-      {Platform.OS === 'ios' && <Block style={styles.line} />}
     </TouchableOpacity>
+    {Platform.OS === 'ios' && <Block style={styles.line} />}
+    </>
   );
 };
 
@@ -126,8 +128,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   line: {
-    borderBottomWidth: .75,
-    borderBottomColor: 'gray',
+    borderBottomWidth: 2,
+    borderBottomColor: 'lightgrey',
     alignSelf: 'center',
     width: '95%',
     marginTop: 14,
