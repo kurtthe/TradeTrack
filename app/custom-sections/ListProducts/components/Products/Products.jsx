@@ -24,29 +24,31 @@ export const Products = () => {
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const {
     data: products,
     refetch,
-    isLoading } = useGetProducts({
-      page,
-      category_id: categorySelected
-    })
+  } = useGetProducts({
+    page,
+    category_id: categorySelected
+  })
   const styles = makeStyles()
 
   useEffect(() => {
+    setIsLoading(true)
     setLoadingMoreData(true)
     setTimeout(() => refetch(), 500);
   }, [page, categorySelected])
 
   useEffect(() => {
-    
-    if(products?.headers && products?.headers['x-pagination-page-count']){
+
+    if (products?.headers && products?.headers['x-pagination-page-count']) {
       const currentlyTotal = parseInt(page)
       const newTotalPages = parseInt(products?.headers['x-pagination-page-count'])
 
       setShowLoadingMore(currentlyTotal < newTotalPages)
-      
+
       if (currentlyTotal !== newTotalPages) {
         dispatch(getAllPages(newTotalPages))
       }
@@ -57,6 +59,7 @@ export const Products = () => {
   const updateListProducts = (newProducts) => {
     dispatch(getProducts(newProducts))
     setLoadingMoreData(false)
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -87,18 +90,12 @@ export const Products = () => {
     return null
   }
 
-  const renderNotFound = () => {
-    return (
-      <View style={styles.notfound}>
-        <Text style={styles.textNotFount}>
-          No results found for filter selected.
-        </Text>
-      </View>
-    );
-  };
-
   if (isLoading) {
-    return <LoadingComponent />
+    return (
+      <View style={styles.contentLoading}>
+        <LoadingComponent size='large' />
+      </View>
+    )
   }
 
   return (
@@ -109,7 +106,6 @@ export const Products = () => {
       numColumns={2}
       contentContainerStyle={styles.container}
       ListFooterComponent={getButtonLoadingMore}
-      ListEmptyComponent={renderNotFound}
     />
   );
 };
