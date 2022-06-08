@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.8",
+    "version": "1.4.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -28,12 +28,12 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1.4.8",
+      "buildNumber": "1.5",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist"
     },
     "android": {
       "package": "com.tradetrak.Burdens",
-      "versionCode": 15,
+      "versionCode": 16,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
