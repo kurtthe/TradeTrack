@@ -21,5 +21,11 @@ StyleSheet.create({
     fontFamily: 'montserrat-regular',
     fontSize: 18,
     color: nowTheme.COLORS.TEXT
+  },
+  contentLoading: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:nowTheme.COLORS.BACKGROUND,
+    flex: 1
   }
 })
