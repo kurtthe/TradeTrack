@@ -90,22 +90,19 @@ export const Products = () => {
     return null
   }
 
-  if (isLoading) {
-    return (
-      <View style={styles.contentLoading}>
-        <LoadingComponent size='large' />
-      </View>
-    )
-  }
-
   return (
-    <FlatList
-      data={dataProducts}
-      renderItem={memoizedValue}
-      keyExtractor={(item, index) => `${item.sku}-${index}`}
-      numColumns={2}
-      contentContainerStyle={styles.container}
-      ListFooterComponent={getButtonLoadingMore}
-    />
+    <>
+      {isLoading && (<View style={styles.contentLoading}>
+        <LoadingComponent size='large' />
+      </View>)}
+      <FlatList
+        data={dataProducts}
+        renderItem={memoizedValue}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        ListFooterComponent={getButtonLoadingMore}
+      />
+    </>
   );
 };

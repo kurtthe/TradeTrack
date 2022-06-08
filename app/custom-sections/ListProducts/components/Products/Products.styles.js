@@ -26,6 +26,6 @@ StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor:nowTheme.COLORS.BACKGROUND,
-    flex: 1
+    padding: 10
   }
 })
