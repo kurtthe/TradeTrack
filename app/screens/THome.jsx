@@ -107,7 +107,7 @@ class Home extends React.Component {
                   companyName: this.state.company
                 })}
               >
-                Get a roofing estimate
+               Roof Estimator
               </Button>
             </Block>
             <Block center style={{ paddingVertical: 30 }}>
