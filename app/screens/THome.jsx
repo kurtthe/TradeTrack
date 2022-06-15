@@ -130,11 +130,13 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-regular',
   },
   button: {
-    marginVertical: theme.SIZES.BASE,
+    alignItems: 'center',
+    margin: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
   },
   buttonEstimator: {
-    marginVertical: theme.SIZES.BASE,
+    top: -15,
+    margin: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
     backgroundColor: nowTheme.COLORS.RED_BUTTON
   },
