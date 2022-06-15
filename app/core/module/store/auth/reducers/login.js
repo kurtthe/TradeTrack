@@ -12,7 +12,8 @@ const initialState = {
   role: null,
   status: null,
   time_zone: null,
-  username: null
+  username: null,
+  company: null
 }
 
 export const loginSlice = createSlice({
@@ -25,6 +26,7 @@ export const loginSlice = createSlice({
         state.api_key= null
         return;
       } else {
+        console.log("=>data",data)
         state.api_key = data.api_key
         state.company_id = data.user.company_id
         state.created_date = data.user.created_date
@@ -37,6 +39,8 @@ export const loginSlice = createSlice({
         state.status = data.user.status
         state.time_zone = data.user.time_zone
         state.username = data.user.username
+        state.company = data.company
+        
       }
     },
     logout: (state) => {

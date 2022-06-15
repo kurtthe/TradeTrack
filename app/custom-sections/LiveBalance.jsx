@@ -3,7 +3,6 @@ import { ImageBackground, TouchableOpacity, StyleSheet, Dimensions } from 'react
 import { Block, theme, Text } from 'galio-framework';
 
 import { nowTheme } from '@constants';
-import { MaterialIcons } from '@expo/vector-icons';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { withNavigation } from '@react-navigation/compat';
 import { useSelector } from 'react-redux'
@@ -13,6 +12,7 @@ const { width } = Dimensions.get('screen');
 
 const LiveBalance = (props) => {
   const balance = useSelector((state) => state.liveBalanceReducer);
+  const companyName = useSelector((state) => state.loginReducer.company);
 
   return (
     <Block flex card center shadow style={styles.category}>
@@ -29,7 +29,7 @@ const LiveBalance = (props) => {
         <Block style={styles.categoryTitle}>
           {props.company ? (
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {props.nameCompany}
+              {companyName}
             </Text>
           ) : (
             <>

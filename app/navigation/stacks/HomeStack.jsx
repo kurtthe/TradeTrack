@@ -7,6 +7,7 @@ import InvoiceDetails from '@screens/InvoiceDetail';
 import Allinvoice from '@screens/Allinvoice';
 import AllNews from '@screens/AllNews';
 import Store from '@screens/TStores';
+import EstimatorRoof from '@screens/EstimatorRoof';
 
 import { screensRoute } from './ConfigRoutes';
 
@@ -67,6 +68,12 @@ function HomeStack() {
         title: 'Stores',
         back: true,
       }
+    },
+    {
+      name: 'Estimator',
+      component: EstimatorRoof,
+      colorBackground: '#FFFFFF',
+      header: false
     },
   ];
 

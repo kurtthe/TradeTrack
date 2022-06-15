@@ -23,5 +23,6 @@ export const endPoints = {
   newPrice: `${environment.api}products/:id/price`,
   preferredStore: `${environment.api}burdens/stores/preferred`,
   shareOrder: `${environment.api}material-orders/:id/share`,
-  orders: `${environment.api}material-orders?sort=id_desc&include_products=true`
+  orders: `${environment.api}material-orders?sort=id_desc&include_products=true`,
+  estimatorRoofing: 'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber'
 };
