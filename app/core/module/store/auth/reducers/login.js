@@ -26,7 +26,6 @@ export const loginSlice = createSlice({
         state.api_key= null
         return;
       } else {
-        console.log("=>data",data)
         state.api_key = data.api_key
         state.company_id = data.user.company_id
         state.created_date = data.user.created_date
