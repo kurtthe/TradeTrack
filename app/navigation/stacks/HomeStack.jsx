@@ -73,7 +73,9 @@ function HomeStack() {
       name: 'Estimator',
       component: EstimatorRoof,
       colorBackground: '#FFFFFF',
-      header: false
+      header: {
+        back: true,
+      }
     },
   ];
 
