@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native';
-import PropTypes from 'prop-types';
+import { TouchableOpacity, View, Platform } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import Icon from '@components/Icon';
 import { nowTheme } from '@constants';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { withNavigation } from '@react-navigation/compat';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
+import { makeStyles } from './Invoice.styles';
 
-const Invoice = (props) => {
+export const Invoice = (props) => {
+  const navigation = useNavigation();
+  const styles = makeStyles()
   let dateInvoice = validateEmptyField(props.invoice.invoice_date);
 
   if (dateInvoice !== 'N/A') {
@@ -20,14 +21,13 @@ const Invoice = (props) => {
   const formatMoney = FormatMoneyService.getInstance();
 
   const handleShowDetails = () => {
-    props.navigation.navigate('InvoiceDetails', {
+    navigation.navigate('InvoiceDetails', {
       invoice: props.invoice.id,
       nameRouteGoing: !props.isAccount ? false : 'AccountInvoice',
     });
   };
 
   return (
-    <>
     <TouchableOpacity onPress={() => handleShowDetails()} style={styles.container}>
       <Block row>
         <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
@@ -104,56 +104,9 @@ const Invoice = (props) => {
           </Block>
         </Block>
       </Block>
+      {Platform.OS === 'ios' && <Block style={styles.line} />}
     </TouchableOpacity>
-    {Platform.OS === 'ios' && <Block style={styles.line} />}
-    </>
   );
 };
 
-Invoice.propTypes = {
-  body: PropTypes.string,
-};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingVertical: 10,
-    shadowColor: nowTheme.COLORS.BLACK,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
-    shadowOpacity: 0.1,
-    elevation: 2,
-    height: 'auto',
-    borderRadius: 3,
-    marginBottom: 5,
-  },
-  line: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'lightgrey',
-    alignSelf: 'center',
-    width: '95%',
-    marginTop: 14,
-  },
-  bg_green: {
-    width: wp('20%'),
-    height: 25,
-    backgroundColor: '#ecf8ee',
-    borderRadius: 30,
-    marginTop: 20,
-    justifyContent: 'center',
-    alignContent: 'center',
-    left: -1,
-  },
-  bg_purple: {
-    width: wp('20%'),
-    height: 25,
-    backgroundColor: '#eff1f7',
-    borderRadius: 30,
-    marginTop: 20,
-    justifyContent: 'center',
-    alignContent: 'center',
-    left: -1,
-  },
-});
-
-export default withNavigation(Invoice);
