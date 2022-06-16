@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Platform } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import Icon from '@components/Icon';
 import { nowTheme } from '@constants';
+
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import moment from 'moment';
@@ -12,6 +13,7 @@ import { makeStyles } from './Invoice.styles';
 export const Invoice = (props) => {
   const navigation = useNavigation();
   const styles = makeStyles()
+  
   let dateInvoice = validateEmptyField(props.invoice.invoice_date);
 
   if (dateInvoice !== 'N/A') {
@@ -28,6 +30,7 @@ export const Invoice = (props) => {
   };
 
   return (
+    <>
     <TouchableOpacity onPress={() => handleShowDetails()} style={styles.container}>
       <Block row>
         <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
@@ -104,9 +107,8 @@ export const Invoice = (props) => {
           </Block>
         </Block>
       </Block>
-      {Platform.OS === 'ios' && <Block style={styles.line} />}
     </TouchableOpacity>
+    {Platform.OS === 'ios' && <Block style={styles.line} />}
+    </>
   );
 };
-
-
