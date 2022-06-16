@@ -1,3 +1,3 @@
-export {Invoice} from './Invoice'
+import {Invoice} from "./Invoice"
 
 export default Invoice
