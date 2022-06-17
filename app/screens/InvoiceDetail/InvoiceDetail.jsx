@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
-import { Block, Text } from 'galio-framework';
+import { Block, Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -11,18 +11,50 @@ import SkeletonInvoiceDetail from '@custom-elements/skeletons/InvoiceDetail';
 import { validateEmptyField } from '@core/utils/validate-empty-field';
 import { makeStyles } from './InvoiceDetail.styles'
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProductCart } from '@core/services/product-cart.service';
+import { updateProducts } from '@core/module/store/cart/cart';
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 
 export const InvoiceDetails = ({ route }) => {
   const [invoiceDetail, setInvoiceDetail] = useState(null)
+  const productsInCart = useSelector((state) => state.productsReducer.products);
+  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly);
+  const productsToCart = useSelector((state) => state.preCartReducer.products);
+
   const styles = makeStyles()
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
+  const productCart = ProductCart.getInstance(productsInCart);
   const getDataPetition = GetDataPetitionService.getInstance();
   const formatMoney = FormatMoneyService.getInstance();
 
   useEffect(() => {
     handleGetData()
   }, [route.params.invoice])
+
+  useEffect(() => {
+    const mappingData = () => {
+
+      if(invoiceDetail === null || invoiceDetail?.structure?.items?.length === 0){
+        return
+      }
+      
+      const dataProduct = invoiceDetail.structure.items?.map((item) => {
+
+        const priceProduct = clientFriendly ? item.unit_price : item.unit_price;
+        return {
+          ...item,
+          myPrice: clientFriendly,
+          price: priceProduct,
+          quantity: item.quantity
+        }
+      })
+      dispatch(updatePreOrder(dataProduct))
+    }
+    mappingData()
+  }, [invoiceDetail?.structure?.items])
 
   const handleGetData = async () => {
     setInvoiceDetail(null)
@@ -59,6 +91,11 @@ export const InvoiceDetails = ({ route }) => {
     ));
   };
 
+  const handleAddCart = () => {
+    const newProducts = productCart.addMultipleCart(productsToCart)
+    dispatch(updateProducts(newProducts))
+  }
+
   if (invoiceDetail === null || invoiceDetail === undefined) {
     return <SkeletonInvoiceDetail />;
   }
@@ -94,7 +131,24 @@ export const InvoiceDetails = ({ route }) => {
       </Block>
       <Block card style={styles.content}
       >
-        <Block style={styles.detailOrdersBlock}>{renderDetailProducts()}</Block>
+        <Block style={styles.detailOrdersBlock}>
+          {renderDetailProducts()}
+          {invoiceDetail.structure.items.length > 0 && (
+            <Block row bottom>
+              <Button
+                shadowless
+                size="small"
+                color={nowTheme.COLORS.INFO}
+                onPress={() => handleAddCart()}
+              >
+                <Text size={18} color={nowTheme.COLORS.WHITE}>
+                  Add to cart
+                </Text>
+              </Button>
+            </Block>
+          )}
+
+        </Block>
       </Block>
       <Block card style={styles.lastCard} >
         <Block row style={styles.totalPrices}>
