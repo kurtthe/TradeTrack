@@ -36,7 +36,6 @@ const OrdersBought = ({ route }) => {
   }, [products?.items])
 
   const handleAddCart = () => {
-
     const newProducts = productCart.addMultipleCart(productsToCart)
     dispatch(updateProducts(newProducts))
   }
