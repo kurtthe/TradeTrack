@@ -5,11 +5,24 @@ import SimpleButton from '@components/SimpleButton';
 import { Ionicons } from '@expo/vector-icons';
 import { Block, Text } from 'galio-framework';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import {cardInfo} from './CategoriesProducts/CategoriesProducts.model'
+import { useDispatch } from 'react-redux';
+import {
+  selectedCategory,
+} from '@core/module/store/filter/filter';
+
 const { width } = Dimensions.get('screen');
 
 const ListCart = (props) => {
+  const dispatch = useDispatch()
+
   const renderProducts = ({ item }) => <ProductCart product={item} bought={props.bought} />;
+
+  const handleBrowseProducts = () => {
+    dispatch(selectedCategory(''))
+    props.navigation.navigate('Products',{
+      screen: 'Category'
+    })
+  }
 
   const renderEmpty = () => {
     return (
@@ -19,14 +32,7 @@ const ListCart = (props) => {
           {props.messageCartEmpty || 'Your cart is empty!'}
         </Text>
         <Block style={{ top: 100 }} middle >
-          <SimpleButton onPress={() => props.navigation.navigate('Products', {
-              screen: 'Category',
-              params: {
-                headerTitle: cardInfo.name,
-                allProducts: true,
-                category:cardInfo
-              },
-            })}>
+          <SimpleButton onPress={() => handleBrowseProducts()}>
             Browse products
           </SimpleButton>
         </Block>
@@ -40,7 +46,7 @@ const ListCart = (props) => {
       renderItem={renderProducts}
       keyExtractor={(item, index) => `${index}-${item.id}`}
       ListEmptyComponent={renderEmpty}
-      style={{ width: width, height: Platform.OS == 'ios' ? '80%' : '84%'}}
+      style={{ width: width, height: Platform.OS == 'ios' ? '80%' : '84%' }}
     />
   )
 }
