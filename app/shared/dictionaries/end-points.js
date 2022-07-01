@@ -5,7 +5,7 @@ export const endPoints = {
   resetPassword: `${environment.api}reset-password`,
   burdensBalance: `${environment.api}burdens/balance`,
   invoices: `${environment.api}burdens/invoices?sort=id_desc`,
-  invoicesDetail: `${environment.api}burdens/:id?expand=structure,storeLocation`,
+  invoicesDetail: `${environment.api}burdens/:id?expand=structure,storeLocation&include_products=true`,
   downloadInvoicesDetail: `${environment.api}burdens/invoices/:id/download?base64=true`,
   news: `${environment.api}news`,
   statements: `${environment.api}burdens/statements?sort=id_desc`,
