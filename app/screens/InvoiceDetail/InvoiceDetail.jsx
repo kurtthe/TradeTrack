@@ -43,9 +43,9 @@ export const InvoiceDetails = ({ route }) => {
       
       const dataProduct = invoiceDetail.structure.items?.map((item) => {
 
-        const priceProduct = clientFriendly ? item.unit_price : item.unit_price;
+        const priceProduct = clientFriendly ? item.product.rrp : item.unit_price;
         return {
-          ...item,
+          ...item.product,
           myPrice: clientFriendly,
           price: priceProduct,
           quantity: item.quantity
