@@ -77,7 +77,7 @@ export const InvoiceDetails = ({ route }) => {
   const renderDetailProducts = () => {
     return invoiceDetail.structure.items.map((orders, index) => (
       <Block key={index} style={{ top: 5 }}>
-        <Text style={styles.grayTextSKU}> SKU {orders.sku}</Text>
+        <Text style={styles.grayTextSKU}> SKU {orders.product.sku}</Text>
         <Text numberOfLines={2} style={styles.receiptText}>
           {orders.description}
         </Text>
