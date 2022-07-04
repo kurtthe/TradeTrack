@@ -37,7 +37,14 @@ export class ProductCart {
   }
 
   addMultipleCart(products) {
-    products?.forEach((product) => this.addCart(product))
+    products?.forEach((product) => {
+      if (product.sku === null) {
+        this.alertService.show("", "Product without SKU")
+        return
+      }
+
+      return this.addCart(product)
+    })
     return this.cartProducts
   }
 
