@@ -42,27 +42,23 @@ export const InvoiceDetails = ({ route }) => {
   useEffect(() => {
     const mappingData = () => {
 
-      if(invoiceDetail === null || invoiceDetail?.structure?.items?.length === 0){
+      if (invoiceDetail === null || invoiceDetail?.structure?.items?.length === 0) {
         return
       }
-      
+
       const dataProduct = invoiceDetail.structure.items
         ?.filter((item) => item.product && item.product.sku)
         ?.map((item) => {
 
-        const priceProduct = clientFriendly ? item.product.rrp : item.unit_price;
-        return {
-          ...item.product,
-          myPrice: clientFriendly,
-          price: priceProduct,
-          quantity: item.quantity
-        }
-      })
+          const priceProduct = clientFriendly ? item.product.rrp : item.unit_price;
+          return {
+            ...item.product,
+            myPrice: clientFriendly,
+            price: priceProduct,
+            quantity: item.quantity
+          }
+        })
 
-      if(invoiceDetail.structure.items?.length !== dataProduct.length){
-        alertService.show("", "some of the products could not be added, because they do not have a valid SKU")
-      }
-      
       dispatch(updatePreOrder(dataProduct))
     }
     mappingData()
@@ -105,6 +101,12 @@ export const InvoiceDetails = ({ route }) => {
 
   const handleAddCart = () => {
     const newProducts = productCart.addMultipleCart(productsToCart)
+    if (invoiceDetail.structure.items?.length !== productsToCart.length) {
+      alertService.show(
+        "",
+        "some of the products could not be added, because they do not have a valid SKU"
+      )
+    }
     dispatch(updateProducts(newProducts))
   }
 
