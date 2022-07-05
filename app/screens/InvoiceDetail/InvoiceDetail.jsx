@@ -15,6 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ProductCart } from '@core/services/product-cart.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { updatePreOrder } from '@core/module/store/cart/preCart';
+import { AlertService } from '@core/services/alert.service';
+
+
+const alertService = new AlertService();
+
 
 export const InvoiceDetails = ({ route }) => {
   const [invoiceDetail, setInvoiceDetail] = useState(null)
@@ -41,7 +46,9 @@ export const InvoiceDetails = ({ route }) => {
         return
       }
       
-      const dataProduct = invoiceDetail.structure.items?.map((item) => {
+      const dataProduct = invoiceDetail.structure.items
+        ?.filter((item) => item.product && item.product.sku)
+        ?.map((item) => {
 
         const priceProduct = clientFriendly ? item.product.rrp : item.unit_price;
         return {
@@ -51,6 +58,11 @@ export const InvoiceDetails = ({ route }) => {
           quantity: item.quantity
         }
       })
+
+      if(invoiceDetail.structure.items?.length !== dataProduct.length){
+        alertService.show("", "some of the products could not be added, because they do not have a valid SKU")
+      }
+      
       dispatch(updatePreOrder(dataProduct))
     }
     mappingData()
@@ -77,7 +89,7 @@ export const InvoiceDetails = ({ route }) => {
   const renderDetailProducts = () => {
     return invoiceDetail.structure.items.map((orders, index) => (
       <Block key={index} style={{ top: 5 }}>
-        <Text style={styles.grayTextSKU}> SKU {orders.product.sku}</Text>
+        <Text style={styles.grayTextSKU}> SKU {orders?.product?.sku}</Text>
         <Text numberOfLines={2} style={styles.receiptText}>
           {orders.description}
         </Text>
