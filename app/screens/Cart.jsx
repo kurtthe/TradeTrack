@@ -17,7 +17,7 @@ import { getOrders } from '@core/module/store/orders/orders';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListData from '@custom-sections/ListData';
-import {ORDERS} from '@shared/dictionaries/typeDataSerialize'
+import { ORDERS } from '@shared/dictionaries/typeDataSerialize'
 
 
 const { width } = Dimensions.get('screen');
@@ -74,17 +74,13 @@ class Cart extends React.Component {
     const total = this.productCartService.totalOrder();
     return `${this.formatMoney.format(total)}`;
   };
-  
-  renderCurrentOrder = () => (
-      <ListCart cartProducts={this.props.cartProducts} navigation={this.props.navigation} />
-  );
 
-  renderItemsPrevious = ({item}) => (
+  renderItemsPrevious = ({ item }) => (
     <Order item={item} />
   )
 
   renderPreviousOrder = () => (
-    <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%')  }}>
+    <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%') }}>
       <ListData
         endpoint={endPoints.orders}
         renderItems={this.renderItemsPrevious}
@@ -93,31 +89,6 @@ class Cart extends React.Component {
     </Block>
   );
 
-  renderFooter = () => {
-    if (!this.props.cartProducts || this.props.cartProducts.length === 0) {
-      return null;
-    }
-
-    const titleOrder = this.state.myPrice ? 'Total RRP (ex-GST) ' : 'Total (ex-GST)';
-
-    return (
-        <Block row style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${this.orderTotal()}`}</Text>
-
-          <Button
-            shadowless
-            style={{ left: 10 }}
-            color={nowTheme.COLORS.INFO}
-            onPress={() => this.onCheckoutPressed()}
-          >
-            <Text size={18} color={nowTheme.COLORS.WHITE}>
-              Checkout
-            </Text>
-          </Button>
-        </Block>
-    );
-  };
-
   render() {
     return (
       <Block style={styles.container}>
@@ -125,7 +96,10 @@ class Cart extends React.Component {
           optionsTabsRender={[
             {
               labelTab: 'Current order',
-              component: this.renderCurrentOrder(),
+              component: (<ListCart
+                onCheckoutPressed={() => onCheckoutPressed()}
+                orderTotal={() => this.orderTotal()}
+              />),
             },
             {
               labelTab: 'Previous order',
@@ -135,7 +109,6 @@ class Cart extends React.Component {
           tabIndexSelected={this.state.customStyleIndex}
           changeIndexSelected={(index) => this.setState({ customStyleIndex: index })}
         />
-        {this.renderFooter()}
       </Block>
     );
   }
