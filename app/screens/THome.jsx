@@ -35,7 +35,7 @@ class Home extends React.Component {
   }
 
   fetchData = async () => {
-    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
   }
