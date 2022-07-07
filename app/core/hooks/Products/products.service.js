@@ -27,6 +27,7 @@ export const getProducts = async (options) => {
     {
       'per-page': 20,
       supplier_id: supplierId,
+      update_prices: true,
       ...paramsPetition
     })
   return Promise.resolve(response)
