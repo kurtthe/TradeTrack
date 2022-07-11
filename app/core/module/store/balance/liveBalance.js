@@ -8,7 +8,8 @@ const initialState = {
   thirty_day: null,
   overdue: 0,
   total: null,
-  client_number:null
+  client_number: null,
+  company: null
 }
 
 export const liveBalanceSlice = createSlice({
@@ -16,7 +17,9 @@ export const liveBalanceSlice = createSlice({
   initialState,
   reducers: {
     getBalance: (state, action) => {
-      const data = action.payload;
+      const data = action.payload?.body;
+      const nameCompany = action.payload?.headers['tradetrak-company']
+
       state.id = data.id
       state.company_id = data.company_id
       state.updated = data.updated
@@ -25,6 +28,7 @@ export const liveBalanceSlice = createSlice({
       state.overdue = data.overdue
       state.total = data.total
       state.client_number = data.client_number
+      state.company = nameCompany
     },
   },
 })

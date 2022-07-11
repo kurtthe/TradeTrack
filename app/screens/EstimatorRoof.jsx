@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 const EstimatorRoof = () => {
   const [urlView, setUrlView] = useState(null);
-  const companyName = useSelector((state) => state.loginReducer.company);
+  const companyName = useSelector((state) => state.liveBalanceReducer.company);
   const emailUser = useSelector((state) => state.loginReducer.email);
   const fullName = useSelector((state) => `${state.loginReducer.first_name} ${state.loginReducer.last_name}`);
   const api_key = useSelector((state) => state.loginReducer.api_key);

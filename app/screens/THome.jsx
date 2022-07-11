@@ -26,7 +26,6 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
-      company: '',
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -36,7 +35,7 @@ class Home extends React.Component {
   }
 
   fetchData = async () => {
-    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
   }
@@ -103,11 +102,9 @@ class Home extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.buttonEstimator}
-                onPress={() => navigation.navigate('Estimator', {
-                  companyName: this.state.company
-                })}
+                onPress={() => navigation.navigate('Estimator')}
               >
-               Roof Estimator
+                Roof Estimator
               </Button>
             </Block>
             <Block center style={{ paddingVertical: 30 }}>
