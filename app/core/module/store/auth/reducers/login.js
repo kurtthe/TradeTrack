@@ -38,9 +38,12 @@ export const loginSlice = createSlice({
         state.status = data.user.status
         state.time_zone = data.user.time_zone
         state.username = data.user.username
-        state.company = data.company
+        
         
       }
+    },
+    setCompany: (state, action) => {
+      state.company = action.payload
     },
     logout: (state) => {
       state.api_key= null
@@ -48,6 +51,6 @@ export const loginSlice = createSlice({
   },
 })
 
-export const { sign, logout } = loginSlice.actions
+export const { sign, logout, setCompany } = loginSlice.actions
 
 export default loginSlice.reducer

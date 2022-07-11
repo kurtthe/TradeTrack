@@ -12,7 +12,6 @@ const { width } = Dimensions.get('screen');
 
 const LiveBalance = (props) => {
   const balance = useSelector((state) => state.liveBalanceReducer);
-  const companyName = useSelector((state) => state.loginReducer.company);
 
   return (
     <Block flex card center shadow style={styles.category}>
@@ -29,7 +28,7 @@ const LiveBalance = (props) => {
         <Block style={styles.categoryTitle}>
           {props.company ? (
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {companyName}
+              {balance.company}
             </Text>
           ) : (
             <>
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width,
     backgroundColor: 'rgba(75, 106, 170, 0.5)',
-    
+
   },
   category: {
     backgroundColor: theme.COLORS.WHITE,
