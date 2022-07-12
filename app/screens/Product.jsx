@@ -19,6 +19,7 @@ import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import LoadingComponent from '@custom-elements/Loading';
+import FavoriteIcon from '@custom-elements/FavoriteIcon'
 
 const { width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -27,16 +28,16 @@ const sizeConstantSmall =
       ? 14
       : 16
     : Dimensions.get('window').height < 870
-    ? 14
-    : 16;
+      ? 14
+      : 16;
 const sizeConstantBig =
   Platform.OS === 'ios'
     ? Dimensions.get('window').height < 670
       ? 20
       : 24
     : Dimensions.get('window').height < 870
-    ? 20
-    : 24;
+      ? 20
+      : 24;
 
 class Product extends React.Component {
   constructor(props) {
@@ -128,20 +129,23 @@ class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE,
               }}
             >
-              <Text
-                size={
-                  Platform.OS === 'ios'
-                    ? Dimensions.get('window').height < 670
-                      ? 20
-                      : 23
-                    : Dimensions.get('window').height < 870
-                    ? 20
-                    : 23
-                }
-                style={{ paddingBottom: 24, fontWeight: '500' }}
-              >
-                {productDetail?.name}
-              </Text>
+              <Block row right>
+                <Text
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 20
+                        : 23
+                      : Dimensions.get('window').height < 870
+                        ? 20
+                        : 23
+                  }
+                  style={{ paddingBottom: 24, fontWeight: '500' }}
+                >
+                  {productDetail?.name}
+                </Text>
+                <FavoriteIcon product={productDetail} />
+              </Block>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
