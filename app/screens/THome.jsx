@@ -107,7 +107,17 @@ class Home extends React.Component {
                 Roof Estimator
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 30 }}>
+            <Block center style={{ top : -11 }}>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.buttonEstimator}
+               // onPress={() => navigation.navigate('Estimator')}
+              >
+               App Feedback
+              </Button>
+            </Block>
+            <Block center style={{ paddingVertical: 35 }}>
             </Block>
           </Block>
         </ScrollView>
@@ -135,7 +145,6 @@ const styles = StyleSheet.create({
     top: -15,
     margin: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
-    backgroundColor: nowTheme.COLORS.RED_BUTTON
   },
   card: {
     backgroundColor: nowTheme.COLORS.WHITE,
