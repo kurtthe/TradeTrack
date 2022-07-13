@@ -111,7 +111,6 @@ export const ListTransactions = () => {
         renderItem={memoizedValue}
         keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
         ListEmptyComponent={renderNotFound}
-        numColumns={1}
         ListFooterComponent={getButtonLoadingMore}
       />
     </View>

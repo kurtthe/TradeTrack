@@ -28,7 +28,7 @@ export const filterStatementsSlice = createSlice({
       }
       state.products = action.payload
     },
-    getTransactions: () => {
+    getTransactions: (state, action) => {
       if (action.payload === undefined) {
         return
       }
