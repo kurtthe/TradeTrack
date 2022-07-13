@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   categorySelected: '',
   products: [],
+  transactions: [],
   page: 1,
   pagesTotal: 1
 }
@@ -27,6 +28,16 @@ export const filterStatementsSlice = createSlice({
       }
       state.products = action.payload
     },
+    getTransactions: () => {
+      if (action.payload === undefined) {
+        return
+      }
+      if (state.page > 1) {
+        state.transactions = [...state.transactions, ...action.payload]
+        return
+      }
+      state.transactions = action.payload
+    },
     nextPage: (state) => {
       state.page = state.page + 1
     },
@@ -36,6 +47,7 @@ export const filterStatementsSlice = createSlice({
     reset: (state) => {
       state.categorySelected = ''
       state.products = []
+      state.transactions = []
       state.page = 1
       state.pagesTotal = 1
     },
@@ -48,7 +60,8 @@ export const {
   nextPage,
   getAllPages,
   reset,
-  resetPage
+  resetPage,
+  getTransactions
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

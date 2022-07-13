@@ -3,7 +3,6 @@ import { View, FlatList } from 'react-native';
 import { Text } from 'galio-framework';
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { Button } from '@components';
-import { Filters } from './components';
 import { makeStyles } from './ListData.styles'
 import nowTheme from '@constants/Theme';
 import { serializeData } from '@core/utils/serializeData'
@@ -13,15 +12,12 @@ const ListData = ({
   perPage,
   endpoint,
   actionData,
-  filters,
-  hideFilterType,
   renderItems,
   numColumns,
   typeData,
 }) => {
   const [dataPetition, setDataPetition] = useState([]);
   const [perPageData] = useState(perPage || 12);
-  const [valuesFilters, setValuesFilters] = useState({});
   const [loadingMoreData, setLoadingMoreData] = useState(true);
   const [showLoadMore, setShowLoadMore] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -31,13 +27,7 @@ const ListData = ({
   const [getDataPetition] = useState(GetDataPetitionService.getInstance());
   const styles = makeStyles();
 
-  const loadData = (data, filterData = false) => {
-
-    if (filterData) {
-      const newData = serializeData[filterData](data)
-      setDataPetition(newData);
-      return
-    }
+  const loadData = (data) => {
 
     const currentData = dataPetition;
     const newData = serializeData[typeData]([...currentData, ...data.body])
@@ -79,39 +69,6 @@ const ListData = ({
   };
 
 
-  useEffect(() => {
-    const setParamsEndPoint = async () => {
-      const includeParamUrl = endpoint.includes('?');
-      let linkPetition = `${endpoint}${includeParamUrl ? '&' : '?'}`;
-
-      Object.keys(valuesFilters).forEach((item) => {
-        linkPetition += `${item}=${valuesFilters[item]}&`;
-      });
-
-      setUrlPetition(linkPetition)
-    };
-    setParamsEndPoint()
-  }, [valuesFilters])
-
-  const getValuesFilters = (values) => {
-    setValuesFilters(values);
-  };
-
-  const getDataFilterProducts = async (data = [], typeDataFilter) => {
-    loadData(data, typeDataFilter)
-  }
-
-  const renderFilter = () => {
-    if (!filters) {
-      return null;
-    }
-
-    return <Filters
-      getValues={(values) => getValuesFilters(values)}
-      hideFilterType={hideFilterType}
-    />;
-  };
-
   const renderNotFound = () => {
     return (
       <View style={styles.notfound}>
@@ -149,7 +106,6 @@ const ListData = ({
 
   return (
     <View style={styles.container}>
-      <View>{renderFilter()}</View>
       <FlatList
         data={dataPetition}
         renderItem={({ item, index }) => renderItems({ item, index })}
