@@ -42,18 +42,21 @@ const OrdersBought = ({ route }) => {
 
   return (
     <Block style={styles.container}>
-      <ListCart cartProducts={productsToCart} messageCartEmpty='No have products in this order' bought={true} />
-      {(productsToCart?.length > 0) ? (<Block style={styles.footer}>
-        <Button
-          shadowless
-          color={nowTheme.COLORS.INFO}
-          onPress={() => handleAddCart()}
-        >
-          <Text size={18} color={nowTheme.COLORS.WHITE}>
-            Add to cart
-          </Text>
-        </Button>
-      </Block>) : null}
+      <ListCart products={productsToCart} messageCartEmpty='No have products in this order' bought={true} />
+      {(productsToCart?.length > 0) && (
+        <Block style={styles.footer}>
+          <Button
+            shadowless
+            color={nowTheme.COLORS.INFO}
+            onPress={() => handleAddCart()}
+          >
+            <Text size={18} color={nowTheme.COLORS.WHITE}>
+              Add to cart
+            </Text>
+          </Button>
+        </Block>
+      )
+      }
 
     </Block>
   )
