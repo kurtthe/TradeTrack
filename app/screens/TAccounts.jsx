@@ -10,22 +10,21 @@ import Balance from '@custom-sections/Balance';
 import Tabs from '@custom-elements/Tabs';
 
 import { getStatements } from '@core/module/store/statements/statements';
-import { getInvoices } from '@core/module/store/balance/invoices';
-import Invoice from '@custom-elements/Invoice';
 import Statement from '@custom-elements/Statement';
 
-import { connect } from 'react-redux';
-import { STATEMENTS, INVOICES } from '@shared/dictionaries/typeDataSerialize'
+import { STATEMENTS } from '@shared/dictionaries/typeDataSerialize'
+import ListTransactions from '@custom-sections/ListTransactions'
+import { useDispatch } from 'react-redux';
 
-const Account = ({ route,  getStatements, getInvoices }) => {
+const TAccount = ({ route }) => {
+  const dispatch = useDispatch();
 
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
   const [getDataPetition] = useState(GetDataPetitionService.getInstance())
 
 
   const fetchData = async () => {
-    await getDataPetition.getInfo(endPoints.statements, getStatements);
-    await getDataPetition.getInfo(endPoints.invoices, getInvoices);
+    await getDataPetition.getInfo(endPoints.statements, dispatch(getStatements));
   }
 
   useEffect(() => {
@@ -56,17 +55,9 @@ const Account = ({ route,  getStatements, getInvoices }) => {
     </>
   );
 
-  const renderItemsInvoices = ({ item }) => (
-    <Invoice invoice={item} isAccount={true} />
-  )
 
   const renderInvoices = () => (
-    <ListData
-      filters={true}
-      endpoint={endPoints.searchInvoices}
-      renderItems={renderItemsInvoices}
-      typeData={INVOICES}
-    />
+    <ListTransactions />
   );
 
   return (
@@ -90,13 +81,5 @@ const Account = ({ route,  getStatements, getInvoices }) => {
   );
 }
 
-const mapStateToProps = (state) => ({
-  statements: state.statementsReducer.statements,
-  invoices: state.invoicesReducer.invoices,
-  liveBalance: state.liveBalanceReducer,
-});
-
-const mapDispatchToProps = { getStatements, getInvoices };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default TAccount
 
