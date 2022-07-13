@@ -8,16 +8,16 @@ import { makeStyles } from './ListCart.styles'
 import { useSelector } from 'react-redux';
 import EmptyCart from '@custom-elements/EmptyCart';
 
-export const ListCart = ({ onCheckoutPressed, orderTotal, bought }) => {
+export const ListCart = ({ onCheckoutPressed, orderTotal, bought, products }) => {
   const styles = makeStyles()
 
   const cartProducts = useSelector((state) => state.productsReducer.products);
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly);
 
-  const renderProducts = ({ item }) => <ProductCart product={item}  bought={bought} />;
+  const renderProducts = ({ item }) => <ProductCart product={item} bought={bought} />;
 
 
-  renderFooter = () => {
+  const renderFooter = () => {
     if (!cartProducts || cartProducts.length === 0) {
       return null;
     }
@@ -44,7 +44,7 @@ export const ListCart = ({ onCheckoutPressed, orderTotal, bought }) => {
   return (
     <>
       <FlatList
-        data={cartProducts}
+        data={bought ? products : cartProducts}
         renderItem={renderProducts}
         keyExtractor={(item, index) => `${index}-${item.id}`}
         ListEmptyComponent={<EmptyCart />}
