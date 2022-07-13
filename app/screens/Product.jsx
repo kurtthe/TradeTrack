@@ -95,6 +95,8 @@ class Product extends React.Component {
   render() {
     const { productDetail } = this.state;
 
+    console.log("=>productDetail",productDetail)
+
     if (!productDetail || productDetail == undefined || productDetail === undefined) {
       return <LoadingComponent />;
     }
