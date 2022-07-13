@@ -12,19 +12,19 @@ export const FavoriteIcon = ({ product }) => {
 
   const generalRequestService = GeneralRequestService.getInstance();
 
-  useEffect(() => {
-    const updateProduct = async () => {
-      const urlPetition = endPoints.setFavorite.replace(":id", product.id)
-      await generalRequestService.post(urlPetition, {
-        data: {
-          sku: product.sku,
-          cost_price: product.cost_price,
-          favourite: isFavorite
-        }
-      })
-    }
-    updateProduct()
-  }, [isFavorite])
+  // useEffect(() => {
+  //   const updateProduct = async () => {
+  //     const urlPetition = endPoints.setFavorite.replace(":id", product.id)
+  //     await generalRequestService.post(urlPetition, {
+  //       data: {
+  //         sku: product.sku,
+  //         cost_price: product.cost_price,
+  //         favourite: isFavorite
+  //       }
+  //     })
+  //   }
+  //   updateProduct()
+  // }, [isFavorite])
 
   const handleOnPress = async () => {
     setIsFavorite(!isFavorite)

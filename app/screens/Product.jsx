@@ -82,20 +82,18 @@ class Product extends React.Component {
   };
 
   onAddCartPressed = (productItem) => {
-    const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
+    const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
 
     const addProduct = {
       ...productItem,
       quantity: this.state.cantProduct,
-      price: priceProduct,
+      price: parseFloat(priceProduct).toFixed(2),
     };
     this.productCart.addCart(addProduct, this.props.updateProducts);
   };
 
   render() {
     const { productDetail } = this.state;
-
-    console.log("=>productDetail",productDetail)
 
     if (!productDetail || productDetail == undefined || productDetail === undefined) {
       return <LoadingComponent />;
@@ -158,7 +156,7 @@ class Product extends React.Component {
                     color={nowTheme.COLORS.ORANGE}
                     size={sizeConstantBig}
                   >
-                    {this.formatMoney.format(productDetail?.rrp)}
+                    {this.formatMoney.format(productDetail.price.retail_price)}
                   </Text>
                 </Block>
                 {!this.state.hideMyPrice && (
@@ -183,7 +181,7 @@ class Product extends React.Component {
                         color={nowTheme.COLORS.ORANGE}
                         size={sizeConstantBig}
                       >
-                        {this.formatMoney.format(productDetail?.cost_price)}
+                        {this.formatMoney.format(productDetail?.price.cost_price)}
                       </Text>
                     </Block>
                   </>
