@@ -88,7 +88,7 @@ class Header extends React.Component {
   handleLeftPress = () => {
     const { navigation } = this.props;
 
-    if (!this.props.scene.route.params?.nameRouteGoing) {
+    if (!this.props.scene || !this.props.scene.route.params?.nameRouteGoing) {
       navigation.goBack();
       return;
     }
