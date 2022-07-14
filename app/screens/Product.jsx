@@ -19,6 +19,7 @@ import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import LoadingComponent from '@custom-elements/Loading';
+import FavoriteIcon from '@custom-elements/FavoriteIcon'
 
 const { width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -27,16 +28,16 @@ const sizeConstantSmall =
       ? 14
       : 16
     : Dimensions.get('window').height < 870
-    ? 14
-    : 16;
+      ? 14
+      : 16;
 const sizeConstantBig =
   Platform.OS === 'ios'
     ? Dimensions.get('window').height < 670
       ? 20
       : 24
     : Dimensions.get('window').height < 870
-    ? 20
-    : 24;
+      ? 20
+      : 24;
 
 class Product extends React.Component {
   constructor(props) {
@@ -81,12 +82,12 @@ class Product extends React.Component {
   };
 
   onAddCartPressed = (productItem) => {
-    const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
+    const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
 
     const addProduct = {
       ...productItem,
       quantity: this.state.cantProduct,
-      price: priceProduct,
+      price: parseFloat(priceProduct).toFixed(2),
     };
     this.productCart.addCart(addProduct, this.props.updateProducts);
   };
@@ -128,20 +129,23 @@ class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE,
               }}
             >
-              <Text
-                size={
-                  Platform.OS === 'ios'
-                    ? Dimensions.get('window').height < 670
-                      ? 20
-                      : 23
-                    : Dimensions.get('window').height < 870
-                    ? 20
-                    : 23
-                }
-                style={{ paddingBottom: 24, fontWeight: '500' }}
-              >
-                {productDetail?.name}
-              </Text>
+              <Block row right>
+                <Text
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 20
+                        : 23
+                      : Dimensions.get('window').height < 870
+                        ? 20
+                        : 23
+                  }
+                  style={{ paddingBottom: 24, fontWeight: '500' }}
+                >
+                  {productDetail?.name}
+                </Text>
+                <FavoriteIcon product={productDetail} />
+              </Block>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
@@ -152,7 +156,7 @@ class Product extends React.Component {
                     color={nowTheme.COLORS.ORANGE}
                     size={sizeConstantBig}
                   >
-                    {this.formatMoney.format(productDetail?.rrp)}
+                    {this.formatMoney.format(productDetail.price.retail_price)}
                   </Text>
                 </Block>
                 {!this.state.hideMyPrice && (
@@ -177,7 +181,7 @@ class Product extends React.Component {
                         color={nowTheme.COLORS.ORANGE}
                         size={sizeConstantBig}
                       >
-                        {this.formatMoney.format(productDetail?.cost_price)}
+                        {this.formatMoney.format(productDetail?.price.cost_price)}
                       </Text>
                     </Block>
                   </>
