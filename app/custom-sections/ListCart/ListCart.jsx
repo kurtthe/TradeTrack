@@ -25,18 +25,21 @@ export const ListCart = ({ onCheckoutPressed, orderTotal, bought, products }) =>
 
     return (
       <Block row style={styles.detailOrders}>
-        <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${orderTotal()}`}</Text>
-
-        <Button
-          shadowless
-          style={{ left: 10 }}
-          color={nowTheme.COLORS.INFO}
-          onPress={() => onCheckoutPressed && onCheckoutPressed()}
-        >
-          <Text size={18} color={nowTheme.COLORS.WHITE}>
-            Checkout
-          </Text>
-        </Button>
+        {!bought && (
+          <>
+            <Text style={{ fontWeight: 'bold' }}>{`${titleOrder}: ${orderTotal && orderTotal()}`}</Text>
+            <Button
+              shadowless
+              style={{ left: 10 }}
+              color={nowTheme.COLORS.INFO}
+              onPress={() => onCheckoutPressed && onCheckoutPressed()}
+            >
+              <Text size={18} color={nowTheme.COLORS.WHITE}>
+                Checkout
+              </Text>
+            </Button>
+          </>
+        )}
       </Block>
     );
   };
