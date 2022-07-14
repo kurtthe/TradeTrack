@@ -1,41 +1,30 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet, Dimensions, Platform } from 'react-native'
+import { theme } from 'galio-framework';
 import nowTheme from "@constants/Theme";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export const makeStyles = () => StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: 10
   },
-  inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: "space-around"
-  },
-  socialConnect: {
-    backgroundColor: nowTheme.COLORS.WHITE,
-    marginHorizontal: 2.5,
-    top: 30
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    // borderColor: "rgba(136, 152, 170, 0.3)"
-  },
+  contentLogo: {
 
-  button: {
-    marginBottom: theme.SIZES.BASE,
-    width: width - theme.SIZES.BASE * 3,
-    bottom: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? 10 : 20) : (Dimensions.get('window').height < 870) ? 1 : 20
   },
-
   introImageStyle: {
-
-    width: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? wp('37%') : wp('40%')) : (Dimensions.get('window').height < 870) ? wp('29%') : wp('40%'),
-    height: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? hp('10%') : hp('40%')) : (Dimensions.get('window').height < 870) ? hp('29%') : hp('40%'),
+    width: "29%",
     resizeMode: 'contain',
-
   },
-
-  icon: {
-    position: "absolute",
-    right: 10,
-    top: 20,
-
+  textTitle: {
+    fontSize: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? 20 : 22) : (Dimensions.get('window').height < 870) ? 20 : 26,
+    color: "#2E2F33",
+    fontFamily: 'montserrat-bold',
+    textAlign: 'left'
   },
+  subTitle: {
+    color: nowTheme.COLORS.PRETEXT,
+    fontSize: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? 18 : 20) : (Dimensions.get('window').height < 870) ? 18 : 20,
+    fontFamily: 'montserrat-regular',
+  }
 });

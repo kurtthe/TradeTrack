@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
   Image,
   Dimensions,
-  StatusBar,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Keyboard,
-  Platform
+  View,
+  Text
 } from 'react-native';
-import { Block, Checkbox, Text, Button as GaButton, theme } from 'galio-framework';
 
 import { Button, Icon, Input, } from '@components';
 import ForgotButton from '@components/ForgotButton'
@@ -21,6 +16,7 @@ import Header from '@custom-sections/Header'
 import { GeneralRequestService } from '@core/services/general-request.service'
 import { endPoints } from '@shared/dictionaries/end-points';
 import { AlertService } from '@core/services/alert.service';
+import { makeStyles } from './TForgotPassword.styles'
 
 const { height, width } = Dimensions.get("screen");
 const generalRequestService = GeneralRequestService.getInstance()
@@ -29,7 +25,7 @@ const alertService = new AlertService();
 export const TForgotPassword = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false)
   const [email, setEmail] = useState("")
-
+  const styles = makeStyles()
 
   const handleChangeEmail = (text) => {
     this.setState({ email: text });
@@ -49,11 +45,21 @@ export const TForgotPassword = ({ navigation }) => {
       <Header
         back={true}
         navigation={navigation}
-        scene={scene}
       />
+      <View style={styles.container}>
+        <View style={styles.contentLogo}>
+          <Image style={styles.introImageStyle} source={require('@assets/imgs/img/logo.png')} />
+        </View>
 
-
-
+        <View >
+          <Text style={styles.textTitle} >
+            Forgot your current Password?
+          </Text>
+          <Text style={styles.subTitle} >
+          Enter the form to send you an email for changes the password
+          </Text>
+        </View>
+      </View>
     </>
   );
 }
