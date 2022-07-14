@@ -1,15 +1,8 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { width } = Dimensions.get('screen');
 
 export const makeStyles = () => StyleSheet.create({
-  container_empty: {
-    height: hp('60%'),
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   detailOrders: {
     backgroundColor: 'white',
     paddingHorizontal: 20,
