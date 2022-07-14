@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Dimensions, Linking, Platform, Modal} from 'react-native';
+import {StyleSheet, View, Dimensions, Linking, Platform, Modal, TouchableOpacity} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -105,7 +105,7 @@ class TStores extends Component {
           this.setState({modalVisible: !this.state.modalVisible});
         }}
       >
-        <View style={styles.centeredView}>
+        <TouchableOpacity style={styles.centeredView} onPress={() => this.setState({modalVisible: !this.state.modalVisible})}>
           <MarkMap 
             mark={this.state.markSelected} 
             actionCall={(numberCall) => this.dialCall(numberCall)} 
@@ -113,7 +113,7 @@ class TStores extends Component {
               this.setState({modalVisible: !this.state.modalVisible});
             }}
           />
-        </View>
+        </TouchableOpacity>
       </Modal>
       </View>
     );
