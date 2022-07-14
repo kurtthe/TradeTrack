@@ -112,7 +112,7 @@ class Home extends React.Component {
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.buttonEstimator}
-               // onPress={() => navigation.navigate('Estimator')}
+                onPress={() => navigation.navigate('AppFeedback')}
               >
                App Feedback
               </Button>
