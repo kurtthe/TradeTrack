@@ -92,9 +92,6 @@ export const Products = () => {
 
   return (
     <>
-      {isLoading && (<View style={styles.contentLoading}>
-        <LoadingComponent size='large' />
-      </View>)}
       <FlatList
         data={dataProducts}
         renderItem={memoizedValue}
@@ -103,6 +100,9 @@ export const Products = () => {
         contentContainerStyle={styles.container}
         ListFooterComponent={getButtonLoadingMore}
       />
+      {isLoading && (<View style={styles.contentLoading}>
+        <LoadingComponent size='large' />
+      </View>)}
     </>
   );
 };

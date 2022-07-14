@@ -33,7 +33,7 @@ export const ListTransactions = () => {
   useEffect(() => {
     setIsLoading(true)
     setLoadingMoreData(true)
-    setTimeout(() => refetch(), 600);
+    refetch()
   }, [page, valuesFilters])
 
 
