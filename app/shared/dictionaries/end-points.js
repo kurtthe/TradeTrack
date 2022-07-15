@@ -18,7 +18,7 @@ export const endPoints = {
   jobs: `${environment.api}jobs`,
   products: `${environment.api}products`,
 
-  setFavorite: `${environment.api}products/:id`,
+  setFavorite: `${environment.api}products/:id/favourite`,
   suppliers: `${environment.api}burdens/supplier`,
 
   categories: `${environment.api}products/categories`,
