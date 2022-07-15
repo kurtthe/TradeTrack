@@ -1,33 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import { TouchableOpacity } from 'react-native'
+import React, { useState, useCallback } from 'react'
+import { TouchableOpacity, View } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { makeStyles } from './FavoriteIcon.styles'
 import nowTheme from '@constants/Theme';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
+import Loading from '../Loading';
 
-export const FavoriteIcon = ({ product }) => {
-  const [isFavorite, setIsFavorite] = useState(product.favourite || false)
+export const FavoriteIcon = ({ product, updateProduct }) => {
+
+  const [isFavorite, setIsFavorite] = useState(product.favourite)
+  const [isLoading, setIsLoading] = useState(false)
   const styles = makeStyles()
 
   const generalRequestService = GeneralRequestService.getInstance();
 
-  // useEffect(() => {
-  //   const updateProduct = async () => {
-  //     const urlPetition = endPoints.setFavorite.replace(":id", product.id)
-  //     await generalRequestService.post(urlPetition, {
-  //       data: {
-  //         sku: product.sku,
-  //         cost_price: product.cost_price,
-  //         favourite: isFavorite
-  //       }
-  //     })
-  //   }
-  //   updateProduct()
-  // }, [isFavorite])
-
-  const handleOnPress = async () => {
+  const updateProductFavorite = useCallback(async () => {
+    const urlPetition = endPoints.setFavorite.replace(":id", product.id)
+    const response = await generalRequestService.post(urlPetition, {})
+    updateProduct && updateProduct({ ...product, ...response })
     setIsFavorite(!isFavorite)
+    setIsLoading(false)
+  }, [isFavorite, product, isLoading])
+
+  const handleOnPress = () => {
+    setIsLoading(true)
+    updateProductFavorite()
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Loading />
+      </View>
+    )
   }
 
   return (
