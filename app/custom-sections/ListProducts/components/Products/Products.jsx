@@ -70,6 +70,7 @@ export const Products = () => {
     return (<Product
       product={item}
       myPrice={clientFriendly}
+      updateList = {() => refetch()}
     />
     )
   }
