@@ -70,7 +70,7 @@ class PasswordBeenChange extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                       <Block  middle>
-                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/check-badge.png')}/>
+                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/sentEmail.png')}/>
                   </Block>
                   <Block width={width * 0.9} >
                      

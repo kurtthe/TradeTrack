@@ -4,6 +4,5 @@ export const makeStyles = () =>
   StyleSheet.create({
     container: {
       alignItems: 'flex-end',
-      marginBottom: 10
     }
   })
