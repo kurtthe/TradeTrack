@@ -54,6 +54,7 @@ const Product = (props) => {
       hideMyPrice: props.myPrice,
       product: productItem,
       headerTitle: 'Product',
+      updateProducts: props.updateList
     });
   };
 

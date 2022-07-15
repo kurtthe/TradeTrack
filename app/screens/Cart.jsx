@@ -97,7 +97,7 @@ class Cart extends React.Component {
             {
               labelTab: 'Current order',
               component: (<ListCart
-                onCheckoutPressed={() => onCheckoutPressed()}
+                onCheckoutPressed={() => this.onCheckoutPressed()}
                 orderTotal={() => this.orderTotal()}
               />),
             },

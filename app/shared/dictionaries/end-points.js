@@ -18,7 +18,7 @@ export const endPoints = {
   jobs: `${environment.api}jobs`,
   products: `${environment.api}products`,
 
-  setFavorite: `${environment.api}products/:id`,
+  setFavorite: `${environment.api}products/:id/favourite`,
   suppliers: `${environment.api}burdens/supplier`,
 
   categories: `${environment.api}products/categories`,
@@ -27,5 +27,6 @@ export const endPoints = {
   preferredStore: `${environment.api}burdens/stores/preferred`,
   shareOrder: `${environment.api}material-orders/:id/share`,
   orders: `${environment.api}material-orders?sort=id_desc&include_products=true`,
-  estimatorRoofing: 'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber'
+  estimatorRoofing: 'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
+  forgotPassword: `${environment.api}reset-password`,
 };
