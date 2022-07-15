@@ -59,7 +59,7 @@ const DetailsOrders = (props) => {
             {orderTotal()}
           </Text>
         </Block>
-        <Block center style={{ position: 'relative', bottom: 0, paddingHorizontal: 20 }}>
+        <Block center style={{ position: 'relative', bottom: 5, paddingHorizontal: 20, paddingVertical : 14}}>
           <Button
             color="info"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
