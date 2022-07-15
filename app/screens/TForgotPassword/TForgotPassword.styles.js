@@ -12,7 +12,7 @@ export const makeStyles = () => StyleSheet.create({
     justifyContent: 'space-between'
   },
   content: {
-    marginBottom: 32
+    marginBottom: 62
   },
   introImageStyle: {
     width: 130,
@@ -30,7 +30,7 @@ export const makeStyles = () => StyleSheet.create({
     fontSize: (Platform.OS === 'ios') ? ((Dimensions.get('window').height < 670) ? 18 : 20) : (Dimensions.get('window').height < 870) ? 18 : 20,
     fontFamily: 'montserrat-regular',
     lineHeight: 22,
-    marginTop: 16
+    marginTop: 50
   },
   labelEmail: {
     color: nowTheme.COLORS.PRETEXT,
@@ -59,7 +59,7 @@ export const makeStyles = () => StyleSheet.create({
     textAlign: 'center',
   },
   contentHelp: {
-    marginVertical: 15
+    marginVertical: 39
   },
   textToLogin: {
     color: '#444857',
