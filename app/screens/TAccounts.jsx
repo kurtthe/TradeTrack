@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 
-import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import LiveBalance from '@custom-sections/LiveBalance';
 import PaymentDetail from '@custom-elements/PaymentDetail';
@@ -20,17 +19,10 @@ const TAccount = ({ route }) => {
   const dispatch = useDispatch();
 
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
-  const [getDataPetition] = useState(GetDataPetitionService.getInstance())
-
-
-  const fetchData = async () => {
-    await getDataPetition.getInfo(endPoints.statements, dispatch(getStatements));
-  }
 
   useEffect(() => {
     const initServices = async () => {
       setCustomStyleIndex(route.params?.tabIndexSelected || 0)
-      fetchData()
     }
     initServices()
   }, [])
@@ -49,7 +41,7 @@ const TAccount = ({ route }) => {
       <ListData
         endpoint={endPoints.statements}
         renderItems={renderItemsStatement}
-        actionData={getStatements}
+        actionData={(data) => dispatch(getStatements(data))}
         typeData={STATEMENTS}
       />
     </>

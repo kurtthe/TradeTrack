@@ -6,11 +6,13 @@ const initialState = {
   pagesTotal: 1
 }
 
-export const filterTransactionsSlice = createSlice({
-  name: 'filterTransactions',
+export const transactionFilterSlice = createSlice({
+  name: 'transactionFilter',
   initialState,
   reducers: {
     getTransactions: (state, action) => {
+      console.log("=>new trasactions",action.payload)
+
       if (action.payload === undefined) {
         return
       }
@@ -39,6 +41,6 @@ export const {
   getAllPages,
   reset,
   getTransactions
-} = filterTransactionsSlice.actions
+} = transactionFilterSlice.actions
 
-export default filterTransactionsSlice.reducer
+export default transactionFilterSlice.reducer

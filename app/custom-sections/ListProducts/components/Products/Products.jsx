@@ -10,7 +10,8 @@ import LoadingComponent from '@custom-elements/Loading';
 import {
   getProducts,
   nextPage,
-  getAllPages
+  getAllPages,
+  reset
 } from '@core/module/store/filter/filter';
 
 export const Products = () => {
@@ -37,7 +38,8 @@ export const Products = () => {
 
   useEffect(() => {
     setIsLoading(true)
-    refetch()}, [])
+    refetch()
+  }, [])
 
   useEffect(() => {
     setIsLoading(true)
@@ -69,6 +71,10 @@ export const Products = () => {
   useEffect(() => {
     updateListProducts(products?.body)
   }, [products?.body])
+
+  useEffect(() => {
+    return () => dispatch(reset())
+  }, [])
 
   const renderItem = ({ item }) => {
     return (<Product
