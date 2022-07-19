@@ -26,6 +26,7 @@ export const ListTransactions = () => {
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
   const [isLoading, setIsLoading] = useState(true);
+  const [clear, setClear] = useState(true)
   const [valuesFilters, setValuesFilters] = useState({});
   const styles = makeStyles();
 
@@ -63,6 +64,7 @@ export const ListTransactions = () => {
     dispatch(getTransactions(newTransactions))
     setLoadingMoreData(false)
     setIsLoading(false)
+    setClear(false)
   }
 
   useEffect(() => {
@@ -70,7 +72,10 @@ export const ListTransactions = () => {
   }, [transactions?.body])
 
   useEffect(() => {
-    return () => dispatch(reset())
+    return () => {
+      setClear(true)
+      dispatch(reset())
+    }
   }, [])
 
   const renderNotFound = () => {
@@ -83,7 +88,7 @@ export const ListTransactions = () => {
     );
   };
 
-  const renderItems = ({ item }) => (
+  const renderTransactions = ({ item }) => (
     <Invoice invoice={item} isAccount={true} />
   )
 
@@ -97,7 +102,17 @@ export const ListTransactions = () => {
     return null
   }
 
-  const memoizedValue = useMemo(() => renderItems, [dataTransactions, valuesFilters])
+  const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
+
+  if (clear) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.contentLoading}>
+          <LoadingComponent size='large' />
+        </View>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -112,7 +127,7 @@ export const ListTransactions = () => {
       }
       <FlatList
         data={dataTransactions}
-        renderItem={memoizedValue}
+        renderItem={memoizedTransactions}
         keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
         ListEmptyComponent={renderNotFound}
         ListFooterComponent={getButtonLoadingMore}

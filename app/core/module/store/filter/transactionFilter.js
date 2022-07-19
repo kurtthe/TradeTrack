@@ -11,8 +11,6 @@ export const transactionFilterSlice = createSlice({
   initialState,
   reducers: {
     getTransactions: (state, action) => {
-      console.log("=>new trasactions",action.payload)
-
       if (action.payload === undefined) {
         return
       }

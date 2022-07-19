@@ -19,8 +19,6 @@ export const filterStatementsSlice = createSlice({
     },
     getProducts: (state, action) => {
 
-      console.log("=>new products",action.payload)
-      
       if (action.payload === undefined) {
         return
       }

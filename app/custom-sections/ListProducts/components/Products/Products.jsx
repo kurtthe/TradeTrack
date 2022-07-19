@@ -26,6 +26,7 @@ export const Products = () => {
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [clear, setClear] = useState(true)
 
   const {
     data: products,
@@ -73,17 +74,19 @@ export const Products = () => {
   }, [products?.body])
 
   useEffect(() => {
-    return () => dispatch(reset())
+    return () => {
+      setClear(true)
+      dispatch(reset())
+    }
   }, [])
 
-  const renderItem = ({ item }) => {
-    return (<Product
+  const renderItem = ({ item }) => (
+    <Product
       product={item}
       myPrice={clientFriendly}
       updateList={() => refetch()}
     />
-    )
-  }
+  )
 
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
@@ -99,6 +102,14 @@ export const Products = () => {
       />
     }
     return null
+  }
+
+  if (clear) {
+    return (
+      <View style={styles.contentLoading}>
+        <LoadingComponent size='large' />
+      </View>
+    )
   }
 
   return (
