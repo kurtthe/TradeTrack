@@ -85,7 +85,7 @@ class PasswordBeenChange extends React.Component {
                            size={20}
                          // style={{textDecorationLine: 'underline',}}
                           >
-                      Email has been Sent!
+                     Password Reset Sent
                           </Text>
                           
                         </Block>
@@ -97,7 +97,7 @@ class PasswordBeenChange extends React.Component {
                             muted
                             size={15}
                           >
-                            Please check your email for changes the password
+                            Please check your email to reset your password.
                           </Text>
                         </Block>
 
