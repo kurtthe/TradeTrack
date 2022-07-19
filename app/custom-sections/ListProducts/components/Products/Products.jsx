@@ -10,8 +10,7 @@ import LoadingComponent from '@custom-elements/Loading';
 import {
   getProducts,
   nextPage,
-  getAllPages,
-  reset
+  getAllPages
 } from '@core/module/store/filter/filter';
 
 export const Products = () => {
@@ -26,7 +25,6 @@ export const Products = () => {
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [clear, setClear] = useState(true)
 
   const {
     data: products,
@@ -39,8 +37,7 @@ export const Products = () => {
 
   useEffect(() => {
     setIsLoading(true)
-    refetch()
-  }, [])
+    refetch()}, [])
 
   useEffect(() => {
     setIsLoading(true)
@@ -73,20 +70,14 @@ export const Products = () => {
     updateListProducts(products?.body)
   }, [products?.body])
 
-  useEffect(() => {
-    return () => {
-      setClear(true)
-      dispatch(reset())
-    }
-  }, [])
-
-  const renderItem = ({ item }) => (
-    <Product
+  const renderItem = ({ item }) => {
+    return (<Product
       product={item}
       myPrice={clientFriendly}
       updateList={() => refetch()}
     />
-  )
+    )
+  }
 
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
@@ -102,14 +93,6 @@ export const Products = () => {
       />
     }
     return null
-  }
-
-  if (clear) {
-    return (
-      <View style={styles.contentLoading}>
-        <LoadingComponent size='large' />
-      </View>
-    )
   }
 
   return (
