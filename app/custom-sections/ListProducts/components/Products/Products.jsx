@@ -37,6 +37,10 @@ export const Products = () => {
 
   useEffect(() => {
     setIsLoading(true)
+    refetch()}, [])
+
+  useEffect(() => {
+    setIsLoading(true)
     setLoadingMoreData(true)
     setTimeout(() => refetch(), 600);
   }, [page, categorySelected])
@@ -70,7 +74,7 @@ export const Products = () => {
     return (<Product
       product={item}
       myPrice={clientFriendly}
-      updateList = {() => refetch()}
+      updateList={() => refetch()}
     />
     )
   }

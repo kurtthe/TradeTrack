@@ -9,6 +9,7 @@ import statementsReducer from './statements/statements'
 import ordersReducer from './orders/orders'
 import preCartReducer from './cart/preCart'
 import filterReducer from './filter/filter'
+import filterTransactionsReducer from './filter/filterTransaction'
 
 export const store = configureStore({
   reducer: {
@@ -21,5 +22,6 @@ export const store = configureStore({
     ordersReducer,
     preCartReducer,
     filterReducer,
+    filterTransactionsReducer
   },
 });
