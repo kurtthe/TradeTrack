@@ -5,61 +5,68 @@ import { Filters } from './components';
 import { makeStyles } from './ListTransactions.styles'
 import nowTheme from '@constants/Theme';
 import Invoice from '@custom-elements/Invoice';
-import { useGetTransactions } from '@core/hooks/Transactions'
+import { getTransaction } from '@core/hooks/Transactions/transaction.service'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
-import { useSelector, useDispatch } from 'react-redux';
-
-import {
-  getTransactions,
-  nextPage,
-  getAllPages
-} from '@core/module/store/filter/filter';
 
 export const ListTransactions = () => {
-  const dispatch = useDispatch();
-  const page = useSelector((state) => state.filterReducer.page)
-  const dataTransactions = useSelector((state) => state.filterReducer.transactions)
+  const [dataTransactions, setDataTransaction] = useState([])
+  const [transactions, setTransaction] = useState({})
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
+  const [keeData, setKeepData] = useState(false)
   const [isLoading, setIsLoading] = useState(true);
   const [valuesFilters, setValuesFilters] = useState({});
   const styles = makeStyles();
 
-  const { data: transactions, refetch } = useGetTransactions({ ...valuesFilters, page })
+  const [optionsTransactions, setOptionsTransactions] = useState({
+    page: 1,
+  });
+
+
+  const fetchData = async ()=> {
+    const response = await getTransaction({...optionsTransactions.page, ...valuesFilters})
+    setTransaction(response)
+  }
 
   useEffect(() => {
     setIsLoading(true)
     setLoadingMoreData(true)
-    refetch()
-  }, [page, valuesFilters])
+    fetchData()
+  }, [optionsTransactions.page, valuesFilters])
 
 
   const handleLoadingMore = () => {
-    dispatch(nextPage())
+    const { page } = optionsTransactions;
+    setOptionsTransactions({
+      ...optionsProducts,
+      page: page + 1
+    });
+    setKeepData(true)
   }
 
   useEffect(() => {
     if (transactions?.headers && transactions?.headers['x-pagination-page-count']) {
-      const currentlyTotal = parseInt(page)
+      const currentlyTotal = parseInt(optionsTransactions.page)
       const newTotalPages = parseInt(transactions?.headers['x-pagination-page-count'])
 
       setShowLoadingMore(currentlyTotal < newTotalPages)
-
-      if (currentlyTotal !== newTotalPages) {
-        dispatch(getAllPages(newTotalPages))
-      }
     }
-  }, [transactions?.headers, page])
+  }, [transactions?.headers, optionsTransactions.page])
 
   const getValuesFilters = (values) => {
     setValuesFilters(values);
   };
 
   const updateListTransactions = (newTransactions) => {
-    dispatch(getTransactions(newTransactions))
+    if (keeData) {
+      setDataTransaction([...dataTransactions, ...newTransactions])
+      return
+    }
+
+    setDataTransaction(newTransactions)
     setLoadingMoreData(false)
     setIsLoading(false)
   }
@@ -67,7 +74,6 @@ export const ListTransactions = () => {
   useEffect(() => {
     updateListTransactions(transactions?.body)
   }, [transactions?.body])
-
 
   const renderNotFound = () => {
     return (
@@ -79,7 +85,7 @@ export const ListTransactions = () => {
     );
   };
 
-  const renderItems = ({ item }) => (
+  const renderTransactions = ({ item }) => (
     <Invoice invoice={item} isAccount={true} />
   )
 
@@ -93,7 +99,7 @@ export const ListTransactions = () => {
     return null
   }
 
-  const memoizedValue = useMemo(() => renderItems, [dataTransactions, valuesFilters])
+  const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
 
   return (
     <View style={styles.container}>
@@ -108,7 +114,7 @@ export const ListTransactions = () => {
       }
       <FlatList
         data={dataTransactions}
-        renderItem={memoizedValue}
+        renderItem={memoizedTransactions}
         keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
         ListEmptyComponent={renderNotFound}
         ListFooterComponent={getButtonLoadingMore}
