@@ -13,13 +13,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   getTransactions,
   nextPage,
-  getAllPages
-} from '@core/module/store/filter/filterTransaction';
+  getAllPages,
+  reset
+} from '@core/module/store/filter/transactionFilter';
 
 export const ListTransactions = () => {
   const dispatch = useDispatch();
-  const page = useSelector((state) => state.filterTransactionsReducer.page)
-  const dataTransactions = useSelector((state) => state.filterTransactionsReducer.transactions)
+  const page = useSelector((state) => state.transactionFilter.page)
+  const dataTransactions = useSelector((state) => state.transactionFilter.transactions)
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
@@ -68,6 +69,9 @@ export const ListTransactions = () => {
     updateListTransactions(transactions?.body)
   }, [transactions?.body])
 
+  useEffect(() => {
+    return () => dispatch(reset())
+  }, [])
 
   const renderNotFound = () => {
     return (

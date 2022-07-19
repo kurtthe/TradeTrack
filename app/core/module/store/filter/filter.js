@@ -18,6 +18,9 @@ export const filterStatementsSlice = createSlice({
       state.categorySelected = action.payload
     },
     getProducts: (state, action) => {
+
+      console.log("=>new products",action.payload)
+      
       if (action.payload === undefined) {
         return
       }
