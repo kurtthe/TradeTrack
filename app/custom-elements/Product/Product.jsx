@@ -29,8 +29,8 @@ const Product = (props) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-      const addedProduct = cartProducts.some((element) => element.id === props.product.id);
-      setProductAdded(addedProduct);
+    const addedProduct = cartProducts.some((element) => element.id === props.product.id);
+    setProductAdded(addedProduct);
   }, [cartProducts])
 
 
@@ -57,6 +57,25 @@ const Product = (props) => {
       updateProducts: props.updateList
     });
   };
+
+  const showPriceProduct = () => {
+    if (props.product.cost_price > 0) {
+      return (
+        <Text style={styles.price}>
+          {formatMoney.format(props.product.cost_price)}
+        </Text>
+      )
+    }
+    return (<TouchableOpacity
+      style={{ width: '100%', alignItems: 'center' }}
+      onPress={() => props.handleNewPrice(props.product.id)}>
+      <MaterialIcons
+        name="autorenew"
+        size={20}
+        color={nowTheme.COLORS.LIGHTGRAY}
+      />
+    </TouchableOpacity>)
+  }
 
   return (
     <Block key={`Card-${props.product.name}`} style={styles.Card}>
@@ -104,20 +123,7 @@ const Product = (props) => {
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
                     {props.product.cost_price < 0 ? 'Get Price ' : 'My Price'}
                   </Text>
-                  {props.product.cost_price > 0 ?
-                    <Text style={styles.price}>
-                      {formatMoney.format(props.product.cost_price)}
-                    </Text> :
-                    <TouchableOpacity
-                      style={{ width: '100%', alignItems: 'center' }}
-                      onPress={() => props.handleNewPrice(props.product.id)}>
-                      <MaterialIcons
-                        name="autorenew"
-                        size={20}
-                        color={nowTheme.COLORS.LIGHTGRAY}
-                      />
-                    </TouchableOpacity>
-                  }
+                  {showPriceProduct()}
                 </Block>
               </>
             )}
