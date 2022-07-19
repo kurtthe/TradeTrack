@@ -57,10 +57,10 @@ export const TForgotPassword = ({ navigation }) => {
 
           <View style={styles.content}>
             <Text style={styles.textTitle} >
-              Forgot your current Password?
+              Forgot Password?
             </Text>
             <Text style={styles.subTitle} >
-              Enter the form to send you an email for changes the password
+            Enter your email below to reset your password. 
             </Text>
           </View>
 
@@ -84,7 +84,7 @@ export const TForgotPassword = ({ navigation }) => {
             style={styles.button}
             onPress={handleRecoverPassword}
           >
-            Send Email
+           Reset Password
           </Button>
 
           <TouchableOpacity style={styles.contentHelp} onPress={() => navigation.navigate("Help")}>
@@ -92,7 +92,7 @@ export const TForgotPassword = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={styles.contentBackLogin}>
-            <Text style={styles.textToLogin}>Already remember your password?
+            <Text style={styles.textToLogin}>Remembered your password?
             </Text>
             <SimpleButton onPress={() => navigation.navigate("Login")}
             > Login</SimpleButton>
