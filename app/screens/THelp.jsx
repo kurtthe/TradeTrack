@@ -132,7 +132,7 @@ class Help extends React.Component {
                           </Text>
                         </Block>
                         <Block width={width * 0.9}>
-                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:arp@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:ar@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
       title="ar@burdens.com.au" >
                         <Text
                           color={'#444857'}
