@@ -29,4 +29,13 @@ export const makeStyles = () =>
       fontSize: 12,
       color: nowTheme.COLORS.ORANGE,
     },
+    contentNameProduct: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: 'space-between'
+    },
+    contentSku: {
+      flexDirection: "row",
+      alignItems: "center",
+    }
   })
