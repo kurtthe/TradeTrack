@@ -92,7 +92,7 @@ const Product = (props) => {
           <View style={styles.contentSku}>
 
             <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
-              SKU
+              SKU 
             </Text>
             <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
               {` ${props.product.sku}`}
@@ -102,7 +102,7 @@ const Product = (props) => {
           <View style={styles.contentNameProduct}>
 
             <Text
-              style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }}
+              style={{ fontFamily: 'montserrat-regular', marginRight: 0, paddingVertical: 0 }}
               size={15}
             >
               <FavoriteIcon
