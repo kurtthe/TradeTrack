@@ -134,7 +134,11 @@ class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE,
               }}
             >
-              <Block column>
+              <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 24 }} >
+                <FavoriteIcon
+                  product={productDetail}
+                  updateProduct={(newDataProduct) => this.handleUpdateDataProduct(newDataProduct)}
+                />
                 <Text
                   size={
                     Platform.OS === 'ios'
@@ -145,15 +149,13 @@ class Product extends React.Component {
                         ? 20
                         : 23
                   }
-                  style={{ paddingBottom: 24, fontWeight: '500', textAlign: 'left' }}
+                  style={{  fontWeight: '500', textAlign: 'left' }}
                 >
+
                   {productDetail?.name}
                 </Text>
-                <FavoriteIcon
-                  product={productDetail}
-                  updateProduct={(newDataProduct) => this.handleUpdateDataProduct(newDataProduct)}
-                />
-              </Block>
+
+              </View>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>

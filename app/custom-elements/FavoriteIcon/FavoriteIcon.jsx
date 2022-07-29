@@ -7,7 +7,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import Loading from '../Loading';
 
-export const FavoriteIcon = ({ product, updateProduct }) => {
+export const FavoriteIcon = ({ product, updateProduct, size, hideNoFavorite }) => {
 
   const [isFavorite, setIsFavorite] = useState(product.favourite)
   const [isLoading, setIsLoading] = useState(false)
@@ -28,6 +28,14 @@ export const FavoriteIcon = ({ product, updateProduct }) => {
     updateProductFavorite()
   }
 
+  const renderNoFavoriteIcon = () => {
+    if (hideNoFavorite) {
+      return null
+    }
+
+    return <AntDesign name="staro" size={size || 30} color={nowTheme.COLORS.INFO} />
+  }
+
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -39,8 +47,8 @@ export const FavoriteIcon = ({ product, updateProduct }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={handleOnPress}>
       {
-        isFavorite ? (<AntDesign name="star" size={30} color={nowTheme.COLORS.INFO} />) : (
-          <AntDesign name="staro" size={30} color={nowTheme.COLORS.INFO} />
+        isFavorite ? (<AntDesign name="star" size={size || 30} color={nowTheme.COLORS.INFO} />) : (
+          renderNoFavoriteIcon()
         )
       }
     </TouchableOpacity>
