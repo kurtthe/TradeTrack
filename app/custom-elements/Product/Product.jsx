@@ -17,7 +17,8 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, sizeConstant } from './Product.styles'
-
+import FavoriteIcon from '../FavoriteIcon'
+import IconTopSell from '../IconTopSell'
 
 const Product = (props) => {
   const cartProducts = useSelector((state) => state.productsReducer.products);
@@ -88,20 +89,30 @@ const Product = (props) => {
 
       <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
         <Block flex space="between" style={{ paddingBottom: 7 }}>
-          <Block row>
+          <View style={styles.contentSku}>
+
             <Text color={nowTheme.COLORS.LIGHTGRAY} size={sizeConstant}>
-              SKU
+              SKU 
             </Text>
             <Text color={nowTheme.COLORS.INFO} size={sizeConstant}>
               {` ${props.product.sku}`}
             </Text>
-          </Block>
-          <Text
-            style={{ fontFamily: 'montserrat-regular', marginRight: 5, paddingVertical: 10 }}
-            size={15}
-          >
-            {props.product.name}
-          </Text>
+            <IconTopSell product={props.product} />
+          </View>
+          <View style={styles.contentNameProduct}>
+
+            <Text
+              style={{ fontFamily: 'montserrat-regular', marginRight: 0, paddingVertical: 0 }}
+              size={15}
+            >
+              <FavoriteIcon
+                product={props.product}
+                size={15}
+                hideNoFavorite={true}
+              />
+              {props.product.name}
+            </Text>
+          </View>
           <Block row style={{ width: '100%' }}>
             <Block flex>
               <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
