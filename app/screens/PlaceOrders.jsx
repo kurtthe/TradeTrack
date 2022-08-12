@@ -208,10 +208,11 @@ class PlaceOrders extends React.Component {
     }
 
     return this.props.cartProducts.map((item) => ({
-      description: item.name,
+      // description: item.name,
+      sku: item.sku,
       quantity: item.quantity,
-      units: 'ea',
-      cost: item.myPrice ? item.rrp : item.cost_price,
+      // units: 'ea',
+      // cost: item.myPrice ? item.rrp : item.cost_price,
       tax: [
         {
           name: 'GST',
