@@ -37,9 +37,8 @@ const DetailsOrders = (props) => {
   return (
     <Block card backgroundColor={'white'} width={width}>
       <Block style={styles.detailOrdersBlock}>
-        <View style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Detail Orders</Text>
-        </View>
+      <Text style={{ fontWeight: 'bold', fontSize: 16, paddingBottom:15, paddingVertical:25 }}>Detail Orders</Text>
+        
         {putDetails()}
         <View
           style={{
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '8%',
+    height: '5%',
     marginVertical: theme.SIZES.BASE * 0.9,
   },
   buttonOrder: {
