@@ -7,7 +7,12 @@ import { nowTheme } from '@constants/index';
 const formatMoney = FormatMoneyService.getInstance();
 
 const DetailOrder = (props) => {
-  const price = props.order.myPrice ? props.order.rrp : props.order.cost_price;
+
+  if (!props?.order) {
+    return null
+  }
+
+  const price = props.order?.myPrice ? props.order.rrp : props.order.cost_price;
 
   return (
     <Block style={{ top: 5 }}>

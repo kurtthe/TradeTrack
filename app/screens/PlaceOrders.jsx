@@ -490,6 +490,9 @@ class PlaceOrders extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  cart: {
+    flex: 1
+  },
   text: {
     paddingTop: 10,
     color: nowTheme.COLORS.PRETEXT,
