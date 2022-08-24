@@ -2,6 +2,7 @@ import React from 'react';
 import { Block, Text, theme, Button, Input } from 'galio-framework';
 import { StyleSheet, Dimensions, FlatList, View } from 'react-native';
 import PickerButton from '@custom-elements/PickerButton';
+import PickerButtonDelivery from '@custom-elements/PickerButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import { FormatMoneyService } from '@core/services/format-money.service';
@@ -377,7 +378,7 @@ class PlaceOrders extends React.Component {
           paddingBottom={20}
           marginBottom={20}
         >
-          <PickerButton
+          <PickerButtonDelivery
             label="Delivery Options"
             text="Delivery Type"
             error
