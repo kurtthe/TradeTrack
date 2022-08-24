@@ -33,7 +33,7 @@ const Product = (props) => {
     if (productItem.price.cost_price < 0) {
       props.handleNewPrice && (await props.handleNewPrice(props.product.id));
     }
-    const priceProduct = clientFriendly ? productItem.price.rrp : productItem.price.cost_price;
+    const priceProduct = props.myPrice ? productItem.price.rrp : productItem.price.cost_price;
 
     const addProduct = {
       ...productItem,
