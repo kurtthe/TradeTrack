@@ -19,6 +19,7 @@ export const Products = () => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const dataProducts = useSelector((state) => state.filterReducer.products)
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
+  const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
 
   const page = useSelector((state) => state.filterReducer.page)
 
@@ -31,7 +32,8 @@ export const Products = () => {
     refetch,
   } = useGetProducts({
     page,
-    category_id: categorySelected
+    category_id: categorySelected,
+    only_favourite: favoriteFilter
   })
   const styles = makeStyles()
 
@@ -43,7 +45,7 @@ export const Products = () => {
     //setIsLoading(true)
     setLoadingMoreData(true)
     setTimeout(() => refetch(), 600);
-  }, [page, categorySelected])
+  }, [page, categorySelected, favoriteFilter])
 
   useEffect(() => {
 

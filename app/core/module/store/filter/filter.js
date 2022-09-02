@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
   categorySelected: '',
   products: [],
   page: 1,
-  pagesTotal: 1
+  pagesTotal: 1,
+  onlyFavourites: false,
 }
 
 export const filterStatementsSlice = createSlice({
@@ -31,6 +32,9 @@ export const filterStatementsSlice = createSlice({
     nextPage: (state) => {
       state.page = state.page + 1
     },
+    toggleFavorites: (state) => {
+      state.onlyFavourites = !state.onlyFavourites
+    },
     getAllPages: (state, action) => {
       state.pagesTotal = action.payload
     },
@@ -39,6 +43,7 @@ export const filterStatementsSlice = createSlice({
       state.products = []
       state.page = 1
       state.pagesTotal = 1
+      state.onlyFavourites = false
     },
   }
 })
@@ -49,6 +54,7 @@ export const {
   nextPage,
   getAllPages,
   reset,
+  toggleFavorites
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer
