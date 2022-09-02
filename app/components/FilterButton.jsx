@@ -8,10 +8,10 @@ import nowTheme from '@constants/Theme';
 
 class FilterButton extends React.Component {
   render() {
-    const {text, icon, onPress, isActive, isLoading, nameIcon, sizeIcon} = this.props;
+    const {text, icon, onPress, isActive, isLoading, nameIcon, sizeIcon, disabled} = this.props;
 
     return (
-      <ArButton small color={'white'} style={styles.button} onPress={onPress}>
+      <ArButton small color={'white'} style={styles.button} onPress={onPress} disabled={disabled}>
         {isLoading && <LoadingComponent size='small'/>}
         {icon && <Image style={styles.icon} source={icon}/>}
         {nameIcon && <AntDesign name={nameIcon} size={sizeIcon||30} color={nowTheme.COLORS.INFO}/>}
