@@ -95,14 +95,15 @@ class Cart extends React.Component {
         <Tabs
           optionsTabsRender={[
             {
-              labelTab: 'Current order',
+              labelTab: 'Current online order',
               component: (<ListCart
                 onCheckoutPressed={() => this.onCheckoutPressed()}
                 orderTotal={() => this.orderTotal()}
+               
               />),
             },
             {
-              labelTab: 'Previous order',
+              labelTab: 'Previous online order',
               component: this.renderPreviousOrder(),
             },
           ]}

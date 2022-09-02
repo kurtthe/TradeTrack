@@ -36,11 +36,11 @@ export const Products = () => {
   const styles = makeStyles()
 
   useEffect(() => {
-    setIsLoading(true)
+    //setIsLoading(true)
     refetch()}, [])
 
   useEffect(() => {
-    setIsLoading(true)
+    //setIsLoading(true)
     setLoadingMoreData(true)
     setTimeout(() => refetch(), 600);
   }, [page, categorySelected])
@@ -63,7 +63,7 @@ export const Products = () => {
   const updateListProducts = (newProducts) => {
     dispatch(getProducts(newProducts))
     setLoadingMoreData(false)
-    setIsLoading(false)
+    setIsLoading(!newProducts)
   }
 
   useEffect(() => {
@@ -95,6 +95,14 @@ export const Products = () => {
     return null
   }
 
+  if(isLoading){
+    return(
+    <View style={styles.contentLoading}>
+      <LoadingComponent size='large' />
+    </View>
+    )
+  }
+
   return (
     <>
       <FlatList
@@ -105,9 +113,7 @@ export const Products = () => {
         contentContainerStyle={styles.container}
         ListFooterComponent={getButtonLoadingMore}
       />
-      {isLoading && (<View style={styles.contentLoading}>
-        <LoadingComponent size='large' />
-      </View>)}
+
     </>
   );
 };
