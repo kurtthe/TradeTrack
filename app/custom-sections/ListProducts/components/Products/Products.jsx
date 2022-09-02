@@ -10,7 +10,8 @@ import LoadingComponent from '@custom-elements/Loading';
 import {
   getProducts,
   nextPage,
-  getAllPages
+  getAllPages,
+  toggleLoading
 } from '@core/module/store/filter/filter';
 
 export const Products = () => {
@@ -20,12 +21,12 @@ export const Products = () => {
   const dataProducts = useSelector((state) => state.filterReducer.products)
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
+  const isLoading = useSelector((state) => state.filterReducer.isLoading)
 
   const page = useSelector((state) => state.filterReducer.page)
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
 
   const {
     data: products,
@@ -38,11 +39,10 @@ export const Products = () => {
   const styles = makeStyles()
 
   useEffect(() => {
-    //setIsLoading(true)
+    dispatch(toggleLoading(true))
     refetch()}, [])
 
   useEffect(() => {
-    //setIsLoading(true)
     setLoadingMoreData(true)
     setTimeout(() => refetch(), 600);
   }, [page, categorySelected, favoriteFilter])
@@ -65,7 +65,7 @@ export const Products = () => {
   const updateListProducts = (newProducts) => {
     dispatch(getProducts(newProducts))
     setLoadingMoreData(false)
-    setIsLoading(!newProducts)
+    dispatch(toggleLoading(!newProducts))
   }
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export const Products = () => {
     return null
   }
 
-  if(isLoading){
+  if(isLoading && dataProducts.length === 0){
     return(
     <View style={styles.contentLoading}>
       <LoadingComponent size='large' />
