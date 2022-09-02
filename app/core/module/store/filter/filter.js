@@ -6,12 +6,16 @@ const initialState = {
   page: 1,
   pagesTotal: 1,
   onlyFavourites: false,
+  isLoading: true,
 }
 
 export const filterStatementsSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
+    toggleLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
     selectedCategory: (state, action) => {
       state.products = []
       state.page = 1
@@ -54,7 +58,8 @@ export const {
   nextPage,
   getAllPages,
   reset,
-  toggleFavorites
+  toggleFavorites,
+  toggleLoading
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

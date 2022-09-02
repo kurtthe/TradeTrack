@@ -12,7 +12,8 @@ import {nowTheme} from '@constants';
 import {
   selectedCategory,
   toggleFavorites,
-  reset
+  reset,
+  toggleLoading
 } from '@core/module/store/filter/filter';
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -22,7 +23,7 @@ export const FilterProducts = () => {
   const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected)
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
   const dataProducts = useSelector((state) => state.filterReducer.products)
-
+  const isLoadingFilter = useSelector((state) => state.filterReducer.isLoading)
 
   const [alertService] = useState(new AlertService())
   const [categories, setCategories] = useState([])
@@ -123,6 +124,7 @@ export const FilterProducts = () => {
     const subCategoriesSerialized = categoriesToRadioButton(optionSelected?.sub_categories)
     setSubCategories(subCategoriesSerialized)
 
+    dispatch(toggleLoading(true))
     setCategoryActive(true)
     setNoSubCategoriesFound(false)
     actionSheetRef.current?.setModalVisible(false);
@@ -132,6 +134,7 @@ export const FilterProducts = () => {
     categorySelected(options);
     actionSheetRef2.current?.setModalVisible(false);
     setSubCategoryActive(true)
+    dispatch(toggleLoading(true))
   }
 
   const clearFilterSelected = (listData = []) => {
@@ -148,10 +151,19 @@ export const FilterProducts = () => {
     setCategoryActive(false)
     setSubCategoryActive(false)
     dispatch(reset())
+    dispatch(toggleLoading(true))
   };
 
   const handleToggleFavorite = () => {
     dispatch(toggleFavorites())
+    dispatch(toggleLoading(true))
+  }
+
+  if((favoriteFilter || categoryActive || subCategoryActive) && dataProducts.length === 0 && !isLoadingFilter){
+    alertService.show(
+      'Alert!',
+      `There are not products`,
+    );
   }
 
   return (
@@ -163,7 +175,7 @@ export const FilterProducts = () => {
             onPress={() => handleShowCategories()}
             isActive={categoryActive}
             isLoading={isLoading}
-            disabled={dataProducts.length ===0}
+            disabled={isLoadingFilter}
           />
           {categoryActive && (
             <>
@@ -171,22 +183,22 @@ export const FilterProducts = () => {
                 text='Sub Category'
                 onPress={() => handleShowSubCategories()}
                 isActive={subCategoryActive}
-                disabled={dataProducts.length ===0}
+                disabled={isLoadingFilter}
               />
               <FilterButton
                 text='Clear'
                 onPress={() => handleResetFilter()}
                 icon={require('@assets/nuk-icons/png/2x/clear.png')}
-                disabled={dataProducts.length ===0}
+                disabled={isLoadingFilter}
               />
             </>
           )}
           <FilterButton
             text={'Favourite'}
             onPress={() => handleToggleFavorite()}
-            nameIcon={!favoriteFilter? 'staro': 'star'}
+            nameIcon={!favoriteFilter ? 'staro' : 'star'}
             sizeIcon={15}
-            disabled={dataProducts.length ===0}
+            disabled={isLoadingFilter}
           />
         </View>
       </View>
@@ -206,5 +218,5 @@ export const FilterProducts = () => {
       </ActionSheet>
     </>
   );
-}
+};
 
