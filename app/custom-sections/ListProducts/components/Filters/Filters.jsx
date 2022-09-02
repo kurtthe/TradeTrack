@@ -169,6 +169,11 @@ export const FilterProducts = () => {
               />
             </>
           )}
+           <FilterButton
+            text={'Favourite'}
+            //onPress={() => handleShowCategories()}
+            icon={require('@assets/star.png')}
+          />
         </View>
       </View>
 

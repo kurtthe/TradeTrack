@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {Dimensions, StyleSheet} from 'react-native'
 import { nowTheme } from '@constants';
 import { theme } from 'galio-framework';
 
@@ -26,6 +26,7 @@ StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor:nowTheme.COLORS.BACKGROUND,
-    padding: 10
+    padding: 10,
+    flex: 1,
   }
 })

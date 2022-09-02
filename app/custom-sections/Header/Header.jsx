@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import {
   TouchableOpacity,
@@ -40,19 +40,29 @@ const SearchHome = ({ style, navigation }) => (
   </TouchableOpacity>
 );
 
-const SearchProducts = ({ style, navigation, myPrice }) => (
-  <TouchableOpacity
-    style={([styles.button, style], { zIndex: 300 })}
-    onPress={() => {
-      Keyboard.dismiss();
-      navigation.navigate('SearchProducts', {
-        myPrice,
-      });
-    }}
-  >
-    <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'} />
-  </TouchableOpacity>
-);
+const SearchProducts = ({style, navigation, myPrice}) => {
+  const [disabled, setDisabled] = useState(true)
+
+  useEffect(()=>{
+    setTimeout(()=> setDisabled(false) ,5000)
+  }, [])
+
+  return (
+      <TouchableOpacity
+          style={[styles.button, style, {zIndex: 300}]}
+          disabled={disabled}
+          onPress={() => {
+            Keyboard.dismiss();
+            navigation.navigate('SearchProducts', {
+              myPrice,
+            });
+          }}
+      >
+        <Icon family="NowExtra" size={20} name="zoom-bold2x" color={'#828489'}/>
+      </TouchableOpacity>
+  )
+};
+
 
 const SearchAccount = ({ isWhite, style, navigation }) => (
   <TouchableOpacity
