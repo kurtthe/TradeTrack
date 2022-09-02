@@ -162,7 +162,7 @@ export const FilterProducts = () => {
   if((favoriteFilter || categoryActive || subCategoryActive) && dataProducts.length === 0 && !isLoadingFilter){
     alertService.show(
       'Alert!',
-      `There are not products`,
+      `There are not favorite products for this category`,
     );
   }
 
