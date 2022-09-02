@@ -21,6 +21,8 @@ export const FilterProducts = () => {
   const dispatch = useDispatch();
   const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected)
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
+  const dataProducts = useSelector((state) => state.filterReducer.products)
+
 
   const [alertService] = useState(new AlertService())
   const [categories, setCategories] = useState([])
@@ -161,6 +163,7 @@ export const FilterProducts = () => {
             onPress={() => handleShowCategories()}
             isActive={categoryActive}
             isLoading={isLoading}
+            disabled={dataProducts.length ===0}
           />
           {categoryActive && (
             <>
@@ -168,11 +171,13 @@ export const FilterProducts = () => {
                 text='Sub Category'
                 onPress={() => handleShowSubCategories()}
                 isActive={subCategoryActive}
+                disabled={dataProducts.length ===0}
               />
               <FilterButton
                 text='Clear'
                 onPress={() => handleResetFilter()}
                 icon={require('@assets/nuk-icons/png/2x/clear.png')}
+                disabled={dataProducts.length ===0}
               />
             </>
           )}
@@ -181,6 +186,7 @@ export const FilterProducts = () => {
             onPress={() => handleToggleFavorite()}
             nameIcon={!favoriteFilter? 'staro': 'star'}
             sizeIcon={15}
+            disabled={dataProducts.length ===0}
           />
         </View>
       </View>
