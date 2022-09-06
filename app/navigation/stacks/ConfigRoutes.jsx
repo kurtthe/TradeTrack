@@ -7,10 +7,6 @@ const putHeader = (navigation, scene, header = false) => {
     return null;
   }
 
-  const [headerTitle] = useState(
-    (scene.route.params !== undefined && scene.route.params?.hasOwnProperty('headerTitle')) ? scene.route.params.headerTitle : header.title
-  );
-
   return (
     <Header
       title={header.title}

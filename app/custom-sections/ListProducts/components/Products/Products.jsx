@@ -81,7 +81,7 @@ export const Products = () => {
     )
   }
 
-  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
+  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly, categorySelected, favoriteFilter, isLoading])
 
   const handleLoadingMore = () => {
     dispatch(nextPage())
