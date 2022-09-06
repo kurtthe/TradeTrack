@@ -159,7 +159,7 @@ export const FilterProducts = () => {
     dispatch(toggleLoading(true))
   }
 
-  if((favoriteFilter || categoryActive || subCategoryActive) && dataProducts.length === 0 && !isLoadingFilter){
+  if(favoriteFilter && dataProducts.length === 0 && !isLoadingFilter && categoryParentSelected !== ''){
     alertService.show(
       'Alert!',
       `There are not favorite products for this category`,
