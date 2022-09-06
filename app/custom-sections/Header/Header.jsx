@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { Button, Block, NavBar, Text, theme } from 'galio-framework';
-
+import { connect } from 'react-redux';
 import Icon from '@components/Icon';
 import Input from '@components/Input';
 import Tabs from '@components/Tabs';
@@ -24,7 +24,9 @@ import PdfViewer from '@custom-elements/PdfViewer';
 import * as SecureStore from 'expo-secure-store';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Loading from '@custom-elements/Loading';
-
+import {
+  backCategory,
+} from '@core/module/store/filter/filter';
 const { width } = Dimensions.get('window');
 
 const SearchHome = ({ style, navigation }) => (
@@ -104,6 +106,10 @@ class Header extends React.Component {
     }
 
     const routeName = this.props.scene.route.params?.nameRouteGoing;
+
+    if(routeName === 'Products'){
+
+    }
 
     if (routeName === 'AccountInvoice') {
       this.props.navigation.setParams({
@@ -392,6 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     marginTop: 10,
     elevation: 4,
+    padding: theme.SIZES.BASE / 2,
   },
   tab: {
     backgroundColor: theme.COLORS.TRANSPARENT,
@@ -444,9 +451,8 @@ const styles = StyleSheet.create({
     marginLeft: -20,
     top: -10,
   },
-  options: {
-    padding: theme.SIZES.BASE / 2,
-  },
 });
 
-export default withNavigation(Header);
+const mapDispatchToProps = { backCategory };
+
+export default withNavigation(connect(null, mapDispatchToProps)(Header));
