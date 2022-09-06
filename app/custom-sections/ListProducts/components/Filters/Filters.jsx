@@ -177,6 +177,13 @@ export const FilterProducts = () => {
             isLoading={isLoading}
             disabled={isLoadingFilter}
           />
+          <FilterButton
+            text={'Favourite'}
+            onPress={() => handleToggleFavorite()}
+            nameIcon={!favoriteFilter ? 'staro' : 'star'}
+            sizeIcon={15}
+            disabled={isLoadingFilter}
+          />
           {categoryActive && (
             <>
               <FilterButton
@@ -186,20 +193,14 @@ export const FilterProducts = () => {
                 disabled={isLoadingFilter}
               />
               <FilterButton
-                text='Clear'
+                text=''
                 onPress={() => handleResetFilter()}
                 icon={require('@assets/nuk-icons/png/2x/clear.png')}
                 disabled={isLoadingFilter}
               />
             </>
           )}
-          <FilterButton
-            text={'Favourite'}
-            onPress={() => handleToggleFavorite()}
-            nameIcon={!favoriteFilter ? 'staro' : 'star'}
-            sizeIcon={15}
-            disabled={isLoadingFilter}
-          />
+
         </View>
       </View>
 
