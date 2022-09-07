@@ -8,7 +8,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Icon from '@components/Icon';
 import { useDispatch } from 'react-redux';
 import {
-  backCategory
+  reset
 } from '@core/module/store/filter/filter';
 
 const Header = ({
@@ -27,7 +27,6 @@ const Header = ({
   const styles = makeStyles()
 
   const handleLeftPress = () => {
-
     if (!scene || !scene.route.params?.nameRouteGoing) {
       navigation.goBack();
       return;
@@ -36,7 +35,9 @@ const Header = ({
     const routeName = scene.route.params?.nameRouteGoing;
 
     if(routeName === 'Products'){
-      dispatch(backCategory())
+      dispatch(reset())
+      setTimeout(()=> navigation.goBack(), 500)
+      return;
     }
 
     if (routeName === 'AccountInvoice') {
