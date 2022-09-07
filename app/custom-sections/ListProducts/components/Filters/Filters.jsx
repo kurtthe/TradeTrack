@@ -177,6 +177,16 @@ export const FilterProducts = () => {
             isLoading={isLoading}
             disabled={isLoadingFilter}
           />
+
+          {categoryActive && (
+            <FilterButton
+              text='Sub Category'
+              onPress={() => handleShowSubCategories()}
+              isActive={subCategoryActive}
+              disabled={isLoadingFilter}
+            />
+          )}
+
           <FilterButton
             text={'Favourite'}
             onPress={() => handleToggleFavorite()}
@@ -184,21 +194,14 @@ export const FilterProducts = () => {
             sizeIcon={15}
             disabled={isLoadingFilter}
           />
+
           {categoryActive && (
-            <>
-              <FilterButton
-                text='Sub Category'
-                onPress={() => handleShowSubCategories()}
-                isActive={subCategoryActive}
-                disabled={isLoadingFilter}
-              />
-              <FilterButton
-                text=''
-                onPress={() => handleResetFilter()}
-                icon={require('@assets/nuk-icons/png/2x/clear.png')}
-                disabled={isLoadingFilter}
-              />
-            </>
+            <FilterButton
+              text=''
+              onPress={() => handleResetFilter()}
+              icon={require('@assets/nuk-icons/png/2x/clear.png')}
+              disabled={isLoadingFilter}
+            />
           )}
 
         </View>
