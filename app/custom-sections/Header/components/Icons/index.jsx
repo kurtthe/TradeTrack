@@ -9,9 +9,11 @@ import Loading from '@custom-elements/Loading';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
+import { useSelector } from 'react-redux';
 
-export const Icons = ({ navigation, title, white }) => {
+export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
 
+  const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [showModalBottom, setShowModalBottom] = useState(false)
   const [urlFilePdf, setUrlFilePdf] = useState()
   const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
@@ -19,7 +21,6 @@ export const Icons = ({ navigation, title, white }) => {
 
   const openViewerPdf = async () => {
     setLoadingLoadPdf(true)
-    const { urlDownloadFile } = this.props.scene.route.params;
     const result = await generalRequestService.get(urlDownloadFile);
 
     setShowModalBottom(true)
@@ -27,9 +28,9 @@ export const Icons = ({ navigation, title, white }) => {
     setLoadingLoadPdf(false)
   };
   
-  const renderRight = () => {
+  const renderIcon = () => {
 
-    switch (title) {
+    switch (headerType) {
       case 'Home':
         return (
           <View style={{ top: 5.5 }}>
@@ -44,7 +45,7 @@ export const Icons = ({ navigation, title, white }) => {
               key="basket-deals"
               navigation={navigation}
               isWhite={white}
-              myPrice={this.props.scene.route.params?.myPrice}
+              myPrice={clientFriendly}
             />
           </View>
         );
@@ -69,7 +70,7 @@ export const Icons = ({ navigation, title, white }) => {
         return [
 
           <View style={{ top: 7, width: 50 }}>
-            {this.state.loadingLoadPdf ? (
+            {loadingLoadPdf ? (
               <Loading />
             ) : (
               <DownloadButton isWhite={white} onPress={() => openViewerPdf()} />
@@ -79,11 +80,11 @@ export const Icons = ({ navigation, title, white }) => {
               show={showModalBottom}
               close={() => setShowModalBottom(false)}
               downloadShared={{
-                url: this.props.scene.route.params?.urlDownloadFile,
+                url: urlDownloadFile,
               }}
             >
               <View style={{ height: hp('80%') }}>
-                <PdfViewer url={this.state.urlFilePdf} />
+                <PdfViewer url={urlFilePdf} />
               </View>
             </BottomModal>
           </View>
@@ -94,5 +95,7 @@ export const Icons = ({ navigation, title, white }) => {
     }
   };
 
-  return renderRight();
+  return <>
+    {renderIcon()}
+    </>
 }
