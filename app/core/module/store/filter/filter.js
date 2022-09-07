@@ -50,15 +50,6 @@ export const filterStatementsSlice = createSlice({
       state.onlyFavourites = false
 
     },
-    backCategory: (state) => {
-      state.isLoading = true
-      state.categorySelected = ''
-      state.products = []
-      state.page = 1
-      state.pagesTotal = 1
-      state.onlyFavourites = false
-
-    }
   }
 })
 
@@ -70,7 +61,6 @@ export const {
   reset,
   toggleFavorites,
   toggleLoading,
-  backCategory
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer
