@@ -1,8 +1,6 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Image, TouchableOpacity, View } from 'react-native';
 import { Block, NavBar } from 'galio-framework';
-import { DownloadFile } from '@core/services/download-file.service';
-import { GeneralRequestService } from '@core/services/general-request.service';
 import {makeStyles} from './Header.styles'
 import nowTheme from '@constants/Theme';
 import {Icons} from './components/Icons'
@@ -13,19 +11,22 @@ import {
   backCategory
 } from '@core/module/store/filter/filter';
 
-const Header = ({title, headerType, white, transparent, bgColor, titleColor, navigation, back, scene}) => {
+const Header = ({
+  title,
+  headerType,
+  white,
+  transparent,
+  bgColor,
+  titleColor,
+  navigation,
+  back,
+  scene,
+  iconColor
+}) => {
   const dispatch = useDispatch()
-
-  const [showModalBottom, setShowModalBotton] = useState(false)
-  const [urlFilePdf, setUrlFilePdf] = useState(null)
-
   const styles = makeStyles()
 
-  const downloadFile = DownloadFile.getInstance();
-  const generalRequestService = GeneralRequestService.getInstance();
-
   const handleLeftPress = () => {
-    const { navigation } = this.props;
 
     if (!scene || !scene.route.params?.nameRouteGoing) {
       navigation.goBack();
@@ -76,14 +77,11 @@ const Header = ({title, headerType, white, transparent, bgColor, titleColor, nav
       </TouchableOpacity>
     );
   }
-  const renderHeader = () => {
-
-  }
 
   return (
     <Block style={[transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null]}>
       <NavBar
-        title={headerType == 'Home' ? '' : title}
+        title={headerType === 'Home' ? '' : title}
         style={[styles.navbar, bgColor && { backgroundColor: bgColor }]}
         transparent={transparent}
         right={<Icons
