@@ -89,6 +89,7 @@ const Header = ({
           headerType={headerType}
           navigation={navigation}
           white={white}
+          urlDownloadFile={scene.route?.params?.urlDownloadFile}
         />}
         rightStyle={{ alignItems: 'center' }}
         left={renderHome()}
