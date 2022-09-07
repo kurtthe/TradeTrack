@@ -10,8 +10,11 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
 import { useSelector } from 'react-redux';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {AlertService} from '@core/services/alert.service';
 
 export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
+  const alertService = useState(new AlertService())
 
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [showModalBottom, setShowModalBottom] = useState(false)
@@ -20,9 +23,12 @@ export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
   const [generalRequestService] = useState(GeneralRequestService.getInstance())
 
   const openViewerPdf = async () => {
+    if(!urlDownloadFile){
+      alertService.show('Alert!', 'Try Again Later');
+      return;
+    }
     setLoadingLoadPdf(true)
     const result = await generalRequestService.get(urlDownloadFile);
-
     setShowModalBottom(true)
     setUrlFilePdf(result)
     setLoadingLoadPdf(false)
