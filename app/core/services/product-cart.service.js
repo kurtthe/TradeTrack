@@ -88,7 +88,7 @@ export class ProductCart {
         return parseFloat(priceProduct) * parseFloat(product.quantity);
       });
       const reducer = (accumulator, curr) => accumulator + curr;
-      return prices.reduce(reducer);
+      return prices.reduce(reducer).toFixed(2);
     }
   }
 }
