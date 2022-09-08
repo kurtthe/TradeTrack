@@ -16,7 +16,10 @@ const QuantityCounterWithInput = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
 
   useEffect(() => {
+    setQuantity(props.quantity)
+  }, [props.quantity]);
 
+  useEffect(() => {
     if (quantity == 0 && !props.product && !props.bought) {
       Alert.alert(
         'Are you sure you want to remove the product for your cart?',
@@ -36,6 +39,7 @@ const QuantityCounterWithInput = (props) => {
         ],
         { cancelable: false },
       );
+      return;
     }
 
   }, [quantity]);

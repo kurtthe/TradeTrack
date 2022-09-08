@@ -20,6 +20,7 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import LoadingComponent from '@custom-elements/Loading';
 import FavoriteIcon from '@custom-elements/FavoriteIcon'
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 
 const { width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -58,6 +59,22 @@ class Product extends React.Component {
       hideMyPrice: this.props.route?.params?.hideMyPrice,
       productDetail: this.props.route?.params?.product,
     });
+    this.focusListener = this.props.navigation.addListener("focus", () => {
+      this.updateCuantity()
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener();
+  }
+
+  updateCuantity () {
+    if (this.props?.cartProducts.some((element) => element.id === this.props.route?.params?.product.id)) {
+      let index = this.props?.cartProducts.findIndex((element) => element.id === this.props.route?.params?.product.id)
+      this.setState({
+        cantProduct: this.props.cartProducts[index].quantity,
+      });
+    }
   }
 
   renderProgress = () => {
@@ -83,7 +100,13 @@ class Product extends React.Component {
 
   onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
-
+    console.log(this.productCart, this.props?.cartProducts)
+    if (this.props?.cartProducts.some((element) => element.id === productItem.id)) {
+      let sum = this.productCart.quantity ? this.productCart.quantity + this.state.cantProduct : this.state.cantProduct;
+      const newArrayCant = this.productCart.updateCant(productItem.sku, sum);
+      this.props.updateProducts(newArrayCant);
+      return;
+    }
     const addProduct = {
       ...productItem,
       quantity: this.state.cantProduct,
@@ -219,7 +242,7 @@ class Product extends React.Component {
         <View style={styles.quantityBar}>
           <QuantityCounterWithInput
             product
-            quantity={productDetail?.quantity ? productDetail?.quantity : this.state.cantProduct}
+            quantity={this.state.cantProduct}
             quantityHandler={(cant) => this.setState({ cantProduct: cant })}
           />
           <Button
@@ -293,6 +316,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
 });
 
-const mapDispatchToProps = { updateProducts };
+const mapDispatchToProps = { updateProducts, updatePreOrder };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
