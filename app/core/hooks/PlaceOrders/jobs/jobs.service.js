@@ -3,8 +3,15 @@ import { endPoints } from '@shared/dictionaries/end-points';
 
 const generalRequestService = GeneralRequestService.getInstance()
 
-export const getJobs = async ()=> {
-  const response = await generalRequestService.get(endPoints.jobs)
+export const getJobs = async (textSearch = '', page=1)=> {
+  const response = await generalRequestService.get(endPoints.jobs, {
+    params: {
+      search: textSearch
+    },
+    headers:{
+      page
+    }
+  })
   return Promise.resolve(response)
 }
 

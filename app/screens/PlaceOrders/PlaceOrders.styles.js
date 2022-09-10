@@ -19,13 +19,5 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     height: 43,
   },
-  notes: {
-    height: 100,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: nowTheme.COLORS.PICKERTEXT,
-    paddingTop: 10,
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-  },
+
 });
