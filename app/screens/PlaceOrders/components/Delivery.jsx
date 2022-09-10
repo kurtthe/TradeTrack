@@ -1,0 +1,123 @@
+import { Block, Input, Text } from 'galio-framework';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import React, { useEffect, useState } from 'react';
+import PickerButton from '@custom-elements/PickerButton';
+import PickerButtonDelivery from '@custom-elements/PickerButton';
+import { nowTheme } from '@constants/index';
+import {
+  radioButtonsDelivery,
+  radioButtonsHour,
+} from '@shared/dictionaries/radio-buttons-delivery';
+
+const Delivery = ({onChangeDelivery}) => {
+  const [optionDeliveries, setOptionsDeliveries] = useState()
+  const [optionHours, setOptionsHours] = useState()
+  const [optionDeliverySelected, setOptionDeliverySelected] = useState()
+  const [optionHourSelected, setOptionHourSelected] = useState()
+  const [deliveryText, setDeliveryText] = useState()
+  const [locationSelected, setLocationSelected] = useState()
+  const [dateSelected, setDateSelected] = useState()
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
+
+  useEffect(()=>{
+    setOptionsDeliveries(radioButtonsDelivery)
+    setOptionsHours(radioButtonsHour)
+  },[])
+
+  const handleChangeDelivery = (optionSelected) => {
+    setOptionDeliverySelected(optionSelected)
+    setDeliveryText(optionSelected?.label)
+    onChangeDelivery && onChangeDelivery(optionSelected?.label)
+  }
+
+  const handleDatePicked = (date) => {
+    setDateSelected({
+      label: date.toDateString(),
+      value: date.toISOString('2015-05-14').slice(0, 10),
+    })
+    setIsDatePickerVisible(false)
+  }
+
+  return (
+    <Block
+      card
+      backgroundColor={'white'}
+      width={width}
+      paddingTop={10}
+      paddingHorizontal={20}
+      paddingBottom={20}
+      marginBottom={20}
+    >
+      <PickerButtonDelivery
+        label="Delivery Options"
+        text="Delivery Type"
+        error
+        placeholder={deliveryText || 'Select delivery type'}
+        icon
+        renderOptions={optionDeliveries}
+        onChangeOption={(option) => handleChangeDelivery(option)}
+      />
+      {optionDeliverySelected === 'delivery' && (
+        <>
+          <Block row>
+            <Text style={styles.text}>Address</Text>
+            <Text style={styles.errorText}> * </Text>
+          </Block>
+          <Input
+            left
+            color="black"
+            style={styles.orderName}
+            placeholder="Enter your address"
+            onChangeText={(t) => setLocationSelected(t)}
+            value={locationSelected}
+            placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+            textInputStyle={{ flex: 1 }}
+          />
+        </>
+      )}
+      <>
+        <PickerButton
+          text={`${deliveryText} Date`}
+          placeholder={dateSelected?.label || "Select date"}
+          pickDate={!!dateSelected}
+          icon
+          error
+          iconName={'calendar-today'}
+          size={25}
+          onPress={()=>setIsDatePickerVisible(true)}
+        />
+
+        <DateTimePicker
+          mode="date"
+          isVisible={isDatePickerVisible}
+          onConfirm={handleDatePicked}
+          onCancel={()=>setIsDatePickerVisible(false)}
+        />
+      </>
+      <PickerButton
+        text={`${deliveryText} Time`}
+        placeholder={this.state.time?.label || 'Select time'}
+        icon
+        error
+        iconName={'lock-clock'}
+        size={25}
+        renderOptions={optionHourSelected}
+        onChangeOption={(option) => setOptionHourSelected(option)}
+      />
+    </Block>
+  )
+}
+
+const styles = StyleSheet.create({
+  text: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.PRETEXT,
+  },
+  errorText: {
+    paddingTop: 10,
+    color: nowTheme.COLORS.ERROR,
+    fontWeight: 'bold',
+  },
+})
+
+export default Delivery;
