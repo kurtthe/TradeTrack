@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollView} from 'react-native';
 import { Block } from 'galio-framework';
 import {styles} from './PlaceOrders.styles'
 import {useSelector, useDispatch} from 'react-redux';
@@ -16,17 +17,19 @@ const PlaceOrders = () => {
   }
 
   return (
-    <Block flex center style={styles.cart}>
-      <Block center>
-        <JobsForm />
-        <DeliveryForm />
-        <StoreForm />
-        <DetailOrders
-          cartProducts={cartProducts}
-          orderHandler={placeOrderHandler}
-        />
+    <ScrollView>
+      <Block flex center style={styles.cart}>
+        <Block center>
+          <JobsForm />
+          <DeliveryForm />
+          <StoreForm />
+          <DetailOrders
+            cartProducts={cartProducts}
+            orderHandler={placeOrderHandler}
+          />
+        </Block>
       </Block>
-    </Block>
+    </ScrollView>
   );
 }
 
