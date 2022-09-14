@@ -1,10 +1,12 @@
 import { Block, Input, Text } from 'galio-framework';
 import React, { useEffect, useState } from 'react';
-import {StyleSheet} from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native';
 import { nowTheme } from '@constants/index';
 import PickerButton from '@custom-elements/PickerButton';
 import { useGetStores, useGetPreferredStore } from '@core/hooks/PlaceOrders';
 import { setOptionsPicker, resetValueSelect } from '../utils';
+
+const { width } = Dimensions.get('screen');
 
 const Store = () => {
   const [notes, setNotes] = useState()

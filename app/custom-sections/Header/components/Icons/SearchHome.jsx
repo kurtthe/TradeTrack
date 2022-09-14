@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Keyboard } from 'react-native'
 import { makeStyles } from './styles'
 import { Ionicons } from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';

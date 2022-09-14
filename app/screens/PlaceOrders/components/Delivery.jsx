@@ -4,10 +4,14 @@ import React, { useEffect, useState } from 'react';
 import PickerButton from '@custom-elements/PickerButton';
 import PickerButtonDelivery from '@custom-elements/PickerButton';
 import { nowTheme } from '@constants/index';
+import { Dimensions, StyleSheet } from 'react-native';
 import {
   radioButtonsDelivery,
   radioButtonsHour,
 } from '@shared/dictionaries/radio-buttons-delivery';
+
+const { width } = Dimensions.get('screen');
+
 
 const Delivery = ({onChangeDelivery}) => {
   const [optionDeliveries, setOptionsDeliveries] = useState()
@@ -23,6 +27,10 @@ const Delivery = ({onChangeDelivery}) => {
     setOptionsDeliveries(radioButtonsDelivery)
     setOptionsHours(radioButtonsHour)
   },[])
+
+  useEffect(()=>{
+
+  },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected])
 
   const handleChangeDelivery = (optionSelected) => {
     setOptionDeliverySelected(optionSelected)
@@ -57,7 +65,7 @@ const Delivery = ({onChangeDelivery}) => {
         renderOptions={optionDeliveries}
         onChangeOption={(option) => handleChangeDelivery(option)}
       />
-      {optionDeliverySelected === 'delivery' && (
+      {optionDeliverySelected?.value === 'delivery' && (
         <>
           <Block row>
             <Text style={styles.text}>Address</Text>
@@ -77,8 +85,8 @@ const Delivery = ({onChangeDelivery}) => {
       )}
       <>
         <PickerButton
-          text={`${deliveryText} Date`}
-          placeholder={dateSelected?.label || "Select date"}
+          text={`${deliveryText || ''} Date`}
+          placeholder={ !!dateSelected ? dateSelected?.label : "Select date"}
           pickDate={!!dateSelected}
           icon
           error
@@ -95,13 +103,13 @@ const Delivery = ({onChangeDelivery}) => {
         />
       </>
       <PickerButton
-        text={`${deliveryText} Time`}
-        placeholder={this.state.time?.label || 'Select time'}
+        text={`${deliveryText || ''} Time`}
+        placeholder={'Select time'}
         icon
         error
         iconName={'lock-clock'}
         size={25}
-        renderOptions={optionHourSelected}
+        renderOptions={optionHours}
         onChangeOption={(option) => setOptionHourSelected(option)}
       />
     </Block>
