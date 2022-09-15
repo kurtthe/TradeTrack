@@ -52,7 +52,7 @@ function AppStack(props) {
       component: TradeTrakStack,
       typeIcon: 'MaterialIcons',
       icon: 'business-center',
-      title: 'Trade Trak'
+      title: 'Trak'
     },
   ];
 
