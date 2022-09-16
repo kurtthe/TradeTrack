@@ -15,6 +15,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
 import { getNews } from '@core/module/store/news/news';
+import {expo} from '../../app.json'
 
 import { connect } from 'react-redux';
 
@@ -116,10 +117,12 @@ class Home extends React.Component {
               >
                App Feedback
               </Button>
-            </Block>
-            <Block center style={{ paddingVertical: 35 }}>
+              
             </Block>
           </Block>
+          <Block center style={{ paddingVertical: 50 }}>
+            <Text  style={{color:'grey', bottom:65}} >Version {expo.version}</Text>
+            </Block>
         </ScrollView>
       </Block>
     );
