@@ -159,7 +159,7 @@ export const FilterProducts = () => {
     dispatch(toggleLoading(true))
   }
 
-  if((favoriteFilter || categoryActive || subCategoryActive) && dataProducts.length === 0 && !isLoadingFilter){
+  if(favoriteFilter && dataProducts.length === 0 && !isLoadingFilter && categoryParentSelected !== ''){
     alertService.show(
       'Alert!',
       `There are not favorite products for this category`,
@@ -177,22 +177,16 @@ export const FilterProducts = () => {
             isLoading={isLoading}
             disabled={isLoadingFilter}
           />
+
           {categoryActive && (
-            <>
-              <FilterButton
-                text='Sub Category'
-                onPress={() => handleShowSubCategories()}
-                isActive={subCategoryActive}
-                disabled={isLoadingFilter}
-              />
-              <FilterButton
-                text='Clear'
-                onPress={() => handleResetFilter()}
-                icon={require('@assets/nuk-icons/png/2x/clear.png')}
-                disabled={isLoadingFilter}
-              />
-            </>
+            <FilterButton
+              text='Sub Category'
+              onPress={() => handleShowSubCategories()}
+              isActive={subCategoryActive}
+              disabled={isLoadingFilter}
+            />
           )}
+
           <FilterButton
             text={'Favourite'}
             onPress={() => handleToggleFavorite()}
@@ -200,6 +194,16 @@ export const FilterProducts = () => {
             sizeIcon={15}
             disabled={isLoadingFilter}
           />
+
+          {categoryActive && (
+            <FilterButton
+              text=''
+              onPress={() => handleResetFilter()}
+              icon={require('@assets/nuk-icons/png/2x/clear.png')}
+              disabled={isLoadingFilter}
+            />
+          )}
+
         </View>
       </View>
 

@@ -48,6 +48,7 @@ export const filterStatementsSlice = createSlice({
       state.page = 1
       state.pagesTotal = 1
       state.onlyFavourites = false
+
     },
   }
 })
@@ -59,7 +60,7 @@ export const {
   getAllPages,
   reset,
   toggleFavorites,
-  toggleLoading
+  toggleLoading,
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

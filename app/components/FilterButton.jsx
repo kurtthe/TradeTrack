@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    padding: 5,
+    paddingVertical: 5,
     paddingHorizontal: 10,
     marginHorizontal: 5,
   },
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     width: 18,
   },
   text: {
+    fontSize: 12,
     color: nowTheme.COLORS.LIGHTGRAYTEXT,
-    marginHorizontal:1
   },
   icon: {
     maxWidth: 25,
