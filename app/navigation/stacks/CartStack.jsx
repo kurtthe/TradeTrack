@@ -18,7 +18,7 @@ function CartStack() {
       title: 'Cart',
       colorBackground: '#FFFFFF',
       header:{
-        title: 'Cart',
+        title: 'Online Orders',
       }
     },
     {

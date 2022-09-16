@@ -1,56 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, SafeAreaView, RefreshControl } from 'react-native';
-import { Block } from 'galio-framework';
-import { nowTheme } from '@constants';
+import { ScrollView } from 'react-native';
 
-import { GetDataPetitionService } from '@core/services/get-data-petition.service';
 import { endPoints } from '@shared/dictionaries/end-points';
-import ListInvoices from '@custom-sections/ListInvoices';
 import LiveBalance from '@custom-sections/LiveBalance';
 import PaymentDetail from '@custom-elements/PaymentDetail';
-import ListStatement from '@custom-sections/ListStatement';
 import ListData from '@custom-sections/ListData';
 import Balance from '@custom-sections/Balance';
 import Tabs from '@custom-elements/Tabs';
 
 import { getStatements } from '@core/module/store/statements/statements';
-import { getBalance } from '@core/module/store/balance/liveBalance';
-import { getInvoices } from '@core/module/store/balance/invoices';
-import Invoice from '@custom-elements/Invoice';
 import Statement from '@custom-elements/Statement';
 
-import { connect } from 'react-redux';
-import {STATEMENTS,INVOICES} from '@shared/dictionaries/typeDataSerialize'
+import { STATEMENTS } from '@shared/dictionaries/typeDataSerialize'
+import ListTransactions from '@custom-sections/ListTransactions'
+import { useDispatch } from 'react-redux';
 
-const Account = ({ route, getBalance, getStatements, getInvoices }) => {
+const TAccount = ({ route }) => {
+  const dispatch = useDispatch();
 
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
-  const [refreshing, setRefreshing] = useState(false)
-  const [company, setCompany] = useState("")
-  const [getDataPetition] = useState(GetDataPetitionService.getInstance())
 
   useEffect(() => {
-
     const initServices = async () => {
       setCustomStyleIndex(route.params?.tabIndexSelected || 0)
-      const dataHeader = await getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, getBalance);
-      setCompany(dataHeader.headers['tradetrak-company'])
     }
     initServices()
   }, [])
-
-
-  const fetchData = async () => {
-    await getDataPetition.getInfo(endPoints.statements, getStatements);
-    await getDataPetition.getInfo(endPoints.invoices, getInvoices);
-  }
-
-  const _onRefresh = () => {
-    setRefreshing(true)
-    fetchData().then(() => {
-      setRefreshing(false)
-    });
-  }
 
   const renderItemsStatement = ({ item }) => (
     <Statement
@@ -66,23 +41,15 @@ const Account = ({ route, getBalance, getStatements, getInvoices }) => {
       <ListData
         endpoint={endPoints.statements}
         renderItems={renderItemsStatement}
-        actionData={getStatements}
+        actionData={(data) => dispatch(getStatements(data))}
         typeData={STATEMENTS}
       />
     </>
   );
 
-  const renderItemsInvoices = ({ item }) => (
-    <Invoice invoice={item} isAccount={true} />
-  )
 
   const renderInvoices = () => (
-    <ListData
-      filters={true}
-      endpoint={endPoints.searchInvoices}
-      renderItems={renderItemsInvoices}
-      typeData={INVOICES}
-    />
+    <ListTransactions />
   );
 
   return (
@@ -106,13 +73,5 @@ const Account = ({ route, getBalance, getStatements, getInvoices }) => {
   );
 }
 
-const mapStateToProps = (state) => ({
-  statements: state.statementsReducer.statements,
-  invoices: state.invoicesReducer.invoices,
-  liveBalance: state.liveBalanceReducer,
-});
-
-const mapDispatchToProps = { getStatements, getBalance, getInvoices };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default TAccount
 

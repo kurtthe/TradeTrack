@@ -132,15 +132,15 @@ class Help extends React.Component {
                           </Text>
                         </Block>
                         <Block width={width * 0.9}>
-                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:help@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
-      title="help@burdens.com.au" >
+                        <TouchableWithoutFeedback activeOpacity={0.6}  onPress={() => Linking.openURL('mailto:ar@burdens.com.au?subject=Access to the Burdens portal&body=Hi There') }
+      title="ar@burdens.com.au" >
                         <Text
                           color={'#444857'}
                           size={(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 18 :22) :  (Dimensions.get('window').height < 870) ? 18: 22}
 
                           style={{textDecorationLine: 'underline',top:(Platform.OS === 'ios') ? ( (Dimensions.get('window').height < 670) ? 0 :0) :  (Dimensions.get('window').height < 870) ? 10: 10}}
                           >
-                         help@burdens.com.au
+                         ar@burdens.com.au
                           </Text>
                           </TouchableWithoutFeedback>
                         </Block>

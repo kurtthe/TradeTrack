@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, FlatList } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import DetailOrder from '@custom-elements/DetailOrder';
@@ -26,21 +26,27 @@ const DetailsOrders = (props) => {
     setLoading(false);
   };
 
-  const putDetails = () => {
-    if (props.cartProducts.length === 0) {
-      return null;
-    }
+  const renderOrder = ({ item }) => (
+    <DetailOrder order={item} />
+  )
 
-    return props.cartProducts.map((order, index) => <DetailOrder key={index} order={order} />);
-  };
 
   return (
     <Block card backgroundColor={'white'} width={width}>
       <Block style={styles.detailOrdersBlock}>
-        <View style={styles.detailOrders}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Detail Orders</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 16, paddingBottom: 15, paddingVertical: 25 }}>Detail Orders</Text>
+        <View style={{ flex: 1 }}>
+          {
+            props.cartProducts.length > 0 && (
+              <FlatList
+                data={props.cartProducts}
+                renderItem={renderOrder}
+                keyExtractor={(item, index) => `${item.id}-${index}`}
+
+              />
+            )
+          }
         </View>
-        {putDetails()}
         <View
           style={{
             borderWidth: 0.7,
@@ -59,7 +65,7 @@ const DetailsOrders = (props) => {
             {orderTotal()}
           </Text>
         </Block>
-        <Block center style={{ position: 'relative', bottom: 0, paddingHorizontal: 20 }}>
+        <Block center style={{ position: 'relative', bottom: 5, paddingHorizontal: 20, paddingVertical: 14 }}>
           <Button
             color="info"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -85,14 +91,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '8%',
+    height: '5%',
     marginVertical: theme.SIZES.BASE * 0.9,
   },
   buttonOrder: {
     width: Platform.OS === 'ios' ? width - 240 : width - 300,
   },
   detailOrdersBlock: {
-    height: 'auto',
+    flex: 1,
     paddingHorizontal: 25,
     paddingBottom: 10,
   },

@@ -70,7 +70,7 @@ class PasswordBeenChange extends React.Component {
                     <Block flex space="between" middle> 
                       <Block>
                       <Block  middle>
-                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/check-badge.png')}/>
+                  <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/sentEmail.png')}/>
                   </Block>
                   <Block width={width * 0.9} >
                      
@@ -85,7 +85,7 @@ class PasswordBeenChange extends React.Component {
                            size={20}
                          // style={{textDecorationLine: 'underline',}}
                           >
-                       Your Password has been Change
+                     Password Reset Sent
                           </Text>
                           
                         </Block>
@@ -97,21 +97,11 @@ class PasswordBeenChange extends React.Component {
                             muted
                             size={15}
                           >
-                             Please login again to enter Burdens Portals. 
+                            Please check your email to reset your password.
                           </Text>
                         </Block>
 
-                        <Block  middle  >
-                          <Text
-                          color={nowTheme.COLORS.PRETEXT}
-                            style={{ marginLeft: 0, fontFamily: 'montserrat-regular',fontFamily: 'montserrat-regular',}}
-                            row
-                            muted
-                            size={15}
-                          >
-                             Have a nice day!
-                          </Text>
-                        </Block>
+                       
                       
                         </Block>
                       </Block>
@@ -184,6 +174,5 @@ const styles = StyleSheet.create({
 });
 
 export default PasswordBeenChange;
-
 
 

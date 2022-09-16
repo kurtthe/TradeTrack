@@ -52,6 +52,9 @@ export const SearchProducts = () => {
   }, [products?.body])
 
   useEffect(() => {
+    if(!products?.headers){
+      return
+    }
     setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
   }, [products?.headers, optionsProducts.page])
 

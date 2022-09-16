@@ -26,29 +26,24 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
-      company: '',
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
 
   async componentDidMount() {
-   await this.fetchData();
+    await this.fetchData();
   }
 
   fetchData = async () => {
-    await this.getDataPetition.getInfo(endPoints.burdensBalance, this.props.getBalance);
+    await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
-    const dataHeader = await this.getDataPetition.getInfoWithHeaders(endPoints.news);
-    this.setState({
-      company: dataHeader.headers['tradetrak-company'],
-    })
   }
 
   _onRefresh = () => {
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     this.fetchData().then(() => {
-      this.setState({refreshing: false});
+      this.setState({ refreshing: false });
     });
   }
 
@@ -57,8 +52,8 @@ class Home extends React.Component {
 
     return (
       <Block flex center style={styles.home}>
-        <ScrollView 
-          showsVerticalScrollIndicator={false} 
+        <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.articles}
           refreshControl={
             <RefreshControl
@@ -67,9 +62,19 @@ class Home extends React.Component {
             />
           }
         >
-          <LiveBalance company={true} nameCompany={this.state.company}/>
+          <LiveBalance company={true} />
+
+          <Button
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+            onPress={() => navigation.navigate('Store')}
+          >
+            Store Finder
+          </Button>
+
           <ListInvoices data={this.props.invoices} title={true} />
-          
+
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>
               <Text
@@ -96,13 +101,23 @@ class Home extends React.Component {
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-                style={styles.button}
-                onPress={() => navigation.navigate('Store')}
+                style={styles.buttonEstimator}
+                onPress={() => navigation.navigate('Estimator')}
               >
-                Store Finder
+                Roof Estimator
               </Button>
             </Block>
-            <Block center style={{ paddingVertical: 30 }}>
+            <Block center style={{ top : -11 }}>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.buttonEstimator}
+                onPress={() => navigation.navigate('AppFeedback')}
+              >
+               App Feedback
+              </Button>
+            </Block>
+            <Block center style={{ paddingVertical: 35 }}>
             </Block>
           </Block>
         </ScrollView>
@@ -122,9 +137,14 @@ const styles = StyleSheet.create({
     fontFamily: 'montserrat-regular',
   },
   button: {
-    marginBottom: theme.SIZES.BASE,
+    alignItems: 'center',
+    margin: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
+  },
+  buttonEstimator: {
     top: -15,
+    margin: theme.SIZES.BASE,
+    width: width - theme.SIZES.BASE * 2,
   },
   card: {
     backgroundColor: nowTheme.COLORS.WHITE,
