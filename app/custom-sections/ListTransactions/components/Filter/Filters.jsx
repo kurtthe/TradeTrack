@@ -13,10 +13,8 @@ import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
 import Search from '@custom-elements/Search';
+import debounce from "lodash.debounce";
 
-const iconSearch = (
-  <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
-);
 const { width } = Dimensions.get('screen');
 const alertService = new AlertService();
 const actionSheetRef = createRef();
@@ -80,7 +78,34 @@ class Filters extends Component {
     });
   };
 
-  changeValuesFilters = (whoChange = false, value) => {
+  resetFilters = () => {
+    const resetOptionsSelected = this.state.optionsType.map((item) => {
+      if (item.id === this.state.idSelectedType) {
+        return {
+          ...item,
+          selected: false,
+        };
+      }
+
+      return item;
+    });
+
+    this.setState({
+      dateStartValue: '',
+      dateEndValue: '',
+      type: '',
+      textSearch: '',
+      idSelectedType: null,
+      optionsType: resetOptionsSelected,
+    });
+  }
+
+  debouncedOnChange = debounce((whoChange, value) => this.changeValuesFilters(value, whoChange), 300)
+
+  changeValuesFilters = (value, whoChange = false) => {
+    console.log("=>whoChange", whoChange)
+    console.log("=>value", value)
+
     if (whoChange === 'type') {
       this.setState({
         type: value,
@@ -93,26 +118,9 @@ class Filters extends Component {
     if (whoChange === 'text') {
       this.setState({ textSearch: value });
     }
+
     if (!whoChange) {
-      const resetOptionsSelected = this.state.optionsType.map((item) => {
-        if (item.id === this.state.idSelectedType) {
-          return {
-            ...item,
-            selected: false,
-          };
-        }
-
-        return item;
-      });
-
-      this.setState({
-        dateStartValue: '',
-        dateEndValue: '',
-        type: '',
-        textSearch: '',
-        idSelectedType: null,
-        optionsType: resetOptionsSelected,
-      });
+      this.resetFilters()
     }
 
     setTimeout(() => {
@@ -142,7 +150,7 @@ class Filters extends Component {
       idSelectedType: optionSelected.id,
     });
 
-    this.changeValuesFilters('type', optionSelected.value);
+    this.debouncedOnChange('type', optionSelected.value);
   };
 
   rangeDate = () => {
@@ -167,7 +175,7 @@ class Filters extends Component {
         </Block>
         <DateTimePicker
           isVisible={this.state.showDatePicker}
-          onConfirm={(date) => this.changeValuesFilters('date', date)}
+          onConfirm={(date) => this.debouncedOnChange('date', date)}
           onCancel={this.hideDateTimePicker}
         />
       </>
@@ -195,9 +203,8 @@ class Filters extends Component {
           <Search
             style={styles.search}
             inputStyle={styles.inputStyle}
-            value={this.state.textSearch}
             placeholder="By description or invoice number"
-            onChangeText={(text) => this.changeValuesFilters('text', text)}
+            onChangeText={(text) => this.debouncedOnChange('text', text)}
           />
         </Block>
         <ActionSheet ref={actionSheetRef}>
@@ -224,7 +231,7 @@ class Filters extends Component {
           <View style={styles.cleanFilter}>
             <Button
               mode="outlined"
-              onPress={() => this.changeValuesFilters()}
+              onPress={() => this.debouncedOnChange()}
               labelStyle={styles.labelCleanFilter}
               style={styles.btnClean}
             >

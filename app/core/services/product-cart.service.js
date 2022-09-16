@@ -37,7 +37,14 @@ export class ProductCart {
   }
 
   addMultipleCart(products) {
-    products?.forEach((product) => this.addCart(product))
+    products?.forEach((product) => {
+      if (product.sku === null) {
+        this.alertService.show("", "Product without SKU")
+        return
+      }
+
+      return this.addCart(product)
+    })
     return this.cartProducts
   }
 
@@ -81,7 +88,7 @@ export class ProductCart {
         return parseFloat(priceProduct) * parseFloat(product.quantity);
       });
       const reducer = (accumulator, curr) => accumulator + curr;
-      return prices.reduce(reducer);
+      return prices.reduce(reducer).toFixed(2);
     }
   }
 }

@@ -3,7 +3,6 @@ import { ImageBackground, TouchableOpacity, StyleSheet, Dimensions } from 'react
 import { Block, theme, Text } from 'galio-framework';
 
 import { nowTheme } from '@constants';
-import { MaterialIcons } from '@expo/vector-icons';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { withNavigation } from '@react-navigation/compat';
 import { useSelector } from 'react-redux'
@@ -29,7 +28,7 @@ const LiveBalance = (props) => {
         <Block style={styles.categoryTitle}>
           {props.company ? (
             <Text size={28} bold color={theme.COLORS.WHITE}>
-              {props.nameCompany}
+              {balance.company}
             </Text>
           ) : (
             <>
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width,
     backgroundColor: 'rgba(75, 106, 170, 0.5)',
-    
+
   },
   category: {
     backgroundColor: theme.COLORS.WHITE,

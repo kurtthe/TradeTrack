@@ -117,7 +117,6 @@ class PickerButton extends Component {
         <ScrollView 
           style={[styles.scrollOptions, this.state.search && {height: '95%'}]} 
           contentContainerStyle={styles.sortContent} 
-          onMomentumScrollEnd={() => this.handleSearch(this.props.page)}
         >
           {this.state.renderOptions?.length === 0 ? (
             <Text>No exists options</Text>

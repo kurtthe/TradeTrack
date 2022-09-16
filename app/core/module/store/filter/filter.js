@@ -1,16 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
   categorySelected: '',
   products: [],
   page: 1,
-  pagesTotal: 1
+  pagesTotal: 1,
+  onlyFavourites: false,
+  isLoading: true,
 }
 
 export const filterStatementsSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
+    toggleLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
     selectedCategory: (state, action) => {
       state.products = []
       state.page = 1
@@ -18,6 +23,7 @@ export const filterStatementsSlice = createSlice({
       state.categorySelected = action.payload
     },
     getProducts: (state, action) => {
+
       if (action.payload === undefined) {
         return
       }
@@ -30,6 +36,9 @@ export const filterStatementsSlice = createSlice({
     nextPage: (state) => {
       state.page = state.page + 1
     },
+    toggleFavorites: (state) => {
+      state.onlyFavourites = !state.onlyFavourites
+    },
     getAllPages: (state, action) => {
       state.pagesTotal = action.payload
     },
@@ -38,6 +47,8 @@ export const filterStatementsSlice = createSlice({
       state.products = []
       state.page = 1
       state.pagesTotal = 1
+      state.onlyFavourites = false
+
     },
   }
 })
@@ -48,7 +59,8 @@ export const {
   nextPage,
   getAllPages,
   reset,
-  resetPage
+  toggleFavorites,
+  toggleLoading,
 } = filterStatementsSlice.actions
 
 export default filterStatementsSlice.reducer

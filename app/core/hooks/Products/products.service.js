@@ -1,10 +1,16 @@
-import { GeneralRequestService } from '@core/services/general-request.service'
-import { endPoints } from '@shared/dictionaries/end-points';
+import {GeneralRequestService} from '@core/services/general-request.service'
+import {endPoints} from '@shared/dictionaries/end-points';
 
 const generalRequestService = GeneralRequestService.getInstance()
 
+const getSupplierId = async () => {
+  const response = await generalRequestService.get(endPoints.supplierId)
+  return response.id
+}
+
 export const getProducts = async (options) => {
-  const { category_id, page, search } = options
+  const {category_id, page, search, only_favourite} = options
+  const supplierId = await getSupplierId()
 
   const paramsPetition = {
     page
@@ -20,6 +26,10 @@ export const getProducts = async (options) => {
   const response = await generalRequestService.getWithHeaders(endPoints.products, {},
     {
       'per-page': 20,
+      supplier_id: supplierId,
+      update_prices: true,
+      favourites_only: only_favourite || false,
+      expand: 'price',
       ...paramsPetition
     })
   return Promise.resolve(response)

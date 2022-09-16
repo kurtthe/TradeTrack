@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, Keyboard } from 'react-native'
 import Icon from '@components/Icon';
 import { makeStyles } from './styles'
 
@@ -7,7 +7,7 @@ export const SearchProducts = ({ style, navigation, myPrice }) => {
   const styles = makeStyles()
   return (
     <TouchableOpacity
-      style={([styles.button, style], { zIndex: 300 })}
+      style={([styles.button, style])}
       onPress={() => {
         Keyboard.dismiss();
         navigation.navigate('SearchProducts', {

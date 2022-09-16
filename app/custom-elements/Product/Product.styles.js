@@ -10,7 +10,7 @@ export const makeStyles = () =>
   StyleSheet.create({
     Card: {
       backgroundColor: nowTheme.COLORS.WHITE,
-      flex: 1,
+      width: '47%',
       alignItems: 'center',
       borderRadius: 5,
       padding: theme.SIZES.BASE,
@@ -29,4 +29,13 @@ export const makeStyles = () =>
       fontSize: 12,
       color: nowTheme.COLORS.ORANGE,
     },
+    contentNameProduct: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: 'space-between'
+    },
+    contentSku: {
+      flexDirection: "row",
+      alignItems: "center",
+    }
   })

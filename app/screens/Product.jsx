@@ -19,6 +19,8 @@ import { updateProducts } from '@core/module/store/cart/cart';
 import { ProductCart } from '@core/services/product-cart.service';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import LoadingComponent from '@custom-elements/Loading';
+import FavoriteIcon from '@custom-elements/FavoriteIcon'
+import { updatePreOrder } from '@core/module/store/cart/preCart';
 
 const { width } = Dimensions.get('window');
 const sizeConstantSmall =
@@ -27,16 +29,16 @@ const sizeConstantSmall =
       ? 14
       : 16
     : Dimensions.get('window').height < 870
-    ? 14
-    : 16;
+      ? 14
+      : 16;
 const sizeConstantBig =
   Platform.OS === 'ios'
     ? Dimensions.get('window').height < 670
       ? 20
       : 24
     : Dimensions.get('window').height < 870
-    ? 20
-    : 24;
+      ? 20
+      : 24;
 
 class Product extends React.Component {
   constructor(props) {
@@ -57,6 +59,22 @@ class Product extends React.Component {
       hideMyPrice: this.props.route?.params?.hideMyPrice,
       productDetail: this.props.route?.params?.product,
     });
+    this.focusListener = this.props.navigation.addListener("focus", () => {
+      this.updateCuantity()
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener();
+  }
+
+  updateCuantity () {
+    if (this.props?.cartProducts.some((element) => element.id === this.props.route?.params?.product.id)) {
+      let index = this.props?.cartProducts.findIndex((element) => element.id === this.props.route?.params?.product.id)
+      this.setState({
+        cantProduct: this.props.cartProducts[index].quantity,
+      });
+    }
   }
 
   renderProgress = () => {
@@ -81,15 +99,26 @@ class Product extends React.Component {
   };
 
   onAddCartPressed = (productItem) => {
-    const priceProduct = this.state.hideMyPrice ? productItem.rrp : productItem.cost_price;
-
+    const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
+    console.log(this.productCart, this.props?.cartProducts)
+    if (this.props?.cartProducts.some((element) => element.id === productItem.id)) {
+      let sum = this.productCart.quantity ? this.productCart.quantity + this.state.cantProduct : this.state.cantProduct;
+      const newArrayCant = this.productCart.updateCant(productItem.sku, sum);
+      this.props.updateProducts(newArrayCant);
+      return;
+    }
     const addProduct = {
       ...productItem,
       quantity: this.state.cantProduct,
-      price: priceProduct,
+      price: parseFloat(priceProduct).toFixed(2),
     };
     this.productCart.addCart(addProduct, this.props.updateProducts);
   };
+
+  handleUpdateDataProduct = (newDataProduct) => {
+    this.setState({ productDetail: newDataProduct })
+    this.props.route?.params?.updateProducts()
+  }
 
   render() {
     const { productDetail } = this.state;
@@ -128,20 +157,28 @@ class Product extends React.Component {
                 paddingTop: theme.SIZES.BASE,
               }}
             >
-              <Text
-                size={
-                  Platform.OS === 'ios'
-                    ? Dimensions.get('window').height < 670
-                      ? 20
-                      : 23
-                    : Dimensions.get('window').height < 870
-                    ? 20
-                    : 23
-                }
-                style={{ paddingBottom: 24, fontWeight: '500' }}
-              >
-                {productDetail?.name}
-              </Text>
+              <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 24 }} >
+                <FavoriteIcon
+                  product={productDetail}
+                  updateProduct={(newDataProduct) => this.handleUpdateDataProduct(newDataProduct)}
+                />
+                <Text
+                  size={
+                    Platform.OS === 'ios'
+                      ? Dimensions.get('window').height < 670
+                        ? 20
+                        : 23
+                      : Dimensions.get('window').height < 870
+                        ? 20
+                        : 23
+                  }
+                  style={{  fontWeight: '500', textAlign: 'left' }}
+                >
+
+                  {productDetail?.name}
+                </Text>
+
+              </View>
               <Block row style={{ width: '100%' }}>
                 <Block flex>
                   <Text color={nowTheme.COLORS.LIGHTGRAY} style={styles.priceGrayText}>
@@ -152,7 +189,7 @@ class Product extends React.Component {
                     color={nowTheme.COLORS.ORANGE}
                     size={sizeConstantBig}
                   >
-                    {this.formatMoney.format(productDetail?.rrp)}
+                    {this.formatMoney.format(productDetail.price.retail_price)}
                   </Text>
                 </Block>
                 {!this.state.hideMyPrice && (
@@ -177,7 +214,7 @@ class Product extends React.Component {
                         color={nowTheme.COLORS.ORANGE}
                         size={sizeConstantBig}
                       >
-                        {this.formatMoney.format(productDetail?.cost_price)}
+                        {this.formatMoney.format(productDetail?.price.cost_price)}
                       </Text>
                     </Block>
                   </>
@@ -205,7 +242,7 @@ class Product extends React.Component {
         <View style={styles.quantityBar}>
           <QuantityCounterWithInput
             product
-            quantity={productDetail?.quantity ? productDetail?.quantity : this.state.cantProduct}
+            quantity={this.state.cantProduct}
             quantityHandler={(cant) => this.setState({ cantProduct: cant })}
           />
           <Button
@@ -279,6 +316,6 @@ const mapStateToProps = (state) => ({
   cartProducts: state.productsReducer.products,
 });
 
-const mapDispatchToProps = { updateProducts };
+const mapDispatchToProps = { updateProducts, updatePreOrder };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

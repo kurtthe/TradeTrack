@@ -56,7 +56,28 @@ export class GeneralRequestService {
     }
   }
 
-  async getWithHeaders(endpoint, options = {}, params={}) {
+  async postWithHeaders(endpoint, data, saveToken) {
+    try {
+      const response = await this.httpService.post(endpoint, data, {
+        headers: { 'ttrak-key': this.tokeAuth || '' },
+      });
+      if (saveToken) {
+        this.saverToken({
+          ...response.data,
+          company: response.headers['tradetrak-company']
+        });
+      }
+
+      return {
+        body: response.data,
+        headers: response.headers,
+      };
+    } catch (err) {
+      this.httpCommonService.handleError(err);
+    }
+  }
+
+  async getWithHeaders(endpoint, options = {}, params = {}) {
     try {
       const response = await this.httpService.get(endpoint, {
         params,
