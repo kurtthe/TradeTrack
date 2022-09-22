@@ -44,10 +44,10 @@ export class GeneralRequestService {
     }
   }
 
-  async get(endpoint, options = {headers:{}}) {
+  async get(endpoint, options = {}) {
     try {
       const response = await this.httpService.get(endpoint, {
-        headers: { ...options.headers, 'ttrak-key': this.tokeAuth || '' },
+        headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options,
       });
       return response.data;
