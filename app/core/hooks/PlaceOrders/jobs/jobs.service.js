@@ -6,11 +6,9 @@ const generalRequestService = GeneralRequestService.getInstance()
 export const getJobs = async (textSearch = '', page=1)=> {
   const response = await generalRequestService.get(endPoints.jobs, {
     params: {
-      search: textSearch
-    },
-    headers:{
+      search: textSearch,
       page
-    }
+    },
   })
   return Promise.resolve(response)
 }

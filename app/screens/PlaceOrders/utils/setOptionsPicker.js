@@ -1,12 +1,7 @@
 import { nowTheme } from '@constants/index';
 
-export const setOptionsPicker = (data, toSame) => {
+export const setOptionsPicker = (data=[], toSame) => {
 
-  data.sort(function (a, b) {
-    const textA = a.name.toUpperCase();
-    const textB = b.name.toUpperCase();
-    return textA < textB ? -1 : textA > textB ? 1 : 0;
-  });
 
   return data.map((c) => ({
     ...c,
