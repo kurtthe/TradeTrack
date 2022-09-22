@@ -18,13 +18,14 @@ const Store = () => {
   const {data: preferredStore} = useGetPreferredStore();
 
   useEffect(()=>{
-    if(!stores || !preferredStore){
+
+    if(!stores?.locations?.length || !preferredStore){
       return
     }
 
-    const storesAsRadioButton = setOptionsPicker(stores, preferredStore)
+    const storesAsRadioButton = setOptionsPicker(stores.locations, preferredStore)
     setOptionsSelectStores(storesAsRadioButton)
-  },[stores, preferredStore])
+  },[stores?.locations, preferredStore])
 
   useEffect(()=>{
     if(!preferredStore){
