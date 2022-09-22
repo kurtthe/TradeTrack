@@ -18,9 +18,7 @@ export const EmptyCart = ({ messageCartEmpty }) => {
 
   const handleBrowseProducts = () => {
     dispatch(selectedCategory(''))
-    navigation.navigate('Products', {
-      screen: 'Category'
-    })
+    navigation.navigate('PlaceOrders')
   }
 
   return (
