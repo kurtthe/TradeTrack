@@ -28,10 +28,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "1",
-      "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist"
+      "buildNumber": "2",
+      "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
+        "NSPhotoLibraryUsageDescription": "Allow Burdens to access your photos to select photos and then send a requirement of your  purchase" , 
+        "UIUserInterfaceStyle": "Light"
+      }
     },
     "android": {
+      "permissions": ["CAMERA","ACCESS_FINE_LOCATION"],
       "package": "com.tradetrak.Burdens",
       "permissions": [],
       "versionCode": 28,
