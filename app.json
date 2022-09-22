@@ -39,7 +39,8 @@
     "android": {
       "permissions": ["CAMERA","ACCESS_FINE_LOCATION"],
       "package": "com.tradetrak.Burdens",
-      "versionCode": 26,
+      "permissions": [],
+      "versionCode": 28,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
