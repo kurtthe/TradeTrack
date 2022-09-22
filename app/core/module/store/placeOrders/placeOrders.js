@@ -7,6 +7,8 @@ const initialState = {
     issued_on: null,
     notes: null,
     tax_exclusive: true,
+    emailStore: null,
+    nameStore: null,
     sections: [
       {
         items: [],
@@ -42,6 +44,10 @@ export const placeOrderSlice = createSlice({
     setUpSection: (state, {payload}) => {
       state.sections[0].items = payload;
     },
+    setDataStore: (state, {payload}) => {
+      state.emailStore = payload.email
+      state.nameStore = payload.name
+    },
     setUpOrder: (state, {payload}) => {
       state.name= payload.name;
       state.supplier= payload.supplier;
@@ -55,6 +61,8 @@ export const placeOrderSlice = createSlice({
       state.supplier= null;
       state.job= null;
       state.issued_on= null;
+      state.emailStore= null;
+      state.nameStore= null;
       state.notes= null;
       state.tax_exclusive= true;
       state.sections= [
@@ -79,6 +87,6 @@ export const placeOrderSlice = createSlice({
   },
 })
 
-export const { setUpDelivery,  setUpSection,  setUpOrder,  clear } = placeOrderSlice.actions
+export const { setUpDelivery,  setUpSection,  setUpOrder,  clear, setDataStore } = placeOrderSlice.actions
 
 export default placeOrderSlice.reducer

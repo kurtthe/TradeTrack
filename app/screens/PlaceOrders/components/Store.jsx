@@ -5,14 +5,16 @@ import { nowTheme } from '@constants/index';
 import PickerButton from '@custom-elements/PickerButton';
 import { useGetStores, useGetPreferredStore } from '@core/hooks/PlaceOrders';
 import { setOptionsPicker, resetValueSelect } from '../utils';
+import {useSelector, useDispatch} from 'react-redux';
+import {setDataStore} from '@core/module/store/placeOrders/placeOrders'
 
 const { width } = Dimensions.get('screen');
 
 const Store = () => {
+  const dispatch = useDispatch()
+
   const [notes, setNotes] = useState()
   const [optionsSelectStores, setOptionsSelectStores] = useState()
-  const [storeName, setStoreName] = useState()
-  const [emailStore, setEmailStore] = useState()
 
   const {data: stores } = useGetStores();
   const {data: preferredStore} = useGetPreferredStore();
@@ -32,13 +34,11 @@ const Store = () => {
       return
     }
 
-    setStoreName(preferredStore.name)
-    setEmailStore(preferredStore.email)
+    dispatch(setDataStore(preferredStore))
   },[preferredStore])
 
   const handleChangeOptionSelected = (option) => {
-    setStoreName(option?.value)
-    setEmailStore(option?.email)
+    dispatch(setDataStore(option))
   }
 
   /*const resetOptions = () => {
