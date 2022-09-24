@@ -22,6 +22,7 @@ export const loginSlice = createSlice({
   reducers: {
     sign: (state, action) => {
       const data = action.payload;
+      
       if(data=== null){
         state.api_key= null
         return;
@@ -38,8 +39,6 @@ export const loginSlice = createSlice({
         state.status = data.user.status
         state.time_zone = data.user.time_zone
         state.username = data.user.username
-        
-        
       }
     },
     setCompany: (state, action) => {
