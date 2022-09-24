@@ -100,7 +100,7 @@ class Product extends React.Component {
 
   onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
-    console.log(this.productCart, this.props?.cartProducts)
+    
     if (this.props?.cartProducts.some((element) => element.id === productItem.id)) {
       let sum = this.productCart.quantity ? this.productCart.quantity + this.state.cantProduct : this.state.cantProduct;
       const newArrayCant = this.productCart.updateCant(productItem.sku, sum);

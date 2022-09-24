@@ -9,7 +9,8 @@ const initialState = {
   overdue: 0,
   total: null,
   client_number: null,
-  company: null
+  company: null,
+  restricted: false,
 }
 
 export const liveBalanceSlice = createSlice({
@@ -29,6 +30,7 @@ export const liveBalanceSlice = createSlice({
       state.total = data.total
       state.client_number = data.client_number
       state.company = nameCompany
+      state.restricted = data.restricted
     },
   },
 })

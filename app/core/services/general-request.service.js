@@ -53,6 +53,9 @@ export class GeneralRequestService {
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err);
+      return {
+        restricted: true
+      }
     }
   }
 
@@ -69,11 +72,15 @@ export class GeneralRequestService {
       }
 
       return {
-        body: response.data,
+        body: {...response.data, restricted: false},
         headers: response.headers,
       };
     } catch (err) {
       this.httpCommonService.handleError(err);
+      return {
+        body: { restricted: true },
+        headers: {},
+      };
     }
   }
 
@@ -85,11 +92,15 @@ export class GeneralRequestService {
         ...options,
       });
       return {
-        body: response.data,
+        body: {...response.data, restricted: false},
         headers: response.headers,
       };
     } catch (err) {
       this.httpCommonService.handleError(err);
+      return {
+        body: { restricted: true },
+        headers: {},
+      };
     }
   }
 

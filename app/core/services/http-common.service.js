@@ -12,6 +12,10 @@ export class HttpCommonService {
       return
     }
 
+    if(error.response.status === 403 && error.response.data.name == 'Forbidden') {
+      return
+    }
+
     if(error.response.status === 403) {
       this.showError(error, 'Alert!', 'Not Authenticated.');
       return

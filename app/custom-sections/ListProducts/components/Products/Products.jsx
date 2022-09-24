@@ -22,6 +22,7 @@ export const Products = () => {
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
   const isLoading = useSelector((state) => state.filterReducer.isLoading)
+  const restricted = useSelector((state) => state.filterReducer.restricted)
 
   const page = useSelector((state) => state.filterReducer.page)
 
@@ -97,12 +98,22 @@ export const Products = () => {
     return null
   }
 
-  if(isLoading && dataProducts.length === 0){
+  if(isLoading && dataProducts.length === 0 && !restricted){
     return(
     <View style={styles.contentLoading}>
       <LoadingComponent size='large' />
     </View>
     )
+  }
+
+  if(restricted) {
+    return(
+      <View style={styles.contentLoading}>
+        <Text>
+          Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.
+        </Text>
+      </View>
+      )
   }
 
   return (
