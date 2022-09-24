@@ -6,12 +6,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import { clearProducts } from '@core/module/store/cart/cart';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import {JobsForm, DeliveryForm, StoreForm} from './components'
-import {getSupplierId} from '@core/hooks/getSupplierId.service'
 import placeOrderReducer from '../../core/module/store/placeOrders/placeOrders';
 import { useNavigation } from '@react-navigation/native';
 import {GeneralRequestService} from '@core/services/general-request.service'
 import {endPoints} from '@shared/dictionaries/end-points';
 import {clear} from '@core/module/store/placeOrders/placeOrders'
+import {getSupplierId} from '@core/hooks/getSupplierId.service'
 
 const generalRequest = GeneralRequestService.getInstance()
 
@@ -40,13 +40,14 @@ const PlaceOrders = () => {
   };
 
   const verifyFields = () => {
+    console.log("=>dataOrder", dataOrder)
     const error =
-      !dataOrder.orderName ||
-      !dataOrder.delivery?.value ||
-      !dataOrder.store ||
-      !dataOrder.date ||
-      !dataOrder.time ||
-      (dataOrder.delivery?.value === 'delivery' && dataOrder.location === '');
+      !dataOrder.name ||
+      !dataOrder.delivery_instructions.delivery?.value ||
+      !dataOrder.nameStore ||
+      !dataOrder.delivery_instructions.date ||
+      !dataOrder.delivery_instructions.time ||
+      (dataOrder.delivery_instructions.delivery?.value === 'delivery' && !dataOrder.delivery_instructions.location);
 
     if (error) {
       alert('Fill in the required data *');
@@ -70,7 +71,7 @@ const PlaceOrders = () => {
         name: dataOrder.name,
         supplier: supplierId,
         job: dataOrder.job,
-        issued_on: date.toISOString('2015-05-14').slice(0, 10),
+        issued_on: dataOrder?.delivery_instructions?.date?.value,
         notes: dataOrder.notes,
         tax_exclusive: true,
         sections: [
@@ -86,10 +87,10 @@ const PlaceOrders = () => {
           },
         ],
         delivery_instructions: {
-          delivery: dataOrder.delivery?.value,
-          location: dataOrder.location,
-          date: dataOrder.date?.value,
-          time: dataOrder?.value || '12.00 PM',
+          delivery: dataOrder.delivery_instructions?.value,
+          location: dataOrder.delivery_instructions.location,
+          date: dataOrder.delivery_instructions.date?.value,
+          time: dataOrder?.delivery_instructions.value || '12.00 PM',
         },
       },
     };
