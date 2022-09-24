@@ -23,11 +23,11 @@ const PlaceOrders = () => {
   const dataOrder = useSelector((state)=> state.placeOrderReducer)
 
   const serializeItems = () => {
-    if (this.props.cartProducts.length === 0) {
+    if (cartProducts.length === 0) {
       return [];
     }
 
-    return this.props.cartProducts.map((item) => ({
+    return cartProducts.map((item) => ({
       sku: item.sku,
       quantity: item.quantity,
       tax: [
@@ -39,9 +39,31 @@ const PlaceOrders = () => {
     }));
   };
 
+  const verifyFields = () => {
+    const error =
+      !dataOrder.orderName ||
+      !dataOrder.delivery?.value ||
+      !dataOrder.store ||
+      !dataOrder.date ||
+      !dataOrder.time ||
+      (dataOrder.delivery?.value === 'delivery' && dataOrder.location === '');
+
+    if (error) {
+      alert('Fill in the required data *');
+    }
+    return error;
+  };
+
   const placeOrderHandler = async () => {
     const supplierId = await getSupplierId()
     const items = serializeItems();
+
+    let missingFields = verifyFields();
+
+    if (missingFields) {
+      return;
+    }
+
 
     const data = {
       data: {
