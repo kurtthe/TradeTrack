@@ -36,18 +36,12 @@ const Store = () => {
       return
     }
 
-    dispatch(setDataStore(preferredStore))
-  },[preferredStore])
+    dispatch(setDataStore({...preferredStore, notes }))
+  },[preferredStore, notes])
 
   const handleChangeOptionSelected = (option) => {
     dispatch(setDataStore(option))
   }
-
-  /*const resetOptions = () => {
-    const optionsStoreClear = resetValueSelect(optionsSelectStores);
-    if(!optionsStoreClear) return;
-    setOptionsSelectStores(optionsStoreClear)
-  }*/
 
   return(
     <Block
