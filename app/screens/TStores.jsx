@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Dimensions, Linking, Platform, Modal, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Dimensions, Linking, Platform, Modal, TouchableOpacity, Text} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -22,7 +22,8 @@ class TStores extends Component {
       markers: [],
       region: null,
       modalVisible: false,
-      markSelected: []
+      markSelected: [],
+      restricted: false,
     };
 
     this.generalRequest = GeneralRequestService.getInstance();
@@ -30,6 +31,11 @@ class TStores extends Component {
 
   async componentDidMount() {
     const getStores = await this.generalRequest.get(endPoints.stores);
+
+    if( getStores.restricted ){
+      this.setState({ restricted: true })
+      return;
+    }
 
     const newStores = this.setCoordinateStore(getStores.locations);
 
@@ -82,8 +88,12 @@ class TStores extends Component {
     ));
 
   render() {
-    if (this.state.region === null && this.state.markers.length === 0) {
+    if (this.state.region === null && this.state.markers.length === 0 && !this.state.restricted) {
       return <Loading />;
+    }
+
+    if (this.state.restricted) {
+      return <Text>Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.</Text>
     }
 
     return (

@@ -15,6 +15,7 @@ const LiveBalance = (props) => {
 
   return (
     <Block flex card center shadow style={styles.category}>
+      {!balance.restricted && 
       <ImageBackground
         source={{
           uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
@@ -63,6 +64,7 @@ const LiveBalance = (props) => {
           )}
         </Block>
       </ImageBackground>
+      }
     </Block>
   );
 };
