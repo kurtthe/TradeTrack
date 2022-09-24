@@ -58,6 +58,7 @@ const PlaceOrders = () => {
   const placeOrderHandler = async () => {
     const supplierId = await getSupplierId()
     const items = serializeItems();
+    const date = new Date();
 
     let missingFields = verifyFields();
 
@@ -65,13 +66,12 @@ const PlaceOrders = () => {
       return;
     }
 
-
     const data = {
       data: {
         name: dataOrder.name,
         supplier: supplierId,
         job: dataOrder.job,
-        issued_on: dataOrder?.delivery_instructions?.date?.value,
+        issued_on: date.toISOString('2015-05-14').slice(0, 10),
         notes: dataOrder.notes,
         tax_exclusive: true,
         sections: [
