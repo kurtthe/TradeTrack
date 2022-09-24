@@ -5,11 +5,14 @@ import { nowTheme } from '@constants/index';
 import { setOptionsPicker } from '../utils';
 import { useGetJobs } from '@core/hooks/PlaceOrders';
 import { Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
+import {useDispatch} from 'react-redux'
+import {setUpOrder} from '@core/module/store/placeOrders/placeOrders'
 
 const { width } = Dimensions.get('screen');
 
 
 const Jobs = () => {
+  const dispatch = useDispatch()
   const [textSearchJob, setTextSearchJob] = useState('')
   const [page, setPage] = useState(1)
   const [orderName, setOrderName] = useState()
@@ -30,6 +33,14 @@ const Jobs = () => {
     const jobsAsRadioButton = setOptionsPicker(jobs)
     setOptionsSelectJobs(jobsAsRadioButton)
   },[jobs])
+
+  useEffect(()=>{
+    const dataOrder ={
+      name: orderName,
+      job: jobSelected,
+    }
+    dispatch(setUpOrder(dataOrder))
+  }, [orderName, jobSelected])
 
   const handleSearch = (page) => {
     setPage(page + 1)
