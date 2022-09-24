@@ -59,7 +59,6 @@ export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
       case 'Account':
         return (
           <View style={{ top: 5.5 }}>
-            <SearchAccount key="basket-home" navigation={navigation} isWhite={white} />
           </View>
         );
 

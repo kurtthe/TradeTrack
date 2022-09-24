@@ -7,6 +7,7 @@ const initialState = {
   pagesTotal: 1,
   onlyFavourites: false,
   isLoading: true,
+  restricted: false,
 }
 
 export const filterStatementsSlice = createSlice({
@@ -21,6 +22,7 @@ export const filterStatementsSlice = createSlice({
       state.page = 1
       state.pagesTotal = 1
       state.categorySelected = action.payload
+      state.restricted = action.payload.restricted
     },
     getProducts: (state, action) => {
 
@@ -32,6 +34,7 @@ export const filterStatementsSlice = createSlice({
         return
       }
       state.products = action.payload
+      state.restricted = action.payload.restricted
     },
     nextPage: (state) => {
       state.page = state.page + 1
@@ -48,7 +51,7 @@ export const filterStatementsSlice = createSlice({
       state.page = 1
       state.pagesTotal = 1
       state.onlyFavourites = false
-
+      state.restricted = false
     },
   }
 })
