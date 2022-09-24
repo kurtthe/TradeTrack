@@ -10,10 +10,15 @@ import {
   radioButtonsHour,
 } from '@shared/dictionaries/radio-buttons-delivery';
 
+import {useDispatch} from 'react-redux'
+import {setUpDelivery} from '@core/module/store/placeOrders/placeOrders'
+
 const { width } = Dimensions.get('screen');
 
 
 const Delivery = ({onChangeDelivery}) => {
+  const dispatch = useDispatch()
+
   const [optionDeliveries, setOptionsDeliveries] = useState()
   const [optionHours, setOptionsHours] = useState()
   const [optionDeliverySelected, setOptionDeliverySelected] = useState()
@@ -29,7 +34,14 @@ const Delivery = ({onChangeDelivery}) => {
   },[])
 
   useEffect(()=>{
+    const dataDelivery = {
+      delivery: optionDeliverySelected,
+      location: locationSelected,
+      date: dateSelected,
+      time: optionHourSelected
+    }
 
+    dispatch(setUpDelivery(dataDelivery))
   },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected])
 
   const handleChangeDelivery = (optionSelected) => {
@@ -104,7 +116,7 @@ const Delivery = ({onChangeDelivery}) => {
       </>
       <PickerButton
         text={`${deliveryText || ''} Time`}
-        placeholder={'Select time'}
+        placeholder={!optionHourSelected? 'Select time': optionHourSelected?.label}
         icon
         error
         iconName={'lock-clock'}

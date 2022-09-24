@@ -5,14 +5,18 @@ import { nowTheme } from '@constants/index';
 import PickerButton from '@custom-elements/PickerButton';
 import { useGetStores, useGetPreferredStore } from '@core/hooks/PlaceOrders';
 import { setOptionsPicker, resetValueSelect } from '../utils';
+import {useSelector, useDispatch} from 'react-redux';
+import {setDataStore} from '@core/module/store/placeOrders/placeOrders'
 
 const { width } = Dimensions.get('screen');
 
 const Store = () => {
+  const dispatch = useDispatch()
+
   const [notes, setNotes] = useState()
   const [optionsSelectStores, setOptionsSelectStores] = useState()
-  const [storeName, setStoreName] = useState()
-  const [emailStore, setEmailStore] = useState()
+  const nameStore = useSelector((state)=> state.placeOrderReducer.nameStore)
+
 
   const {data: stores } = useGetStores();
   const {data: preferredStore} = useGetPreferredStore();
@@ -32,20 +36,12 @@ const Store = () => {
       return
     }
 
-    setStoreName(preferredStore.name)
-    setEmailStore(preferredStore.email)
-  },[preferredStore])
+    dispatch(setDataStore({...preferredStore, notes }))
+  },[preferredStore, notes])
 
   const handleChangeOptionSelected = (option) => {
-    setStoreName(option?.value)
-    setEmailStore(option?.email)
+    dispatch(setDataStore(option))
   }
-
-  /*const resetOptions = () => {
-    const optionsStoreClear = resetValueSelect(optionsSelectStores);
-    if(!optionsStoreClear) return;
-    setOptionsSelectStores(optionsStoreClear)
-  }*/
 
   return(
     <Block
@@ -60,7 +56,7 @@ const Store = () => {
       <PickerButton
         label="Store"
         errorLabel
-        placeholder={storeName || 'Select store'}
+        placeholder={nameStore || 'Select store'}
         icon
         renderOptions={optionsSelectStores}
         onChangeOption={(option) => handleChangeOptionSelected(option)}
