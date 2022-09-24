@@ -15,6 +15,8 @@ const Store = () => {
 
   const [notes, setNotes] = useState()
   const [optionsSelectStores, setOptionsSelectStores] = useState()
+  const nameStore = useSelector((state)=> state.placeOrderReducer.nameStore)
+
 
   const {data: stores } = useGetStores();
   const {data: preferredStore} = useGetPreferredStore();
@@ -60,7 +62,7 @@ const Store = () => {
       <PickerButton
         label="Store"
         errorLabel
-        placeholder={storeName || 'Select store'}
+        placeholder={nameStore || 'Select store'}
         icon
         renderOptions={optionsSelectStores}
         onChangeOption={(option) => handleChangeOptionSelected(option)}
