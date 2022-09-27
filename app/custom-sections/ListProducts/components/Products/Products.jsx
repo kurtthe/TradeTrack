@@ -13,6 +13,7 @@ import {
   getAllPages,
   toggleLoading
 } from '@core/module/store/filter/filter';
+import Restricted from '@custom-elements/Restricted';
 
 export const Products = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,6 @@ export const Products = () => {
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
   const isLoading = useSelector((state) => state.filterReducer.isLoading)
   const restricted = useSelector((state) => state.filterReducer.restricted)
-
   const page = useSelector((state) => state.filterReducer.page)
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
@@ -98,22 +98,18 @@ export const Products = () => {
     return null
   }
 
-  if(isLoading && dataProducts.length === 0 && !restricted){
+  if(restricted && isLoading && dataProducts.length === 0) {
+    return(
+      <Restricted />
+      )
+  }
+
+  if(isLoading && dataProducts.length === 0){
     return(
     <View style={styles.contentLoading}>
       <LoadingComponent size='large' />
     </View>
     )
-  }
-
-  if(restricted) {
-    return(
-      <View style={styles.contentLoading}>
-        <Text>
-          Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.
-        </Text>
-      </View>
-      )
   }
 
   return (

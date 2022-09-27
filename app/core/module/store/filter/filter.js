@@ -22,7 +22,7 @@ export const filterStatementsSlice = createSlice({
       state.page = 1
       state.pagesTotal = 1
       state.categorySelected = action.payload
-      state.restricted = action.payload.restricted
+      state.restricted = action.payload.restricted ? action.payload.restricted : false
     },
     getProducts: (state, action) => {
 
@@ -34,7 +34,7 @@ export const filterStatementsSlice = createSlice({
         return
       }
       state.products = action.payload
-      state.restricted = action.payload.restricted
+      state.restricted = action.payload.restricted ? action.payload.restricted : false
     },
     nextPage: (state) => {
       state.page = state.page + 1
