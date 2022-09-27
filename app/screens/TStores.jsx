@@ -93,7 +93,11 @@ class TStores extends Component {
     }
 
     if (this.state.restricted) {
-      return <Text>Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.</Text>
+      return (
+        <View style={styles.container}>
+          <Text>Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.</Text>
+        </View>
+      )
     }
 
     return (

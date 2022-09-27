@@ -7,6 +7,7 @@ import { nowTheme } from '@constants';
 import GrayLine from '@components/GrayLine';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import BalanceDetail from '@custom-elements/BalanceDetail';
+import Restricted from '../custom-elements/Restricted';
 
 const formatMoney = FormatMoneyService.getInstance();
 const { width } = Dimensions.get('screen');
@@ -43,6 +44,18 @@ const Balance = () => {
       </View>
     ));
   };
+
+  if (balance.restricted) {
+    return (
+     <Block style={{ padding: theme.SIZES.BASE, top: 0 }}>
+       <Text style={{ marginBottom: 15 }} size={16}>
+           Payment Details
+         </Text>
+       <Restricted />
+     </Block>
+    )
+  }
+ 
 
   return (
     <View style={{ height: 'auto', paddingHorizontal: 15 }}>

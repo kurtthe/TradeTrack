@@ -12,20 +12,19 @@ export const productsSlice = createSlice({
   reducers: {
     updateProducts: (state, { payload }) => {
       state.products = payload;
-      state.restricted = payload.restricted;
+      state.restricted = payload.restricted ? payload.restricted : false;
     },
     getAllProductsSuccess: (state, { payload }) => {
       state.loading = false;
       state.allProducts = payload;
-      state.restricted = payload.restricted;
+      state.restricted = payload.restricted ? payload.restricted : false;
     },
     clearProducts: (state) => {
       state.products = [];
-      state.restricted = payload.restricted;
     },
     changeClientFriendly: (state, { payload }) => {
       state.clientFriendly = payload;
-      state.restricted = payload.restricted;
+      state.restricted = payload.restricted ? payload.restricted : false;
     }
   },
 });

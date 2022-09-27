@@ -13,6 +13,7 @@ export class HttpCommonService {
     }
 
     if(error.response.status === 403 && error.response.data.name == 'Forbidden') {
+      console.log('RESTRICTED', error.response.request._url)
       return
     }
 

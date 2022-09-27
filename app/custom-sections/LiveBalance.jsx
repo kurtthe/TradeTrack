@@ -15,7 +15,6 @@ const LiveBalance = (props) => {
 
   return (
     <Block flex card center shadow style={styles.category}>
-      {!balance.restricted && 
       <ImageBackground
         source={{
           uri: 'https://live.staticflickr.com/65535/51227105003_e18d28b6ce_c.jpg',
@@ -27,7 +26,7 @@ const LiveBalance = (props) => {
         }}
       >
         <Block style={styles.categoryTitle}>
-          {props.company ? (
+          {props.company || balance.restricted ? (
             <Text size={28} bold color={theme.COLORS.WHITE}>
               {balance.company}
             </Text>
@@ -64,7 +63,6 @@ const LiveBalance = (props) => {
           )}
         </Block>
       </ImageBackground>
-      }
     </Block>
   );
 };
