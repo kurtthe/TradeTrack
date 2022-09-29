@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import LiveBalance from '@custom-sections/LiveBalance';
@@ -52,7 +52,7 @@ const TAccount = ({ route }) => {
       <Balance />
 
       {restricted ?
-          <Restricted /> : 
+          <Restricted horizontal /> : 
         <ListData
           endpoint={endPoints.statements}
           renderItems={renderItemsStatement}

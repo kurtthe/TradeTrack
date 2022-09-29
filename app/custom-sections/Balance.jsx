@@ -48,10 +48,6 @@ const Balance = () => {
   if (balance.restricted) {
     return (
      <Block style={{ padding: theme.SIZES.BASE, top: 0 }}>
-       <Text style={{ marginBottom: 15 }} size={16}>
-           Payment Details
-         </Text>
-       <Restricted />
      </Block>
     )
   }

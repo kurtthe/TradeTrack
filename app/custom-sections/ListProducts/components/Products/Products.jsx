@@ -101,10 +101,10 @@ export const Products = () => {
   if(restricted && isLoading && dataProducts.length === 0) {
     return(
       <Restricted />
-      )
+    )
   }
 
-  if(isLoading && dataProducts.length === 0){
+  if(!restricted &&isLoading && dataProducts.length === 0){
     return(
     <View style={styles.contentLoading}>
       <LoadingComponent size='large' />
