@@ -38,7 +38,7 @@ const PaymentDetail = () => {
       <Text style={{ marginBottom: 15 }} size={16}>
           Payment Details
         </Text>
-      <Restricted />
+      <Restricted horizontal/>
     </Block>
    )
  }
