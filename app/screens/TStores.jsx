@@ -5,6 +5,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
 import MarkMap from '@custom-elements/MarkMap';
 import Loading from '@custom-elements/Loading';
+import Restricted from '@custom-elements/Restricted';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -95,7 +96,7 @@ class TStores extends Component {
     if (this.state.restricted) {
       return (
         <View style={styles.container}>
-          <Text>Forbidden: You do not have permission to view Burdens information Please contact your company administrator to request access.</Text>
+          <Restricted />
         </View>
       )
     }
