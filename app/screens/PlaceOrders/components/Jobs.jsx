@@ -7,6 +7,7 @@ import { useGetJobs } from '@core/hooks/PlaceOrders';
 import { Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 import {useDispatch} from 'react-redux'
 import {setUpOrder} from '@core/module/store/placeOrders/placeOrders'
+import Restricted from '../../../custom-elements/Restricted';
 
 const { width } = Dimensions.get('screen');
 
@@ -17,7 +18,6 @@ const Jobs = () => {
   const [page, setPage] = useState(1)
   const [orderName, setOrderName] = useState()
   const {data: jobs, refetch, isLoading} = useGetJobs(textSearchJob, page);
-
   const [jobSelected, setJobSelected] = useState()
   const [optionsSelectJobs, setOptionsSelectJobs] = useState()
 
@@ -27,6 +27,10 @@ const Jobs = () => {
 
   useEffect(()=>{
     if(!jobs){
+      return
+    }
+
+    if(jobs?.restricted){
       return
     }
 
@@ -56,35 +60,39 @@ const Jobs = () => {
       paddingBottom={20}
       marginBottom={20}
     >
-      {isLoading && <ActivityIndicator/> }
-      <PickerButton
-        label="Detail Order"
-        text="Select Job"
-        placeholder={jobSelected || 'Select or search job'}
-        renderOptions={optionsSelectJobs}
-        onChangeOption={(option) => setJobSelected(option?.value)}
-        handleSearch={(page) => handleSearch(page)}
-        changeSearchText={(text) => setTextSearchJob(text)}
-        search={true}
-        icon={true}
-        page={page}
-        textSearch={textSearchJob}
-        deleteOption
-      />
-      <Block row>
-        <Text style={styles.text}>Job/Order Number</Text>
-        <Text style={styles.errorText}> * </Text>
-      </Block>
-      <Input
-        left
-        color="black"
-        style={styles.orderName}
-        placeholder="Enter your order name"
-        onChangeText={(t) => setOrderName(t)}
-        value={orderName}
-        placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
-        textInputStyle={{ flex: 1 }}
-      />
+    {isLoading && <ActivityIndicator/> }
+      {jobs?.restricted ? <Restricted horizontal /> :
+      <>
+        <PickerButton
+          label="Detail Order"
+          text="Select Job"
+          placeholder={jobSelected || 'Select or search job'}
+          renderOptions={optionsSelectJobs}
+          onChangeOption={(option) => setJobSelected(option?.value)}
+          handleSearch={(page) => handleSearch(page)}
+          changeSearchText={(text) => setTextSearchJob(text)}
+          search={true}
+          icon={true}
+          page={page}
+          textSearch={textSearchJob}
+          deleteOption
+        />
+        <Block row>
+          <Text style={styles.text}>Job/Order Number</Text>
+          <Text style={styles.errorText}> * </Text>
+        </Block>
+        <Input
+          left
+          color="black"
+          style={styles.orderName}
+          placeholder="Enter your order name"
+          onChangeText={(t) => setOrderName(t)}
+          value={orderName}
+          placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+          textInputStyle={{ flex: 1 }}
+        />
+      </>
+      }
     </Block>
   )
 }
