@@ -20,6 +20,7 @@ export const ListTransactions = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [valuesFilters, setValuesFilters] = useState({});
   const styles = makeStyles();
+  const [restricted, setRestricted] = useState(false);
 
   const [optionsTransactions, setOptionsTransactions] = useState({
     page: 1,
@@ -28,6 +29,10 @@ export const ListTransactions = () => {
 
   const fetchData = async ()=> {
     const response = await getTransaction({...optionsTransactions.page, ...valuesFilters})
+    if(response.restricted) {
+      setRestricted(true)
+      return
+    }
     setTransaction(response)
   }
 
@@ -103,22 +108,29 @@ export const ListTransactions = () => {
 
   return (
     <View style={styles.container}>
-      <Filters
-        getValues={(values) => getValuesFilters(values)}
-      />
       {isLoading && (
         <View style={styles.contentLoading}>
           <LoadingComponent size='large' />
         </View>
-      )
-      }
-      <FlatList
-        data={dataTransactions}
-        renderItem={memoizedTransactions}
-        keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
-        ListEmptyComponent={renderNotFound}
-        ListFooterComponent={getButtonLoadingMore}
-      />
+      )}
+      {restricted ? (
+        <View style={styles.contentLoading}>
+          <Restricted horizontal />
+        </View>
+      ) : (
+        <>
+          <Filters
+            getValues={(values) => getValuesFilters(values)}
+          />
+          <FlatList
+            data={dataTransactions}
+            renderItem={memoizedTransactions}
+            keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
+            ListEmptyComponent={renderNotFound}
+            ListFooterComponent={getButtonLoadingMore}
+          />
+        </>
+      )}
     </View>
   );
 }
