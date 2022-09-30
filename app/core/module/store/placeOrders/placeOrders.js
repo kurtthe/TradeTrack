@@ -13,6 +13,7 @@ const initialState = {
       date: null,
       time: null,
     },
+    restricted: false
   };
 
 export const placeOrderSlice = createSlice({
@@ -24,21 +25,25 @@ export const placeOrderSlice = createSlice({
         delivery: payload.delivery,
         location: payload.location,
         date: payload.date,
-        time: payload.time
+        time: payload.time,
+        restricted: payload.restricted ? payload.restricted : false,
       };
     },
     setUpSection: (state, {payload}) => {
       state.sections[0].items = payload;
+      state.restricted = payload.restricted ? payload.restricted : false;
     },
     setDataStore: (state, {payload}) => {
       state.emailStore = payload.email
       state.nameStore = payload.name
       state.notes= payload.notes;
+      state.restricted = payload.restricted ? payload.restricted : false;
 
     },
     setUpOrder: (state, {payload}) => {
       state.name= payload.name;
       state.job= payload.job;
+      state.restricted = payload.restricted ? payload.restricted : false;
     },
     clear: (state)=> {
       state.name= null;
@@ -46,6 +51,7 @@ export const placeOrderSlice = createSlice({
       state.emailStore= null;
       state.nameStore= null;
       state.notes= null;
+      state.restricted = payload.restricted ? payload.restricted : false;
 
       state.delivery_instructions = {
         delivery: null,
