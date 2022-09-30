@@ -7,8 +7,9 @@ import Invoice from '@custom-elements/Invoice';
 import InvoicesSkeleton from '@custom-elements/skeletons/Invoices';
 import { useNavigation } from '@react-navigation/native';
 import { makeStyles } from './ListInvoices.styles'
+import Restricted from '@custom-elements/Restricted';
 
-export const ListInvoices = ({ data, title, backAccount }) => {
+export const ListInvoices = ({ data, title, backAccount, restricted }) => {
   const navigation = useNavigation();
   const styles = makeStyles()
 
@@ -50,12 +51,14 @@ export const ListInvoices = ({ data, title, backAccount }) => {
       )}
 
       <Block style={styles.card}>
+        {restricted ? 
+        <Restricted horizontal /> :
         <FlatList
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => `${item.id}-${index}`}
           ListEmptyComponent={emptyData}
-        />
+        />}
       </Block>
     </>
   );

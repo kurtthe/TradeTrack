@@ -10,7 +10,7 @@ const { width } = Dimensions.get('screen');
 
 export const AllInvoice = ({ }) => {
   const invoices = useSelector((state) => state.invoicesReducer.invoices)
-
+  
   const renderFilters = () => (
     <Block
       row
@@ -41,7 +41,7 @@ export const AllInvoice = ({ }) => {
       </Block>
       <ScrollView>
         <Block flex>
-          <ListInvoices data={invoices} />
+          <ListInvoices data={invoices} restricted={restricted} />
           <Block center style={{ paddingVertical: 5 }}>
             <Button
               color="info"
