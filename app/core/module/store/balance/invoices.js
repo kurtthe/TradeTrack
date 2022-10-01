@@ -11,7 +11,7 @@ export const invoicesSlice = createSlice({
   reducers: {
     getInvoices: (state, action) => {
       state.invoices = action.payload;
-      state.restricted = action.restricted ? action.restricted : false;
+      state.restricted = action.payload.restricted ? action.payload.restricted : false;
     },
   },
 })
