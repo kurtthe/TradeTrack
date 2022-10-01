@@ -28,6 +28,7 @@ export const getProducts = async (options) => {
       expand: 'price',
       ...paramsPetition
     })
+    
   return Promise.resolve(response)
 }
 

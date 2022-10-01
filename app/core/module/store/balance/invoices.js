@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  invoices:[]
+  invoices:[],
+  restricted: false,
 }
 
 export const invoicesSlice = createSlice({
@@ -10,6 +11,7 @@ export const invoicesSlice = createSlice({
   reducers: {
     getInvoices: (state, action) => {
       state.invoices = action.payload;
+      state.restricted = action.payload.restricted ? action.payload.restricted : false;
     },
   },
 })

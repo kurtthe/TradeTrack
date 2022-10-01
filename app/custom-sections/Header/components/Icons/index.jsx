@@ -17,6 +17,7 @@ export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
   const alertService = useState(new AlertService())
 
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
+  const restricted = useSelector((state) => state.filterReducer.restricted)
   const [showModalBottom, setShowModalBottom] = useState(false)
   const [urlFilePdf, setUrlFilePdf] = useState()
   const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
@@ -47,12 +48,14 @@ export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
       case 'Products':
         return (
           <View style={{ top: 6.5 }}>
-            <SearchProducts
-              key="basket-deals"
-              navigation={navigation}
-              isWhite={white}
-              myPrice={clientFriendly}
-            />
+            {!restricted &&
+              <SearchProducts
+                key="basket-deals"
+                navigation={navigation}
+                isWhite={white}
+                myPrice={clientFriendly}
+              />
+            }
           </View>
         );
 

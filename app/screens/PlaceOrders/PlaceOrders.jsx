@@ -12,6 +12,7 @@ import {GeneralRequestService} from '@core/services/general-request.service'
 import {endPoints} from '@shared/dictionaries/end-points';
 import {clear} from '@core/module/store/placeOrders/placeOrders'
 import {getSupplierId} from '@core/hooks/getSupplierId.service'
+import Restricted from '../../custom-elements/Restricted';
 
 const generalRequest = GeneralRequestService.getInstance()
 
@@ -21,6 +22,7 @@ const PlaceOrders = () => {
   const cartProducts = useSelector((state)=> state.productsReducer.products)
   const userEmail = useSelector((state)=> state.loginReducer.email)
   const dataOrder = useSelector((state)=> state.placeOrderReducer)
+  const restricted = useSelector((state)=> state.productsReducer.restricted)
 
   const serializeItems = () => {
     if (cartProducts.length === 0) {
@@ -100,8 +102,8 @@ const PlaceOrders = () => {
     if (placedOrder) {
       handleOrderShare(placedOrder.order.id);
       resetFields();
-      clearProducts();
-     navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
+      dispatch(clearProducts());
+      navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
   }
 
@@ -121,6 +123,12 @@ const PlaceOrders = () => {
     const shareOrder = await generalRequest.post(url, data);
     console.log('shareOrder::', shareOrder, url, data)
   };
+
+  if(dataOrder?.restricted || restricted){
+    return (
+      <Restricted />
+    )
+  }
 
   return (
     <ScrollView>

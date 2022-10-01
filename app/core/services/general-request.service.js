@@ -41,6 +41,11 @@ export class GeneralRequestService {
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err);
+      if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
+        return {
+          restricted: true
+        };
+      }
     }
   }
 
@@ -53,8 +58,10 @@ export class GeneralRequestService {
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err);
-      return {
-        restricted: true
+      if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
+        return {
+          restricted: true
+        };
       }
     }
   }
@@ -72,15 +79,17 @@ export class GeneralRequestService {
       }
 
       return {
-        body: {...response.data, restricted: false},
+        body: response.data,
         headers: response.headers,
       };
     } catch (err) {
       this.httpCommonService.handleError(err);
-      return {
-        body: { restricted: true },
-        headers: {},
-      };
+      if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
+        return {
+          body: { restricted: true },
+          headers: err.response.headers,
+        };
+      }
     }
   }
 
@@ -91,16 +100,19 @@ export class GeneralRequestService {
         headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options,
       });
+      
       return {
-        body: {...response.data, restricted: false},
+        body: response.data,
         headers: response.headers,
       };
     } catch (err) {
       this.httpCommonService.handleError(err);
-      return {
-        body: { restricted: true },
-        headers: {},
-      };
+      if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
+        return {
+          body: { restricted: true },
+          headers: err.response.headers,
+        };
+      }
     }
   }
 
@@ -113,6 +125,7 @@ export class GeneralRequestService {
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err);
+      
     }
   }
 

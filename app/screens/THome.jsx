@@ -74,7 +74,11 @@ class Home extends React.Component {
             Store Finder
           </Button>
 
-          <ListInvoices data={this.props.invoices} title={true} />
+          <ListInvoices 
+            data={this.props.invoices} 
+            title={true} 
+            restricted={this.props.restricted}
+          />
 
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>
@@ -188,6 +192,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   liveBalance: state.liveBalanceReducer,
   invoices: state.invoicesReducer.invoices,
+  restricted: state.invoicesReducer.restricted,
   news: state.newsReducer.news,
 });
 

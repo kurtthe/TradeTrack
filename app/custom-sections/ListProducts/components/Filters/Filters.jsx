@@ -24,6 +24,7 @@ export const FilterProducts = () => {
   const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites)
   const dataProducts = useSelector((state) => state.filterReducer.products)
   const isLoadingFilter = useSelector((state) => state.filterReducer.isLoading)
+  const restricted = useSelector((state) => state.filterReducer.restricted)
 
   const [alertService] = useState(new AlertService())
   const [categories, setCategories] = useState([])
@@ -164,6 +165,11 @@ export const FilterProducts = () => {
       'Alert!',
       `There are not favorite products for this category`,
     );
+  }
+
+  if(restricted) {
+    return (
+    <View style={styles.container}></View>) 
   }
 
   return (
