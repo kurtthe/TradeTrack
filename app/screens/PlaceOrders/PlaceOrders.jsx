@@ -103,7 +103,7 @@ const PlaceOrders = () => {
       handleOrderShare(placedOrder.order.id);
       resetFields();
       clearProducts();
-     navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
+      navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
   }
 

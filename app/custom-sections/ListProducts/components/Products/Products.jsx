@@ -25,7 +25,7 @@ export const Products = () => {
   const isLoading = useSelector((state) => state.filterReducer.isLoading)
   const restricted = useSelector((state) => state.filterReducer.restricted)
   const page = useSelector((state) => state.filterReducer.page)
-
+  
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
@@ -98,7 +98,7 @@ export const Products = () => {
     return null
   }
 
-  if(restricted && isLoading && dataProducts.length === 0) {
+  if(restricted) {
     return(
       <Restricted />
     )

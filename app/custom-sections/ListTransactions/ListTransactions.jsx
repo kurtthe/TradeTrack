@@ -8,6 +8,7 @@ import Invoice from '@custom-elements/Invoice';
 import { getTransaction } from '@core/hooks/Transactions/transaction.service'
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
+import Restricted from '@custom-elements/Restricted';
 
 export const ListTransactions = () => {
   const [dataTransactions, setDataTransaction] = useState([])
@@ -29,7 +30,8 @@ export const ListTransactions = () => {
 
   const fetchData = async ()=> {
     const response = await getTransaction({...optionsTransactions.page, ...valuesFilters})
-    if(response.restricted) {
+    
+    if(response.body.restricted) {
       setRestricted(true)
       return
     }

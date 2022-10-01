@@ -51,7 +51,7 @@ export const placeOrderSlice = createSlice({
       state.emailStore= null;
       state.nameStore= null;
       state.notes= null;
-      state.restricted = payload.restricted ? payload.restricted : false;
+      state.restricted = false;
 
       state.delivery_instructions = {
         delivery: null,

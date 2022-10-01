@@ -18,7 +18,7 @@ import { GetDataPetitionService } from '@core/services/get-data-petition.service
 import { endPoints } from '@shared/dictionaries/end-points';
 import ListData from '@custom-sections/ListData';
 import { ORDERS } from '@shared/dictionaries/typeDataSerialize'
-
+import Restricted from '@custom-elements/Restricted';
 
 const { width } = Dimensions.get('screen');
 class Cart extends React.Component {
@@ -29,6 +29,7 @@ class Cart extends React.Component {
       customStyleIndex: 0,
       deleteAction: false,
       myPrice: false,
+      restricted: false,
     };
 
     this.alertService = new AlertService();
@@ -44,7 +45,12 @@ class Cart extends React.Component {
       });
     }
 
-    await this.getDataPetition.getInfo(endPoints.orders, this.props.getOrders);
+    const response = await this.getDataPetition.getInfo(endPoints.orders, this.props.getOrders);
+    if(response.restricted) {
+      this.setState({restricted: true})
+      return
+    }
+    this.setState({restricted: false})
   }
 
   componentDidUpdate(prevProps) {
@@ -81,11 +87,14 @@ class Cart extends React.Component {
 
   renderPreviousOrder = () => (
     <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%') }}>
-      <ListData
-        endpoint={endPoints.orders}
-        renderItems={this.renderItemsPrevious}
-        typeData={ORDERS}
-      />
+      {this.state.restricted ?
+          <Restricted /> : 
+        <ListData
+          endpoint={endPoints.orders}
+          renderItems={this.renderItemsPrevious}
+          typeData={ORDERS}
+        />
+      }
     </Block>
   );
 

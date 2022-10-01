@@ -28,6 +28,7 @@ export const getTransaction = async (options) => {
       'per-page': 20,
       ...paramsPetition
     })
+
   return Promise.resolve(response)
 }
 
