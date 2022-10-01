@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import LiveBalance from '@custom-sections/LiveBalance';
@@ -14,17 +14,30 @@ import Statement from '@custom-elements/Statement';
 import { STATEMENTS } from '@shared/dictionaries/typeDataSerialize'
 import ListTransactions from '@custom-sections/ListTransactions'
 import { useDispatch } from 'react-redux';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import Restricted from '@custom-elements/Restricted';
+
+const generalRequestService = GeneralRequestService.getInstance();
 
 const TAccount = ({ route }) => {
   const dispatch = useDispatch();
-
+  
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
+  const [restricted, setRestricted] = useState(false);
 
   useEffect(() => {
     const initServices = async () => {
       setCustomStyleIndex(route.params?.tabIndexSelected || 0)
     }
     initServices()
+  }, [])
+
+  useEffect(async () => {
+    const response = await generalRequestService.get(endPoints.statements);
+    if(response.restricted) {
+      setRestricted(true)
+      setCustomStyleIndex(1)
+    }
   }, [])
 
   const renderItemsStatement = ({ item }) => (
@@ -38,12 +51,15 @@ const TAccount = ({ route }) => {
       <PaymentDetail />
       <Balance />
 
-      <ListData
-        endpoint={endPoints.statements}
-        renderItems={renderItemsStatement}
-        actionData={(data) => dispatch(getStatements(data))}
-        typeData={STATEMENTS}
-      />
+      {restricted ?
+          <Restricted horizontal /> : 
+        <ListData
+          endpoint={endPoints.statements}
+          renderItems={renderItemsStatement}
+          actionData={(data) => dispatch(getStatements(data))}
+          typeData={STATEMENTS}
+        />
+      }
     </>
   );
 

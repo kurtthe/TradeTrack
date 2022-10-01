@@ -8,6 +8,7 @@ import GrayLine from '@components/GrayLine';
 
 import { useSelector } from 'react-redux';
 import PaymentBalance from './PaymentBalance';
+import Restricted from './Restricted';
 
 const { width } = Dimensions.get('screen');
 
@@ -30,6 +31,17 @@ const PaymentDetail = () => {
   const handlePayment = () => {
     setShowPaymentBalance(true);
   };
+
+ if (balanceLive.restricted) {
+   return (
+    <Block style={{ padding: theme.SIZES.BASE, top: 0 }}>
+      <Text style={{ marginBottom: 15 }} size={16}>
+          Payment Details
+        </Text>
+      <Restricted horizontal/>
+    </Block>
+   )
+ }
 
   return (
     <>

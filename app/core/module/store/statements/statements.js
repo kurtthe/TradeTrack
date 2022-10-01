@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  statements:[]
+  statements:[],
+  restricted: false
 }
 
 export const statementsSlice = createSlice({
@@ -10,6 +11,7 @@ export const statementsSlice = createSlice({
   reducers: {
     getStatements: (state, action) => {
       state.statements = action.payload;
+      state.restricted = action.payload.restricted ? action.payload.restricted : false;
     },
   },
 })

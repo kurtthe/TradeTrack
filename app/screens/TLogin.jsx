@@ -96,9 +96,11 @@ class Login extends React.Component {
         ...resLogin.body,
         company: resLogin.headers['tradetrak-company']
       }
+      this.setState({ email:'', password:'' });
       this.props.sign(data);
     }
-    this.setState({ loading: false });
+
+    this.setState({ loading: false});
   };
 
   handleChangeEmail = (text) => {
