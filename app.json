@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.19",
+    "version": "1.4.20",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -37,10 +37,9 @@
       }
     },
     "android": {
-      "permissions": ["CAMERA","ACCESS_FINE_LOCATION"],
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 28,
+      "versionCode": 29,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {

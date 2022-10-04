@@ -2,7 +2,6 @@ import { Block, Input, Text } from 'galio-framework';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import React, { useEffect, useState } from 'react';
 import PickerButton from '@custom-elements/PickerButton';
-import PickerButtonDelivery from '@custom-elements/PickerButton';
 import { nowTheme } from '@constants/index';
 import { Dimensions, StyleSheet } from 'react-native';
 import {
@@ -16,7 +15,7 @@ import {setUpDelivery} from '@core/module/store/placeOrders/placeOrders'
 const { width } = Dimensions.get('screen');
 
 
-const Delivery = ({onChangeDelivery}) => {
+const Delivery = () => {
   const dispatch = useDispatch()
 
   const [optionDeliveries, setOptionsDeliveries] = useState()
@@ -35,7 +34,7 @@ const Delivery = ({onChangeDelivery}) => {
 
   useEffect(()=>{
     const dataDelivery = {
-      delivery: optionDeliverySelected,
+      delivery: optionDeliverySelected?.label,
       location: locationSelected,
       date: dateSelected,
       time: optionHourSelected
@@ -47,7 +46,6 @@ const Delivery = ({onChangeDelivery}) => {
   const handleChangeDelivery = (optionSelected) => {
     setOptionDeliverySelected(optionSelected)
     setDeliveryText(optionSelected?.label)
-    onChangeDelivery && onChangeDelivery(optionSelected?.label)
   }
 
   const handleDatePicked = (date) => {
@@ -68,7 +66,7 @@ const Delivery = ({onChangeDelivery}) => {
       paddingBottom={20}
       marginBottom={20}
     >
-      <PickerButtonDelivery
+      <PickerButton
         label="Delivery Options"
         text="Delivery Type"
         error
@@ -89,7 +87,6 @@ const Delivery = ({onChangeDelivery}) => {
             style={styles.orderName}
             placeholder="Enter your address"
             onChangeText={(t) => setLocationSelected(t)}
-            value={locationSelected}
             placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
             textInputStyle={{ flex: 1 }}
           />
