@@ -16,11 +16,13 @@ import ListTransactions from '@custom-sections/ListTransactions'
 import { useDispatch } from 'react-redux';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
+import { useSelector } from 'react-redux'
 
 const generalRequestService = GeneralRequestService.getInstance();
 
 const TAccount = ({ route }) => {
   const dispatch = useDispatch();
+  const balance = useSelector((state) => state.liveBalanceReducer);
   
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
   const [restricted, setRestricted] = useState(false);
@@ -47,18 +49,22 @@ const TAccount = ({ route }) => {
   )
 
   const renderAccountDetails = () => (
-    <>
-      <PaymentDetail />
-      <Balance />
-
-      {restricted ?
-          <Restricted horizontal /> : 
-        <ListData
-          endpoint={endPoints.statements}
-          renderItems={renderItemsStatement}
-          actionData={(data) => dispatch(getStatements(data))}
-          typeData={STATEMENTS}
-        />
+    <> 
+      {restricted && balance.restricted ?
+        <Restricted horizontal /> : 
+        <>
+          <PaymentDetail />
+          <Balance />
+          {restricted ?
+              <Restricted horizontal /> : 
+            <ListData
+              endpoint={endPoints.statements}
+              renderItems={renderItemsStatement}
+              actionData={(data) => dispatch(getStatements(data))}
+              typeData={STATEMENTS}
+            />
+          }
+        </>
       }
     </>
   );
