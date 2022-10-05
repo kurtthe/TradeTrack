@@ -5,15 +5,16 @@ import { Text, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 
 
-export const ButtonInvoice = ({ iconName= false, text, onPress }) => {
+export const ButtonInvoice = ({ iconName= false, text, onPress, disabled = false }) => {
     const styles = makeStyles()
 
     return (
             <Button 
+                disabled={disabled}
                 icon={iconName}
                 iconFamily="ionicon" 
-                iconSize={22} 
-                color={nowTheme.COLORS.INFO} 
+                iconSize={20} 
+                color={disabled ? nowTheme.COLORS.LIGHTGRAY : nowTheme.COLORS.INFO} 
                 iconColor={'#ffff'} 
                 size="small"
                 shadowless
