@@ -8,6 +8,10 @@ export const makeStyles = () => StyleSheet.create({
     width: width,
     backgroundColor: nowTheme.COLORS.BACKGROUND,
   },
+  buttons: {
+    flex: 1,
+    marginTop: 10,
+  },
   text: {
     fontSize: 11.5,
     paddingTop: 10,
@@ -58,7 +62,7 @@ export const makeStyles = () => StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 5
   },
   contentTotalAmount: {

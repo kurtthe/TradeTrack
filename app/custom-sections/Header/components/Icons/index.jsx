@@ -76,26 +76,7 @@ export const Icons = ({ navigation, headerType, white, urlDownloadFile }) => {
 
       case 'Details':
         return [
-
-          <View style={{ top: 7, width: 50 }}>
-            {loadingLoadPdf ? (
-              <Loading />
-            ) : (
-              <DownloadButton isWhite={white} onPress={() => openViewerPdf()} />
-            )}
-
-            <BottomModal
-              show={showModalBottom}
-              close={() => setShowModalBottom(false)}
-              downloadShared={{
-                url: urlDownloadFile,
-              }}
-            >
-              <View style={{ height: hp('80%') }}>
-                <PdfViewer url={urlFilePdf} />
-              </View>
-            </BottomModal>
-          </View>
+          <View style={{ top: 7, width: 50 }} />
         ];
 
       default:

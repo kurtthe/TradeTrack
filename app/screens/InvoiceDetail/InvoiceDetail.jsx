@@ -16,9 +16,14 @@ import { ProductCart } from '@core/services/product-cart.service';
 import { updateProducts } from '@core/module/store/cart/cart';
 import { updatePreOrder } from '@core/module/store/cart/preCart';
 import { AlertService } from '@core/services/alert.service';
+import { ButtonInvoice } from './components/button';
 
+import Loading from '@custom-elements/Loading';
+import { GeneralRequestService } from '@core/services/general-request.service';
+import BottomModal from '@custom-elements/BottomModal';
+import PdfViewer from '@custom-elements/PdfViewer';
 
-const alertService = new AlertService();
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 export const InvoiceDetails = ({ route }) => {
@@ -34,6 +39,25 @@ export const InvoiceDetails = ({ route }) => {
   const productCart = ProductCart.getInstance(productsInCart);
   const getDataPetition = GetDataPetitionService.getInstance();
   const formatMoney = FormatMoneyService.getInstance();
+
+  const alertService = useState(new AlertService())
+  const [showModalBottom, setShowModalBottom] = useState(false)
+  const [urlFilePdf, setUrlFilePdf] = useState()
+  const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
+  const [generalRequestService] = useState(GeneralRequestService.getInstance())
+  const [urlDownloadFile, setUrlDownloadFile] = useState()
+
+  const openViewerPdf = async () => {
+    if(!urlDownloadFile){
+      alertService.show('Alert!', 'Try Again Later');
+      return;
+    }
+    setLoadingLoadPdf(true)
+    const result = await generalRequestService.get(urlDownloadFile);
+    setShowModalBottom(true)
+    setUrlFilePdf(result)
+    setLoadingLoadPdf(false)
+  };
 
   useEffect(() => {
     handleGetData()
@@ -76,6 +100,7 @@ export const InvoiceDetails = ({ route }) => {
       company: dataInvoice.headers['tradetrak-company']
     })
 
+    setUrlDownloadFile(urlDownloadFile)
     navigation.setParams({
       urlDownloadFile,
       nameRouteGoing,
@@ -115,91 +140,127 @@ export const InvoiceDetails = ({ route }) => {
   }
 
   return (
-    <ScrollView style={styles.cart}>
-      <Block card style={styles.content}>
-
-        <Text style={styles.text}>Customer</Text>
-        <Text>{validateEmptyField(invoiceDetail.company)}</Text>
-
-        <Text style={styles.text}>Delivery Address</Text>
-        <Text>{validateEmptyField(invoiceDetail.address)}</Text>
-        <Text style={styles.text}>Delivery Date</Text>
-        <Text>{validateEmptyField(invoiceDetail.delivery_date)}</Text>
-      </Block>
-      <Block
-        card
-        style={styles.content}
-      >
-        <Block row>
-          <Block flex>
-            <Text style={styles.text}>{invoiceDetail?.type} Number</Text>
-            <Text>{validateEmptyField(invoiceDetail.order_number)}</Text>
-          </Block>
-          <Block flex>
-            <Text style={styles.text}>{invoiceDetail?.type} Date</Text>
-            <Text>{validateEmptyField(invoiceDetail.invoice_date)}</Text>
-          </Block>
-        </Block>
-        <Text style={styles.text}>Branch</Text>
-        <Text>{invoiceDetail.storeLocation === null ? "N/A" : validateEmptyField(invoiceDetail.storeLocation.name)}</Text>
-      </Block>
-      <Block card style={styles.content}
-      >
-        <Block style={styles.detailOrdersBlock}>
-          {renderDetailProducts()}
+    <>
+      <ScrollView style={styles.cart}>
+        <ScrollView 
+          style={styles.buttons} 
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
           {invoiceDetail.structure.items.length > 0 && (
-            <Block row bottom>
-              <Button
-                shadowless
-                size="small"
-                color={nowTheme.COLORS.INFO}
-                onPress={() => handleAddCart()}
-              >
-                <Text size={18} color={nowTheme.COLORS.WHITE}>
-                  Add to cart
-                </Text>
-              </Button>
-            </Block>
+            <ButtonInvoice
+              iconName={'cart'}
+              text={'Cart'}
+              onPress={() => handleAddCart()}
+            />
           )}
+          {loadingLoadPdf ? (
+            <Button 
+              size={'small'} 
+              color={nowTheme.COLORS.BACKGROUND}
+              disabled
+              shadowless
+            > 
+              <Loading />
+            </Button>
+          ) : (
+            <ButtonInvoice
+              iconName={'download'}
+              text={'PDF'}
+              onPress={() => openViewerPdf()}
+            />
+          )}
+          <ButtonInvoice
+            iconName={'cart'}
+            text={'Track'}
+            onPress={() =>console.log('soy track')}
+          />
+          <ButtonInvoice
+            iconName={'logo-usd'}
+            text={'Invoice'}
+            onPress={() =>console.log('soy invoice')}
+          />
+        </ScrollView>
+        <Block card style={styles.content}>
+          <Text style={styles.text}>Customer</Text>
+          <Text>{validateEmptyField(invoiceDetail.company)}</Text>
 
+          <Text style={styles.text}>Delivery Address</Text>
+          <Text>{validateEmptyField(invoiceDetail.address)}</Text>
+          <Text style={styles.text}>Delivery Date</Text>
+          <Text>{validateEmptyField(invoiceDetail.delivery_date)}</Text>
         </Block>
-      </Block>
-      <Block card style={styles.lastCard} >
-        <Block row style={styles.totalPrices}>
-          <Text size={12}>Delivery Fee</Text>
-          <Text style={styles.receiptPrice}>
-            {formatMoney.format(invoiceDetail.delivery_charge || 0)}
-          </Text>
+        <Block
+          card
+          style={styles.content}
+        >
+          <Block row>
+            <Block flex>
+              <Text style={styles.text}>{invoiceDetail?.type} Number</Text>
+              <Text>{validateEmptyField(invoiceDetail.order_number)}</Text>
+            </Block>
+            <Block flex>
+              <Text style={styles.text}>{invoiceDetail?.type} Date</Text>
+              <Text>{validateEmptyField(invoiceDetail.invoice_date)}</Text>
+            </Block>
+          </Block>
+          <Text style={styles.text}>Branch</Text>
+          <Text>{invoiceDetail.storeLocation === null ? "N/A" : validateEmptyField(invoiceDetail.storeLocation.name)}</Text>
         </Block>
-        <Block row style={styles.totalPrices}>
-          <Text size={12}>Total ex-GST</Text>
-          <Text style={styles.receiptPrice}>
-            {formatMoney.format(
-              invoiceDetail.total_amount - invoiceDetail.gst,
-            )}
-          </Text>
+        <Block card style={styles.content}
+        >
+          <Block style={styles.detailOrdersBlock}>
+            {renderDetailProducts()}
+          </Block>
         </Block>
+        <Block card style={styles.lastCard} >
+          <Block row style={styles.totalPrices}>
+            <Text size={12}>Delivery Fee</Text>
+            <Text style={styles.receiptPrice}>
+              {formatMoney.format(invoiceDetail.delivery_charge || 0)}
+            </Text>
+          </Block>
+          <Block row style={styles.totalPrices}>
+            <Text size={12}>Total ex-GST</Text>
+            <Text style={styles.receiptPrice}>
+              {formatMoney.format(
+                invoiceDetail.total_amount - invoiceDetail.gst,
+              )}
+            </Text>
+          </Block>
 
-        <Block row style={styles.totalPrices}>
-          <Text size={12}>GST</Text>
-          <Text style={styles.receiptPrice}>
-            {formatMoney.format(invoiceDetail.gst)}
-          </Text>
+          <Block row style={styles.totalPrices}>
+            <Text size={12}>GST</Text>
+            <Text style={styles.receiptPrice}>
+              {formatMoney.format(invoiceDetail.gst)}
+            </Text>
+          </Block>
+          <View
+            style={styles.contentTotalAmount}
+          />
+          <Block row style={styles.contentTotal}>
+            <Text size={14}>Total</Text>
+            <Text
+              size={16}
+              color={nowTheme.COLORS.INFO}
+              style={styles.textTotalAmount}
+            >
+              {formatMoney.format(invoiceDetail.total_amount)}
+            </Text>
+          </Block>
         </Block>
-        <View
-          style={styles.contentTotalAmount}
-        />
-        <Block row style={styles.contentTotal}>
-          <Text size={14}>Total</Text>
-          <Text
-            size={16}
-            color={nowTheme.COLORS.INFO}
-            style={styles.textTotalAmount}
-          >
-            {formatMoney.format(invoiceDetail.total_amount)}
-          </Text>
-        </Block>
-      </Block>
-    </ScrollView>
+      </ScrollView>
+      <BottomModal
+        show={showModalBottom}
+        close={() => setShowModalBottom(false)}
+        downloadShared={{
+          url: urlDownloadFile,
+        }}
+      >
+        <View style={{ height: hp('80%') }}>
+          <PdfViewer url={urlFilePdf} />
+        </View>
+      </BottomModal>
+    </>
   );
 }
