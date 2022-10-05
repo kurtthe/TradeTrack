@@ -243,6 +243,18 @@ export const InvoiceDetails = ({ route }) => {
               {formatMoney.format(invoiceDetail.total_amount)}
             </Text>
           </Block>
+          <Block row style={styles.contentTotal}>
+            <Text size={12}>Paid</Text>
+            <Text style={styles.receiptPrice}>
+              {formatMoney.format(invoiceDetail.total_amount - invoiceDetail.balance)}
+            </Text>
+          </Block>
+          <Block row style={styles.contentTotal}>
+            <Text size={12}>Balance Owing</Text>
+            <Text style={styles.receiptPrice}>
+              {formatMoney.format(invoiceDetail.balance)}
+            </Text>
+          </Block>
         </Block>
       </ScrollView>
       <BottomModal
