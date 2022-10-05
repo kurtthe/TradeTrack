@@ -142,11 +142,7 @@ export const InvoiceDetails = ({ route }) => {
   return (
     <>
       <ScrollView style={styles.cart}>
-        <ScrollView 
-          style={styles.buttons} 
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
+        <Block flex row space='around'>
           {invoiceDetail.structure.items.length > 0 && (
             <ButtonInvoice
               iconName={'cart'}
@@ -180,7 +176,7 @@ export const InvoiceDetails = ({ route }) => {
             text={'Invoice'}
             onPress={() =>console.log('soy invoice')}
           />
-        </ScrollView>
+        </Block>
         <Block card style={styles.content}>
           <Text style={styles.text}>Customer</Text>
           <Text>{validateEmptyField(invoiceDetail.company)}</Text>
