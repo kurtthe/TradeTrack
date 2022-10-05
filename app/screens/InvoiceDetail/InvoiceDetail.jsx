@@ -39,8 +39,7 @@ export const InvoiceDetails = ({ route }) => {
   const productCart = ProductCart.getInstance(productsInCart);
   const getDataPetition = GetDataPetitionService.getInstance();
   const formatMoney = FormatMoneyService.getInstance();
-
-  const alertService = useState(new AlertService())
+  const alertService = new AlertService();
   const [showModalBottom, setShowModalBottom] = useState(false)
   const [urlFilePdf, setUrlFilePdf] = useState()
   const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
