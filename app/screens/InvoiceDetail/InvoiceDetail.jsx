@@ -22,6 +22,7 @@ import Loading from '@custom-elements/Loading';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import BottomModal from '@custom-elements/BottomModal';
 import PdfViewer from '@custom-elements/PdfViewer';
+import WebView from '@custom-elements/WebView';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -40,7 +41,8 @@ export const InvoiceDetails = ({ route }) => {
   const getDataPetition = GetDataPetitionService.getInstance();
   const formatMoney = FormatMoneyService.getInstance();
   const alertService = new AlertService();
-  const [showModalBottom, setShowModalBottom] = useState(false)
+  const [showModalBottom, setShowModalBottom] = useState(false);
+  const [showWebView, setShowWebView] = useState(false);
   const [urlFilePdf, setUrlFilePdf] = useState()
   const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
   const [generalRequestService] = useState(GeneralRequestService.getInstance())
@@ -91,11 +93,15 @@ export const InvoiceDetails = ({ route }) => {
     setInvoiceDetail(null)
     const { invoice, nameRouteGoing } = route.params;
     const url = endPoints.invoicesDetail.replace(':id', invoice);
+    const urlTracking = endPoints.invoicesDetailWTracking.replace(':id', invoice);
     const urlDownloadFile = endPoints.downloadInvoicesDetail.replace(':id', invoice);
 
     const dataInvoice = await getDataPetition.getInfoWithHeaders(url);
+    const dataTracking = await getDataPetition.getInfoWithHeaders(urlTracking);
+    
     setInvoiceDetail({
       ...dataInvoice.body,
+      tracking: dataTracking.body.tracking,
       company: dataInvoice.headers['tradetrak-company']
     })
 
@@ -166,9 +172,10 @@ export const InvoiceDetails = ({ route }) => {
             />
           )}
           <ButtonInvoice
+            disabled={!invoiceDetail.tracking.link}
             iconName={'cart'}
             text={'Track'}
-            onPress={() =>console.log('soy track')}
+            onPress={() => setShowWebView(true)}
           />
           <ButtonInvoice
             iconName={'logo-usd'}
@@ -266,6 +273,11 @@ export const InvoiceDetails = ({ route }) => {
       >
         <View style={{ height: hp('80%') }}>
           <PdfViewer url={urlFilePdf} />
+        </View>
+      </BottomModal>
+      <BottomModal show={showWebView} close={() => setShowWebView(false)}>
+        <View style={{ height: hp('80%') }}>
+          <WebView url={invoiceDetail.tracking.link} />
         </View>
       </BottomModal>
     </>
