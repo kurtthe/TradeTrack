@@ -5,6 +5,7 @@ StyleSheet.create({
   button:{
     alignItems: 'center',
     justifyContent: 'space-around',
-    width: '23%'
+    flex: 1,
+    marginHorizontal: 4,
   }
 })
