@@ -47,6 +47,7 @@ export const InvoiceDetails = ({ route }) => {
   const [loadingLoadPdf, setLoadingLoadPdf] = useState(false)
   const [generalRequestService] = useState(GeneralRequestService.getInstance())
   const [urlDownloadFile, setUrlDownloadFile] = useState()
+  const [urlWebView, setUrlWebView] = useState()
 
   const openViewerPdf = async () => {
     if(!urlDownloadFile){
@@ -140,6 +141,17 @@ export const InvoiceDetails = ({ route }) => {
     dispatch(updateProducts(newProducts))
   }
 
+  const handleInvoice = async () => {
+    const response = await generalRequestService.get(`${endPoints.payment}?amount=${invoiceDetail.balance}?notes=${invoiceDetail.order_number}`);
+    setUrlWebView(response.url)
+    setShowWebView(true)
+  }
+
+  const handleTrack = () => {
+    setUrlWebView(invoiceDetail.tracking.link)
+    setShowWebView(true)
+  }
+
   if (invoiceDetail === null || invoiceDetail === undefined) {
     return <SkeletonInvoiceDetail />;
   }
@@ -175,12 +187,13 @@ export const InvoiceDetails = ({ route }) => {
             disabled={!invoiceDetail.tracking.link}
             iconName={'cart'}
             text={'Track'}
-            onPress={() => setShowWebView(true)}
+            onPress={() => handleTrack()}
           />
           <ButtonInvoice
+            disabled={invoiceDetail.balance <= 0}
             iconName={'logo-usd'}
             text={'Invoice'}
-            onPress={() =>console.log('soy invoice')}
+            onPress={() => handleInvoice()}
           />
         </Block>
         <Block card style={styles.content}>
@@ -277,7 +290,7 @@ export const InvoiceDetails = ({ route }) => {
       </BottomModal>
       <BottomModal show={showWebView} close={() => setShowWebView(false)}>
         <View style={{ height: hp('80%') }}>
-          <WebView url={invoiceDetail.tracking.link} />
+          <WebView url={urlWebView} />
         </View>
       </BottomModal>
     </>
