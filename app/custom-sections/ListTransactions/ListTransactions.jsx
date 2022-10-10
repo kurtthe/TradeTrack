@@ -29,7 +29,7 @@ export const ListTransactions = () => {
 
 
   const fetchData = async ()=> {
-    const response = await getTransaction({...optionsTransactions.page, ...valuesFilters})
+    const response = await getTransaction({...optionsTransactions, ...valuesFilters})
     
     if(response.body.restricted) {
       setRestricted(true)
@@ -48,7 +48,7 @@ export const ListTransactions = () => {
   const handleLoadingMore = () => {
     const { page } = optionsTransactions;
     setOptionsTransactions({
-      ...optionsProducts,
+      ...optionsTransactions,
       page: page + 1
     });
     setKeepData(true)
@@ -70,6 +70,8 @@ export const ListTransactions = () => {
   const updateListTransactions = (newTransactions) => {
     if (keeData) {
       setDataTransaction([...dataTransactions, ...newTransactions])
+      setLoadingMoreData(false)
+      setIsLoading(false)
       return
     }
 

@@ -8,6 +8,7 @@ export const endPoints = {
   burdensBalance: `${apiService}burdens/balance`,
   invoices: `${apiService}burdens/invoices?sort=id_desc`,
   invoicesDetail: `${apiService}burdens/:id?expand=structure,storeLocation&include_products=true`,
+  invoicesDetailWTracking: `${apiService}burdens/:id?expand=tracking,storeLocation&include_products=true`,
   downloadInvoicesDetail: `${apiService}burdens/invoices/:id/download?base64=true`,
   news: `${apiService}news`,
   statements: `${apiService}burdens/statements?sort=id_desc`,
