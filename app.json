@@ -1,6 +1,5 @@
 {
   "expo": {
-
     "name": "Burdens",
     "slug": "Trade-Track",
     "privacy": "public",
@@ -8,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.20",
+    "version": "1.4.21",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -32,14 +31,14 @@
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
-        "NSPhotoLibraryUsageDescription": "Allow Burdens to access your photos to select photos and then send a requirement of your  purchase" , 
+        "NSPhotoLibraryUsageDescription": "Allow Burdens to access your photos to select photos and then send a requirement of your  purchase",
         "UIUserInterfaceStyle": "Light"
       }
     },
     "android": {
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 29,
+      "versionCode": 30,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
