@@ -7,6 +7,7 @@ export const makeStyles = () => StyleSheet.create({
   cart: {
     width: width,
     backgroundColor: nowTheme.COLORS.BACKGROUND,
+    
   },
   buttons: {
     flex: 1,
@@ -78,6 +79,10 @@ export const makeStyles = () => StyleSheet.create({
   },
   textTotalAmount: {
     fontWeight: Platform.OS == 'android' ? 'bold' : '600'
+  },
+
+  button_alignment: {
+    paddingTop:12
   }
 });
 

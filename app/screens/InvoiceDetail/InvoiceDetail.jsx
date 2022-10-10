@@ -142,7 +142,7 @@ export const InvoiceDetails = ({ route }) => {
   }
 
   const handleInvoice = async () => {
-    const response = await generalRequestService.get(`${endPoints.payment}?amount=${invoiceDetail.balance}?notes=${invoiceDetail.order_number}`);
+    const response = await generalRequestService.get(`${endPoints.payment}?amount=${invoiceDetail.balance}&note=${invoiceDetail.order_number}`);
     setUrlWebView(response.url)
     setShowWebView(true)
   }
@@ -159,7 +159,7 @@ export const InvoiceDetails = ({ route }) => {
   return (
     <>
       <ScrollView style={styles.cart}>
-        <Block flex row space='around'>
+        <Block flex row space='around' style={styles.button_alignment}>
           {invoiceDetail.structure.items.length > 0 && (
             <ButtonInvoice
               iconName={'cart'}
@@ -185,14 +185,14 @@ export const InvoiceDetails = ({ route }) => {
           )}
           <ButtonInvoice
             disabled={!invoiceDetail.tracking.link}
-            iconName={'cart'}
+            iconName={'map-outline'}
             text={'Track'}
             onPress={() => handleTrack()}
           />
           <ButtonInvoice
             disabled={invoiceDetail.balance <= 0}
             iconName={'logo-usd'}
-            text={'Invoice'}
+            text={'Pay'}
             onPress={() => handleInvoice()}
           />
         </Block>
