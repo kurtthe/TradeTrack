@@ -34,7 +34,7 @@ const Delivery = () => {
 
   useEffect(()=>{
     const dataDelivery = {
-      delivery: optionDeliverySelected?.label,
+      delivery: optionDeliverySelected?.value,
       location: locationSelected,
       date: dateSelected,
       time: optionHourSelected

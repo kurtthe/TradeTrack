@@ -45,11 +45,11 @@ const PlaceOrders = () => {
     console.log("=>dataOrder", dataOrder)
     const error =
       !dataOrder.name ||
-      !dataOrder.delivery_instructions.delivery?.value ||
+      !dataOrder.delivery_instructions.delivery ||
       !dataOrder.nameStore ||
       !dataOrder.delivery_instructions.date ||
       !dataOrder.delivery_instructions.time ||
-      (dataOrder.delivery_instructions.delivery?.value === 'delivery' && !dataOrder.delivery_instructions.location);
+      (dataOrder.delivery_instructions.delivery === 'delivery' && !dataOrder.delivery_instructions.location);
 
     if (error) {
       alert('Fill in the required data *');
@@ -89,7 +89,7 @@ const PlaceOrders = () => {
           },
         ],
         delivery_instructions: {
-          delivery: dataOrder.delivery_instructions?.delivery,
+          delivery: dataOrder.delivery_instructions?.delivery.value,
           location: dataOrder.delivery_instructions.location,
           date: dataOrder.delivery_instructions.date?.value,
           time: dataOrder?.delivery_instructions.value || '12.00 PM',
