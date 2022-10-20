@@ -49,7 +49,7 @@ export const SearchProducts = () => {
       setDataProducts(newProducts)
     }
     updateListProducts(products?.body)
-  }, [products?.body])
+  }, [products])
 
   useEffect(() => {
     if(!products?.headers){
