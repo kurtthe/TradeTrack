@@ -18,6 +18,7 @@ import { getNews } from '@core/module/store/news/news';
 import {expo} from '../../app.json'
 
 import { connect } from 'react-redux';
+import Search from '@custom-elements/Search';
 
 const { width } = Dimensions.get('screen');
 
@@ -48,6 +49,14 @@ class Home extends React.Component {
     });
   }
 
+  handleSearch = (text) => {
+    this.props.navigation.navigate('Products', {
+      screen: 'SearchProducts', params: {
+        text,
+      }
+    })
+  }
+
   render() {
     const { navigation } = this.props;
 
@@ -73,6 +82,14 @@ class Home extends React.Component {
           >
             Store Finder
           </Button>
+          <Search
+            placeholder="What are you looking for?"
+            onChangeText={() => {}}
+            onSubmitEditing={({ nativeEvent: { text}}) => this.handleSearch(text)}
+            style={styles.search}
+            inputStyle={styles.searchInput}
+          />
+
 
           <ListInvoices 
             data={this.props.invoices} 
@@ -187,6 +204,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
+  },
+  searchInput: {
+    color: 'black',
+    fontSize: 16,
+  },
+  search: {
+    width: width - 32,
+    marginHorizontal: theme.SIZES.BASE,
+    borderRadius: 30,
   },
 });
 const mapStateToProps = (state) => ({
