@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
 
-export const SearchProducts = () => {
+export const SearchProducts = ({route}) => {
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
 
@@ -25,6 +25,12 @@ export const SearchProducts = () => {
     search: '',
     category_id: categorySelected
   });
+
+  const { text } = route.params
+
+  useEffect(() => {
+    text && changeSearchText(text)
+  }, [text])
 
   const {
     data: products,
@@ -129,6 +135,7 @@ export const SearchProducts = () => {
       <Search
         placeholder="What are you looking for?"
         onChangeText={debouncedOnChange}
+        value={text && text}
         style={styles.search}
         inputStyle={styles.searchInput}
       />
