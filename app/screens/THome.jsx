@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, Pressable, View } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
 import { Button } from '@components';
@@ -28,6 +28,7 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
+      textSearch: ''
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -50,11 +51,13 @@ class Home extends React.Component {
   }
 
   handleSearch = (text) => {
-    this.props.navigation.navigate('Products', {
-      screen: 'SearchProducts', params: {
-        text,
-      }
-    })
+    if(text !== '') {
+      this.props.navigation.navigate('Products', {
+        screen: 'SearchProducts', params: {
+          text,
+        }
+      })
+    }
   }
 
   render() {
@@ -82,15 +85,24 @@ class Home extends React.Component {
           >
             Store Finder
           </Button>
-          <Search
-            placeholder="What are you looking for?"
-            onChangeText={() => {}}
-            onSubmitEditing={({ nativeEvent: { text}}) => this.handleSearch(text)}
-            style={styles.search}
-            inputStyle={styles.searchInput}
-          />
-
-
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Search
+              placeholder="What are you looking for?"
+              onChangeText={(text) => this.setState({textSearch: text})}
+              onSubmitEditing={({ nativeEvent: { text}}) => this.handleSearch(text)}
+              style={styles.search}
+              inputStyle={styles.searchInput}
+            />
+            <Pressable 
+              style={{ 
+                height: 40, 
+                width: 40, 
+                position: 'absolute', 
+                right: 25,
+              }} 
+              onPress={() => this.handleSearch(this.state.textSearch)}
+            />
+          </View>
           <ListInvoices 
             data={this.props.invoices} 
             title={true} 
