@@ -36,7 +36,7 @@ const Header = ({
 
     if(routeName === 'Products'){
       dispatch(reset())
-      setTimeout(()=> navigation.goBack(), 500)
+      setTimeout(()=> navigation.navigate('Products'), 500)
       return;
     }
 
