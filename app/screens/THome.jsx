@@ -77,15 +77,7 @@ class Home extends React.Component {
         >
           <LiveBalance company={true} />
 
-          <Button
-            color="info"
-            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
-            style={styles.button}
-            onPress={() => navigation.navigate('Store')}
-          >
-            Store Finder
-          </Button>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{justifyContent: 'center', alignItems: 'center', top:8}}>
             <Search
               placeholder="What are you looking for?"
               onChangeText={(text) => this.setState({textSearch: text})}
@@ -103,6 +95,16 @@ class Home extends React.Component {
               onPress={() => this.handleSearch(this.state.textSearch)}
             />
           </View>
+
+          <Button
+            color="info"
+            textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+            style={styles.button}
+            onPress={() => navigation.navigate('Store')}
+          >
+            Store Finder
+          </Button>
+          
           <ListInvoices 
             data={this.props.invoices} 
             title={true} 

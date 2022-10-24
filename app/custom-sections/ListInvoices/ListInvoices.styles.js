@@ -4,7 +4,7 @@ import { nowTheme } from '@constants';
 export const makeStyles = () => StyleSheet.create({
   card: {
     backgroundColor: nowTheme.COLORS.WHITE,
-    marginTop: 20,
+    marginTop: 10,
     shadowColor: nowTheme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
