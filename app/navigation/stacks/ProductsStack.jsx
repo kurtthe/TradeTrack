@@ -45,7 +45,7 @@ function ProductsStack() {
       component: SearchProducts,
       colorBackground: '#FFFFFF',
       header:{
-        title: 'Products ',
+        title: 'Products  ',
       }
     }
   ];
