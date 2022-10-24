@@ -30,6 +30,7 @@ export const SearchProducts = ({route}) => {
 
   useEffect(() => {
     text && changeSearchText(text)
+    text && setTextSearch(text)
   }, [text])
 
   const {
