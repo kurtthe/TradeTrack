@@ -12,9 +12,11 @@ import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
 
 export const SearchProducts = ({route}) => {
+  const { text } = route.params
+
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
-
+  const [textSearch, setTextSearch] = useState(text)
   const [dataProducts, setDataProducts] = useState([])
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
@@ -25,8 +27,6 @@ export const SearchProducts = ({route}) => {
     search: '',
     category_id: categorySelected
   });
-
-  const { text } = route.params
 
   useEffect(() => {
     text && changeSearchText(text)
@@ -135,7 +135,8 @@ export const SearchProducts = ({route}) => {
       <Search
         placeholder="What are you looking for?"
         onChangeText={debouncedOnChange}
-        value={text && text}
+        onChange = {({ nativeEvent: {text} }) => setTextSearch(text) }
+        value={textSearch}
         style={styles.search}
         inputStyle={styles.searchInput}
       />
