@@ -27,6 +27,15 @@ const Header = ({
   const styles = makeStyles()
 
   const handleLeftPress = () => {
+    if(title === 'Products  '){
+      dispatch(reset())
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Products' }],
+      });
+      return;
+    }
+
     if (!scene || !scene.route.params?.nameRouteGoing) {
       navigation.goBack();
       return;
