@@ -126,7 +126,11 @@ export const SearchProducts = ({route}) => {
 
   const putContent = () => {
     if (loadingData) {
-      return <LoadingComponent />
+      return (
+        <View style={{flex: 1}}>
+          <LoadingComponent size='large' />
+        </View>
+      )
     }
     return <FlatList
       data={dataProducts}
