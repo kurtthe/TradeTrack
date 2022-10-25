@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo} from 'react';
+import React, { useEffect, useState, useMemo, useCallback} from 'react';
 import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
@@ -28,11 +28,6 @@ export const SearchProducts = ({route}) => {
     category_id: categorySelected
   });
 
-  useEffect(() => {
-    textSearchHome && changeText(textSearchHome)
-    textSearchHome && setTextSearch(textSearchHome)
-  }, [textSearchHome])
-
    const {
     data: products,
     refetch,
@@ -47,6 +42,7 @@ export const SearchProducts = ({route}) => {
 
   useEffect(() => {
     setLoadingData(true)
+    setTextSearch(textSearchHome)
     debouncedOnChange(textSearchHome)
   }, [textSearchHome])
 
@@ -103,9 +99,10 @@ export const SearchProducts = ({route}) => {
     return null
   }
 
-  
-
-  const debouncedOnChange = debounce(changeText, 300)
+  const debouncedOnChange = useCallback(
+    debounce(changeText , 300),
+    [],
+  );
 
   const renderItem = ({ item }) => {
     return (<Product
