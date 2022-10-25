@@ -66,14 +66,18 @@ export const SearchProducts = ({route}) => {
   }, [products?.headers, optionsProducts.page])
 
   React.useEffect(() => {
+    debouncedOnChange(textSearch)
+  }, [textSearch]);
+
+  const changeText = (text) => {
     setKeepData(false)
     setOptionsProducts({
       ...optionsProducts,
       page: 1,
-      search: textSearch
+      search: text
     })
-    setEmpty(textSearch === '')
-  }, [textSearch]);
+    setEmpty(text === '')
+  }
 
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
@@ -96,7 +100,7 @@ export const SearchProducts = ({route}) => {
 
   
 
-  const debouncedOnChange = debounce(setTextSearch, 300)
+  const debouncedOnChange = debounce(changeText, 300)
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -137,7 +141,7 @@ export const SearchProducts = ({route}) => {
     <>
       <Search
         placeholder="What are you looking for?"
-        onChangeText={debouncedOnChange}
+        onChangeText={setTextSearch}
         value={textSearch}
         style={styles.search}
         inputStyle={styles.searchInput}
