@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
@@ -16,7 +16,7 @@ export const SearchProducts = ({route}) => {
 
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
-  const [textSearch, setTextSearch] = useState(text)
+  const [textSearch, setTextSearch] = useState('')
   const [dataProducts, setDataProducts] = useState([])
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
@@ -94,7 +94,15 @@ export const SearchProducts = ({route}) => {
     setEmpty(text === '')
   };
 
-  const debouncedOnChange = debounce(changeSearchText, 300)
+  const debouncedOnChange = useCallback(
+		debounce(changeSearchText , 300),
+		[],
+	);
+
+  const handleChange = (text) => {
+    debouncedOnChange(text)
+    setTextSearch(text)
+  }
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -135,8 +143,7 @@ export const SearchProducts = ({route}) => {
     <>
       <Search
         placeholder="What are you looking for?"
-        onChangeText={debouncedOnChange}
-        onChange = {({ nativeEvent: {text} }) => setTextSearch(text) }
+        onChangeText={handleChange}
         value={textSearch}
         style={styles.search}
         inputStyle={styles.searchInput}
