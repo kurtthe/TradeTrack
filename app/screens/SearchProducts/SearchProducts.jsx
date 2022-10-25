@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useMemo} from 'react';
 import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
@@ -12,28 +12,23 @@ import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
 
 export const SearchProducts = ({route}) => {
-  const { text } = route.params
+  const { text: textSearchHome } = route.params
 
   const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
-  const [textSearch, setTextSearch] = useState('')
   const [dataProducts, setDataProducts] = useState([])
+  const [textSearch, setTextSearch]= useState()
   const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
-    search: '',
+    search: textSearchHome || '',
     category_id: categorySelected
   });
 
-  useEffect(() => {
-    text && changeSearchText(text)
-    text && setTextSearch(text)
-  }, [text])
-
-  const {
+   const {
     data: products,
     refetch,
     isLoading } = useGetProducts(optionsProducts)
@@ -44,6 +39,11 @@ export const SearchProducts = ({route}) => {
     setLoadingData(true)
     refetch();
   }, [optionsProducts.page,optionsProducts.search, optionsProducts.category_id ])
+
+  useEffect(() => {
+    setLoadingData(true)
+    debouncedOnChange(textSearchHome)
+  }, [textSearchHome])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
@@ -65,6 +65,16 @@ export const SearchProducts = ({route}) => {
     setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
   }, [products?.headers, optionsProducts.page])
 
+  React.useEffect(() => {
+    setKeepData(false)
+    setOptionsProducts({
+      ...optionsProducts,
+      page: 1,
+      search: textSearch
+    })
+    setEmpty(textSearch === '')
+  }, [textSearch]);
+
   const handleLoadingMore = () => {
     const { page } = optionsProducts;
     setOptionsProducts({
@@ -84,25 +94,9 @@ export const SearchProducts = ({route}) => {
     return null
   }
 
-  const changeSearchText = (text) => {
-    setKeepData(false)
-    setOptionsProducts({
-      ...optionsProducts,
-      page: 1,
-      search: text
-    })
-    setEmpty(text === '')
-  };
+  
 
-  const debouncedOnChange = useCallback(
-    debounce(changeSearchText , 1200),
-    [],
-  );
-
-  const handleChange = (text) => {
-    debouncedOnChange(text)
-    setTextSearch(text)
-  }
+  const debouncedOnChange = debounce(setTextSearch, 300)
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -143,7 +137,7 @@ export const SearchProducts = ({route}) => {
     <>
       <Search
         placeholder="What are you looking for?"
-        onChangeText={handleChange}
+        onChangeText={debouncedOnChange}
         value={textSearch}
         style={styles.search}
         inputStyle={styles.searchInput}
