@@ -28,6 +28,11 @@ export const SearchProducts = ({route}) => {
     category_id: categorySelected
   });
 
+  useEffect(() => {
+    textSearchHome && changeText(textSearchHome)
+    textSearchHome && setTextSearch(textSearchHome)
+  }, [textSearchHome])
+
    const {
     data: products,
     refetch,
@@ -65,7 +70,7 @@ export const SearchProducts = ({route}) => {
     setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
   }, [products?.headers, optionsProducts.page])
 
-  React.useEffect(() => {
+  useEffect(() => {
     debouncedOnChange(textSearch)
   }, [textSearch]);
 
