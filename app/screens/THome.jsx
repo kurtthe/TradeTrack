@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, Pressable, View } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
 import { Button } from '@components';
@@ -18,6 +18,7 @@ import { getNews } from '@core/module/store/news/news';
 import {expo} from '../../app.json'
 
 import { connect } from 'react-redux';
+import Search from '@custom-elements/Search';
 
 const { width } = Dimensions.get('screen');
 
@@ -27,6 +28,7 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
+      textSearch: ''
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -48,6 +50,16 @@ class Home extends React.Component {
     });
   }
 
+  handleSearch = (text) => {
+    if(text !== '') {
+      this.props.navigation.navigate('Products', {
+        screen: 'SearchProducts', params: {
+          text,
+        }
+      })
+    }
+  }
+
   render() {
     const { navigation } = this.props;
 
@@ -65,6 +77,25 @@ class Home extends React.Component {
         >
           <LiveBalance company={true} />
 
+          <View style={{justifyContent: 'center', alignItems: 'center', top:8}}>
+            <Search
+              placeholder="What are you looking for?"
+              onChangeText={(text) => this.setState({textSearch: text})}
+              onSubmitEditing={({ nativeEvent: { text}}) => this.handleSearch(text)}
+              style={styles.search}
+              inputStyle={styles.searchInput}
+            />
+            <Pressable 
+              style={{ 
+                height: 40, 
+                width: 40, 
+                position: 'absolute', 
+                right: 25,
+              }} 
+              onPress={() => this.handleSearch(this.state.textSearch)}
+            />
+          </View>
+
           <Button
             color="info"
             textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -73,7 +104,7 @@ class Home extends React.Component {
           >
             Store Finder
           </Button>
-
+          
           <ListInvoices 
             data={this.props.invoices} 
             title={true} 
@@ -187,6 +218,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 13,
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
+  },
+  searchInput: {
+    color: 'black',
+    fontSize: 16,
+  },
+  search: {
+    width: width - 32,
+    marginHorizontal: theme.SIZES.BASE,
+    borderRadius: 30,
   },
 });
 const mapStateToProps = (state) => ({
