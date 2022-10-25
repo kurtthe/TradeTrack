@@ -95,9 +95,9 @@ export const SearchProducts = ({route}) => {
   };
 
   const debouncedOnChange = useCallback(
-		debounce(changeSearchText , 300),
-		[],
-	);
+    debounce(changeSearchText , 1200),
+    [],
+  );
 
   const handleChange = (text) => {
     debouncedOnChange(text)
