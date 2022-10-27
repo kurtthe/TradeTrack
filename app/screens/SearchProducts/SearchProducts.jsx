@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo} from 'react';
+import React, { useEffect, useState, useMemo, useCallback} from 'react';
 import { View, FlatList, Text } from 'react-native'
 import debounce from "lodash.debounce";
 
@@ -42,6 +42,7 @@ export const SearchProducts = ({route}) => {
 
   useEffect(() => {
     setLoadingData(true)
+    setTextSearch(textSearchHome)
     debouncedOnChange(textSearchHome)
   }, [textSearchHome])
 
@@ -65,7 +66,7 @@ export const SearchProducts = ({route}) => {
     setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
   }, [products?.headers, optionsProducts.page])
 
-  React.useEffect(() => {
+  useEffect(() => {
     debouncedOnChange(textSearch)
   }, [textSearch]);
 
@@ -98,9 +99,10 @@ export const SearchProducts = ({route}) => {
     return null
   }
 
-  
-
-  const debouncedOnChange = debounce(changeText, 300)
+  const debouncedOnChange = useCallback(
+    debounce(changeText , 300),
+    [],
+  );
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -124,7 +126,11 @@ export const SearchProducts = ({route}) => {
 
   const putContent = () => {
     if (loadingData) {
-      return <LoadingComponent />
+      return (
+        <View style={{flex: 1}}>
+          <LoadingComponent size='large' />
+        </View>
+      )
     }
     return <FlatList
       data={dataProducts}
