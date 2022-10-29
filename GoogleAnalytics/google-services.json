@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "824748762199",
-    "project_id": "burdens-app",
-    "storage_bucket": "burdens-app.appspot.com"
+    "project_number": "607896113360",
+    "project_id": "burdnes",
+    "storage_bucket": "burdnes.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:824748762199:android:97bb9eae145eef51ffaf12",
+        "mobilesdk_app_id": "1:607896113360:android:3b227c99e708ec9d844ed5",
         "android_client_info": {
-          "package_name": "com.tradetrak.Burdens"
+          "package_name": "com.ttrak.Burdens"
         }
       },
       "oauth_client": [
         {
-          "client_id": "824748762199-l58s0onrr5uibu2fc2lv103rm87o67r8.apps.googleusercontent.com",
+          "client_id": "607896113360-fq4vhgk8l3of92ktr201ln2s3t0anop3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBmMF92hwduggTUn9RI1JPsPOcDvDegCEQ"
+          "current_key": "AIzaSyAqC8wJ8wuLuQIkEqJeiJiMGwXFXPjcU8Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "824748762199-l58s0onrr5uibu2fc2lv103rm87o67r8.apps.googleusercontent.com",
+              "client_id": "607896113360-fq4vhgk8l3of92ktr201ln2s3t0anop3.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.trade.Burdens"
-              }
             }
           ]
         }
