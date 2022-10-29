@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Burdens",
-    "slug": "Trade Track",
+    "slug": "Trade-Track",
     "privacy": "public",
     "platforms": [
       "ios",
@@ -36,9 +36,9 @@
       }
     },
     "android": {
-      "package": "com.tradetrakk.Burdens",
+      "package": "com.ttrak.Burdens",
       "permissions": [],
-      "versionCode": 36,
+      "versionCode": 1,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
