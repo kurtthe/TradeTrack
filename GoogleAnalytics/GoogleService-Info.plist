@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9.apps.googleusercontent.com</string>
+	<string>607896113360-plrs3dpo467ibs11df5ueg3l713ct9cv.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.824748762199-l9pi82lg3dmo00a94nkaqs449vqmkkb9</string>
+	<string>com.googleusercontent.apps.607896113360-plrs3dpo467ibs11df5ueg3l713ct9cv</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBoVfcqIIuKj4uSW75m0ip1pXamaIWEfZI</string>
+	<string>AIzaSyDe_iXGGyvMG7wgPQ5qhe2XdPxSjc9jPdI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>824748762199</string>
+	<string>607896113360</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.trade.Burdens</string>
 	<key>PROJECT_ID</key>
-	<string>burdens-app</string>
+	<string>burdnes</string>
 	<key>STORAGE_BUCKET</key>
-	<string>burdens-app.appspot.com</string>
+	<string>burdnes.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:824748762199:ios:56ccab73da73efdbffaf12</string>
+	<string>1:607896113360:ios:a819141b6363fe4f844ed5</string>
 </dict>
 </plist>
