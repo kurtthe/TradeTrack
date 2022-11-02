@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "607896113360",
+    "project_id": "burdnes",
+    "storage_bucket": "burdnes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607896113360:android:3b227c99e708ec9d844ed5",
+        "android_client_info": {
+          "package_name": "com.ttrak.Burdens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607896113360-fq4vhgk8l3of92ktr201ln2s3t0anop3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqC8wJ8wuLuQIkEqJeiJiMGwXFXPjcU8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607896113360-fq4vhgk8l3of92ktr201ln2s3t0anop3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

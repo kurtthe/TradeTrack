@@ -38,7 +38,7 @@
     "android": {
       "package": "com.ttrak.Burdens",
       "permissions": [],
-      "versionCode": 1,
+      "versionCode": 2,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
@@ -46,6 +46,11 @@
         }
       }
     },
-    "description": "Coded by Digital Basis"
+    "description": "Coded by Digital Basis",
+    "extra": {
+      "eas": {
+        "projectId": "b8c74bab-2f1c-4614-a072-a526c499c227"
+      }
+    }
   }
 }
