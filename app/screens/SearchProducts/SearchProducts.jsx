@@ -22,21 +22,24 @@ export const SearchProducts = ({route}) => {
   const [keeData, setKeepData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
     search: textSearchHome || '',
     category_id: categorySelected
   });
 
-   const {
+  const {
     data: products,
-    refetch,
-    isLoading } = useGetProducts(optionsProducts)
+    refetch
+  } = useGetProducts(optionsProducts)
+
 
   const styles = makeStyles()
 
   useEffect(() => {
-    setLoadingData(true)
+    optionsProducts.page == 1 && setLoadingData(true)
+    optionsProducts.page > 1 && setLoadingMore(true)
     refetch();
   }, [optionsProducts.page,optionsProducts.search, optionsProducts.category_id ])
 
@@ -49,6 +52,7 @@ export const SearchProducts = ({route}) => {
   useEffect(() => {
     const updateListProducts = (newProducts) => {
       setLoadingData(false)
+      setLoadingMore(false)
 
       if (keeData) {
         setDataProducts([...dataProducts, ...newProducts])
@@ -92,7 +96,7 @@ export const SearchProducts = ({route}) => {
   const getButtonLoadingMore = () => {
     if (showLoadingMore && dataProducts && dataProducts?.length > 10) {
       return <ButtonLoadingMore
-        loading={isLoading}
+        loading={loadingMore}
         handleLoadMore={handleLoadingMore}
       />
     }
