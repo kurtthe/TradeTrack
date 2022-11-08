@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "Burdens",
-    "slug": "Trade-Track",
+    "slug": "-Trade-Track-",
     "privacy": "public",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.4.25",
+    "version": "1.4.26",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -36,9 +36,9 @@
       }
     },
     "android": {
-      "package": "com.ttrak.Burdens",
+      "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 1,
+      "versionCode": 35,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
@@ -46,6 +46,11 @@
         }
       }
     },
-    "description": "Coded by Digital Basis"
+    "description": "Coded by Digital Basis",
+    "extra": {
+      "eas": {
+        "projectId": "b8c74bab-2f1c-4614-a072-a526c499c227"
+      }
+    }
   }
 }
