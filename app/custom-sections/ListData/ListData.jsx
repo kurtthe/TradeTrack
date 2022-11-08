@@ -56,6 +56,7 @@ const ListData = ({
   };
 
   useEffect(() => {
+    page > 1 && setLoadingMoreData(true)
     getPetitionData()
   }, [urlPetition, page])
 
