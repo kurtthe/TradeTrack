@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     isLoadingComplete: false,
     fontLoaded: false,
@@ -120,4 +120,6 @@ export default class App extends React.Component {
     }
   };
 }
+
+export default App
 
