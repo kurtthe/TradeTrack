@@ -18,7 +18,7 @@ const { width } = Dimensions.get('screen');
 const Delivery = () => {
   const dispatch = useDispatch()
   const {first_name, last_name, phone_number} = useSelector((state)=> state.loginReducer)
-  console.log(first_name, last_name, phone_number )
+  
   const [optionDeliveries, setOptionsDeliveries] = useState()
   const [optionHours, setOptionsHours] = useState()
   const [optionDeliverySelected, setOptionDeliverySelected] = useState()
