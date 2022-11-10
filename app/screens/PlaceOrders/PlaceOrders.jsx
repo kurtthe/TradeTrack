@@ -93,6 +93,8 @@ const PlaceOrders = () => {
           location: dataOrder.delivery_instructions.location,
           date: dataOrder.delivery_instructions.date?.value,
           time: dataOrder?.delivery_instructions.value || '12.00 PM',
+          contact_number: dataOrder?.delivery_instructions.contact_number,
+          contact_name: dataOrder?.delivery_instructions.contact_name,
         },
       },
     };
