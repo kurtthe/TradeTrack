@@ -27,6 +27,8 @@ export const placeOrderSlice = createSlice({
         date: payload.date,
         time: payload.time,
         restricted: payload.restricted ? payload.restricted : false,
+        contact_number: payload.contact_number,
+        contact_name: payload.contact_name
       };
     },
     setUpSection: (state, {payload}) => {
@@ -58,6 +60,8 @@ export const placeOrderSlice = createSlice({
         location: null,
         date: null,
         time: null,
+        contact_number: null,
+        contact_name: null,
       };
     }
   },
