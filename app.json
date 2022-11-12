@@ -38,7 +38,7 @@
     "android": {
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 35,
+      "versionCode": 36,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
