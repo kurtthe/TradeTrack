@@ -17,7 +17,8 @@ module.exports = function(api) {
           "@navigation": "./app/navigation",
           "@components": "./app/components",
         }
-      }]
+      }],
+      'react-native-reanimated/plugin',
     ]
   };
 };

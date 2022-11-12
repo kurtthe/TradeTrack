@@ -9,7 +9,7 @@ import {
   radioButtonsHour,
 } from '@shared/dictionaries/radio-buttons-delivery';
 
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {setUpDelivery} from '@core/module/store/placeOrders/placeOrders'
 
 const { width } = Dimensions.get('screen');
@@ -17,7 +17,8 @@ const { width } = Dimensions.get('screen');
 
 const Delivery = () => {
   const dispatch = useDispatch()
-
+  const {first_name, last_name, phone_number} = useSelector((state)=> state.loginReducer)
+  
   const [optionDeliveries, setOptionsDeliveries] = useState()
   const [optionHours, setOptionsHours] = useState()
   const [optionDeliverySelected, setOptionDeliverySelected] = useState()
@@ -26,10 +27,14 @@ const Delivery = () => {
   const [locationSelected, setLocationSelected] = useState()
   const [dateSelected, setDateSelected] = useState()
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false)
+  const [contactPhone, setContactPhone] = useState()
+  const [contactName, setContactName] = useState()
 
   useEffect(()=>{
     setOptionsDeliveries(radioButtonsDelivery)
     setOptionsHours(radioButtonsHour)
+    setContactPhone(phone_number)
+    setContactName(first_name + ' ' + last_name)
   },[])
 
   useEffect(()=>{
@@ -37,11 +42,13 @@ const Delivery = () => {
       delivery: optionDeliverySelected?.value,
       location: locationSelected,
       date: dateSelected,
-      time: optionHourSelected
+      time: optionHourSelected,
+      contact_number: contactPhone,
+      contact_name: contactName
     }
 
     dispatch(setUpDelivery(dataDelivery))
-  },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected])
+  },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected, contactName, contactPhone])
 
   const handleChangeDelivery = (optionSelected) => {
     setOptionDeliverySelected(optionSelected)
@@ -121,6 +128,38 @@ const Delivery = () => {
         renderOptions={optionHours}
         onChangeOption={(option) => setOptionHourSelected(option)}
       />
+      {optionDeliverySelected?.value === 'delivery' && (
+        <>
+          <Block row>
+            <Text style={styles.text}>Contact Name</Text>
+            <Text style={styles.errorText}> * </Text>
+          </Block>
+          <Input
+            left
+            color="black"
+            style={styles.orderName}
+            value={contactName}
+            placeholder="Enter your name"
+            onChangeText={(t) => setContactName(t)}
+            placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+            textInputStyle={{ flex: 1 }}
+          />
+          <Block row>
+            <Text style={styles.text}>Contact Phone</Text>
+            <Text style={styles.errorText}> * </Text>
+          </Block>
+          <Input
+            left
+            color="black"
+            style={styles.orderName}
+            value={contactPhone}
+            placeholder="Enter your phone"
+            onChangeText={(t) => setContactPhone(t)}
+            placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+            textInputStyle={{ flex: 1 }}
+          />
+        </>
+      )}
     </Block>
   )
 }
