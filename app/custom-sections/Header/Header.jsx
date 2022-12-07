@@ -36,12 +36,12 @@ const Header = ({
       return;
     }
 
-    if (!scene || !scene.route.params?.nameRouteGoing) {
+    if (!scene || !scene?.route?.params?.nameRouteGoing) {
       navigation.goBack();
       return;
     }
 
-    const routeName = scene.route.params?.nameRouteGoing;
+    const routeName = scene?.route?.params?.nameRouteGoing;
 
     if(routeName === 'Products'){
       dispatch(reset())

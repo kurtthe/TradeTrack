@@ -9,8 +9,6 @@ import {
 import { Button, Input, } from '@components';
 import SimpleButton from '@components/SimpleButton'
 
-import Header from '@custom-sections/Header'
-
 import { GeneralRequestService } from '@core/services/general-request.service'
 import { endPoints } from '@shared/dictionaries/end-points';
 import { AlertService } from '@core/services/alert.service';
@@ -45,10 +43,6 @@ export const TForgotPassword = ({ navigation }) => {
   }
   return (
     <>
-      <Header
-        back={true}
-        navigation={navigation}
-      />
       <View style={styles.container}>
         <View style={styles.contentBody} >
           <View style={styles.content}>

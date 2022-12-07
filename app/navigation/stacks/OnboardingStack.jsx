@@ -42,7 +42,7 @@ export default function OnboardingStack() {
       component: ForgotPassword,
       title: '',
       colorBackground: '#FFFFFF',
-      header:false,
+      header: true,
     },
     {
       name: 'ChangePassword',
