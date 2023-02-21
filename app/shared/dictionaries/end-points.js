@@ -15,7 +15,7 @@ export const endPoints = {
   downloadStatementDetail: `${apiService}burdens/statements/:id/download?base64=true`,
   searchInvoices: `${apiService}burdens/search?sort=id_desc`,
   payment: `${apiService}burdens/payment`,
-  generateOrder: `${apiService}material-orders`,
+  generateOrder: `${environment.apiStagin}material-orders`,
   supplierId: `${apiService}burdens/supplier`,
   stores: `${apiService}burdens/stores`,
   jobs: `${apiService}jobs`,
@@ -32,4 +32,6 @@ export const endPoints = {
   orders: `${apiService}material-orders?sort=id_desc&include_products=true`,
   estimatorRoofing: 'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
   forgotPassword: `${apiService}reset-password`,
+
+  getValidationRules: `${environment.apiStagin}burdens/validation-rules`
 };

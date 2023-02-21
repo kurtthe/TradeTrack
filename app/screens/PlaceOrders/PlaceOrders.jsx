@@ -13,6 +13,8 @@ import {endPoints} from '@shared/dictionaries/end-points';
 import {clear} from '@core/module/store/placeOrders/placeOrders'
 import {getSupplierId} from '@core/hooks/getSupplierId.service'
 import Restricted from '../../custom-elements/Restricted';
+import Orders from '../../core/module/store/orders/orders';
+import OrderValidationFields from './components/OrderValidationFields';
 
 const generalRequest = GeneralRequestService.getInstance()
 
@@ -23,6 +25,8 @@ const PlaceOrders = () => {
   const userEmail = useSelector((state)=> state.loginReducer.email)
   const dataOrder = useSelector((state)=> state.placeOrderReducer)
   const restricted = useSelector((state)=> state.productsReducer.restricted)
+
+  const [dataFieldsValidations, setDataFieldsValidation]= React.useState([])
 
   const serializeItems = () => {
     if (cartProducts.length === 0) {
@@ -42,16 +46,18 @@ const PlaceOrders = () => {
   };
 
   const verifyFields = () => {
-    console.log("=>dataOrder", dataOrder)
+    const someWithOutValue = dataFieldsValidations.some((item)=> !item.value|| item.value === '')
+
     const error =
       !dataOrder.name ||
       !dataOrder.delivery_instructions.delivery ||
       !dataOrder.nameStore ||
       !dataOrder.delivery_instructions.date ||
       !dataOrder.delivery_instructions.time ||
+      dataFieldsValidations.length === 0 ||
       (dataOrder.delivery_instructions.delivery === 'delivery' && !dataOrder.delivery_instructions.location);
 
-    if (error) {
+    if (error || someWithOutValue) {
       alert('Fill in the required data *');
     }
     return error;
@@ -96,6 +102,7 @@ const PlaceOrders = () => {
           contact_number: dataOrder?.delivery_instructions.contact_number,
           contact_name: dataOrder?.delivery_instructions.contact_name,
         },
+        burdens_data: dataFieldsValidations
       },
     };
 
@@ -126,6 +133,11 @@ const PlaceOrders = () => {
     console.log('shareOrder::', shareOrder, url, data)
   };
 
+
+  const changesValidationsField = (newDataFields) => {
+    setDataFieldsValidation(newDataFields)
+  }
+
   if(dataOrder?.restricted || restricted){
     return (
       <Restricted />
@@ -137,6 +149,7 @@ const PlaceOrders = () => {
       <Block flex center style={styles.cart}>
         <Block center>
           <JobsForm />
+          <OrderValidationFields onChanges={(newDataFields) => changesValidationsField(newDataFields)} />
           <DeliveryForm />
           <StoreForm />
           <DetailOrders
