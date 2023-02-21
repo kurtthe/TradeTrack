@@ -1541,14 +1541,6 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@pstyczynski/react-native-expo-pdfjs@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@pstyczynski/react-native-expo-pdfjs/-/react-native-expo-pdfjs-1.0.0.tgz#7ec18c98fd15607a29b277aedc1c15716d6925e1"
-  integrity sha512-PdlULgw0Q+XHljwCPd18DHCHIKrmoXugPmeKnZZ4LAYV4E8ZmVUJZ0paOo5xQNrjyhzIARSLDOUnbYfcbAPV+w==
-  dependencies:
-    buffer "5.1.0"
-    js-base64 "2.4.5"
-
 "@react-native-community/art@^1.1.2":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/art/-/art-1.2.0.tgz#386d95393f6042d9006f9d4bc6063fb898794460"
