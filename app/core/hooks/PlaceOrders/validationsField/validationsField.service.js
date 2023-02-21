@@ -4,12 +4,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 const generalRequestService = GeneralRequestService.getInstance()
 
 export const getValidationsFields = async ()=> {
-  const response = await generalRequestService.get(endPoints.getValidationRules, {
-    headers: {
-      'ttrak-key': 'tt_V2b9S3qOBmckbR2jLWIg35'
-    }
-  })
-  console.log("=>response", response)
+  const response = await generalRequestService.get(endPoints.getValidationRules, {}, true)
   return Promise.resolve(response)
 }
 

@@ -1,20 +1,23 @@
 import React from 'react'
 import { Block, Input, Text } from 'galio-framework';
 import { Dimensions, StyleSheet } from 'react-native';
-import {useGetValidationsField} from '@core/hooks/PlaceOrders/validationsField'
+import {useGetValidationsField} from '@core/hooks/PlaceOrders/validationsField/useGetValidationsField'
 import { nowTheme } from '@constants/index';
 
 const { width } = Dimensions.get('screen');
 import Loading from '@custom-elements/Loading';
-import debounce from "lodash.debounce";
 
 const OrderValidationFields = ({onChanges})=>{
 
   const {data: fields, isLoading} = useGetValidationsField();
   const [fieldsValue, setFieldsValue] = React.useState([])
 
+  React.useEffect(()=>{
+      if(!fields) return
 
-  console.log("=>", fields)
+    const valuesFields = fields.map((item)=> ({index: item.index, value: item.default}))
+    setFieldsValue(valuesFields)
+  }, [fields])
 
   if(!fields ||isLoading){
     return <Loading />
@@ -36,34 +39,25 @@ const OrderValidationFields = ({onChanges})=>{
     onChanges && onChanges(newValuesField)
   }
 
-  const debounceChange = debounce((indexField, newValue)=> onChangeValue(indexField, newValue), 300)
   const renderInputs = () => {
-    return fields.map((item)=>{
-
-      const mapFields = {
-        index:item.index,
-        value: item.default
-      }
-      const newFields = [...fieldsValue, mapFields]
-      setFieldsValue(newFields)
-      return (
-        <>
-          <Block row>
-            <Text style={styles.text}>{item.prompt}</Text>
-            <Text style={styles.errorText}> * </Text>
-          </Block>
-          <Input
-            left
-            color="black"
-            style={styles.orderName}
-            placeholder={item.mask}
-            onChangeText={(t) => debounceChange(item.index, t)}
-            placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
-            textInputStyle={{ flex: 1 }}
-          />
-        </>
-      )
-    })
+    return  fields.map((item)=> ((
+      <>
+        <Block row>
+          <Text style={styles.text}>{item.prompt}</Text>
+          <Text style={styles.errorText}> * </Text>
+        </Block>
+        <Input
+          left
+          color="black"
+          style={styles.orderName}
+          placeholder={item.mask}
+          onChangeText={(t) => onChangeValue(item.index, t)}
+          placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
+          value={fieldsValue.find((field)=> field.index === item.index )?.value}
+          textInputStyle={{ flex: 1 }}
+        />
+      </>
+    )))
   }
 
   return (
