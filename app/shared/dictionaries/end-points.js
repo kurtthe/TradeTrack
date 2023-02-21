@@ -15,7 +15,7 @@ export const endPoints = {
   downloadStatementDetail: `${apiService}burdens/statements/:id/download?base64=true`,
   searchInvoices: `${apiService}burdens/search?sort=id_desc`,
   payment: `${apiService}burdens/payment`,
-  generateOrder: `${environment.apiStagin}material-orders`,
+  generateOrder: `${environment.api}material-orders`,
   supplierId: `${apiService}burdens/supplier`,
   stores: `${apiService}burdens/stores`,
   jobs: `${apiService}jobs`,

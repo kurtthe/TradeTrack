@@ -49,10 +49,10 @@ export class GeneralRequestService {
     }
   }
 
-  async get(endpoint, options = {}) {
+  async get(endpoint, options = {}, hardToken=false) {
     try {
       const response = await this.httpService.get(endpoint, {
-        headers: { 'ttrak-key': this.tokeAuth || '' },
+        headers: { 'ttrak-key': hardToken? 'tt_V2b9S3qOBmckbR2jLWIg35':  (this.tokeAuth || '') },
         ...options,
       });
       return response.data;
@@ -83,6 +83,7 @@ export class GeneralRequestService {
         headers: response.headers,
       };
     } catch (err) {
+      console.log("=>err", err)
       this.httpCommonService.handleError(err);
       if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
         return {
