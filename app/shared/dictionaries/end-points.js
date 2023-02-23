@@ -1,7 +1,6 @@
 import { environment } from '@env';
 
-const apiService = environment.production ? environment.api: environment.apiStagin
-
+const apiService = environment.production ? environment.api: environment.apiStaging
 export const endPoints = {
   auth: `${apiService}login`,
   resetPassword: `${apiService}reset-password`,
