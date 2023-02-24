@@ -41,7 +41,7 @@ const OrderValidationFields = ({onChanges})=>{
 
   const renderInputs = () => {
     return  fields.map((item)=> ((
-      <>
+      <React.Fragment key={`field-validation${item.id}`}>
         <Block row>
           <Text style={styles.text}>{item.prompt}</Text>
           <Text style={styles.errorText}> * </Text>
@@ -56,7 +56,7 @@ const OrderValidationFields = ({onChanges})=>{
           value={fieldsValue.find((field)=> field.index === item.index )?.value}
           textInputStyle={{ flex: 1 }}
         />
-      </>
+      </React.Fragment>
     )))
   }
 

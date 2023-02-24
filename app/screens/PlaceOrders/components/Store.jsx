@@ -22,8 +22,7 @@ const Store = () => {
   const {data: preferredStore} = useGetPreferredStore();
 
   useEffect(()=>{
-
-    if(!stores?.locations?.length || !preferredStore){
+    if(!stores?.locations?.length){
       return
     }
 
