@@ -102,9 +102,7 @@ const PlaceOrders = () => {
         burdens_data: dataFieldsValidations
       },
     };
-    console.log("==data sent",data)
     const placedOrder = await generalRequest.put(endPoints.generateOrder, data);
-  console.log("==data placedOrder", placedOrder)
     if (placedOrder) {
       handleOrderShare(placedOrder.order.id);
       resetFields();
