@@ -66,16 +66,18 @@ class Login extends React.Component {
   async componentDidUpdate(prevProps) {
     if (this.props.token_login !== prevProps.token_login) {
       this.redirectLogin();
-    }
-    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
-    if (!tokenStorageExist) {
-      this.props.logout();
-      this.props.clearProducts();
       return;
+    }
+    if (!this.props.token_login) {
+      const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+      if(!tokenStorageExist){
+        this.props.logout();
+        this.props.clearProducts();
+      }
     }
   }
 
-  async redirectLogin() {
+  redirectLogin() {
     if (!!this.props.token_login) {
       this.props.navigation.navigate('AppStack');
     }
@@ -89,7 +91,7 @@ class Login extends React.Component {
       password: this.state.password,
     };
 
-    const resLogin = await this.generalRequest.postWithHeaders(endPoints.auth, dataLogin, true);
+    const resLogin = await this.generalRequest.auth(dataLogin);
 
     if (!!resLogin) {
       const data = {
@@ -202,7 +204,6 @@ class Login extends React.Component {
                           color={nowTheme.COLORS.PRETEXT}
                           style={{
                             marginLeft: 0,
-                            fontFamily: 'montserrat-regular',
                             fontFamily: 'montserrat-regular',
                             top: 10,
                           }}

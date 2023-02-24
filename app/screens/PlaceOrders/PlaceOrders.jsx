@@ -105,7 +105,6 @@ const PlaceOrders = () => {
         burdens_data: dataFieldsValidations
       },
     };
-  console.log("=>data", data)
     const placedOrder = await generalRequest.put(endPoints.generateOrder, data);
 
     if (placedOrder) {
