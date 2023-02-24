@@ -6,14 +6,12 @@ import {useSelector, useDispatch} from 'react-redux';
 import { clearProducts } from '@core/module/store/cart/cart';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
 import {JobsForm, DeliveryForm, StoreForm} from './components'
-import placeOrderReducer from '../../core/module/store/placeOrders/placeOrders';
 import { useNavigation } from '@react-navigation/native';
 import {GeneralRequestService} from '@core/services/general-request.service'
 import {endPoints} from '@shared/dictionaries/end-points';
 import {clear} from '@core/module/store/placeOrders/placeOrders'
 import {getSupplierId} from '@core/hooks/getSupplierId.service'
 import Restricted from '../../custom-elements/Restricted';
-import Orders from '../../core/module/store/orders/orders';
 import OrderValidationFields from './components/OrderValidationFields';
 
 const generalRequest = GeneralRequestService.getInstance()
@@ -54,10 +52,9 @@ const PlaceOrders = () => {
       !dataOrder.nameStore ||
       !dataOrder.delivery_instructions.date ||
       !dataOrder.delivery_instructions.time ||
-      dataFieldsValidations.length === 0 ||
       (dataOrder.delivery_instructions.delivery === 'delivery' && !dataOrder.delivery_instructions.location);
 
-    if (error || someWithOutValue) {
+    if (error) {
       alert('Fill in the required data *');
     }
     return error || someWithOutValue;
@@ -105,8 +102,9 @@ const PlaceOrders = () => {
         burdens_data: dataFieldsValidations
       },
     };
+    console.log("==data sent",data)
     const placedOrder = await generalRequest.put(endPoints.generateOrder, data);
-
+  console.log("==data placedOrder", placedOrder)
     if (placedOrder) {
       handleOrderShare(placedOrder.order.id);
       resetFields();

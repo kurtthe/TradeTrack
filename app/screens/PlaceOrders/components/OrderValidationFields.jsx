@@ -55,6 +55,7 @@ const OrderValidationFields = ({onChanges})=>{
           placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
           value={fieldsValue.find((field)=> field.index === item.index )?.value}
           textInputStyle={{ flex: 1 }}
+          editable={false}
         />
       </React.Fragment>
     )))
