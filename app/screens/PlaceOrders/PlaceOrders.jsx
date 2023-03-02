@@ -1,30 +1,30 @@
 import React from 'react';
-import { ScrollView} from 'react-native';
+import { ScrollView } from 'react-native';
 import { Block } from 'galio-framework';
-import {styles} from './PlaceOrders.styles'
-import {useSelector, useDispatch} from 'react-redux';
+import { styles } from './PlaceOrders.styles';
+import { useSelector, useDispatch } from 'react-redux';
 import { clearProducts } from '@core/module/store/cart/cart';
 import DetailOrders from '@custom-sections/place-order/DetailsOrders';
-import {JobsForm, DeliveryForm, StoreForm} from './components'
+import { JobsForm, DeliveryForm, StoreForm } from './components';
 import { useNavigation } from '@react-navigation/native';
-import {GeneralRequestService} from '@core/services/general-request.service'
-import {endPoints} from '@shared/dictionaries/end-points';
-import {clear} from '@core/module/store/placeOrders/placeOrders'
-import {getSupplierId} from '@core/hooks/getSupplierId.service'
+import { GeneralRequestService } from '@core/services/general-request.service';
+import { endPoints } from '@shared/dictionaries/end-points';
+import { clear } from '@core/module/store/placeOrders/placeOrders';
+import { getSupplierId } from '@core/hooks/getSupplierId.service';
 import Restricted from '../../custom-elements/Restricted';
 import OrderValidationFields from './components/OrderValidationFields';
 
-const generalRequest = GeneralRequestService.getInstance()
+const generalRequest = GeneralRequestService.getInstance();
 
 const PlaceOrders = () => {
-  const dispatch = useDispatch()
-  const navigation = useNavigation()
-  const cartProducts = useSelector((state)=> state.productsReducer.products)
-  const userEmail = useSelector((state)=> state.loginReducer.email)
-  const dataOrder = useSelector((state)=> state.placeOrderReducer)
-  const restricted = useSelector((state)=> state.productsReducer.restricted)
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const cartProducts = useSelector((state) => state.productsReducer.products);
+  const userEmail = useSelector((state) => state.loginReducer.email);
+  const dataOrder = useSelector((state) => state.placeOrderReducer);
+  const restricted = useSelector((state) => state.productsReducer.restricted);
 
-  const [dataFieldsValidations, setDataFieldsValidation]= React.useState([])
+  const [dataFieldsValidations, setDataFieldsValidation] = React.useState([]);
 
   const serializeItems = () => {
     if (cartProducts.length === 0) {
@@ -44,7 +44,7 @@ const PlaceOrders = () => {
   };
 
   const verifyFields = () => {
-    const someWithOutValue = dataFieldsValidations.some((item)=> !item.value|| item.value === '')
+    const someWithOutValue = dataFieldsValidations.some((item) => !item.value || item.value === '');
 
     const error =
       !dataOrder.name ||
@@ -52,16 +52,17 @@ const PlaceOrders = () => {
       !dataOrder.nameStore ||
       !dataOrder.delivery_instructions.date ||
       !dataOrder.delivery_instructions.time ||
-      (dataOrder.delivery_instructions.delivery === 'delivery' && !dataOrder.delivery_instructions.location);
+      (dataOrder.delivery_instructions.delivery === 'delivery' &&
+        !dataOrder.delivery_instructions.location);
 
-    if (error) {
+    if (error || someWithOutValue) {
       alert('Fill in the required data *');
     }
     return error || someWithOutValue;
   };
 
   const placeOrderHandler = async () => {
-    const supplierId = await getSupplierId()
+    const supplierId = await getSupplierId();
     const items = serializeItems();
     const date = new Date();
 
@@ -99,7 +100,7 @@ const PlaceOrders = () => {
           contact_number: dataOrder?.delivery_instructions.contact_number,
           contact_name: dataOrder?.delivery_instructions.contact_name,
         },
-        burdens_data: dataFieldsValidations
+        burdens_data: dataFieldsValidations,
       },
     };
     const placedOrder = await generalRequest.put(endPoints.generateOrder, data);
@@ -109,34 +110,36 @@ const PlaceOrders = () => {
       dispatch(clearProducts());
       navigation.navigate('OrderPlaced', { placedOrder: placedOrder.order });
     }
-  }
+  };
 
   const resetFields = () => {
-    dispatch(clear())
-  }
+    dispatch(clear());
+  };
 
   const handleOrderShare = async (id) => {
     const data = {
       emails: [
-        "burdens.orders@tradetrak.com.au", "matt.celima@burdens.com.au",  "owenm@tradetrak.com.au", userEmail, dataOrder.emailStore,
+        'burdens.orders@tradetrak.com.au',
+        'matt.celima@burdens.com.au',
+        'owenm@tradetrak.com.au',
+        userEmail,
+        dataOrder.emailStore,
       ],
-      message: "Thanks for your order - it has been received by our team. An email notification will be sent to the account owner when it has been processed by the store. Please contact us at 03 9703 8400. Thank you, the Burdens App Team."
+      message:
+        'Thanks for your order - it has been received by our team. An email notification will be sent to the account owner when it has been processed by the store. Please contact us at 03 9703 8400. Thank you, the Burdens App Team.',
     };
 
     const url = endPoints.shareOrder.replace(':id', id);
     const shareOrder = await generalRequest.post(url, data);
-    console.log('shareOrder::', shareOrder, url, data)
+    console.log('shareOrder::', shareOrder, url, data);
   };
 
-
   const changesValidationsField = (newDataFields) => {
-    setDataFieldsValidation(newDataFields)
-  }
+    setDataFieldsValidation(newDataFields);
+  };
 
-  if(dataOrder?.restricted || restricted){
-    return (
-      <Restricted />
-    )
+  if (dataOrder?.restricted || restricted) {
+    return <Restricted />;
   }
 
   return (
@@ -144,17 +147,16 @@ const PlaceOrders = () => {
       <Block flex center style={styles.cart}>
         <Block center>
           <JobsForm />
-          <OrderValidationFields onChanges={(newDataFields) => changesValidationsField(newDataFields)} />
+          <OrderValidationFields
+            onChanges={(newDataFields) => changesValidationsField(newDataFields)}
+          />
           <DeliveryForm />
           <StoreForm />
-          <DetailOrders
-            cartProducts={cartProducts}
-            orderHandler={placeOrderHandler}
-          />
+          <DetailOrders cartProducts={cartProducts} orderHandler={placeOrderHandler} />
         </Block>
       </Block>
     </ScrollView>
   );
-}
+};
 
 export default PlaceOrders;
