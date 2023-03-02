@@ -1,6 +1,12 @@
 import { environment } from '@env';
 
-const apiService = environment.production ? environment.api: environment.apiStaging
+const apiService =
+  environment.env === 'test'
+    ? environment.apiTest
+    : environment.env === 'staging'
+    ? environment.apiStaging
+    : environment.api;
+
 export const endPoints = {
   auth: `${apiService}login`,
   resetPassword: `${apiService}reset-password`,
@@ -29,8 +35,8 @@ export const endPoints = {
   preferredStore: `${apiService}burdens/stores/preferred`,
   shareOrder: `${apiService}material-orders/:id/share`,
   orders: `${apiService}material-orders?sort=id_desc&include_products=true`,
-  estimatorRoofing: 'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
+  estimatorRoofing:
+    'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
   forgotPassword: `${apiService}reset-password`,
-
-  getValidationRules: `${apiService}burdens/validation-rules`
+  getValidationRules: `${apiService}burdens/validation-rules`,
 };
