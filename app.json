@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.4.28",
+    "version": "1.4.29",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -38,7 +38,7 @@
     "android": {
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 37,
+      "versionCode": 38,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
