@@ -54,7 +54,7 @@ const OrderValidationFields = ({ onChanges }) => {
           placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
           value={fieldsValue.find((field) => field.index === item.index)?.value}
           textInputStyle={{ flex: 1 }}
-          editable={false}
+          
         />
       </React.Fragment>
     ));
@@ -70,7 +70,7 @@ const OrderValidationFields = ({ onChanges }) => {
       paddingBottom={20}
       marginBottom={20}
     >
-      <Text style={[styles.textTitle, { fontWeight: 'bold' }]}>Order validations field</Text>
+      <Text style={[styles.textTitle, { fontWeight: 'bold' }]}>Order Validations</Text>
       {renderInputs()}
     </Block>
   );
