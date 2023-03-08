@@ -27,7 +27,7 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { connect } from 'react-redux';
 import { sign, logout } from '@core/module/store/auth/reducers/login';
 import { clearProducts } from '@core/module/store/cart/cart';
-//import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from 'expo-secure-store';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -50,28 +50,28 @@ class Login extends React.Component {
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  //async componentDidMount() {
-    //const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+  async componentDidMount() {
+    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
 
-    //if (!tokenStorageExist) {
-      //return;
-   // }
+    if (!tokenStorageExist) {
+      return;
+   }
 
-    //this.props.sign(JSON.parse(tokenStorageExist));
-    //this.redirectLogin();
-  //}
+    this.props.sign(JSON.parse(tokenStorageExist));
+    this.redirectLogin();
+  }
 
   async componentDidUpdate(prevProps) {
     if (this.props.token_login !== prevProps.token_login) {
       this.redirectLogin();
     }
-    //if (!this.props.token_login) {
-      //const tokenStorageExist = await SecureStore.getItemAsync('data_user');
-      //if(!tokenStorageExist){
-      //  this.props.logout();
-     //   this.props.clearProducts();
-     // }
-    //}
+    if (!this.props.token_login) {
+      const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+      if(!tokenStorageExist){
+       this.props.logout();
+       this.props.clearProducts();
+     }
+    }
   }
 
   redirectLogin() {
