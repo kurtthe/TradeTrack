@@ -41,7 +41,7 @@ const Jobs = () => {
   useEffect(()=>{
     const dataOrder ={
       name: orderName,
-      job: jobSelected,
+      job: jobSelected?.id,
     }
     dispatch(setUpOrder(dataOrder))
   }, [orderName, jobSelected])
@@ -66,9 +66,9 @@ const Jobs = () => {
         <PickerButton
           label="Detail Order"
           text="Select Job"
-          placeholder={jobSelected || 'Select or search job'}
+          placeholder={jobSelected?.value || 'Select or search job'}
           renderOptions={optionsSelectJobs}
-          onChangeOption={(option) => setJobSelected(option?.value)}
+          onChangeOption={(option) => setJobSelected(option)}
           handleSearch={(page) => handleSearch(page)}
           changeSearchText={(text) => setTextSearchJob(text)}
           search={true}

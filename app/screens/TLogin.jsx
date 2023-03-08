@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
-  ScrollView,
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 
@@ -24,12 +23,11 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { GeneralRequestService } from '@core/services/general-request.service';
-import { endPoints } from '@shared/dictionaries/end-points';
 
 import { connect } from 'react-redux';
 import { sign, logout } from '@core/module/store/auth/reducers/login';
 import { clearProducts } from '@core/module/store/cart/cart';
-import * as SecureStore from 'expo-secure-store';
+//import * as SecureStore from 'expo-secure-store';
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -52,30 +50,31 @@ class Login extends React.Component {
     this.generalRequest = GeneralRequestService.getInstance();
   }
 
-  async componentDidMount() {
-    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+  //async componentDidMount() {
+    //const tokenStorageExist = await SecureStore.getItemAsync('data_user');
 
-    if (!tokenStorageExist) {
-      return;
-    }
+    //if (!tokenStorageExist) {
+      //return;
+   // }
 
-    this.props.sign(JSON.parse(tokenStorageExist));
-    this.redirectLogin();
-  }
+    //this.props.sign(JSON.parse(tokenStorageExist));
+    //this.redirectLogin();
+  //}
 
   async componentDidUpdate(prevProps) {
     if (this.props.token_login !== prevProps.token_login) {
       this.redirectLogin();
     }
-    const tokenStorageExist = await SecureStore.getItemAsync('data_user');
-    if (!tokenStorageExist) {
-      this.props.logout();
-      this.props.clearProducts();
-      return;
-    }
+    //if (!this.props.token_login) {
+      //const tokenStorageExist = await SecureStore.getItemAsync('data_user');
+      //if(!tokenStorageExist){
+      //  this.props.logout();
+     //   this.props.clearProducts();
+     // }
+    //}
   }
 
-  async redirectLogin() {
+  redirectLogin() {
     if (!!this.props.token_login) {
       this.props.navigation.navigate('AppStack');
     }
@@ -89,7 +88,7 @@ class Login extends React.Component {
       password: this.state.password,
     };
 
-    const resLogin = await this.generalRequest.postWithHeaders(endPoints.auth, dataLogin, true);
+    const resLogin = await this.generalRequest.auth(dataLogin);
 
     if (!!resLogin) {
       const data = {
@@ -203,7 +202,6 @@ class Login extends React.Component {
                           style={{
                             marginLeft: 0,
                             fontFamily: 'montserrat-regular',
-                            fontFamily: 'montserrat-regular',
                             top: 10,
                           }}
                           row
@@ -314,7 +312,7 @@ const styles = StyleSheet.create({
 
   registerContainer: {
     marginTop: 55,
-    width: width * 1,
+    width: width,
     height: height < 812 ? height * 0.8 : height * 0.9,
     backgroundColor: nowTheme.COLORS.WHITE,
     borderRadius: 4,

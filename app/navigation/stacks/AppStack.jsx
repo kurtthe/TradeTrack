@@ -35,7 +35,6 @@ function AppStack(props) {
       typeIcon: 'Ionicons',
       icon: 'cart',
       title: 'Cart',
-      title: 'Cart',
       badge: {
         textBadge: props.cartProducts.length
       }

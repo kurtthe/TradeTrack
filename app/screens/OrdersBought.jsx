@@ -27,7 +27,7 @@ const OrdersBought = ({ route }) => {
           ...item.product,
           myPrice: clientFriendly,
           price: priceProduct,
-          quantity: item.item.default_quantity
+          quantity: item?.item?.default_quantity || 1
         }
       })
       dispatch(updatePreOrder(dataProduct))
