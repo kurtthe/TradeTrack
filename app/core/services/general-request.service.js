@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { HttpCommonService } from './http-common.service';
 import * as SecureStore from 'expo-secure-store';
+import { endPoints } from '@shared/dictionaries/end-points';
 
 export class GeneralRequestService {
   static instance;
@@ -43,7 +44,7 @@ export class GeneralRequestService {
       this.httpCommonService.handleError(err);
       if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
         return {
-          restricted: true
+          restricted: true,
         };
       }
     }
@@ -60,7 +61,7 @@ export class GeneralRequestService {
       this.httpCommonService.handleError(err);
       if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
         return {
-          restricted: true
+          restricted: true,
         };
       }
     }
@@ -74,7 +75,7 @@ export class GeneralRequestService {
       if (saveToken) {
         this.saverToken({
           ...response.data,
-          company: response.headers['tradetrak-company']
+          company: response.headers['tradetrak-company'],
         });
       }
 
@@ -83,6 +84,7 @@ export class GeneralRequestService {
         headers: response.headers,
       };
     } catch (err) {
+      console.log('=>err', err);
       this.httpCommonService.handleError(err);
       if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
         return {
@@ -100,7 +102,7 @@ export class GeneralRequestService {
         headers: { 'ttrak-key': this.tokeAuth || '' },
         ...options,
       });
-      
+
       return {
         body: response.data,
         headers: response.headers,
@@ -125,7 +127,29 @@ export class GeneralRequestService {
       return response.data;
     } catch (err) {
       this.httpCommonService.handleError(err);
-      
+    }
+  }
+
+  async auth(data) {
+    try {
+      const response = await this.httpService.post(endPoints.auth, data);
+      this.saverToken({
+        ...response.data,
+        company: response.headers['tradetrak-company'],
+      });
+
+      return {
+        body: response.data,
+        headers: response.headers,
+      };
+    } catch (err) {
+      this.httpCommonService.handleError(err);
+      if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
+        return {
+          body: { restricted: true },
+          headers: err.response.headers,
+        };
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 import { nowTheme } from '@constants/index';
 
-export const setOptionsPicker = (data=[], toSame) => {
+export const setOptionsPicker = (data=[], toSame=undefined) => {
 
 
   return data.map((c) => ({
@@ -9,7 +9,7 @@ export const setOptionsPicker = (data=[], toSame) => {
     labelStyle: { fontWeight: 'bold' },
     label: c.name,
     value: c.name,
-    selected: toSame && c.name === toSame.name && c.id === toSame.id,
+    selected: !toSame? false: toSame && c.name === toSame.name && c.id === toSame.id,
   }));
 };
 
