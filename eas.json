@@ -10,22 +10,17 @@
       },
       "ios": {
         "buildConfiguration": "Debug",
-        "cocoapods": "1.11.2",
-        "resourceClass": "m1-medium"
+        "cocoapods": "1.11.2"
       },
       "channel": "development"
     },
     "preview": {
       "distribution": "internal",
-      "ios": {
-        "resourceClass": "m1-medium"
-      },
       "channel": "preview"
     },
     "production": {
       "ios": {
-        "cocoapods": "1.11.2",
-        "resourceClass": "m1-medium"
+        "cocoapods": "1.11.2"
       },
       "channel": "production"
     }

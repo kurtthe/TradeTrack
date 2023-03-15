@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, SafeAreaView, StyleSheet } from 'react-native';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
 import { Block, GalioProvider } from 'galio-framework';
 import { NavigationContainer } from '@react-navigation/native';
+import * as SplashScreen from 'expo-splash-screen';
+import * as Font from 'expo-font';
 
 // Before rendering any navigation stack
 import { enableScreens } from 'react-native-screens';
@@ -60,66 +60,54 @@ const styles = StyleSheet.create({
   },
 });
 
-class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-    fontLoaded: false,
-  };
+export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  render() {
-    if (!this.state.isLoadingComplete) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
-    } else {
-      return (
-        <SafeAreaView style={styles.safeArea}>
-          <NavigationContainer>
-            <QueryClientProvider client={queryClient}>
-              <Provider store={store}>
-                <GalioProvider theme={nowTheme}>
-                  <PaperProvider theme={theme}>
-                    <Block flex>
-                      <AppStack />
-                    </Block>
-                  </PaperProvider>
-                </GalioProvider>
-              </Provider>
-            </QueryClientProvider>
-          </NavigationContainer>
-        </SafeAreaView>
-
-      );
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+        await Font.loadAsync({
+          'montserrat-regular': require('@assets/font/Inter-Regular.ttf'),
+          'montserrat-bold': require('@assets/font/Inter-Bold.ttf'),
+        });
+        cacheImages(assetImages);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
     }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
-
-  _loadResourcesAsync = async () => {
-    await Font.loadAsync({
-      'montserrat-regular': require('@assets/font/Inter-Regular.ttf'),
-      'montserrat-bold': require('@assets/font/Inter-Bold.ttf'),
-    });
-
-    this.setState({ fontLoaded: true });
-    cacheImages(assetImages);
-  };
-
-  _handleLoadingError = (error) => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
-    console.warn(error);
-  };
-
-  _handleFinishLoading = () => {
-    if (this.state.fontLoaded) {
-      this.setState({ isLoadingComplete: true });
-    }
-  };
+  return (
+    <SafeAreaView style={styles.safeArea} onLayout={onLayoutRootView}>
+      <NavigationContainer>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={store}>
+            <GalioProvider theme={nowTheme}>
+              <PaperProvider theme={theme}>
+                <Block flex>
+                  <AppStack />
+                </Block>
+              </PaperProvider>
+            </GalioProvider>
+          </Provider>
+        </QueryClientProvider>
+      </NavigationContainer>
+    </SafeAreaView>
+  );
 }
-
-export default App
-
