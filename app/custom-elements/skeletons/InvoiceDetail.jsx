@@ -1,5 +1,5 @@
 import React from 'react';
-import SkeletonContent from '@03balogun/react-native-skeleton-content';
+import SkeletonContent from '@marstankev/react-native-skeleton-content';
 import { View } from 'react-native';
 
 const firstLayout = [
