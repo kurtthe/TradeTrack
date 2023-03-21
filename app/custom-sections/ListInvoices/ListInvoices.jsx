@@ -1,25 +1,16 @@
 import React from 'react';
-import { TouchableOpacity, FlatList } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Block, Text } from 'galio-framework';
 
 import Invoice from '@custom-elements/Invoice';
 
-import InvoicesSkeleton from '@custom-elements/skeletons/Invoices';
 import { useNavigation } from '@react-navigation/native';
-import { makeStyles } from './ListInvoices.styles'
+import { makeStyles } from './ListInvoices.styles';
 import Restricted from '@custom-elements/Restricted';
 
 export const ListInvoices = ({ data, title, backAccount, restricted }) => {
   const navigation = useNavigation();
-  const styles = makeStyles()
-
-  const emptyData = () => (
-    <>
-      <InvoicesSkeleton />
-      <InvoicesSkeleton />
-      <InvoicesSkeleton />
-    </>
-  )
+  const styles = makeStyles();
 
   const handleRedirectAllInvoices = () => {
     navigation.navigate('Account', {
@@ -28,37 +19,29 @@ export const ListInvoices = ({ data, title, backAccount, restricted }) => {
     });
   };
 
-  const renderItem = ({ item }) => (
-    <Invoice invoice={item} isAccount={backAccount} />
-  )
+  const renderItem = (item, index) => (
+    <Invoice key={`component-list${index}`} invoice={item} isAccount={backAccount} />
+  );
+  const renderListData = () => {
+    return data.map(renderItem);
+  };
 
   return (
     <>
       {title && (
         <Block style={styles.cardHeader}>
           <Block style={styles.cardContent} row middle space="between">
-            <Text style={styles.textTransactions}>
-              Transactions
-            </Text>
+            <Text style={styles.textTransactions}>Transactions</Text>
 
             <TouchableOpacity onPress={() => handleRedirectAllInvoices()}>
-              <Text style={styles.textSeeAll}>
-                See all
-              </Text>
+              <Text style={styles.textSeeAll}>See all</Text>
             </TouchableOpacity>
           </Block>
         </Block>
       )}
 
       <Block style={styles.card}>
-        {restricted ? 
-        <Restricted horizontal /> :
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => `${item.id}-${index}`}
-          ListEmptyComponent={emptyData}
-        />}
+        {restricted ? <Restricted horizontal /> : <>{renderListData()}</>}
       </Block>
     </>
   );
