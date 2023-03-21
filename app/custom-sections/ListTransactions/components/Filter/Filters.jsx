@@ -4,7 +4,6 @@ import { Block, Text, theme } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Icon } from '@components';
 import ActionSheet from 'react-native-actions-sheet';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
@@ -13,7 +12,7 @@ import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
 import Search from '@custom-elements/Search';
-import debounce from "lodash.debounce";
+import debounce from 'lodash.debounce';
 
 const { width } = Dimensions.get('screen');
 const alertService = new AlertService();
@@ -98,13 +97,16 @@ class Filters extends Component {
       idSelectedType: null,
       optionsType: resetOptionsSelected,
     });
-  }
+  };
 
-  debouncedOnChange = debounce((whoChange, value) => this.changeValuesFilters(value, whoChange), 300)
+  debouncedOnChange = debounce(
+    (whoChange, value) => this.changeValuesFilters(value, whoChange),
+    300,
+  );
 
   changeValuesFilters = (value, whoChange = false) => {
-    console.log("=>whoChange", whoChange)
-    console.log("=>value", value)
+    console.log('=>whoChange', whoChange);
+    console.log('=>value', value);
 
     if (whoChange === 'type') {
       this.setState({
@@ -120,7 +122,7 @@ class Filters extends Component {
     }
 
     if (!whoChange) {
-      this.resetFilters()
+      this.resetFilters();
     }
 
     setTimeout(() => {
@@ -183,7 +185,6 @@ class Filters extends Component {
   };
 
   typeSearch = () => {
-
     if (this.props.hideFilterType) {
       return null;
     }
@@ -274,10 +275,10 @@ const styles = StyleSheet.create({
           ? width * 0.5
           : width * 0.6
         : Dimensions.get('window').height < 595
-          ? width * 0.5
-          : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-            ? width * 0.5
-            : width * 0.6,
+        ? width * 0.5
+        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
+        ? width * 0.5
+        : width * 0.6,
     marginHorizontal: theme.SIZES.BASE,
     borderRadius: 30,
   },

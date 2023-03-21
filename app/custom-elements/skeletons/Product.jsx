@@ -1,55 +1,23 @@
 import React from 'react';
-import SkeletonContent from '@marstankev/react-native-skeleton-content';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { theme } from 'galio-framework';
+import LoadingComponent from '@custom-elements/Loading';
 
 const { width } = Dimensions.get('window');
 
 const cardWidth = (width / 2) * 0.87;
 
-const firstLayout = [
-  {
-    width: cardWidth,
-    height: 215,
-    marginBottom: 10,
-  },
-  {
-    width: cardWidth,
-    height: 20,
-    marginBottom: 5,
-  },
-  {
-    width: cardWidth,
-    height: 10,
-    marginBottom: 5,
-  },
-  {
-    width: cardWidth,
-    height: 10,
-    marginBottom: 5,
-  },
-  {
-    width: cardWidth,
-    height: 40,
-    marginTop: 50,
-  },
-];
 const Product = () => {
   return (
     <View style={styles.container}>
-      <SkeletonContent
-        containerStyle={{ flex: 1, width: 300 }}
-        animationDirection="horizontalLeft"
-        boneColor="#ECECEC"
-        layout={firstLayout}
-        isLoading={true}
-      />
+      <LoadingComponent />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: theme.COLORS.WHITE,
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,

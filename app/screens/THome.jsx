@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, Dimensions, ScrollView, TouchableOpacity, RefreshControl, Pressable, View } from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+  Pressable,
+  View,
+} from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
 import { Button } from '@components';
@@ -15,7 +23,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
 import { getNews } from '@core/module/store/news/news';
-import {expo} from '../../app.json'
+import { expo } from '../../app.json';
 
 import { connect } from 'react-redux';
 import Search from '@custom-elements/Search';
@@ -28,7 +36,7 @@ class Home extends React.Component {
 
     this.state = {
       refreshing: false,
-      textSearch: ''
+      textSearch: '',
     };
     this.getDataPetition = GetDataPetitionService.getInstance();
   }
@@ -41,24 +49,25 @@ class Home extends React.Component {
     await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
-  }
+  };
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.fetchData().then(() => {
       this.setState({ refreshing: false });
     });
-  }
+  };
 
   handleSearch = (text) => {
-    if(text !== '') {
+    if (text !== '') {
       this.props.navigation.navigate('Products', {
-        screen: 'SearchProducts', params: {
+        screen: 'SearchProducts',
+        params: {
           text,
-        }
-      })
+        },
+      });
     }
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -69,29 +78,26 @@ class Home extends React.Component {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.articles}
           refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
+            <RefreshControl refreshing={this.state.refreshing} onRefresh={this._onRefresh} />
           }
         >
           <LiveBalance company={true} />
 
-          <View style={{justifyContent: 'center', alignItems: 'center', top:8}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', top: 8 }}>
             <Search
               placeholder="What are you looking for?"
-              onChangeText={(text) => this.setState({textSearch: text})}
-              onSubmitEditing={({ nativeEvent: { text}}) => this.handleSearch(text)}
+              onChangeText={(text) => this.setState({ textSearch: text })}
+              onSubmitEditing={({ nativeEvent: { text } }) => this.handleSearch(text)}
               style={styles.search}
               inputStyle={styles.searchInput}
             />
-            <Pressable 
-              style={{ 
-                height: 40, 
-                width: 40, 
-                position: 'absolute', 
+            <Pressable
+              style={{
+                height: 40,
+                width: 40,
+                position: 'absolute',
                 right: 25,
-              }} 
+              }}
               onPress={() => this.handleSearch(this.state.textSearch)}
             />
           </View>
@@ -104,20 +110,16 @@ class Home extends React.Component {
           >
             Store Finder
           </Button>
-          
-          <ListInvoices 
-            data={this.props.invoices} 
-            title={true} 
+
+          <ListInvoices
+            data={this.props.invoices}
+            title={true}
             restricted={this.props.restricted}
           />
 
           <Block style={styles.cardHeader}>
             <Block row middle space="between" style={{ paddingLeft: 15, marginTop: 5 }}>
-              <Text
-                size={18}
-                style={{ fontFamily: 'montserrat-bold' }}
-                color={'#363C4A'}
-              >
+              <Text size={18} style={{ fontFamily: 'montserrat-bold' }} color={'#363C4A'}>
                 Burdens News
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('AllNews')}>
@@ -143,21 +145,20 @@ class Home extends React.Component {
                 Roof Estimator
               </Button>
             </Block>
-            <Block center style={{ top : -11 }}>
+            <Block center style={{ top: -11 }}>
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
                 style={styles.buttonEstimator}
                 onPress={() => navigation.navigate('AppFeedback')}
               >
-               App Feedback
+                App Feedback
               </Button>
-              
             </Block>
           </Block>
           <Block center style={{ paddingVertical: 50 }}>
-            <Text  style={{color:'grey', bottom:65}} >Version {expo.version}</Text>
-            </Block>
+            <Text style={{ color: 'grey', bottom: 65 }}>Version {expo.version}</Text>
+          </Block>
         </ScrollView>
       </Block>
     );
