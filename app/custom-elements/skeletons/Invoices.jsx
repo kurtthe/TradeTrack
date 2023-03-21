@@ -1,40 +1,19 @@
 import React from 'react';
-import SkeletonContent from '@marstankev/react-native-skeleton-content';
 import { StyleSheet, View } from 'react-native';
 import { nowTheme } from '@constants';
+import LoadingComponent from '@custom-elements/Loading';
 
-const firstLayout = [
-  {
-    width: 300,
-    height: 30,
-    marginBottom: 5,
-  },
-  {
-    width: 60,
-    height: 20,
-    marginBottom: 5,
-  },
-  {
-    width: 350,
-    height: 30,
-  },
-];
 const Invoices = () => {
   return (
     <View style={styles.container}>
-      <SkeletonContent
-        containerStyle={{ flex: 1, width: 300 }}
-        animationDirection="horizontalLeft"
-        boneColor="#ECECEC"
-        layout={firstLayout}
-        isLoading={true}
-      />
+      <LoadingComponent />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 10,
     backgroundColor: nowTheme.COLORS.WHITE,
     shadowColor: nowTheme.COLORS.BLACK,

@@ -55,7 +55,7 @@ class Login extends React.Component {
 
     if (!tokenStorageExist) {
       return;
-   }
+    }
 
     this.props.sign(JSON.parse(tokenStorageExist));
     this.redirectLogin();
@@ -67,10 +67,10 @@ class Login extends React.Component {
     }
     if (!this.props.token_login) {
       const tokenStorageExist = await SecureStore.getItemAsync('data_user');
-      if(!tokenStorageExist){
-       this.props.logout();
-       this.props.clearProducts();
-     }
+      if (!tokenStorageExist) {
+        this.props.logout();
+        this.props.clearProducts();
+      }
     }
   }
 
@@ -93,13 +93,13 @@ class Login extends React.Component {
     if (!!resLogin) {
       const data = {
         ...resLogin.body,
-        company: resLogin.headers['tradetrak-company']
-      }
-      this.setState({ email:'', password:'' });
+        company: resLogin.headers['tradetrak-company'],
+      };
+      this.setState({ email: '', password: '' });
       this.props.sign(data);
     }
 
-    this.setState({ loading: false});
+    this.setState({ loading: false });
   };
 
   handleChangeEmail = (text) => {
@@ -133,8 +133,8 @@ class Login extends React.Component {
                           ? 15
                           : 30
                         : Dimensions.get('window').height < 870
-                          ? 15
-                          : 40,
+                        ? 15
+                        : 40,
                   }}
                 >
                   <Image
@@ -156,8 +156,8 @@ class Login extends React.Component {
                           ? 16
                           : 18
                         : Dimensions.get('window').height < 870
-                          ? 18
-                          : 20
+                        ? 18
+                        : 20
                     }
                   >
                     Welcome Back,{'\n'}
@@ -182,8 +182,8 @@ class Login extends React.Component {
                                 ? 16
                                 : 20
                               : Dimensions.get('window').height < 870
-                                ? 16
-                                : 20
+                              ? 16
+                              : 20
                           }
                         >
                           Email
@@ -212,8 +212,8 @@ class Login extends React.Component {
                                 ? 16
                                 : 20
                               : Dimensions.get('window').height < 870
-                                ? 16
-                                : 20
+                              ? 16
+                              : 20
                           }
                         >
                           Password
@@ -248,8 +248,8 @@ class Login extends React.Component {
                             ? 0.8
                             : 0.55
                           : Dimensions.get('window').height < 870
-                            ? 0.8
-                            : 0.4
+                          ? 0.8
+                          : 0.4
                       }
                       center
                     >
@@ -272,7 +272,6 @@ class Login extends React.Component {
                         <Text color={'#444857'} size={15}>
                           Don't have an account yet?
                         </Text>
-
                       </Block>
 
                       <Block style={{ top: 20 }} row middle space="between">
@@ -280,10 +279,7 @@ class Login extends React.Component {
                           {' '}
                           Learn how to open a new account
                         </SimpleButton>
-
                       </Block>
-
-
                     </Block>
                   </Block>
                 </Block>
@@ -352,16 +348,16 @@ const styles = StyleSheet.create({
           ? wp('37%')
           : wp('40%')
         : Dimensions.get('window').height < 870
-          ? wp('29%')
-          : wp('40%'),
+        ? wp('29%')
+        : wp('40%'),
     height:
       Platform.OS === 'ios'
         ? Dimensions.get('window').height < 670
           ? hp('10%')
           : hp('40%')
         : Dimensions.get('window').height < 870
-          ? hp('29%')
-          : hp('40%'),
+        ? hp('29%')
+        : hp('40%'),
     resizeMode: 'contain',
   },
 
