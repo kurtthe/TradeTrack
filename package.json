@@ -22,7 +22,6 @@
     "@react-navigation/native": "5.9.3",
     "@react-navigation/stack": "5.14.3",
     "@reduxjs/toolkit": "^1.6.1",
-    "@unimodules/core": "~7.2.0",
     "axios": "^0.21.1",
     "expo": "^45.0.0",
     "expo-app-loading": "~2.0.0",
