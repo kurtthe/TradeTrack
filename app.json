@@ -7,6 +7,7 @@
       "ios",
       "android"
     ],
+    "sdkVersion": "43.0.0",
     "version": "1.5.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -39,6 +40,7 @@
       "package": "com.tradetrak.Burdens",
       "permissions": [],
       "versionCode": 40,
+      "targetSdkVersion": "31",
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
       "config": {
         "googleMaps": {
