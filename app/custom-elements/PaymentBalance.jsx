@@ -15,6 +15,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
 import { TextInputMask } from 'react-native-masked-text';
+import PickerButton from '@custom-elements/PickerButton';
 
 const formatMoney = FormatMoneyService.getInstance();
 const generalRequestService = GeneralRequestService.getInstance();
@@ -25,12 +26,17 @@ const PaymentBalance = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
   const [valueAmount, setValueAmount] = useState('');
+  const [selectedValue, setSelectedValue] = useState(null);
 
   useEffect(() => {
     if (props.show) {
       actionSheetRef.current?.setModalVisible(props.show);
     }
   });
+
+  const handleValueChange = (value) => {
+    setSelectedValue(value);
+  };
 
   const handleShowMethodPayment = async () => {
 
@@ -82,6 +88,16 @@ const PaymentBalance = (props) => {
             onValueChange={(option) => changeOptionBalancePay(option)}
             items={pickerOptions}
           />
+
+      <PickerButton
+          placeholder={'Select an option'}
+          renderOptions={pickerOptions}
+          onChangeOption={(option) =>  changeOptionBalancePay(option)}
+          icon={true}
+          deleteOption
+        />
+
+
           <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10 }}>Amount</Text>
           <TextInputMask
             placeholder="$0.00"
