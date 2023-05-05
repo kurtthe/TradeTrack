@@ -27,16 +27,23 @@ const PaymentBalance = (props) => {
   const [urlPayment, setUrlPayment] = useState('');
   const [valueAmount, setValueAmount] = useState('');
   const [selectedValue, setSelectedValue] = useState(null);
+  const [optionBalanceSelected, setOptionBalanceSelected] = useState(null)
+  const [optionsBalances, setOptionsBalances] = useState([])
+
+
+  useEffect(()=>{
+    setOptionsBalances(pickerOptions)
+  }, [])
 
   useEffect(() => {
     if (props.show) {
       actionSheetRef.current?.setModalVisible(props.show);
     }
-  });
+  }, [props.show]);
 
-  const handleValueChange = (value) => {
-    setSelectedValue(value);
-  };
+
+  console.log("=>optionsBalances", optionsBalances)
+
 
   const handleShowMethodPayment = async () => {
 
@@ -54,18 +61,18 @@ const PaymentBalance = (props) => {
   };
 
   const changeOptionBalancePay = (option) => {
-    if (option === 'now') {
-      setValueAmount(formatMoney.format(props.balance?.thirty_day));
-      return;
+    const optionValue = option.value;
+    setOptionBalanceSelected(option)
+
+    if (optionValue === 'now') {
+      return setValueAmount(formatMoney.format(props.balance?.thirty_day));
     }
-    if (option === 'overdue') {
-      setValueAmount(formatMoney.format(props.balance?.overdue));
-      return;
+    if (optionValue === 'overdue') {
+      return setValueAmount(formatMoney.format(props.balance?.overdue));
     }
-    if (option === 'nowAndOver') {
-      const totalSum = props.balance?.thirty_day + props.balance?.overdue;
-      setValueAmount(formatMoney.format(totalSum));
-    }
+
+    const totalSum = props.balance?.thirty_day + props.balance?.overdue;
+    setValueAmount(formatMoney.format(totalSum));
   };
 
   return (
@@ -76,25 +83,12 @@ const PaymentBalance = (props) => {
             Balance to Pay
           </Text>
 
-          <RNPickerSelect
-            placeholder={{ label: 'Select an option' }}
-            pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
-            textInputProps={{ color: nowTheme.COLORS.LIGHTGRAY }}
-            style={{
-              placeholder: styles.pickerText,
-              viewContainer: styles.pickerContainer,
-              inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
-            }}
-            onValueChange={(option) => changeOptionBalancePay(option)}
-            items={pickerOptions}
-          />
-
       <PickerButton
-          placeholder={'Select an option'}
-          renderOptions={pickerOptions}
+          placeholder={!optionBalanceSelected?'Select an option': optionBalanceSelected.label}
+          renderOptions={optionsBalances}
           onChangeOption={(option) =>  changeOptionBalancePay(option)}
           icon={true}
-          deleteOption
+          errorLabel
         />
 
 
