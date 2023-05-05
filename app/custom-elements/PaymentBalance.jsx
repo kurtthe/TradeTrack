@@ -15,6 +15,7 @@ import ActionSheet from 'react-native-actions-sheet';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
 import { TextInputMask } from 'react-native-masked-text';
+import PickerButton from '@custom-elements/PickerButton';
 
 const formatMoney = FormatMoneyService.getInstance();
 const generalRequestService = GeneralRequestService.getInstance();
@@ -25,12 +26,24 @@ const PaymentBalance = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
   const [valueAmount, setValueAmount] = useState('');
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [optionBalanceSelected, setOptionBalanceSelected] = useState(null)
+  const [optionsBalances, setOptionsBalances] = useState([])
+
+
+  useEffect(()=>{
+    setOptionsBalances(pickerOptions)
+  }, [])
 
   useEffect(() => {
     if (props.show) {
       actionSheetRef.current?.setModalVisible(props.show);
     }
-  });
+  }, [props.show]);
+
+
+  console.log("=>optionsBalances", optionsBalances)
+
 
   const handleShowMethodPayment = async () => {
 
@@ -48,18 +61,18 @@ const PaymentBalance = (props) => {
   };
 
   const changeOptionBalancePay = (option) => {
-    if (option === 'now') {
-      setValueAmount(formatMoney.format(props.balance?.thirty_day));
-      return;
+    const optionValue = option.value;
+    setOptionBalanceSelected(option)
+
+    if (optionValue === 'now') {
+      return setValueAmount(formatMoney.format(props.balance?.thirty_day));
     }
-    if (option === 'overdue') {
-      setValueAmount(formatMoney.format(props.balance?.overdue));
-      return;
+    if (optionValue === 'overdue') {
+      return setValueAmount(formatMoney.format(props.balance?.overdue));
     }
-    if (option === 'nowAndOver') {
-      const totalSum = props.balance?.thirty_day + props.balance?.overdue;
-      setValueAmount(formatMoney.format(totalSum));
-    }
+
+    const totalSum = props.balance?.thirty_day + props.balance?.overdue;
+    setValueAmount(formatMoney.format(totalSum));
   };
 
   return (
@@ -70,18 +83,15 @@ const PaymentBalance = (props) => {
             Balance to Pay
           </Text>
 
-          <RNPickerSelect
-            placeholder={{ label: 'Select an option' }}
-            pickerProps={{ style: { height: 214, overflow: 'hidden' } }}
-            textInputProps={{ color: nowTheme.COLORS.LIGHTGRAY }}
-            style={{
-              placeholder: styles.pickerText,
-              viewContainer: styles.pickerContainer,
-              inputAndroid: { color: nowTheme.COLORS.PICKERTEXT },
-            }}
-            onValueChange={(option) => changeOptionBalancePay(option)}
-            items={pickerOptions}
-          />
+      <PickerButton
+          placeholder={!optionBalanceSelected?'Select an option': optionBalanceSelected.label}
+          renderOptions={optionsBalances}
+          onChangeOption={(option) =>  changeOptionBalancePay(option)}
+          icon={true}
+          errorLabel
+        />
+
+
           <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10 }}>Amount</Text>
           <TextInputMask
             placeholder="$0.00"
