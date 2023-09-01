@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image, TouchableOpacity, ImageBackground, View } from 'react-native';
-import { Block, Text } from 'galio-framework';
+import { Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { Text } from 'galio-framework';
 
 import { makeStyles } from './CategoryItem.styles'
 const CategoryItem = ({ title,
@@ -12,14 +12,8 @@ const CategoryItem = ({ title,
   const imageStyles = [styles.horizontalImage];
   const titleStyles = [styles.cardTitle];
   const cardContainer = [styles.card, styles.shadow];
-  const imgContainer = [
-    styles.imageContainer,
-    styles.shadow
-  ];
-
 
   const handlePress = () => onPress && onPress()
-
 
   return (
     <TouchableOpacity onPress={() => handlePress()} style={cardContainer}>

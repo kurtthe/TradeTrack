@@ -41,7 +41,6 @@ const TProducts = ({ cartProducts, changeClientFriendly, updateProducts }) => {
             title="Client Friendly Mode"
             onChange={(value) => handleChangeSwitch(value)}
           />
-
           <CategoriesProducts />
         </Block>
 

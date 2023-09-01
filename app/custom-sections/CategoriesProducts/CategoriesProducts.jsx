@@ -15,7 +15,7 @@ const CategoriesProducts = () => {
 
   const handleCategory = (item) => {
     setTimeout(() => {
-      dispatch(selectedCategory(item.id))
+      item.id !== 'Pools' && dispatch(selectedCategory(item.id))
       navigation.navigate('Category', {
         nameRouteGoing: 'Products',
       });
@@ -42,6 +42,7 @@ const CategoriesProducts = () => {
         renderItem={renderCategory}
         numColumns={2}
         keyExtractor={(item, index) => `${index}-${item.title}`}
+        scrollEnabled={false}
       />
     </Block>
   )

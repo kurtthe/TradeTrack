@@ -12,11 +12,11 @@ export const getProducts = async (options) => {
     page
   }
 
-  if (options.category_id) {
+  if (options.category_id && options.category_id !== "Pools") {
     paramsPetition['category_id'] = category_id
   }
   if (options.search) {
-    paramsPetition['search'] = search
+    paramsPetition['search'] = options.category_id === "Pools"? options.category_id: search
   }
 
   const response = await generalRequestService.getWithHeaders(endPoints.products, {},
@@ -28,7 +28,7 @@ export const getProducts = async (options) => {
       expand: 'price',
       ...paramsPetition
     })
-    
+
   return Promise.resolve(response)
 }
 
