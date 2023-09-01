@@ -15,7 +15,7 @@ const CategoriesProducts = () => {
 
   const handleCategory = (item) => {
     setTimeout(() => {
-      item.id !== 'Pools' && dispatch(selectedCategory(item.id))
+      dispatch(selectedCategory(item.id))
       navigation.navigate('Category', {
         nameRouteGoing: 'Products',
       });
