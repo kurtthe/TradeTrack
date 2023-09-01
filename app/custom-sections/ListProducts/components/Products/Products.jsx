@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
 import Product from '@custom-elements/Product';
@@ -25,7 +25,7 @@ export const Products = () => {
   const isLoading = useSelector((state) => state.filterReducer.isLoading)
   const restricted = useSelector((state) => state.filterReducer.restricted)
   const page = useSelector((state) => state.filterReducer.page)
-  
+
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
 
