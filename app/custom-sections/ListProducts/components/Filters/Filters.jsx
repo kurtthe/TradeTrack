@@ -169,7 +169,7 @@ export const FilterProducts = () => {
 
   if(restricted) {
     return (
-    <View style={styles.container}></View>) 
+    <View style={styles.container}></View>)
   }
 
   return (
@@ -179,7 +179,7 @@ export const FilterProducts = () => {
           <FilterButton
             text={'Category'}
             onPress={() => handleShowCategories()}
-            isActive={categoryActive}
+            isActive={categoryParentSelected === "Pools"? false: categoryActive}
             isLoading={isLoading}
             disabled={isLoadingFilter}
           />

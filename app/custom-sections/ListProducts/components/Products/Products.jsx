@@ -104,7 +104,7 @@ export const Products = () => {
     )
   }
 
-  if(!restricted &&isLoading && dataProducts.length === 0){
+  if(dataProducts.length === 0){
     return(
     <View style={styles.contentLoading}>
       <LoadingComponent size='large' />
@@ -113,16 +113,13 @@ export const Products = () => {
   }
 
   return (
-    <>
-      <FlatList
-        data={dataProducts}
-        renderItem={memoizedValue}
-        keyExtractor={(item, index) => `${item.sku}-${index}`}
-        numColumns={2}
-        contentContainerStyle={styles.container}
-        ListFooterComponent={getButtonLoadingMore}
-      />
-
-    </>
+    <FlatList
+      data={dataProducts}
+      renderItem={memoizedValue}
+      keyExtractor={(item, index) => `${item.sku}-${index}`}
+      numColumns={2}
+      contentContainerStyle={styles.container}
+      ListFooterComponent={getButtonLoadingMore}
+    />
   );
 };
