@@ -33,6 +33,7 @@ export const filterStatementsSlice = createSlice({
         state.products = [...state.products, ...action.payload]
         return
       }
+      state.isLoading = !action.payload.length
       state.products = action.payload
       state.restricted = action.payload.restricted ? action.payload.restricted : false
     },

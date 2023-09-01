@@ -3,7 +3,6 @@ import {endPoints} from '@shared/dictionaries/end-points';
 import {getSupplierId} from '../getSupplierId.service'
 const generalRequestService = GeneralRequestService.getInstance()
 
-
 export const getProducts = async (options) => {
   const {category_id, page, search, only_favourite} = options
   const supplierId = await getSupplierId()

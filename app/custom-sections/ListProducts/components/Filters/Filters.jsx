@@ -1,4 +1,4 @@
-import React, {useEffect, useState, createRef, useCallback} from 'react';
+import React, {useEffect, useState, createRef} from 'react';
 import {View} from 'react-native';
 import ActionSheet from 'react-native-actions-sheet';
 import FilterButton from '@components/FilterButton';
@@ -167,6 +167,8 @@ export const FilterProducts = () => {
     );
   }
 
+  if(categoryParentSelected === "Pools") return null
+
   if(restricted) {
     return (
     <View style={styles.container}></View>)
@@ -179,7 +181,7 @@ export const FilterProducts = () => {
           <FilterButton
             text={'Category'}
             onPress={() => handleShowCategories()}
-            isActive={categoryParentSelected === "Pools"? false: categoryActive}
+            isActive={categoryActive}
             isLoading={isLoading}
             disabled={isLoadingFilter}
           />
