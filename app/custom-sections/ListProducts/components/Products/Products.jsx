@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { FlatList } from 'react-native';
-
+import React, { useState, useEffect } from 'react';
+import { FlatList, View } from 'react-native';
+import LoadingComponent from '@custom-elements/Loading'
 import { useSelector, useDispatch } from 'react-redux';
 import Product from '@custom-elements/Product';
 import { makeStyles } from './Products.styles'
@@ -25,11 +25,11 @@ export const Products = () => {
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const {
     data: products,
     refetch,
-    isLoading: loadingProducts
     } = useGetProducts({
     page,
     category_id: categorySelected,
@@ -55,11 +55,18 @@ export const Products = () => {
   }, [products?.headers, page])
 
   useEffect(() => {
+    if(!products?.body){
+      refetch()
+    }
+
     if(products?.body?.length){
+      setIsLoading(false)
       dispatch(getProducts(products?.body))
       setLoadingMoreData(false)
     }
-  }, [products?.body])
+
+    return () => setIsLoading(true)
+  }, [products])
 
   const renderItem = ({ item }) => {
     return (<Product
@@ -84,22 +91,28 @@ export const Products = () => {
     return null
   }
 
-  console.log("dataProducts::", dataProducts.length)
-  console.log("categorySelected::", categorySelected)
-
   return (
     <>
       {restricted && <Restricted />}
-        <FlatList
-          onRefresh={() => refetch()}
-          refreshing={loadingProducts}
-          data={dataProducts}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => `${item.sku}-${index}`}
-          numColumns={2}
-          contentContainerStyle={styles.container}
-          ListFooterComponent={getButtonLoadingMore}
-        />
+      {
+        isLoading ? (
+          <View style={styles.contentLoading}>
+            <LoadingComponent size='large' />
+          </View>
+        ): (
+          <FlatList
+            onRefresh={() => refetch()}
+            refreshing={isLoading}
+            data={dataProducts}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => `${item.sku}-${index}`}
+            numColumns={2}
+            contentContainerStyle={styles.container}
+            ListFooterComponent={getButtonLoadingMore}
+            />
+        )
+      }
+
     </>
   );
 };
