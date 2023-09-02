@@ -4,7 +4,7 @@ import { Block, Text, theme } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import ActionSheet from 'react-native-actions-sheet';
+import { BottomSheet } from 'react-native-sheet';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
 import nowTheme from '@constants/Theme';
@@ -112,7 +112,7 @@ class Filters extends Component {
       this.setState({
         type: value,
       });
-      actionSheetRef.current?.setModalVisible(false);
+      actionSheetRef.current?.hide();
     }
     if (whoChange === 'date') {
       this.handleDatePicked(value);
@@ -143,7 +143,7 @@ class Filters extends Component {
   };
 
   onPressRadioButton = () => {
-    actionSheetRef.current?.setModalVisible(true);
+    actionSheetRef.current?.show();
   };
 
   selectedOptionRadio = (options) => {
@@ -208,7 +208,7 @@ class Filters extends Component {
             onChangeText={(text) => this.debouncedOnChange('text', text)}
           />
         </Block>
-        <ActionSheet ref={actionSheetRef}>
+        <BottomSheet height={400} ref={actionSheetRef}>
           <Block style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
             <RadioGroup
               radioButtons={this.state.optionsType}
@@ -217,7 +217,7 @@ class Filters extends Component {
               selected={false}
             />
           </Block>
-        </ActionSheet>
+        </BottomSheet>
       </>
     );
   };
