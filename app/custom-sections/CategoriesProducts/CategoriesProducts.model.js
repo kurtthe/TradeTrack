@@ -48,7 +48,7 @@ export const categories = [
     image: images.silicon
   },
   {
-    id: "Pool",
+    id: "Pools",
     name: "POOLS",
     image: images.pools
   },
