@@ -9,7 +9,7 @@ export const getProducts = async (options) => {
   const paramsPetition = {
     page
   }
-  const isPools = category_id === "Pools"
+  const isPools = category_id === "Pool"
   if (category_id && !isPools) {
     paramsPetition['category_id'] = category_id
   }
