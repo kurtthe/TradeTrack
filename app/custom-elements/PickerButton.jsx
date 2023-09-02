@@ -5,7 +5,7 @@ import nowTheme from '@constants/Theme';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Search from '@custom-elements/Search';
 import { Block, Text, theme } from 'galio-framework';
-import ActionSheet from 'react-native-actions-sheet';
+import { BottomSheet } from 'react-native-sheet';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -67,7 +67,7 @@ class PickerButton extends Component {
       picked: true,
     });
     this.props.onChangeOption && this.props.onChangeOption(selected);
-    this.actionSheetRadioButtonRef.current?.setModalVisible(false);
+    this.actionSheetRadioButtonRef.current?.hide();
   };
 
   onDeleteSelected = () => {
@@ -82,7 +82,7 @@ class PickerButton extends Component {
     });
     this.props.changeSearchText && this.props.changeSearchText('')
     this.props.onChangeOption && this.props.onChangeOption(null);
-    this.actionSheetRadioButtonRef.current?.setModalVisible(false);
+    this.actionSheetRadioButtonRef.current?.hide();
   };
 
   changeSearchText = (text) => {
@@ -98,7 +98,7 @@ class PickerButton extends Component {
       this.props.onPress();
       return;
     }
-    this.actionSheetRadioButtonRef.current?.setModalVisible();
+    this.actionSheetRadioButtonRef.current?.show();
   };
 
   rendetOptionsSelected = () => {
@@ -114,9 +114,9 @@ class PickerButton extends Component {
             inputStyle={styles.searchInput}
           />
         ) : null}
-        <ScrollView 
-          style={[styles.scrollOptions, this.state.search && {height: '95%'}]} 
-          contentContainerStyle={styles.sortContent} 
+        <ScrollView
+          style={[styles.scrollOptions, this.state.search && {height: '95%'}]}
+          contentContainerStyle={styles.sortContent}
         >
           {this.state.renderOptions?.length === 0 ? (
             <Text>No exists options</Text>
@@ -141,13 +141,13 @@ class PickerButton extends Component {
     return (
       <>
         <View style={styles.wholeContainer}>
-          {label && 
+          {label &&
             <Block row>
               <Text style={[styles.text, { fontWeight: 'bold' }]}>{label}</Text>
               {this.props.errorLabel && <Text style={styles.errorText}> * </Text>}
             </Block>
           }
-          {text && 
+          {text &&
             <Block row>
               <Text size={14} style={[styles.text, styles.grayText]}>
                 {text}
@@ -172,9 +172,9 @@ class PickerButton extends Component {
           </Block>
         </View>
 
-        <ActionSheet ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
+        <BottomSheet height={500} ref={this.actionSheetRadioButtonRef} headerAlwaysVisible>
             {this.rendetOptionsSelected()}
-        </ActionSheet>
+        </BottomSheet>
       </>
     );
   }
