@@ -9,7 +9,7 @@ export const getProducts = async (options) => {
   const paramsPetition = {
     page
   }
-  const isPools = category_id === "Pool"
+  const isPools = category_id === "Pools"
   if (category_id && !isPools) {
     paramsPetition['category_id'] = category_id
   }
@@ -20,7 +20,6 @@ export const getProducts = async (options) => {
   const response = await generalRequestService.getWithHeaders(endPoints.products, {},
     {
       'per-page': 20,
-      //supplier_id: supplierId,
       update_prices: true,
       favourites_only: only_favourite || false,
       expand: 'price',

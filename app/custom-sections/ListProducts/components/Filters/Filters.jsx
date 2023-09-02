@@ -167,7 +167,7 @@ export const FilterProducts = () => {
     );
   }
 
-  if(categoryParentSelected === "Pool") return null
+  if(categoryParentSelected === "Pools") return null
 
   if(restricted) {
     return (

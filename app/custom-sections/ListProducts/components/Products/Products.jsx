@@ -39,7 +39,7 @@ export const Products = () => {
 
   useEffect(() => {
     setLoadingMoreData(true)
-    refetch()
+    setTimeout(()=> refetch(), 500)
   }, [page, categorySelected, favoriteFilter])
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export const Products = () => {
     />
     )
   }
-  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly, categorySelected, favoriteFilter, loadingProducts])
+  //const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly, categorySelected, favoriteFilter, loadingProducts])
   const handleLoadingMore = () => {
     dispatch(nextPage())
   }
@@ -84,6 +84,9 @@ export const Products = () => {
     return null
   }
 
+  console.log("dataProducts::", dataProducts.length)
+  console.log("categorySelected::", categorySelected)
+
   return (
     <>
       {restricted && <Restricted />}
@@ -91,7 +94,7 @@ export const Products = () => {
           onRefresh={() => refetch()}
           refreshing={loadingProducts}
           data={dataProducts}
-          renderItem={memoizedValue}
+          renderItem={renderItem}
           keyExtractor={(item, index) => `${item.sku}-${index}`}
           numColumns={2}
           contentContainerStyle={styles.container}
