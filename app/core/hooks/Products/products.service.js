@@ -1,11 +1,11 @@
 import {GeneralRequestService} from '@core/services/general-request.service'
 import {endPoints} from '@shared/dictionaries/end-points';
-import {getSupplierId} from '../getSupplierId.service'
+//import {getSupplierId} from '../getSupplierId.service'
 const generalRequestService = GeneralRequestService.getInstance()
 
 export const getProducts = async (options) => {
   const {category_id, page, search, only_favourite} = options
-  const supplierId = await getSupplierId()
+  //const supplierId = await getSupplierId()
   const paramsPetition = {
     page
   }
@@ -23,7 +23,7 @@ export const getProducts = async (options) => {
       update_prices: true,
       favourites_only: only_favourite || false,
       expand: 'price',
-      supplier_id: supplierId,
+      //supplier_id: supplierId,
       ...paramsPetition
     })
 
