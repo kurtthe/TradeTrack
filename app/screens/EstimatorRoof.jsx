@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import WebViewComponent from '@custom-elements/WebView';
 import { useSelector } from 'react-redux'
+import Loading from '@custom-elements/Loading';
 
 const EstimatorRoof = () => {
   const [urlView, setUrlView] = useState(null);
@@ -12,13 +13,14 @@ const EstimatorRoof = () => {
   const client_number = useSelector((state) => state.liveBalanceReducer.client_number);
 
   useEffect(() => {
-    getUrlRender();
-  }, []);
-
-  const getUrlRender = async () => {
     const url = `https://burdenstradetrakroofestimator.paperform.co/?email=${emailUser}&name=${fullName}&api_key=${api_key}&company=${companyName}&burdens_account=${client_number}`
-    setUrlView(url);
-  };
+    const encodedUrl = encodeURI(url);
+    setUrlView(encodedUrl);
+  }, [emailUser, fullName, api_key, companyName, client_number]);
+
+  if(!urlView) {
+    return <Loading />
+  }
 
   return (
     <View style={styles.webViewContainer}>

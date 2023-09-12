@@ -1,11 +1,12 @@
 import React from 'react'
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, Platform } from 'react-native';
 import { Block, NavBar } from 'galio-framework';
 import {makeStyles} from './Header.styles'
 import nowTheme from '@constants/Theme';
 import {Icons} from './components/Icons'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Icon from '@components/Icon';
+import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -53,7 +54,7 @@ const Header = ({
         <Block row style={{ width: wp('62.5%') }}>
           <Block flex middle />
           <Block flex middle style={{ top: 5 }}>
-            <Image style={styles.introImageStyle} source={require('@assets/imgs/img/logo.png')} />
+            <Image style={styles.introImageStyle}  source={require('@assets/imgs/img/logo.png')} />
           </Block>
         </Block>
       )
@@ -75,27 +76,29 @@ const Header = ({
   }
 
   return (
-    <Block style={[transparent ? { backgroundColor: 'rgba(0,0,0,0)' } : null]}>
-      <NavBar
-        title={headerType === 'Home' ? '' : title}
-        style={[styles.navbar, bgColor && { backgroundColor: bgColor }]}
-        transparent={transparent}
-        right={<Icons
-          headerType={headerType}
-          navigation={navigation}
-          white={white}
-          urlDownloadFile={scene.route?.params?.urlDownloadFile}
-        />}
-        rightStyle={{ alignItems: 'center' }}
-        left={renderHome()}
-        leftStyle={{ paddingVertical: 25, flex: 1.7 }}
-        titleStyle={[
-          styles.title,
-          { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
-          titleColor && { color: titleColor },
-        ]}
-      />
-    </Block>
+    <SafeAreaInsetsContext.Consumer>
+      {(insets) => (
+          <NavBar
+            title={headerType === 'Home' ? '' : title}
+            style={[{ marginTop: (insets?.top || 0) + Platform.select({ ios: 0, default: 5 }) }, styles.navbar, bgColor && { backgroundColor: bgColor }]}
+            transparent={transparent}
+            right={<Icons
+              headerType={headerType}
+              navigation={navigation}
+              white={white}
+              urlDownloadFile={scene.route?.params?.urlDownloadFile}
+            />}
+            rightStyle={{ alignItems: 'center' }}
+            left={renderHome()}
+            leftStyle={{ paddingVertical: 25, flex: 1.7 }}
+            titleStyle={[
+              styles.title,
+              { color: nowTheme.COLORS[white ? 'WHITE' : 'HEADER'] },
+              titleColor && { color: titleColor },
+            ]}
+          />
+      )}
+    </SafeAreaInsetsContext.Consumer>
   )
 }
 

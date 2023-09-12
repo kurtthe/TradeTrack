@@ -93,29 +93,10 @@ export const makeStyles = () =>
       justifyContent: 'center',
     },
     introImageStyle: {
-      width:
-        Platform.OS === 'ios'
-          ? Dimensions.get('window').height < 670
-            ? 100
-            : 120
-          : Dimensions.get('window').height < 595
-            ? 100
-            : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-              ? 120
-              : -120,
-      height:
-        Platform.OS === 'ios'
-          ? Dimensions.get('window').height < 670
-            ? 100
-            : 120
-          : Dimensions.get('window').height < 595
-            ? 100
-            : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-              ? 120
-              : -120,
+      width: 120,
+      height: 120,
       resizeMode: 'contain',
     },
-
     image: {
       width: 27.5,
       height: 27.5,
@@ -123,8 +104,5 @@ export const makeStyles = () =>
       resizeMode: 'contain',
       marginLeft: -20,
       top: -10,
-    },
-    options: {
-      padding: theme.SIZES.BASE / 2,
     },
   });
