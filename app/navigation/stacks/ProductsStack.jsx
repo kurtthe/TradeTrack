@@ -21,8 +21,6 @@ function ProductsStack() {
         title: 'Products ',
       }
     },
-    
-
     {
       name: 'Category',
       component: Category,

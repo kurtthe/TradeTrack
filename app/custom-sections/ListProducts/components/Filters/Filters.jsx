@@ -1,6 +1,6 @@
-import React, {useEffect, useState, createRef, useCallback} from 'react';
+import React, { useEffect, useState,  useRef } from 'react';
 import {View} from 'react-native';
-import ActionSheet from 'react-native-actions-sheet';
+import { BottomSheet } from 'react-native-sheet';
 import FilterButton from '@components/FilterButton';
 import {AlertService} from '@core/services/alert.service';
 
@@ -33,8 +33,8 @@ export const FilterProducts = () => {
   const [subCategoryActive, setSubCategoryActive] = useState(false)
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false)
 
-  const actionSheetRef = createRef();
-  const actionSheetRef2 = createRef();
+  const bottomSheet = useRef(null)
+  const bottomSheet2 = useRef(null)
 
   const styles = makeStyles()
 
@@ -93,7 +93,7 @@ export const FilterProducts = () => {
   }, [listCategories])
 
   const handleShowCategories = () => {
-    actionSheetRef.current?.setModalVisible();
+    bottomSheet.current?.show();
   }
 
   const handleShowSubCategories = () => {
@@ -101,7 +101,7 @@ export const FilterProducts = () => {
       alertService.show('Alert!', 'No sub categories found');
       return;
     }
-    actionSheetRef2.current?.setModalVisible();
+    bottomSheet.current?.show();
   }
 
   const categorySelected = (options) => {
@@ -128,12 +128,12 @@ export const FilterProducts = () => {
     dispatch(toggleLoading(true))
     setCategoryActive(true)
     setNoSubCategoriesFound(false)
-    actionSheetRef.current?.setModalVisible(false);
+    bottomSheet.current?.hide()
   };
 
   const onPressRadioButtonSubCategory = (options) => {
     categorySelected(options);
-    actionSheetRef2.current?.setModalVisible(false);
+    bottomSheet2.current?.hide();
     setSubCategoryActive(true)
     dispatch(toggleLoading(true))
   }
@@ -167,9 +167,11 @@ export const FilterProducts = () => {
     );
   }
 
+  if(categoryParentSelected === "Pools") return null
+
   if(restricted) {
     return (
-    <View style={styles.container}></View>) 
+    <View style={styles.container}></View>)
   }
 
   return (
@@ -213,19 +215,19 @@ export const FilterProducts = () => {
         </View>
       </View>
 
-      <ActionSheet ref={actionSheetRef} headerAlwaysVisible>
+      <BottomSheet height={500} ref={bottomSheet}>
         <ListRadioButton
           onChange={(option) => onPressRadioButtonCategory(option)}
           options={categories}
         />
-      </ActionSheet>
+      </BottomSheet>
 
-      <ActionSheet ref={actionSheetRef2} headerAlwaysVisible>
+      <BottomSheet height={500} ref={bottomSheet2}>
         <ListRadioButton
           onChange={(option) => onPressRadioButtonSubCategory(option)}
           options={subCategories}
         />
-      </ActionSheet>
+      </BottomSheet>
     </>
   );
 };

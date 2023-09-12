@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import { nowTheme } from '@constants';
 
 export const makeStyles = () =>
   StyleSheet.create({
@@ -8,7 +7,6 @@ export const makeStyles = () =>
       width: Dimensions.get('window').width,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: nowTheme.COLORS.BACKGROUND,
     },
     contentFilters: {
       flexDirection: 'row',

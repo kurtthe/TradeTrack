@@ -1,15 +1,13 @@
 import React from 'react'
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import { Block, NavBar } from 'galio-framework';
 import {makeStyles} from './Header.styles'
 import nowTheme from '@constants/Theme';
 import {Icons} from './components/Icons'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Icon from '@components/Icon';
-import { useDispatch } from 'react-redux';
-import {
-  reset
-} from '@core/module/store/filter/filter';
+
+import { useNavigation } from '@react-navigation/native';
 
 const Header = ({
   title,
@@ -18,34 +16,22 @@ const Header = ({
   transparent,
   bgColor,
   titleColor,
-  navigation,
   back,
   scene,
   iconColor
 }) => {
-  const dispatch = useDispatch()
   const styles = makeStyles()
-
+  const navigation = useNavigation()
   const handleLeftPress = () => {
-    if(title === 'Products  '){
-      dispatch(reset())
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Products' }],
-      });
-      return;
-    }
+    const routeName = scene?.route?.params?.nameRouteGoing;
 
     if (!scene || !scene?.route?.params?.nameRouteGoing) {
       navigation.goBack();
       return;
     }
 
-    const routeName = scene?.route?.params?.nameRouteGoing;
-
     if(routeName === 'Products'){
-      dispatch(reset())
-      setTimeout(()=> navigation.navigate('Products'), 500)
+      navigation.navigate('Products')
       return;
     }
 

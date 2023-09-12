@@ -100,7 +100,7 @@ class Product extends React.Component {
 
   onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
-    
+
     if (this.props?.cartProducts.some((element) => element.id === productItem.id)) {
       let sum = this.productCart.quantity ? this.productCart.quantity + this.state.cantProduct : this.state.cantProduct;
       const newArrayCant = this.productCart.updateCant(productItem.sku, sum);
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   },
   quantityBar: {
     paddingTop: Platform.OS == 'ios' ? 0 : 3,
-    backgroundColor: Platform.OS == 'ios' ? 'white' : 'transparent',
+    backgroundColor: "white",
     flexDirection: 'row',
     width: width,
     alignItems: 'center',

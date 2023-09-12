@@ -42,6 +42,7 @@ const CategoriesProducts = () => {
         renderItem={renderCategory}
         numColumns={2}
         keyExtractor={(item, index) => `${index}-${item.title}`}
+        scrollEnabled={false}
       />
     </Block>
   )
