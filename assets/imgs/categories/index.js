@@ -7,4 +7,5 @@ export const images = {
   roofing: require('@assets/imgs/categories/ROOFING.png'),
   silicon: require('@assets/imgs/categories/SILICON.png'),
   values: require('@assets/imgs/categories/VALUES.png'),
+  pools: require('@assets/imgs/categories/POOLS.jpg')
 }

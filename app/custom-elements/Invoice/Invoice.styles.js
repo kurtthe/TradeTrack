@@ -4,6 +4,7 @@ import { nowTheme } from '@constants';
 
 export const makeStyles = () => StyleSheet.create({
   container: {
+    backgroundColor: "transparent",
     flex: 1,
     paddingVertical: 10,
     shadowColor: nowTheme.COLORS.BLACK,

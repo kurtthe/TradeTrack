@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from '@custom-sections/Header';
 
 const putHeader = (navigation, scene, header = false) => {
-
   if (!header) {
     return null;
   }

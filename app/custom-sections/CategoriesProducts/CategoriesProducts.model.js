@@ -47,4 +47,9 @@ export const categories = [
     name: "FASTENERS, GLUES, SILICON",
     image: images.silicon
   },
+  {
+    id: "Pools",
+    name: "POOLS",
+    image: images.pools
+  },
 ]

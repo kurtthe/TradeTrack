@@ -10,6 +10,7 @@ import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import LoadingComponent from '@custom-elements/Loading';
+import { nowTheme } from '@constants';
 
 export const SearchProducts = ({route}) => {
   const { text: textSearchHome } = route.params
@@ -38,7 +39,7 @@ export const SearchProducts = ({route}) => {
   const styles = makeStyles()
 
   useEffect(() => {
-    optionsProducts.page == 1 && setLoadingData(true)
+    optionsProducts.page === 1 && setLoadingData(true)
     optionsProducts.page > 1 && setLoadingMore(true)
     refetch();
   }, [optionsProducts.page,optionsProducts.search, optionsProducts.category_id ])
@@ -115,7 +116,6 @@ export const SearchProducts = ({route}) => {
     />
     )
   }
-
   const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const renderNotFound = () => {
@@ -148,7 +148,7 @@ export const SearchProducts = ({route}) => {
   }
 
   return (
-    <>
+    <View style={{flex: 1, backgroundColor: nowTheme.COLORS.BACKGROUND}}>
       <Search
         placeholder="What are you looking for?"
         onChangeText={setTextSearch}
@@ -157,7 +157,7 @@ export const SearchProducts = ({route}) => {
         inputStyle={styles.searchInput}
       />
       {!empty && putContent()}
-    </>
+    </View>
 
   );
 }
