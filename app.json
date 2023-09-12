@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.5.4",
+    "version": "1.5.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,7 +16,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/64a079a5-3b38-4879-9bb1-ee6192444fff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -38,19 +39,17 @@
     "android": {
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 45,
-      "googleServicesFile": "./GoogleAnalytics/google-services.json",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyBo1S1NNk3JpmZaiPM_kZSq0yz0vVbf194"
-        }
-      }
+      "versionCode": 46,
+      "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
     "extra": {
       "eas": {
         "projectId": "64a079a5-3b38-4879-9bb1-ee6192444fff"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
