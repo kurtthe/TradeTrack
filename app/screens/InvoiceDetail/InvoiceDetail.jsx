@@ -50,14 +50,16 @@ export const InvoiceDetails = ({ route }) => {
   const [urlWebView, setUrlWebView] = useState()
 
   const openViewerPdf = async () => {
+    setLoadingLoadPdf(true)
+
     if(!urlDownloadFile){
       alertService.show('Alert!', 'Try Again Later');
-      return;
+      return setLoadingLoadPdf(false);
     }
-    setLoadingLoadPdf(true)
     const result = await generalRequestService.get(urlDownloadFile);
-    setShowModalBottom(true)
     setUrlFilePdf(result)
+
+    setShowModalBottom(true)
     setLoadingLoadPdf(false)
   };
 
@@ -99,7 +101,7 @@ export const InvoiceDetails = ({ route }) => {
 
     const dataInvoice = await getDataPetition.getInfoWithHeaders(url);
     const dataTracking = await getDataPetition.getInfoWithHeaders(urlTracking);
-    
+
     setInvoiceDetail({
       ...dataInvoice.body,
       tracking: dataTracking.body.tracking,
@@ -168,12 +170,12 @@ export const InvoiceDetails = ({ route }) => {
             />
           )}
           {loadingLoadPdf ? (
-            <Button 
-              size={'small'} 
+            <Button
+              size={'small'}
               color={nowTheme.COLORS.BACKGROUND}
               disabled
               shadowless
-            > 
+            >
               <Loading />
             </Button>
           ) : (
