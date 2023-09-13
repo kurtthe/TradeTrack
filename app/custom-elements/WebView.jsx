@@ -3,6 +3,11 @@ import { WebView } from 'react-native-webview';
 import Loading from '@custom-elements/Loading';
 
 const WebViewComponent = (props) => {
+
+  if(!props.url){
+    return <Loading />;
+  }
+
   return (
     <WebView
       style={props.style}

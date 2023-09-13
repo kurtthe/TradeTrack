@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import WebViewComponent from '@custom-elements/WebView';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
@@ -18,7 +18,7 @@ const Register = () => {
     const response = await generalRequestService.get(
       'https://api.tradetrak.com.au/burdens/dashboard',
     );
-    
+
     if(response.restricted) {
       setRestricted(true)
     }
@@ -28,7 +28,7 @@ const Register = () => {
   if (restricted) {
     return (
       <View style={styles.restrictedContainer}>
-        <Restricted /> 
+        <Restricted />
       </View>
     )
   }
