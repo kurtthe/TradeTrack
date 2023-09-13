@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.5.5",
+    "version": "1.5.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -30,7 +30,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
@@ -46,7 +46,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "versionCode": 46,
+      "versionCode": 47,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
