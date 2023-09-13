@@ -82,7 +82,6 @@ class Home extends React.Component {
           }
         >
           <LiveBalance company={true} />
-
           <View style={{ justifyContent: 'center', alignItems: 'center', top: 8 }}>
             <Search
               placeholder="What are you looking for?"

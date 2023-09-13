@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { nowTheme } from '@constants/index';
 import PickerButton from '@custom-elements/PickerButton';
 import { useGetStores, useGetPreferredStore } from '@core/hooks/PlaceOrders';
-import { setOptionsPicker, resetValueSelect } from '../utils';
+import { setOptionsPicker } from '../utils';
 import {useSelector, useDispatch} from 'react-redux';
 import {setDataStore} from '@core/module/store/placeOrders/placeOrders'
 
@@ -14,7 +14,7 @@ const Store = () => {
   const dispatch = useDispatch()
 
   const [notes, setNotes] = useState()
-  const [optionsSelectStores, setOptionsSelectStores] = useState()
+  const [optionsSelectStores, setOptionsSelectStores] = useState([])
   const nameStore = useSelector((state)=> state.placeOrderReducer.nameStore)
 
 
@@ -34,13 +34,15 @@ const Store = () => {
     if(!preferredStore){
       return
     }
-
     dispatch(setDataStore({...preferredStore, notes }))
   },[preferredStore, notes])
 
   const handleChangeOptionSelected = (option) => {
     dispatch(setDataStore(option))
   }
+
+  console.log("stores::", stores)
+  console.log("preferredStore::", preferredStore)
 
   return(
     <Block
@@ -55,7 +57,7 @@ const Store = () => {
       <PickerButton
         label="Store"
         errorLabel
-        placeholder={nameStore || 'Select store'}
+        placeholder={nameStore ?? 'Select store'}
         icon
         renderOptions={optionsSelectStores}
         onChangeOption={(option) => handleChangeOptionSelected(option)}
