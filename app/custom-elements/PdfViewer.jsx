@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PDFReader from 'rn-pdf-reader-js';
+import Pdf from 'react-native-pdf';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const PdfViewer = (props) => {
   return (
     <View style={styles.container}>
-      <PDFReader
+      <Pdf
+        style={{flex: 1}}
+        trustAllCerts={false}
         source={{
-          base64: `data:application/pdf;base64,${props.url}`
+          uri: `data:application/pdf;base64,${props.url}`,
+          cache: true
         }}
       />
     </View>
@@ -17,7 +20,7 @@ const PdfViewer = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: hp('80%'),
+    flex: 1,
   },
 });
 
