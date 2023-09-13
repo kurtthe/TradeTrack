@@ -14,7 +14,7 @@ const PdfViewer = ({url}) => {
         style={styles.pdf}
         trustAllCerts={false}
         source={{
-          uri: `data:application/pdf;base64,${props.url}`,
+          uri: `data:application/pdf;base64,${url}`,
           cache: true
         }}
       />
