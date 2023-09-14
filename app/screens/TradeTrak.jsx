@@ -11,8 +11,10 @@ const Register = () => {
   const [restricted, setRestricted] = useState(false);
 
   useEffect(() => {
-    getUrlRender();
-  });
+    (async ()=> {
+      await getUrlRender();
+    })()
+  }, []);
 
   const getUrlRender = async () => {
     const response = await generalRequestService.get(
@@ -22,7 +24,7 @@ const Register = () => {
     if(response.restricted) {
       setRestricted(true)
     }
-    setUrlView(response.url);
+    response.url && setUrlView(response.url);
   };
 
   if (restricted) {
@@ -35,17 +37,17 @@ const Register = () => {
 
   return (
     <View style={styles.webViewContainer}>
-      <WebViewComponent url={urlView} />
+      <WebViewComponent url={urlView} style={{flex: 1}} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   webViewContainer: {
+    marginTop: 60,
     flex: 1,
   },
   restrictedContainer: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   }
