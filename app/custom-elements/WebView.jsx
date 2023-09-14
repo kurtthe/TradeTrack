@@ -11,6 +11,7 @@ const WebViewComponent = (props) => {
   return (
     <WebView
       style={props.style}
+      javaScriptEnabled={true}
       originWhitelist={['*']}
       source={{ uri: props.url }}
       startInLoadingState={true}
