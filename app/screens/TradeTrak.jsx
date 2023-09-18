@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import WebViewComponent from '@custom-elements/WebView';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
+import Loading from '../custom-elements/Loading';
 
 const generalRequestService = GeneralRequestService.getInstance();
 
@@ -11,24 +12,27 @@ const Register = () => {
   const [restricted, setRestricted] = useState(false);
 
   useEffect(() => {
-    getUrlRender();
-  });
+    (
+      async () => {
+        const response = await generalRequestService.get(
+          'https://api.tradetrak.com.au/burdens/dashboard',
+        );
 
-  const getUrlRender = async () => {
-    const response = await generalRequestService.get(
-      'https://api.tradetrak.com.au/burdens/dashboard',
-    );
-    
-    if(response.restricted) {
-      setRestricted(true)
-    }
-    setUrlView(response.url);
-  };
+        if(response.restricted) {
+          setRestricted(true)
+        }
+        setUrlView(response.url);
+      }
+    )()
+  }, []);
+
+  if(!urlView) return <Loading />
+
 
   if (restricted) {
     return (
       <View style={styles.restrictedContainer}>
-        <Restricted /> 
+        <Restricted />
       </View>
     )
   }
