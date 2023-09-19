@@ -47,12 +47,12 @@ const Register = () => {
     )
   }
   const contentWidth = Dimensions.get("screen").width * 1;
-
   const content = `<iframe src='${urlView}' allowfullscreen></iframe>`;
 
   return (
     <View style={styles.item}>
-      <RenderHTML
+    <View style={styles.webViewContainer}>
+    <RenderHTML
               renderers={renderers}
               WebView={WebView}
               source={{
@@ -72,23 +72,25 @@ const Register = () => {
               }}
             />
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  item: {
-    marginTop: 60,
-    borderColor: 'blue',
-    borderBottomWidth: 1,
-    backgroundColor: "red",
-    height:Platform.OS === "android" ? 650 : 650
-    
+  webViewContainer: {
+    flex: 1,
   },
   restrictedContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  item: {
+    marginTop: 60,
+   // backgroundColor: "red",
+    height:Platform.OS === "android" ? 650 : 650
+    
+  },
 });
 
 export default Register;
