@@ -37,9 +37,12 @@
       }
     },
     "android": {
+      "config": {
+        "networkSecurityConfig": "./NetworkSecurity/network_security_config.xml"
+      },
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 46,
+      "versionCode": 51,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
