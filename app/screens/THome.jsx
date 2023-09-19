@@ -155,6 +155,16 @@ class Home extends React.Component {
                 App Feedback
               </Button>
             </Block>
+            <Block center style={{ top: -11 }}>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.buttonEstimator}
+                onPress={() => navigation.navigate('AppFeedback2')}
+              >
+                Trak
+              </Button>
+            </Block>
           </Block>
           <Block center style={{ paddingVertical: 50 }}>
             <Text style={{ color: 'grey', bottom: 65 }}>Version {expo.version}</Text>
