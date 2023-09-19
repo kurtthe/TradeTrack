@@ -46,44 +46,43 @@ const Register = () => {
       </View>
     )
   }
+  const contentWidth = Dimensions.get("screen").width * 1;
 
   const content = `<iframe src='${urlView}' allowfullscreen></iframe>`;
 
   return (
-    <View style={styles.webViewContainer}>
+    <View style={styles.item}>
       <RenderHTML
-        renderers={renderers}
-        WebView={WebView}
-        source={{
-          html: content,
-        }}
-        customHTMLElementModels={customHTMLElementModels}
-        contentWidth={contentWidth}
-        enableExperimentalMarginCollapsing={true}
-        renderersProps={{
-          iframe: {
-            webViewProps: {
-              height: '100%',
-              allowsFullScreen: true,
-            },
-          },
-        }}
-        tagsStyles={{
-          p: { marginTop: 15, marginBottom: 0 },
-          iframe: {
-            marginTop: 15,
-            borderRadius: 5,
-            marginHorizontal: 0,
-          },
-        }}
-      />
+              renderers={renderers}
+              WebView={WebView}
+              source={{
+                html: content,
+              }}
+              customHTMLElementModels={customHTMLElementModels}
+              tagsStyles={{
+              
+                iframe: {
+                
+                  borderRadius: 5,
+                  marginHorizontal: 0,
+                  height:Platform.OS === "android" ? 690 : 690,
+                  width:contentWidth
+                },
+               
+              }}
+            />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  webViewContainer: {
-    flex: 1,
+  item: {
+    marginTop: 60,
+    borderColor: 'blue',
+    borderBottomWidth: 1,
+    backgroundColor: "red",
+    height:Platform.OS === "android" ? 650 : 650
+    
   },
   restrictedContainer: {
     flex: 1,
