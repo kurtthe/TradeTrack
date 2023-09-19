@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import WebViewComponent from '@custom-elements/WebView';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
 import Loading from '../custom-elements/Loading';
+import RenderHTML from 'react-native-render-html';
+import WebView from 'react-native-webview';
+import IframeRenderer, { iframeModel } from '@native-html/iframe-plugin';
 
 const generalRequestService = GeneralRequestService.getInstance();
+const renderers = {
+  iframe: IframeRenderer
+};
+
+const customHTMLElementModels = {
+  iframe: iframeModel
+};
+const contentWidth = Dimensions.get("screen").width * 0.9;
 
 const Register = () => {
   const [urlView, setUrlView] = useState(null);
@@ -37,9 +47,36 @@ const Register = () => {
     )
   }
 
+  const content = `<iframe src='${urlView}' allowfullscreen></iframe>`;
+
   return (
     <View style={styles.webViewContainer}>
-      <WebViewComponent url={urlView} />
+      <RenderHTML
+        renderers={renderers}
+        WebView={WebView}
+        source={{
+          html: content,
+        }}
+        customHTMLElementModels={customHTMLElementModels}
+        contentWidth={contentWidth}
+        enableExperimentalMarginCollapsing={true}
+        renderersProps={{
+          iframe: {
+            webViewProps: {
+              height: '100%',
+              allowsFullScreen: true,
+            },
+          },
+        }}
+        tagsStyles={{
+          p: { marginTop: 15, marginBottom: 0 },
+          iframe: {
+            marginTop: 15,
+            borderRadius: 5,
+            marginHorizontal: 0,
+          },
+        }}
+      />
     </View>
   );
 };
