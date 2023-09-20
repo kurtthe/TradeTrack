@@ -155,7 +155,7 @@ class Home extends React.Component {
                 App Feedback
               </Button>
             </Block>
-            <Block center style={{ top: -11 }}>
+            {/* <Block center style={{ top: -11 }}>
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -164,7 +164,7 @@ class Home extends React.Component {
               >
                 Trak
               </Button>
-            </Block>
+            </Block> */}
           </Block>
           <Block center style={{ paddingVertical: 50 }}>
             <Text style={{ color: 'grey', bottom: 65 }}>Version {expo.version}</Text>

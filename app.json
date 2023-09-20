@@ -42,7 +42,7 @@
       },
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 52,
+      "versionCode": 53,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
