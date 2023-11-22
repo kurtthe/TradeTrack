@@ -4,12 +4,16 @@ import { Block, Text } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
+import { radioButtonsHour, optionsOthers } from '@shared/dictionaries/types-radio-buttons';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
 import Search from '@custom-elements/Search';
 import debounce from 'lodash.debounce';
+import { BottomSheet } from 'react-native-sheet';
+import RadioGroup from 'react-native-radio-buttons-group';
+import nowTheme from '@constants/Theme';
+
 
 const alertService = new AlertService();
 const actionSheetRef = createRef();
@@ -138,7 +142,18 @@ class Filters extends Component {
     this.props.getValues && this.props.getValues(data);
   };
 
-  selectedOptionRadio = (optionSelected) => {
+  changeSelectedTypeButton = (optionSelected) => {
+    if(optionSelected.value === "Other"){
+      return actionSheetRef.current?.show();
+    }
+    this.setState({
+      idSelectedType: optionSelected.id,
+    });
+    this.debouncedOnChange('type', optionSelected.value);
+  };
+
+  selectedOptionRadio = (options) => {
+    const optionSelected = options.find((item) => item.selected);
     this.setState({
       idSelectedType: optionSelected.id,
     });
@@ -180,24 +195,38 @@ class Filters extends Component {
     }
 
     return (
-      <Block style={styles.contentFilterBtn}>
-        <View styletypeSearch={{ marginRight: 20 }}>
-          <Text style={{ fontWeight: 'bold' }}>By Type</Text>
-        </View>
-        <FlatList
-          contentContainerStyle={{paddingHorizontal: 15}}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={this.state.optionsType}
-          renderItem={({item})=> (
-            <FilterButton
-              text={item.label}
-              onPress={() => this.selectedOptionRadio(item)}
+      <>
+        <Block style={styles.contentFilterBtn}>
+          <View styletypeSearch={{ marginRight: 20 }}>
+            <Text style={{ fontWeight: 'bold' }}>By Type</Text>
+          </View>
+          <FlatList
+            contentContainerStyle={{paddingHorizontal: 15}}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            data={this.state.optionsType}
+            renderItem={({item})=> (
+              <FilterButton
+                text={item.label}
+                onPress={() => this.changeSelectedTypeButton(item)}
+              />
+            )}
+            keyExtractor={(_, index)=> `button-filters${index}`}
+          />
+        </Block>
+
+        <BottomSheet height={400} ref={actionSheetRef}>
+          <Block style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
+            <RadioGroup
+              radioButtons={optionsOthers}
+              color={nowTheme.COLORS.INFO}
+              onPress={(option) => this.selectedOptionRadio(option)}
+              selected={false}
             />
-          )}
-          keyExtractor={(_, index)=> `button-filters${index}`}
-        />
-      </Block>
+          </Block>
+        </BottomSheet>
+      </>
+
     );
   };
 

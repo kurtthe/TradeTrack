@@ -10,7 +10,7 @@ const styleContainer = {
   alignItems: 'center',
 };
 
-export const radioButtonsHour = [
+export const optionsOthers = [
   {
     id: 4,
     label: 'CASH SALE',
@@ -38,6 +38,9 @@ export const radioButtonsHour = [
     containerStyle: styleContainer,
     selected: false,
   },
+]
+
+export const radioButtonsHour = [
   {
     id: 1,
     label: 'INVOICE',
@@ -65,4 +68,14 @@ export const radioButtonsHour = [
     containerStyle: styleContainer,
     selected: false,
   },
+  {
+    id: 3333,
+    label: 'OTHER',
+    value: 'Other',
+    color: nowTheme.COLORS.INFO,
+    labelStyle: styleLabel,
+    containerStyle: styleContainer,
+    selected: false,
+  },
 ];
+
