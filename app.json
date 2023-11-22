@@ -28,7 +28,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
@@ -42,7 +42,7 @@
       },
       "package": "com.tradetrak.Burdens",
       "permissions": [],
-      "versionCode": 53,
+      "versionCode": 54,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
