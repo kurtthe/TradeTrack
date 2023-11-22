@@ -11,13 +11,13 @@ import LoadingComponent from '@custom-elements/Loading';
 import Restricted from '@custom-elements/Restricted';
 
 export const ListTransactions = () => {
-  const [dataTransactions, setDataTransaction] = useState([])
-  const [transactions, setTransaction] = useState({})
+  const [dataTransactions, setDataTransaction] = useState([]);
+  const [transactions, setTransaction] = useState({});
 
-  const [loadingMoreData, setLoadingMoreData] = useState(false)
-  const [showLoadingMore, setShowLoadingMore] = useState(false)
+  const [loadingMoreData, setLoadingMoreData] = useState(false);
+  const [showLoadingMore, setShowLoadingMore] = useState(false);
 
-  const [keeData, setKeepData] = useState(false)
+  const [keeData, setKeepData] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [valuesFilters, setValuesFilters] = useState({});
   const styles = makeStyles();
@@ -27,21 +27,18 @@ export const ListTransactions = () => {
     page: 1,
   });
 
-
-  const fetchData = async ()=> {
-    const response = await getTransaction({...optionsTransactions, ...valuesFilters})
-    
-    if(response.body.restricted) {
-      setRestricted(true)
-      return
-    }
-    setTransaction(response)
-  }
-
   useEffect(() => {
-    setIsLoading(true)
-    setLoadingMoreData(true)
-    fetchData()
+    setIsLoading(true);
+    setLoadingMoreData(true);
+
+    (async () => {
+      const response = await getTransaction({...optionsTransactions, ...valuesFilters})
+      if(response.body.restricted) {
+        setRestricted(true)
+        return
+      }
+      setTransaction(response)
+    })()
   }, [optionsTransactions.page, valuesFilters])
 
 

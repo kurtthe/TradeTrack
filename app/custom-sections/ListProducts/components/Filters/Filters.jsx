@@ -26,7 +26,7 @@ export const FilterProducts = () => {
   const isLoadingFilter = useSelector((state) => state.filterReducer.isLoading)
   const restricted = useSelector((state) => state.filterReducer.restricted)
 
-  const [alertService] = useState(new AlertService())
+  const alertService = new AlertService()
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const [categoryActive, setCategoryActive] = useState(categoryParentSelected !== '')

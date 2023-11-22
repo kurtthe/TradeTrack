@@ -1,20 +1,16 @@
 import React, { Component, createRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Block, Text, theme } from 'galio-framework';
+import { View, StyleSheet, FlatList } from 'react-native';
+import { Block, Text } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { BottomSheet } from 'react-native-sheet';
-import RadioGroup from 'react-native-radio-buttons-group';
 import { radioButtonsHour } from '@shared/dictionaries/types-radio-buttons';
-import nowTheme from '@constants/Theme';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
 import Search from '@custom-elements/Search';
 import debounce from 'lodash.debounce';
 
-const { width } = Dimensions.get('screen');
 const alertService = new AlertService();
 const actionSheetRef = createRef();
 
@@ -142,19 +138,6 @@ class Filters extends Component {
     this.props.getValues && this.props.getValues(data);
   };
 
-  onPressRadioButton = () => {
-    actionSheetRef.current?.show();
-  };
-
-  selectedOptionRadio = (options) => {
-    const optionSelected = options.find((item) => item.selected);
-    this.setState({
-      idSelectedType: optionSelected.id,
-    });
-
-    this.debouncedOnChange('type', optionSelected.value);
-  };
-
   rangeDate = () => {
     return (
       <>
@@ -190,35 +173,22 @@ class Filters extends Component {
     }
 
     return (
-      <>
-        <Block style={styles.contentFilterBtn}>
-          <View style={{ marginRight: 20 }}>
-            <Text style={{ fontWeight: 'bold' }}>By Type</Text>
-          </View>
-          <Block>
+      <Block style={styles.contentFilterBtn}>
+        <View styletypeSearch={{ marginRight: 20 }}>
+          <Text style={{ fontWeight: 'bold' }}>By Type</Text>
+        </View>
+        <FlatList
+          horizontal={true}
+          data={this.state.optionsType}
+          renderItem={({item})=> (
             <FilterButton
-              text={this.state.type === '' ? 'Select' : this.state.type}
-              onPress={() => this.onPressRadioButton()}
+              text={item.label}
+              onPress={() => null}
             />
-          </Block>
-          <Search
-            style={styles.search}
-            inputStyle={styles.inputStyle}
-            placeholder="By description or invoice number"
-            onChangeText={(text) => this.debouncedOnChange('text', text)}
-          />
-        </Block>
-        <BottomSheet height={400} ref={actionSheetRef}>
-          <Block style={{ height: 'auto', padding: 5, paddingBottom: 40 }}>
-            <RadioGroup
-              radioButtons={this.state.optionsType}
-              color={nowTheme.COLORS.INFO}
-              onPress={(option) => this.selectedOptionRadio(option)}
-              selected={false}
-            />
-          </Block>
-        </BottomSheet>
-      </>
+          )}
+          keyExtractor={(_, index)=> `button-filters${index}`}
+        />
+      </Block>
     );
   };
 
@@ -246,13 +216,16 @@ class Filters extends Component {
 
   render() {
     return (
-      <>
-        <Block style={styles.container}>
+        <View style={styles.container}>
           {this.btnClearFilter()}
           {this.rangeDate()}
           {this.typeSearch()}
-        </Block>
-      </>
+          <Search
+            inputStyle={styles.inputStyle}
+            placeholder="By description or invoice number"
+            onChangeText={(text) => this.debouncedOnChange('text', text)}
+          />
+        </View>
     );
   }
 }
@@ -262,25 +235,12 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingHorizontal: 10,
     flexDirection: 'column',
+    height: '35%'
   },
   contentFilterBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  inputStyle: {
-    width:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 870
-          ? width * 0.5
-          : width * 0.6
-        : Dimensions.get('window').height < 595
-        ? width * 0.5
-        : Dimensions.get('window').height > 600 && Dimensions.get('window').height < 900
-        ? width * 0.5
-        : width * 0.6,
-    marginHorizontal: theme.SIZES.BASE,
-    borderRadius: 30,
   },
   cleanFilter: {
     flexDirection: 'row',
