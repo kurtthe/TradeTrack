@@ -70,7 +70,7 @@ export const radioButtonsHour = [
   },
   {
     id: 3333,
-    label: 'OTHER',
+    label: 'OTHER V',
     value: 'Other',
     color: nowTheme.COLORS.INFO,
     labelStyle: styleLabel,
