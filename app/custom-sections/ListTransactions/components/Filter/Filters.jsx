@@ -138,6 +138,13 @@ class Filters extends Component {
     this.props.getValues && this.props.getValues(data);
   };
 
+  selectedOptionRadio = (optionSelected) => {
+    this.setState({
+      idSelectedType: optionSelected.id,
+    });
+    this.debouncedOnChange('type', optionSelected.value);
+  };
+
   rangeDate = () => {
     return (
       <>
@@ -178,12 +185,14 @@ class Filters extends Component {
           <Text style={{ fontWeight: 'bold' }}>By Type</Text>
         </View>
         <FlatList
+          contentContainerStyle={{paddingHorizontal: 15}}
           horizontal={true}
+          showsHorizontalScrollIndicator={false}
           data={this.state.optionsType}
           renderItem={({item})=> (
             <FilterButton
               text={item.label}
-              onPress={() => null}
+              onPress={() => this.selectedOptionRadio(item)}
             />
           )}
           keyExtractor={(_, index)=> `button-filters${index}`}
