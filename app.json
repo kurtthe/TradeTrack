@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.5.5",
+    "version": "1.5.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -52,7 +52,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "versionCode": 54,
+      "versionCode": 55,
       "googleServicesFile": "./GoogleAnalytics/google-services.json",
     },
     "description": "Coded by Digital Basis",
