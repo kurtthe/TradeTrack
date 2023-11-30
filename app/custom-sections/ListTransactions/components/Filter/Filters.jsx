@@ -143,12 +143,12 @@ class Filters extends Component {
   };
 
   changeSelectedTypeButton = (optionSelected) => {
-    if(optionSelected.value === "Other"){
-      return actionSheetRef.current?.show();
-    }
     this.setState({
       idSelectedType: optionSelected.id,
     });
+    if(optionSelected.value === "Other"){
+      return actionSheetRef.current?.show();
+    }
     this.debouncedOnChange('type', optionSelected.value);
   };
 
@@ -193,7 +193,7 @@ class Filters extends Component {
     if (this.props.hideFilterType) {
       return null;
     }
-
+    const isOtherFilterSelected = this.state.idSelectedType === 5 || this.state.idSelectedType === 4 || this.state.idSelectedType === 2
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -209,6 +209,7 @@ class Filters extends Component {
               <FilterButton
                 text={item.label}
                 onPress={() => this.changeSelectedTypeButton(item)}
+                selected={item.id === 3333 && isOtherFilterSelected? true: this.state.idSelectedType === item.id}
               />
             )}
             keyExtractor={(_, index)=> `button-filters${index}`}
