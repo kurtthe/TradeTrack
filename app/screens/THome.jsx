@@ -135,7 +135,16 @@ class Home extends React.Component {
           </Block>
           <Block flex>
             <ListNews news={this.props.news} />
+
             <Block center style={{ paddingVertical: 5 }}>
+              <Button
+                color="info"
+                textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
+                style={styles.buttonEstimator}
+                onPress={() => navigation.navigate('BookTrakDemo')}
+              >
+                Book a Trak Demo
+              </Button>
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -182,7 +191,7 @@ const styles = StyleSheet.create({
   },
   buttonEstimator: {
     top: -15,
-    margin: theme.SIZES.BASE,
+    marginButton: theme.SIZES.BASE,
     width: width - theme.SIZES.BASE * 2,
   },
   card: {
