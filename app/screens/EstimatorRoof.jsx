@@ -13,7 +13,7 @@ const EstimatorRoof = () => {
   const client_number = useSelector((state) => state.liveBalanceReducer.client_number);
 
   useEffect(() => {
-    const url = `https://burdenstradetrakroofestimator.paperform.co/?email=${emailUser}&name=${fullName}&api_key=${api_key}&company=${companyName}&burdens_account=${client_number}`
+    const url = `https://links.trak.co/burdens/estimator.html/?email=${emailUser}&name=${fullName}&api_key=${api_key}&company=${companyName}&burdens_account=${client_number}`
     const encodedUrl = encodeURI(url);
     setUrlView(encodedUrl);
   }, [emailUser, fullName, api_key, companyName, client_number]);
