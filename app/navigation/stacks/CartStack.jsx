@@ -48,9 +48,9 @@ function CartStack() {
       name: 'OrderBought',
       component: OrdersBought,
       colorBackground: '#FFFFFF',
-      header:{
-        title: 'Products bought',
-      }
+      header: {
+        title: 'Account',
+      },
     },
   ];
 

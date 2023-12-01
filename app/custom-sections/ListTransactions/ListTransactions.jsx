@@ -41,16 +41,6 @@ export const ListTransactions = () => {
     })()
   }, [optionsTransactions.page, valuesFilters])
 
-
-  const handleLoadingMore = () => {
-    const { page } = optionsTransactions;
-    setOptionsTransactions({
-      ...optionsTransactions,
-      page: page + 1
-    });
-    setKeepData(true)
-  }
-
   useEffect(() => {
     if (transactions?.headers && transactions?.headers['x-pagination-page-count']) {
       const currentlyTotal = parseInt(optionsTransactions.page)
@@ -60,9 +50,18 @@ export const ListTransactions = () => {
     }
   }, [transactions?.headers, optionsTransactions.page])
 
-  const getValuesFilters = (values) => {
-    setValuesFilters(values);
-  };
+  useEffect(() => {
+    updateListTransactions(transactions?.body)
+  }, [transactions?.body])
+
+  const handleLoadingMore = () => {
+    const { page } = optionsTransactions;
+    setOptionsTransactions({
+      ...optionsTransactions,
+      page: page + 1
+    });
+    setKeepData(true)
+  }
 
   const updateListTransactions = (newTransactions) => {
     if (keeData) {
@@ -76,10 +75,6 @@ export const ListTransactions = () => {
     setLoadingMoreData(false)
     setIsLoading(false)
   }
-
-  useEffect(() => {
-    updateListTransactions(transactions?.body)
-  }, [transactions?.body])
 
   const renderNotFound = () => {
     return (
@@ -96,42 +91,43 @@ export const ListTransactions = () => {
   )
 
   const getButtonLoadingMore = () => {
-    if (showLoadingMore) {
-      return <ButtonLoadingMore
-        loading={loadingMoreData}
-        handleLoadMore={handleLoadingMore}
-      />
-    }
-    return null
+    if (!showLoadingMore)  return null
+    return <ButtonLoadingMore
+      loading={loadingMoreData}
+      handleLoadMore={handleLoadingMore}
+    />
   }
 
   const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
 
-  return (
-    <View style={styles.container}>
-      {isLoading && (
-        <View style={styles.contentLoading}>
+  if(isLoading){
+    return (
+        <View style={[styles.contentLoading, {padding: 20}]}>
           <LoadingComponent size='large' />
         </View>
-      )}
-      {restricted ? (
-        <View style={styles.contentLoading}>
-          <Restricted horizontal />
-        </View>
-      ) : (
-        <>
-          <Filters
-            getValues={(values) => getValuesFilters(values)}
-          />
-          <FlatList
-            data={dataTransactions}
-            renderItem={memoizedTransactions}
-            keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
-            ListEmptyComponent={renderNotFound}
-            ListFooterComponent={getButtonLoadingMore}
-          />
-        </>
-      )}
+    )
+  }
+
+  if(restricted){
+    return (
+      <View style={styles.contentLoading}>
+        <Restricted horizontal />
+      </View>
+    )
+  }
+
+  return (
+    <View style={styles.container}>
+      <Filters
+        getValues={(values) => setValuesFilters(values)}
+      />
+      <FlatList
+        data={dataTransactions}
+        renderItem={memoizedTransactions}
+        keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
+        ListEmptyComponent={renderNotFound}
+        ListFooterComponent={getButtonLoadingMore}
+      />
     </View>
   );
 }
