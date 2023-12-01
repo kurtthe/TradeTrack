@@ -23,9 +23,7 @@
       "**/*"
     ],
     "plugins": [
-      "@react-native-firebase/app",
-      "@config-plugins/react-native-blob-util",
-      "@config-plugins/react-native-pdf"
+      "@react-native-firebase/app"
     ],
     "ios": {
       "supportsTablet": true,

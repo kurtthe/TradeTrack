@@ -1,31 +1,32 @@
 import React, { useState, cloneElement, useEffect } from 'react';
 import { View } from 'react-native';
-import { Block, Text } from 'galio-framework';
+import { Text } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { nowTheme } from '@constants';
 
-const Tabs = (props) => {
+const Tabs = ({optionsTabsRender, tabIndexSelected, changeIndexSelected}) => {
   const [indexSelectedTab, setIndexSelectedTab] = useState(0);
 
   useEffect(() => {
-    setIndexSelectedTab(props.tabIndexSelected);
-  });
-
-  getLabels = () => {
-    return props.optionsTabsRender.map((item) => item.labelTab);
+    setIndexSelectedTab(tabIndexSelected);
+  }, [tabIndexSelected]);
+  const getLabels = () => {
+    return optionsTabsRender.map((item) => item.labelTab);
   };
-
-  handleCustomIndexSelect = (index) => {
+  const handleCustomIndexSelect = (index) => {
     setIndexSelectedTab(index);
-
-    props.changeIndexSelected && props.changeIndexSelected(index);
+    changeIndexSelected && changeIndexSelected(index);
   };
+  const getComponent = React.useMemo(
+    () => {
+      const CustomComponent = optionsTabsRender[indexSelectedTab].component
+      if(!CustomComponent) return null
+      return cloneElement(CustomComponent);
+    }, [indexSelectedTab]
+  );
 
-  getComponent = () => {
-    return props.optionsTabsRender[indexSelectedTab].component;
-  };
 
-  if (props.optionsTabsRender.length === 0) {
+  if (optionsTabsRender.length === 0) {
     return <Text>Not found options render</Text>;
   }
 
@@ -53,8 +54,7 @@ const Tabs = (props) => {
         tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
         activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
       />
-
-      {cloneElement(getComponent())}
+      {getComponent}
     </View>
   );
 };

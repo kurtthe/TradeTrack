@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Block, Text } from 'galio-framework';
 
@@ -9,53 +9,31 @@ import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
 import Search from '@custom-elements/Search';
-import debounce from 'lodash.debounce';
 import { BottomSheet } from 'react-native-sheet';
 import RadioGroup from 'react-native-radio-buttons-group';
 import nowTheme from '@constants/Theme';
 
 
-const alertService = new AlertService();
-const actionSheetRef = createRef();
+const Filters = ({getValues, hideFilterType}) => {
 
-class Filters extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showDatePicker: false,
-      dateStart: true,
-      dateStartValue: '',
-      dateEndValue: '',
-      type: '',
-      textSearch: '',
-      idSelectedType: null,
-      optionsType: radioButtonsHour,
-    };
-  }
+  const alertService = new AlertService();
+  const actionSheetRef = React.createRef();
 
-  handleDatePicked = (date) => {
-    const valueDate = moment(date).format('YYYY-MM-DD');
+  const [showDatePicker, setShowDatePicker] = React.useState(false)
+  const [dateStart, setDateStart] = React.useState(true)
+  const [dateStartValue, setDateStartValue] = React.useState('')
+  const [dateEndValue, setDateEndValue] = React.useState('')
+  const [type, setType] = React.useState('')
+  const [textSearch, setTextSearch] = React.useState('')
+  const [idSelectedType, setIdSelectedType] = React.useState(null)
+  const [optionsType, setOptionsType] = React.useState(radioButtonsHour);
 
-    if (this.state.dateStart) {
-      this.setState({
-        dateStartValue: valueDate,
-      });
-    } else {
-      if (this.validDateEnd(valueDate)) {
-        this.setState({
-          dateEndValue: valueDate,
-        });
-      }
-    }
-    this.hideDateTimePicker();
-  };
-
-  validDateEnd = (date) => {
-    if (this.state.dateStartValue === '') {
+  const validDateEnd = (date) => {
+    if (dateStartValue === '') {
       return false;
     }
 
-    const startDate = moment(this.state.dateStartValue);
+    const startDate = moment(dateStartValue);
     const endDate = moment(date);
     const diffDate = endDate.diff(startDate, 'days', true);
 
@@ -66,101 +44,97 @@ class Filters extends Component {
     return true;
   };
 
-  hideDateTimePicker = () => {
-    this.setState({ showDatePicker: false });
+  const handleDatePicked = (date) => {
+    const valueDate = moment(date).format('YYYY-MM-DD');
+    hideDateTimePicker()
+
+    if (dateStart) {
+      setDateStartValue(valueDate)
+      return
+    }
+
+    if (validDateEnd(valueDate)) {
+      setDateEndValue(valueDate)
+    }
+
   };
 
-  handleOpenDatePicker = (isDateStart) => {
-    this.setState({
-      dateStart: isDateStart,
-      showDatePicker: true,
-    });
+  const hideDateTimePicker = () => {
+    setShowDatePicker(false)
   };
-
-  resetFilters = () => {
-    const resetOptionsSelected = this.state.optionsType.map((item) => {
-      if (item.id === this.state.idSelectedType) {
+  const resetFilters = () => {
+    const resetOptionsSelected = optionsType.map((item) => {
+      if (item.id === idSelectedType) {
         return {
           ...item,
           selected: false,
         };
       }
-
       return item;
     });
 
-    this.setState({
-      dateStartValue: '',
-      dateEndValue: '',
-      type: '',
-      textSearch: '',
-      idSelectedType: null,
-      optionsType: resetOptionsSelected,
-    });
+    setDateStartValue('')
+    setDateEndValue('')
+    setType('')
+    setTextSearch('')
+    setIdSelectedType(null)
+    setOptionsType(resetOptionsSelected)
   };
 
-  debouncedOnChange = debounce(
-    (whoChange, value) => this.changeValuesFilters(value, whoChange),
-    300,
-  );
+  const handleOpenDatePicker = (isDateStart) => {
+    setDateStart(isDateStart)
+    setShowDatePicker(true)
+  };
 
-  changeValuesFilters = (value, whoChange = false) => {
-    console.log('=>whoChange', whoChange);
-    console.log('=>value', value);
+  const debouncedOnChange = (whoChange, value) => {
+    setTimeout(() => changeValuesFilters(value, whoChange), 300)
+  }
+
+  const changeValuesFilters = (value, whoChange) => {
 
     if (whoChange === 'type') {
-      this.setState({
-        type: value,
-      });
+      setType(value)
       actionSheetRef.current?.hide();
     }
     if (whoChange === 'date') {
-      this.handleDatePicked(value);
+      handleDatePicked(value);
     }
     if (whoChange === 'text') {
-      this.setState({ textSearch: value });
+      setTextSearch(value)
     }
-
     if (!whoChange) {
-      this.resetFilters();
+      resetFilters();
     }
 
     setTimeout(() => {
-      this.getDataFilters();
+      getDataFilters();
     }, 200);
   };
 
-  getDataFilters = () => {
-    const { dateStartValue, dateEndValue, type, textSearch } = this.state;
-
+  const getDataFilters = () => {
     const data = {
       start_date: dateStartValue,
       end_date: dateEndValue,
       type,
       search: textSearch,
     };
-    this.props.getValues && this.props.getValues(data);
+    getValues && getValues(data);
   };
-
-  changeSelectedTypeButton = (optionSelected) => {
+  const changeSelectedTypeButton = (optionSelected) => {
+      setIdSelectedType(optionSelected.id)
     if(optionSelected.value === "Other"){
       return actionSheetRef.current?.show();
     }
-    this.setState({
-      idSelectedType: optionSelected.id,
-    });
-    this.debouncedOnChange('type', optionSelected.value);
+    debouncedOnChange('type', optionSelected.value);
   };
 
-  selectedOptionRadio = (options) => {
+  const selectedOptionRadio = (options) => {
     const optionSelected = options.find((item) => item.selected);
-    this.setState({
-      idSelectedType: optionSelected.id,
-    });
-    this.debouncedOnChange('type', optionSelected.value);
+    setIdSelectedType(optionSelected.id)
+    debouncedOnChange('type', optionSelected.value);
   };
 
-  rangeDate = () => {
+  const rangeDate = () => {
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -169,31 +143,31 @@ class Filters extends Component {
           </View>
           <Block row center space="around">
             <FilterButton
-              text={this.state.dateStartValue === '' ? 'Start date' : this.state.dateStartValue}
+              text={dateStartValue === '' ? 'Start date' : dateStartValue}
               icon={require('@assets/imgs/img/calendar.png')}
-              onPress={() => this.handleOpenDatePicker(true)}
+              onPress={() => handleOpenDatePicker(true)}
             />
             <FilterButton
-              text={this.state.dateEndValue === '' ? 'End date' : this.state.dateEndValue}
+              text={dateEndValue === '' ? 'End date' : dateEndValue}
               icon={require('@assets/imgs/img/calendar.png')}
-              onPress={() => this.handleOpenDatePicker(false)}
+              onPress={() => handleOpenDatePicker(false)}
             />
           </Block>
         </Block>
         <DateTimePicker
-          isVisible={this.state.showDatePicker}
-          onConfirm={(date) => this.debouncedOnChange('date', date)}
-          onCancel={this.hideDateTimePicker}
+          isVisible={showDatePicker}
+          onConfirm={(date) => debouncedOnChange('date', date)}
+          onCancel={hideDateTimePicker}
         />
       </>
     );
   };
 
-  typeSearch = () => {
-    if (this.props.hideFilterType) {
+  const typeSearch = () => {
+    if (hideFilterType) {
       return null;
     }
-
+    const isOtherFilterSelected = idSelectedType === 5 || idSelectedType === 4 || idSelectedType === 2
     return (
       <>
         <Block style={styles.contentFilterBtn}>
@@ -204,11 +178,12 @@ class Filters extends Component {
             contentContainerStyle={{paddingHorizontal: 15}}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={this.state.optionsType}
+            data={optionsType}
             renderItem={({item})=> (
               <FilterButton
                 text={item.label}
-                onPress={() => this.changeSelectedTypeButton(item)}
+                onPress={() => changeSelectedTypeButton(item)}
+                selected={item.id === 3333 && isOtherFilterSelected? true: idSelectedType === item.id}
               />
             )}
             keyExtractor={(_, index)=> `button-filters${index}`}
@@ -220,7 +195,7 @@ class Filters extends Component {
             <RadioGroup
               radioButtons={optionsOthers}
               color={nowTheme.COLORS.INFO}
-              onPress={(option) => this.selectedOptionRadio(option)}
+              onPress={(option) => selectedOptionRadio(option)}
               selected={false}
             />
           </Block>
@@ -230,7 +205,7 @@ class Filters extends Component {
     );
   };
 
-  btnClearFilter = () => {
+  const btnClearFilter = () => {
     return (
       <Block style={styles.contentFilterBtn}>
         <View style={{ marginRight: 20 }}>
@@ -240,7 +215,7 @@ class Filters extends Component {
           <View style={styles.cleanFilter}>
             <Button
               mode="outlined"
-              onPress={() => this.debouncedOnChange()}
+              onPress={() => debouncedOnChange()}
               labelStyle={styles.labelCleanFilter}
               style={styles.btnClean}
             >
@@ -252,20 +227,18 @@ class Filters extends Component {
     );
   };
 
-  render() {
-    return (
-        <View style={styles.container}>
-          {this.btnClearFilter()}
-          {this.rangeDate()}
-          {this.typeSearch()}
-          <Search
-            inputStyle={styles.inputStyle}
-            placeholder="By description or invoice number"
-            onChangeText={(text) => this.debouncedOnChange('text', text)}
-          />
-        </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      {btnClearFilter()}
+      {rangeDate()}
+      {typeSearch()}
+      <Search
+        inputStyle={styles.inputStyle}
+        placeholder="By description or invoice number"
+        onChangeText={(text) => debouncedOnChange('text', text)}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
