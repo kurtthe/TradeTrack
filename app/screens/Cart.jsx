@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { Block, Text, Button } from 'galio-framework';
-import { nowTheme } from '@constants/index';
+import { Block} from 'galio-framework';
 import { connect } from 'react-redux';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import { ProductCart as ProductCartService } from '@core/services/product-cart.service';
@@ -73,7 +72,7 @@ class Cart extends React.Component {
       this.alertService.show('Alert!', 'Cannot checkout in client mode, please disable');
       return;
     }
-    this.props.navigation.navigate('PlaceOrders');
+    this.props.navigation.navigate('PlaceOrders', {nameRouteGoing: 'Cart'});
   }
 
   orderTotal = () => {
@@ -86,9 +85,9 @@ class Cart extends React.Component {
   )
 
   renderPreviousOrder = () => (
-    <Block style={{ height: Platform.OS == 'ios' ? hp('59%') : hp('76%') }}>
+    <Block style={{ height: Platform.OS === 'ios' ? hp('59%') : hp('76%') }}>
       {this.state.restricted ?
-          <Restricted /> : 
+          <Restricted /> :
         <ListData
           endpoint={endPoints.orders}
           renderItems={this.renderItemsPrevious}
@@ -108,7 +107,7 @@ class Cart extends React.Component {
               component: (<ListCart
                 onCheckoutPressed={() => this.onCheckoutPressed()}
                 orderTotal={() => this.orderTotal()}
-               
+
               />),
             },
             {
