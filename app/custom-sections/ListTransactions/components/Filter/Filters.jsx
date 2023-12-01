@@ -49,7 +49,7 @@ const Filters = ({getValues, hideFilterType}) => {
     hideDateTimePicker()
 
     if (dateStart) {
-      setDateStart(valueDate)
+      setDateStartValue(valueDate)
       return
     }
 
@@ -91,8 +91,6 @@ const Filters = ({getValues, hideFilterType}) => {
   }
 
   const changeValuesFilters = (value, whoChange) => {
-    console.log('=>whoChange', whoChange);
-    console.log('=>value', value);
 
     if (whoChange === 'type') {
       setType(value)
@@ -156,11 +154,11 @@ const Filters = ({getValues, hideFilterType}) => {
             />
           </Block>
         </Block>
-        {/*<DateTimePicker*/}
-        {/*  isVisible={showDatePicker}*/}
-        {/*  onConfirm={(date) => debouncedOnChange('date', date)}*/}
-        {/*  onCancel={hideDateTimePicker}*/}
-        {/*/>*/}
+        <DateTimePicker
+          isVisible={showDatePicker}
+          onConfirm={(date) => debouncedOnChange('date', date)}
+          onCancel={hideDateTimePicker}
+        />
       </>
     );
   };
