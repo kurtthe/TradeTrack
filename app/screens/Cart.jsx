@@ -107,7 +107,6 @@ class Cart extends React.Component {
               component: (<ListCart
                 onCheckoutPressed={() => this.onCheckoutPressed()}
                 orderTotal={() => this.orderTotal()}
-
               />),
             },
             {
