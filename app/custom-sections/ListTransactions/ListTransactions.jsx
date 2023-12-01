@@ -62,7 +62,6 @@ export const ListTransactions = () => {
     });
     setKeepData(true)
   }
-
   const updateListTransactions = (newTransactions) => {
     if (keeData) {
       setDataTransaction([...dataTransactions, ...newTransactions])
@@ -100,34 +99,31 @@ export const ListTransactions = () => {
 
   const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
 
-  if(isLoading){
-    return (
-        <View style={[styles.contentLoading, {padding: 20}]}>
-          <LoadingComponent size='large' />
-        </View>
-    )
-  }
-
-  if(restricted){
-    return (
-      <View style={styles.contentLoading}>
-        <Restricted horizontal />
-      </View>
-    )
-  }
-
   return (
     <View style={styles.container}>
-      <Filters
-        getValues={(values) => setValuesFilters(values)}
-      />
-      <FlatList
-        data={dataTransactions}
-        renderItem={memoizedTransactions}
-        keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
-        ListEmptyComponent={renderNotFound}
-        ListFooterComponent={getButtonLoadingMore}
-      />
+      {isLoading && (
+        <View style={styles.contentLoading}>
+          <LoadingComponent size='large' />
+        </View>
+      )}
+      {restricted ? (
+        <View style={styles.contentLoading}>
+          <Restricted horizontal />
+        </View>
+      ) : (
+        <>
+          <Filters
+            getValues={(values) => setValuesFilters(values)}
+          />
+          <FlatList
+            data={dataTransactions}
+            renderItem={memoizedTransactions}
+            keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
+            ListEmptyComponent={renderNotFound}
+            ListFooterComponent={getButtonLoadingMore}
+          />
+        </>
+      )}
     </View>
   );
 }
