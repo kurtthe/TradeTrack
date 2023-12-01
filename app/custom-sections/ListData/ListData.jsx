@@ -102,7 +102,9 @@ const ListData = ({
   };
 
   if (loading) {
-    return <LoadingComponent />;
+    return <View style={{padding: 20}}>
+      <LoadingComponent />
+    </View>;
   }
 
   return (
