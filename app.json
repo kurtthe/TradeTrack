@@ -23,9 +23,7 @@
       "**/*"
     ],
     "plugins": [
-      "@react-native-firebase/app",
-      "@config-plugins/react-native-blob-util",
-      "@config-plugins/react-native-pdf"
+      "@react-native-firebase/app"
     ],
     "ios": {
       "supportsTablet": true,
@@ -53,7 +51,7 @@
         "android.permission.ACCESS_NETWORK_STATE"
       ],
       "versionCode": 55,
-      "googleServicesFile": "./GoogleAnalytics/google-services.json",
+      "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
     "extra": {
