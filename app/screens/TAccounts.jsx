@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import LiveBalance from '@custom-sections/LiveBalance';
@@ -13,34 +13,37 @@ import Statement from '@custom-elements/Statement';
 
 import { STATEMENTS } from '@shared/dictionaries/typeDataSerialize'
 import ListTransactions from '@custom-sections/ListTransactions'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
-import { useSelector } from 'react-redux'
+import { useRoute } from '@react-navigation/native';
 
 const generalRequestService = GeneralRequestService.getInstance();
 
-const TAccount = ({ route }) => {
+const TAccount = () => {
+  const route = useRoute();
   const dispatch = useDispatch();
   const balance = useSelector((state) => state.liveBalanceReducer);
-  
+
   const [customStyleIndex, setCustomStyleIndex] = useState(0)
   const [restricted, setRestricted] = useState(false);
 
   useEffect(() => {
-    const initServices = async () => {
-      setCustomStyleIndex(route.params?.tabIndexSelected || 0)
-    }
-    initServices()
+    (async () => {
+      setCustomStyleIndex(route.params?.tabIndexSelected ?? 0)
+    })()
   }, [])
 
-  useEffect(async () => {
-    const response = await generalRequestService.get(endPoints.statements);
-    if(response.restricted) {
-      setRestricted(true)
-      setCustomStyleIndex(1)
-    }
-  }, [])
+  useEffect(() => {
+    (async() => {
+      if(customStyleIndex === 1) return
+      const response = await generalRequestService.get(endPoints.statements);
+      if(response.restricted) {
+        setRestricted(true)
+        setCustomStyleIndex(1)
+      }
+    })()
+  }, [customStyleIndex])
 
   const renderItemsStatement = ({ item }) => (
     <Statement
@@ -49,14 +52,14 @@ const TAccount = ({ route }) => {
   )
 
   const renderAccountDetails = () => (
-    <> 
+    <>
       {restricted && balance.restricted ?
-        <Restricted horizontal /> : 
+        <Restricted horizontal /> :
         <>
           <PaymentDetail />
           <Balance />
           {restricted ?
-              <Restricted horizontal /> : 
+              <Restricted horizontal /> :
             <ListData
               endpoint={endPoints.statements}
               renderItems={renderItemsStatement}
@@ -68,7 +71,6 @@ const TAccount = ({ route }) => {
       }
     </>
   );
-
 
   const renderInvoices = () => (
     <ListTransactions />

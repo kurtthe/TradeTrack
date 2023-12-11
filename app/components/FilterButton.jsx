@@ -6,20 +6,16 @@ import {AntDesign} from '@expo/vector-icons';
 
 import nowTheme from '@constants/Theme';
 
-class FilterButton extends React.Component {
-  render() {
-    const {text, icon, onPress, isActive, isLoading, nameIcon, sizeIcon, disabled} = this.props;
-
+const FilterButton = ({text, icon, onPress, isActive, isLoading, nameIcon, sizeIcon, disabled, selected})=> {
     return (
-      <ArButton small color={'white'} style={styles.button} onPress={onPress} disabled={disabled}>
+      <ArButton small color={selected?'info': 'white'} style={styles.button} onPress={onPress} disabled={disabled}>
         {isLoading && <LoadingComponent size='small'/>}
         {icon && <Image style={styles.icon} source={icon}/>}
         {nameIcon && <AntDesign name={nameIcon} size={sizeIcon||30} color={nowTheme.COLORS.INFO}/>}
         {isActive && <Image style={styles.image} source={require('../../assets/category.png')}/>}
-        <Text style={styles.text}>{text}</Text>
+        <Text style={[styles.text, selected && { color: 'white'}]}>{text}</Text>
       </ArButton>
     );
-  }
 }
 
 const styles = StyleSheet.create({

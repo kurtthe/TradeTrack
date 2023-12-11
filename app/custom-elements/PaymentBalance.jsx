@@ -29,7 +29,6 @@ const PaymentBalance = (props) => {
   const [optionBalanceSelected, setOptionBalanceSelected] = useState(null)
   const [optionsBalances, setOptionsBalances] = useState([])
 
-
   useEffect(()=>{
     setOptionsBalances(pickerOptions)
   }, [])
@@ -42,10 +41,6 @@ const PaymentBalance = (props) => {
     actionSheetRef.current?.hide();
 
   }, [props.show]);
-
-
-  console.log("=>optionsBalances", optionsBalances)
-
 
   const handleShowMethodPayment = async () => {
 

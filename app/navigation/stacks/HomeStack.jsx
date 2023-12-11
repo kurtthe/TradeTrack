@@ -10,6 +10,7 @@ import Store from '@screens/TStores';
 import EstimatorRoof from '@screens/EstimatorRoof';
 import AppFeedback from '@screens/AppFeedback';
 import App from '@screens/AppFeedback2';
+import BookTrakDemo from '@screens/BookTrakDemo';
 
 import { screensRoute } from './ConfigRoutes';
 
@@ -82,6 +83,14 @@ function HomeStack() {
     {
       name: 'AppFeedback',
       component: AppFeedback,
+      colorBackground: '#FFFFFF',
+      header: {
+        back: true,
+      }
+    },
+    {
+      name: 'BookTrakDemo',
+      component: BookTrakDemo,
       colorBackground: '#FFFFFF',
       header: {
         back: true,

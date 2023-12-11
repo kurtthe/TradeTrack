@@ -41,16 +41,6 @@ export const ListTransactions = () => {
     })()
   }, [optionsTransactions.page, valuesFilters])
 
-
-  const handleLoadingMore = () => {
-    const { page } = optionsTransactions;
-    setOptionsTransactions({
-      ...optionsTransactions,
-      page: page + 1
-    });
-    setKeepData(true)
-  }
-
   useEffect(() => {
     if (transactions?.headers && transactions?.headers['x-pagination-page-count']) {
       const currentlyTotal = parseInt(optionsTransactions.page)
@@ -60,10 +50,18 @@ export const ListTransactions = () => {
     }
   }, [transactions?.headers, optionsTransactions.page])
 
-  const getValuesFilters = (values) => {
-    setValuesFilters(values);
-  };
+  useEffect(() => {
+    updateListTransactions(transactions?.body)
+  }, [transactions?.body])
 
+  const handleLoadingMore = () => {
+    const { page } = optionsTransactions;
+    setOptionsTransactions({
+      ...optionsTransactions,
+      page: page + 1
+    });
+    setKeepData(true)
+  }
   const updateListTransactions = (newTransactions) => {
     if (keeData) {
       setDataTransaction([...dataTransactions, ...newTransactions])
@@ -76,10 +74,6 @@ export const ListTransactions = () => {
     setLoadingMoreData(false)
     setIsLoading(false)
   }
-
-  useEffect(() => {
-    updateListTransactions(transactions?.body)
-  }, [transactions?.body])
 
   const renderNotFound = () => {
     return (
@@ -96,13 +90,11 @@ export const ListTransactions = () => {
   )
 
   const getButtonLoadingMore = () => {
-    if (showLoadingMore) {
-      return <ButtonLoadingMore
-        loading={loadingMoreData}
-        handleLoadMore={handleLoadingMore}
-      />
-    }
-    return null
+    if (!showLoadingMore)  return null
+    return <ButtonLoadingMore
+      loading={loadingMoreData}
+      handleLoadMore={handleLoadingMore}
+    />
   }
 
   const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
@@ -121,7 +113,7 @@ export const ListTransactions = () => {
       ) : (
         <>
           <Filters
-            getValues={(values) => getValuesFilters(values)}
+            getValues={(values) => setValuesFilters(values)}
           />
           <FlatList
             data={dataTransactions}
