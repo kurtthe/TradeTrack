@@ -7,7 +7,6 @@ import {Icons} from './components/Icons'
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Icon from '@components/Icon';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
-
 import { useNavigation } from '@react-navigation/native';
 
 const Header = ({
@@ -23,30 +22,40 @@ const Header = ({
 }) => {
   const styles = makeStyles()
   const navigation = useNavigation()
-  const handleLeftPress = () => {
-    const routeName = scene?.route?.params?.nameRouteGoing;
 
-    if (!scene || !scene?.route?.params?.nameRouteGoing) {
-      navigation.goBack();
-      return;
-    }
+  const handleLeftPress = React.useCallback(() =>{
+      const routeName = scene?.route?.params?.nameRouteGoing;
+      console.log("routeName::", routeName)
+      if (!scene || !routeName) {
+        navigation.goBack();
+        return;
+      }
 
-    if(routeName === 'Products'){
-      navigation.navigate('Products')
-      return;
-    }
+      if(routeName === 'Cart'){
+        navigation.navigate('Cart')
+        return
+      }
 
-    if (routeName === 'AccountInvoice') {
-      navigation.setParams({
-        nameRouteGoing: false,
-      });
+      if(routeName === 'Products'){
+        navigation.navigate('Products')
+        return;
+      }
 
-      navigation.navigate('Account', {
-        screen: 'AccountDetails',
-        params: { tabIndexSelected: 1 },
-      });
-    }
-  }
+      if (routeName === 'AccountInvoice') {
+        navigation.setParams({
+          nameRouteGoing: false,
+        });
+
+        navigation.navigate('Account', {
+          screen: 'AccountDetails',
+          params: { tabIndexSelected: 1 },
+        });
+      }
+
+      return () => {
+
+      }
+  }, [scene, navigation])
 
   const renderHome = () => {
     if(headerType === 'Home'){

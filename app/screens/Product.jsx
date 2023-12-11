@@ -77,26 +77,6 @@ class Product extends React.Component {
     }
   }
 
-  renderProgress = () => {
-    const { productDetail } = this.state;
-
-    const productImages = [productDetail?.image, productDetail?.image];
-    const position = Animated.divide(this.scrollX, width);
-
-    return (
-      <Block row>
-        {productImages.map((_, i) => {
-          const opacity = position.interpolate({
-            inputRange: [i - 1, i, i + 1],
-            outputRange: [0.5, 1, 0.5],
-            extrapolate: 'clamp',
-          });
-
-          return <Animated.View key={i} style={[styles.dots, { opacity }]} />;
-        })}
-      </Block>
-    );
-  };
 
   onAddCartPressed = (productItem) => {
     const priceProduct = this.state.hideMyPrice ? productItem?.price.retail_price : productItem?.price.cost_price;
