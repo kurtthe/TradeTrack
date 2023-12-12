@@ -136,7 +136,7 @@ class Home extends React.Component {
           <Block flex>
             <ListNews news={this.props.news} />
 
-            <Block center style={{ paddingVertical: 5 }}>
+            <Block center style={{ paddingVertical: 15 }}>
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
@@ -154,7 +154,7 @@ class Home extends React.Component {
                 Roof Estimator
               </Button>
             </Block>
-            <Block center style={{ top: -11 }}>
+            <Block center style={{ top: -15.5 }}>
               <Button
                 color="info"
                 textStyle={{ fontFamily: 'montserrat-bold', fontSize: 16 }}
