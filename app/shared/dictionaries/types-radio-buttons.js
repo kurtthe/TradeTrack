@@ -40,7 +40,7 @@ export const optionsOthers = [
   },
 ]
 
-export const radioButtonsHour = [
+export const radioButtonTypeTransactions = [
   {
     id: 1,
     label: 'INVOICE',
