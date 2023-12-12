@@ -97,15 +97,11 @@ export const ListTransactions = () => {
     />
   }
 
-  const memoizedTransactions = useMemo(() => renderTransactions, [dataTransactions, valuesFilters])
+  console.log("valuesFilters::", JSON.stringify(valuesFilters))
 
   return (
     <View style={styles.container}>
-      {isLoading && (
-        <View style={styles.contentLoading}>
-          <LoadingComponent size='large' />
-        </View>
-      )}
+
       {restricted ? (
         <View style={styles.contentLoading}>
           <Restricted horizontal />
@@ -115,13 +111,18 @@ export const ListTransactions = () => {
           <Filters
             getValues={(values) => setValuesFilters(values)}
           />
-          <FlatList
+          {isLoading ? (
+            <View style={styles.contentLoading}>
+              <LoadingComponent size='large' />
+            </View>
+          ): <FlatList
             data={dataTransactions}
-            renderItem={memoizedTransactions}
+            renderItem={renderTransactions}
             keyExtractor={(item, index) => `${index}-transaction-${item?.id}`}
             ListEmptyComponent={renderNotFound}
             ListFooterComponent={getButtonLoadingMore}
-          />
+          />}
+
         </>
       )}
     </View>
