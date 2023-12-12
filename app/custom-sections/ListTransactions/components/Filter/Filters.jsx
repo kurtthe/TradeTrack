@@ -4,7 +4,7 @@ import { Block, Text } from 'galio-framework';
 
 import FilterButton from '@components/FilterButton';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { radioButtonsHour, optionsOthers } from '@shared/dictionaries/types-radio-buttons';
+import { radioButtonTypeTransactions, optionsOthers } from '@shared/dictionaries/types-radio-buttons';
 import moment from 'moment';
 import { AlertService } from '@core/services/alert.service';
 import { Button } from 'react-native-paper';
@@ -26,8 +26,10 @@ const Filters = ({getValues, hideFilterType}) => {
   const [type, setType] = React.useState('')
   const [textSearch, setTextSearch] = React.useState('')
   const [idSelectedType, setIdSelectedType] = React.useState(null)
-  const [optionsType, setOptionsType] = React.useState(radioButtonsHour);
 
+  React.useEffect(()=> {
+    getDataFilters()
+  }, [type])
   const validDateEnd = (date) => {
     if (dateStartValue === '') {
       return false;
@@ -63,22 +65,11 @@ const Filters = ({getValues, hideFilterType}) => {
     setShowDatePicker(false)
   };
   const resetFilters = () => {
-    const resetOptionsSelected = optionsType.map((item) => {
-      if (item.id === idSelectedType) {
-        return {
-          ...item,
-          selected: false,
-        };
-      }
-      return item;
-    });
-
     setDateStartValue('')
     setDateEndValue('')
     setType('')
     setTextSearch('')
     setIdSelectedType(null)
-    setOptionsType(resetOptionsSelected)
   };
 
   const handleOpenDatePicker = (isDateStart) => {
@@ -93,7 +84,6 @@ const Filters = ({getValues, hideFilterType}) => {
   const changeValuesFilters = (value, whoChange) => {
 
     if (whoChange === 'type') {
-      setType(value)
       actionSheetRef.current?.hide();
     }
     if (whoChange === 'date') {
@@ -105,10 +95,7 @@ const Filters = ({getValues, hideFilterType}) => {
     if (!whoChange) {
       resetFilters();
     }
-
-    setTimeout(() => {
-      getDataFilters();
-    }, 200);
+    getDataFilters();
   };
 
   const getDataFilters = () => {
@@ -118,20 +105,23 @@ const Filters = ({getValues, hideFilterType}) => {
       type,
       search: textSearch,
     };
+
+    console.log("getDataFilters:: data", data)
     getValues && getValues(data);
   };
   const changeSelectedTypeButton = (optionSelected) => {
+    console.log("optionSelected::", optionSelected)
       setIdSelectedType(optionSelected.id)
     if(optionSelected.value === "Other"){
       return actionSheetRef.current?.show();
     }
-    debouncedOnChange('type', optionSelected.value);
+    setType(optionSelected.value);
   };
 
   const selectedOptionRadio = (options) => {
     const optionSelected = options.find((item) => item.selected);
     setIdSelectedType(optionSelected.id)
-    debouncedOnChange('type', optionSelected.value);
+    setType(optionSelected.value);
   };
 
   const rangeDate = () => {
@@ -178,7 +168,7 @@ const Filters = ({getValues, hideFilterType}) => {
             contentContainerStyle={{paddingHorizontal: 15}}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={optionsType}
+            data={radioButtonTypeTransactions}
             renderItem={({item})=> (
               <FilterButton
                 text={item.label}
