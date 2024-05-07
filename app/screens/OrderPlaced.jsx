@@ -4,9 +4,8 @@ import {
   Image,
   Dimensions,
   Platform,
-  Alert,
 } from 'react-native';
-import { Block, Text, Button as GaButton, theme } from 'galio-framework';
+import { Block, Text, theme } from 'galio-framework';
 
 import { Button } from '@components';
 

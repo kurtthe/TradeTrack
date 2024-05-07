@@ -7,7 +7,7 @@ export const makeStyles = () => StyleSheet.create({
   cart: {
     width: width,
     backgroundColor: nowTheme.COLORS.BACKGROUND,
-    
+
   },
   buttons: {
     flex: 1,
@@ -29,7 +29,7 @@ export const makeStyles = () => StyleSheet.create({
     fontSize: 11.5,
   },
   detailPrice: {
-    fontWeight: Platform.OS == 'android' ? 'bold' : '500',
+    fontWeight: Platform.OS === 'android' ? 'bold' : '500',
     top: -25,
   },
   receiptText: {
@@ -38,7 +38,7 @@ export const makeStyles = () => StyleSheet.create({
   },
   receiptPrice: {
     fontSize: 14,
-    fontWeight: Platform.OS == 'android' ? 'bold' : '500',
+    fontWeight: Platform.OS === 'android' ? 'bold' : '500',
   },
   totalPrices: {
     justifyContent: 'space-between',
@@ -78,7 +78,7 @@ export const makeStyles = () => StyleSheet.create({
     top: 4
   },
   textTotalAmount: {
-    fontWeight: Platform.OS == 'android' ? 'bold' : '600'
+    fontWeight: Platform.OS === 'android' ? 'bold' : '600'
   },
 
   button_alignment: {

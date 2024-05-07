@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Button, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export const App = () => {
   const [date, setDate] = useState(new Date(1598051730000));
@@ -47,11 +48,6 @@ export const App = () => {
     </View>
   );
 };
-
-
-import React, { useState } from "react";
-import { Button, View } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const Example = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);

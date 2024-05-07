@@ -3,8 +3,8 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  Dimensions,
-} from "react-native";
+  Dimensions, Platform,
+} from 'react-native';
 import IframeRenderer, {iframeModel} from "@native-html/iframe-plugin";
 import RenderHTML from "react-native-render-html";
 import WebView from "react-native-webview";
@@ -22,7 +22,7 @@ function App() {
 
   let content = `<div><iframe src='https://ttrak.co/OP4sc2qV'></iframe></div>`;
   return (
-  
+
       <View style={styles.item}>
             <RenderHTML
               renderers={renderers}
@@ -32,7 +32,7 @@ function App() {
               }}
               customHTMLElementModels={customHTMLElementModels}
               tagsStyles={{
-              
+
                 iframe: {
                   marginTop: -15,
                   borderRadius: 5,
@@ -40,11 +40,11 @@ function App() {
                   height:Platform.OS === "android" ? 690 : 690,
                   width:contentWidth
                 },
-               
+
               }}
             />
       </View>
-   
+
   );
 }
 const styles = StyleSheet.create({
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     backgroundColor: "red",
     height:Platform.OS === "android" ? 650 : 650
-    
+
   },
- 
+
 });
 
 export default App;
