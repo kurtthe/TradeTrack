@@ -23,7 +23,7 @@ import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
 import { getInvoices } from '@core/module/store/balance/invoices';
 import { getNews } from '@core/module/store/news/news';
-import { expo } from '../../app.json';
+import { expo } from '../../app.config';
 
 import { connect } from 'react-redux';
 import Search from '@custom-elements/Search';
