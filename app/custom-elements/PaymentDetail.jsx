@@ -1,5 +1,5 @@
-import React, { useState, createRef } from 'react';
-import { Dimensions, TouchableOpacity, StyleSheet, Clipboard } from 'react-native';
+import React, { useState } from 'react';
+import { Dimensions, TouchableOpacity, StyleSheet, Clipboard, Platform } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 import { Button } from '@components';
 import { nowTheme } from '@constants';
