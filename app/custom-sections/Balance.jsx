@@ -1,13 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { theme, Text, Block } from 'galio-framework';
 import { nowTheme } from '@constants';
 import GrayLine from '@components/GrayLine';
 import { FormatMoneyService } from '@core/services/format-money.service';
 import BalanceDetail from '@custom-elements/BalanceDetail';
-import Restricted from '../custom-elements/Restricted';
+import { useSelector } from 'react-redux';
 
 const formatMoney = FormatMoneyService.getInstance();
 const { width } = Dimensions.get('screen');
@@ -51,7 +49,7 @@ const Balance = () => {
      </Block>
     )
   }
- 
+
 
   return (
     <View style={{ height: 'auto', paddingHorizontal: 15 }}>
@@ -67,7 +65,7 @@ const Balance = () => {
           <Text
             size={16}
             color={nowTheme.COLORS.INFO}
-            style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
+            style={{ fontWeight: Platform.OS === 'android' ? 'bold' : '600' }}
           >
             {formatMoney.format(balance.total)}
           </Text>

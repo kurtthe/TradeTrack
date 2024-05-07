@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  View,
   Animated,
   FlatList,
   Dimensions,
@@ -10,11 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-
-const { width } = Dimensions.get("screen");
-
 import { articles, categories, nowTheme } from "@constants/";
 import { Icon, Card, Input } from "@components";
+
+const { width } = Dimensions.get("screen");
 
 const suggestions = [
   { id: "DJs", title: "Showers", image: categories["DJs"] },

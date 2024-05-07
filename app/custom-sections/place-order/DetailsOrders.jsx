@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Dimensions, FlatList } from 'react-native';
+import { StyleSheet, View, Dimensions, FlatList, Platform } from 'react-native';
 import { Block, Text, theme, Button } from 'galio-framework';
 import { nowTheme } from '@constants/index';
 import DetailOrder from '@custom-elements/DetailOrder';

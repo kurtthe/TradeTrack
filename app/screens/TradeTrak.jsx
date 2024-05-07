@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, View } from 'react-native';
 import { GeneralRequestService } from '@core/services/general-request.service';
 import Restricted from '@custom-elements/Restricted';
 import Loading from '../custom-elements/Loading';
@@ -60,15 +60,15 @@ const Register = () => {
               }}
               customHTMLElementModels={customHTMLElementModels}
               tagsStyles={{
-              
+
                 iframe: {
-                
+
                   borderRadius: 5,
                   marginHorizontal: 0,
                   height:Platform.OS === "android" ? 690 : 690,
                   width:contentWidth
                 },
-               
+
               }}
             />
     </View>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
    // backgroundColor: "red",
     height:Platform.OS === "android" ? 650 : 650
-    
+
   },
 });
 

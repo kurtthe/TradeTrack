@@ -109,7 +109,7 @@ const PaymentBalance = (props) => {
             <Text
               size={16}
               color={nowTheme.COLORS.INFO}
-              style={{ fontWeight: Platform.OS == 'android' ? 'bold' : '600' }}
+              style={{ fontWeight: Platform.OS === 'android' ? 'bold' : '600' }}
             >
               {formatMoney.format(props.balance?.total)}
             </Text>

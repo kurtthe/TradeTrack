@@ -6,7 +6,6 @@ import {
   Image,
   Platform,
   View,
-  Animated,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -117,7 +116,7 @@ class Product extends React.Component {
               backgroundColor: nowTheme.COLORS.BACKGROUND,
               height: 25,
               alignItems: 'center',
-              justifyContent: Platform.OS == 'android' ? 'space-between' : 'space-evenly',
+              justifyContent: Platform.OS === 'android' ? 'space-between' : 'space-evenly',
             }}
           ></Block>
 
@@ -275,7 +274,7 @@ const styles = StyleSheet.create({
     width: width * 0.5,
   },
   quantityBar: {
-    paddingTop: Platform.OS == 'ios' ? 0 : 3,
+    paddingTop: Platform.OS === 'ios' ? 0 : 3,
     backgroundColor: "white",
     flexDirection: 'row',
     width: width,

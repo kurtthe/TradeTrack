@@ -23,7 +23,9 @@
       "**/*"
     ],
     "plugins": [
-      "@react-native-firebase/app"
+      "@react-native-firebase/app",
+      "expo-font",
+      "expo-secure-store"
     ],
     "ios": {
       "supportsTablet": true,

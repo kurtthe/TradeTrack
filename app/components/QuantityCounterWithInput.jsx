@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Dimensions, TextInput, Alert } from 'react-native';
+import { StyleSheet, Dimensions, TextInput, Alert, Platform } from 'react-native';
 import { Block, Text, Button } from 'galio-framework';
-import { nowTheme } from '@constants/';
+import { nowTheme } from '@constants';
 
 const sizeConstant =
   Platform.OS === 'ios'
@@ -20,7 +20,7 @@ const QuantityCounterWithInput = (props) => {
   }, [props.quantity]);
 
   useEffect(() => {
-    if (quantity == 0 && !props.product && !props.bought) {
+    if (quantity === 0 && !props.product && !props.bought) {
       Alert.alert(
         'Are you sure you want to remove the product for your cart?',
         '',
@@ -46,7 +46,7 @@ const QuantityCounterWithInput = (props) => {
 
   const plusCounter = () => {
     const quantity1 = quantity;
-    if (quantity1 != 100) {
+    if (quantity1 !== 100) {
       const plus = quantity1 + 1;
       setQuantity(plus);
       props.quantityHandler(plus);
@@ -57,7 +57,7 @@ const QuantityCounterWithInput = (props) => {
 
     const quantity1 = quantity;
     const minVal = props.product ? 1 : 0;
-    if (quantity1 != minVal) {
+    if (quantity1 !== minVal) {
       const minus = quantity1 - 1;
 
       setQuantity((props.bought && minus === 0) ? 1 : minus);
@@ -105,7 +105,7 @@ const QuantityCounterWithInput = (props) => {
   );
 };
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   quantityButtons: {
     width: sizeConstant,
     height: sizeConstant,
