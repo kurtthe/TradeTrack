@@ -28,10 +28,14 @@
       "expo-secure-store"
     ],
     "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "3",
+      "buildNumber": "8",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
+      "userInterfaceStyle": "light",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
         "NSPhotoLibraryUsageDescription": "Allow Burdens to access your photos to select photos and then send a requirement of your  purchase",
@@ -52,7 +56,7 @@
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
         "android.permission.ACCESS_NETWORK_STATE"
       ],
-      "versionCode": 57,
+      "versionCode": 58,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
