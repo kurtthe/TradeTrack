@@ -23,9 +23,27 @@ module.exports = {
       "**/*"
     ],
     "plugins": [
-      "@react-native-firebase/app",
-      "expo-font",
-      "expo-secure-store"
+      [
+        "expo-secure-store"
+      ],
+      [
+        "@react-native-firebase/app",
+        "expo-font"
+      ],
+      [
+          "expo-build-properties",
+          {
+            android: {
+              usesCleartextTraffic: true,
+              compileSdkVersion: 34,
+              targetSdkVersion: 34,
+              buildToolsVersion: "34.0.0"
+            },
+            ios: {
+              deploymentTarget: "14.0"
+            }
+          }
+      ]
     ],
     "ios": {
       "config": {
@@ -33,7 +51,7 @@ module.exports = {
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.trade.Burdens",
-      "buildNumber": "8",
+      "buildNumber": "10",
       "googleServicesFile": "./GoogleAnalytics/GoogleService-Info.plist",
       "userInterfaceStyle": "light",
       "infoPlist": {
@@ -54,9 +72,13 @@ module.exports = {
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
-        "android.permission.ACCESS_NETWORK_STATE"
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.ACCESS_BACKGROUND_LOCATION"
       ],
-      "versionCode": 58,
+      "versionCode": 59,
       "googleServicesFile": "./GoogleAnalytics/google-services.json"
     },
     "description": "Coded by Digital Basis",
