@@ -12,6 +12,8 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@expo/config-plugins": "^7.8.0",
+    "@expo/prebuild-config": "^6.7.0",
     "@native-html/iframe-plugin": "^2.6.1",
     "@pstyczynski/react-native-expo-pdfjs": "^1.0.0",
     "@react-native-community/datetimepicker": "7.6.1",
@@ -27,13 +29,13 @@
     "axios": "1.6.0",
     "deprecated-react-native-prop-types": "^4.2.1",
     "expo": "50",
-    "expo-app-loading": "~2.0.0",
     "expo-asset": "~9.0.2",
     "expo-constants": "~15.4.6",
     "expo-file-system": "~16.0.9",
     "expo-font": "^11.10.3",
     "expo-secure-store": "~12.8.1",
     "expo-sharing": "~11.10.0",
+    "expo-splash-screen": "~0.26.5",
     "expo-updates": "~0.24.12",
     "format-money-js": "^1.4.3",
     "galio-framework": "^0.7.1",

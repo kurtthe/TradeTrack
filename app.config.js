@@ -1,4 +1,4 @@
-{
+module.exports = {
   "expo": {
     "name": "Burdens",
     "slug": "-Trade-Track-",
