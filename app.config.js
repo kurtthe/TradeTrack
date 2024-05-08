@@ -24,20 +24,17 @@ module.exports = {
     ],
     "plugins": [
       [
+        "expo-font",
         "expo-secure-store"
-      ],
-      [
-        "@react-native-firebase/app",
-        "expo-font"
       ],
       [
           "expo-build-properties",
           {
             android: {
               usesCleartextTraffic: true,
-              compileSdkVersion: 34,
-              targetSdkVersion: 34,
-              buildToolsVersion: "34.0.0"
+              compileSdkVersion: 33,
+              targetSdkVersion: 33,
+              buildToolsVersion: "33.0.0"
             },
             ios: {
               deploymentTarget: "14.0"
