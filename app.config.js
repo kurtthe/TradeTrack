@@ -26,7 +26,8 @@ module.exports = {
     ],
     "plugins": [
       [
-        "expo-secure-store"
+        "expo-secure-store",
+        "expo-font"
       ],
       [
           "expo-build-properties",
