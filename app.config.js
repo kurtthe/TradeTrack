@@ -1,3 +1,5 @@
+const { withExpoSecureStore } = require('@expo/config-plugins');
+
 module.exports = {
   "expo": {
     "name": "Burdens",
@@ -24,7 +26,6 @@ module.exports = {
     ],
     "plugins": [
       [
-        "expo-font",
         "expo-secure-store"
       ],
       [
