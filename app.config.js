@@ -1,5 +1,3 @@
-const { withExpoSecureStore } = require('@expo/config-plugins');
-
 module.exports = {
   expo: {
     name: "Burdens",
@@ -34,9 +32,9 @@ module.exports = {
           {
             android: {
               usesCleartextTraffic: true,
-              compileSdkVersion: 33,
-              targetSdkVersion: 33,
-              buildToolsVersion: "33.0.0"
+              compileSdkVersion: 34,
+              targetSdkVersion: 34,
+              buildToolsVersion: "34.0.0"
             },
             ios: {
               deploymentTarget: "14.0"
