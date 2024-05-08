@@ -9,25 +9,23 @@ import {
   Platform,
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
-
 import { Button, Input } from '@components';
 import ForgotButton from '@components/ForgotButton';
 import SimpleButton from '@components/SimpleButton';
-const { height, width } = Dimensions.get('screen');
-
 import nowTheme from '@constants/Theme';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { MaterialIcons } from '@expo/vector-icons';
-
+import Icon from '@expo/vector-icons/MaterialIcons';
 import { GeneralRequestService } from '@core/services/general-request.service';
-
 import { connect } from 'react-redux';
 import { sign, logout } from '@core/module/store/auth/reducers/login';
 import { clearProducts } from '@core/module/store/cart/cart';
 import * as SecureStore from 'expo-secure-store';
+
+
+const { height, width } = Dimensions.get('screen');
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>{children}</TouchableWithoutFeedback>
@@ -227,7 +225,7 @@ class Login extends React.Component {
                           secureTextEntry={this.state.hidePass}
                           onChangeText={(event) => this.handleChangePassword(event)}
                         />
-                        <MaterialIcons
+                        <Icon
                           style={styles.icon}
                           name={this.state.hidePass ? 'visibility' : 'visibility-off'}
                           size={20}
