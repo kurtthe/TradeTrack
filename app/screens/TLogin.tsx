@@ -64,28 +64,13 @@ const Login = () => {
         <Block flex middle style={{ backgroundColor: '#fff' }}>
           <Block flex space="evenly">
             <Block flex middle style={styles.socialConnect}>
-              <Block
-                flex={3}
-                top
-                middle
-                style={{
-                  top:
-                    Platform.OS === 'ios'
-                      ? Dimensions.get('window').height < 670
-                        ? 15
-                        : 30
-                      : Dimensions.get('window').height < 870
-                        ? 15
-                        : 40,
-                }}
-              >
                 <Image
                   source={images.logo}
-                  width={150}
-                  height={80}
-                  resizeMode="contain"
+                  width={300}
+                  height={150}
+                  resizeMode="cover"
+                  style={{backgroundColor: 'gray'}}
                 />
-              </Block>
               <Block flex={2} top>
                 <Text
                   style={{
@@ -94,15 +79,7 @@ const Login = () => {
                     top: 15,
                   }}
                   color="#2E2F33"
-                  size={
-                    Platform.OS === 'ios'
-                      ? Dimensions.get('window').height < 670
-                        ? 16
-                        : 18
-                      : Dimensions.get('window').height < 870
-                        ? 18
-                        : 20
-                  }
+                  size={20}
                 >
                   Welcome Back,{'\n'}
                   Please sign in with your account
@@ -120,15 +97,7 @@ const Login = () => {
                         style={{ marginLeft: 0, fontFamily: 'montserrat-regular' }}
                         row
                         muted
-                        size={
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 16
-                              : 20
-                            : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                        }
+                        size={18}
                       >
                         Email
                       </Text>
@@ -150,15 +119,7 @@ const Login = () => {
                         }}
                         row
                         muted
-                        size={
-                          Platform.OS === 'ios'
-                            ? Dimensions.get('window').height < 670
-                              ? 16
-                              : 20
-                            : Dimensions.get('window').height < 870
-                              ? 16
-                              : 20
-                        }
+                        size={18}
                       >
                         Password
                       </Text>
@@ -274,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   socialConnect: {
-    backgroundColor: nowTheme.COLORS.WHITE,
+    backgroundColor: 'green',
     marginHorizontal: 5,
   },
 
