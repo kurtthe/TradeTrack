@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 import { sign, logout } from '@core/module/store/auth/reducers/login';
 import { clearProducts } from '@core/module/store/cart/cart';
 import * as SecureStore from 'expo-secure-store';
-
+import { images } from '../../assets/imgs/img';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -137,7 +137,7 @@ class Login extends React.Component {
                 >
                   <Image
                     style={styles.introImageStyle}
-                    source={require('@assets/imgs/img/logo.png')}
+                    source={images.logo}
                   />
                 </Block>
                 <Block flex={2} top>
