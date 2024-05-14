@@ -80,8 +80,10 @@ const Login = () => {
                 }}
               >
                 <Image
-                  style={styles.introImageStyle}
                   source={images.logo}
+                  width={150}
+                  height={80}
+                  resizeMode="contain"
                 />
               </Block>
               <Block flex={2} top>
@@ -282,26 +284,6 @@ const styles = StyleSheet.create({
 // @ts-ignore
     width: width - theme.SIZES.BASE * 3,
     bottom: 20,
-  },
-
-  introImageStyle: {
-    width:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? wp('37%')
-          : wp('40%')
-        : Dimensions.get('window').height < 870
-        ? wp('29%')
-        : wp('40%'),
-    height:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').height < 670
-          ? hp('10%')
-          : hp('40%')
-        : Dimensions.get('window').height < 870
-        ? hp('29%')
-        : hp('40%'),
-    resizeMode: 'contain',
   },
 
   icon: {
