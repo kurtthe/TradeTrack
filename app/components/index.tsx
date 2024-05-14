@@ -7,5 +7,6 @@ import Input from './Input';
 import Switch from './Switch';
 import Select from './Select';
 import Notification from './Notification';
+import DismissKeyboard from './DismissKeyboard'
 
-export { Button, Card, DrawerItem, Icon, Input, Header, Switch, Select, Notification };
+export { Button, Card, DrawerItem, Icon, Input, Header, Switch, Select, Notification, DismissKeyboard };

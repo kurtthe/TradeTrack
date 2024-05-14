@@ -3,11 +3,21 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react",
-    "allowSyntheticDefaultImports": true ,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@assets/*": ["src/assets/*"],
+      "@assets/*": ["app/assets/*"],
+      "@core/*": ["app/core/*"],
+      "@screens/*": ["app/screens/*"],
+      "@components/*": ["app/components/*"],
+      "@custom-elements/*": ["app/custom-elements/*"],
+      "@custom-sections/*": ["app/custom-sections/*"],
+      "@navigation/*": ["app/navigation/*"],
+      "@shared/*": ["app/shared/*"],
+      "@theme/*": ["app/theme/*"],
+      "@constants/*": ["app/shared/constants/*"],
+      "@components": ["app/components/index"],
     }
   },
 }

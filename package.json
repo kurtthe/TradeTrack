@@ -38,7 +38,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-updates": "~0.25.11",
     "format-money-js": "^1.4.3",
-    "galio-framework": "^0.7.1",
+    "galio-framework": "^0.8.0",
     "moment": "^2.29.1",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
