@@ -44,7 +44,7 @@
     "postinstall-postinstall": "^2.1.0",
     "prop-types": "^15.7.2",
     "react": "18.2.0",
-    "react-native": "0.73.6",
+    "react-native": "0.74.1",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-maps": "1.14.0",
     "react-native-masked-text": "^1.13.0",
@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@types/react-native-toast-native": "^0.1.7",
     "babel-eslint": "^10.0.3",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-preset-expo": "~11.0.0",
