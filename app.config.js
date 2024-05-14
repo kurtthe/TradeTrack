@@ -24,6 +24,7 @@ module.exports = {
     ],
     plugins: [
       [
+        "expo-asset",
         "expo-secure-store",
         "expo-font"
       ],
