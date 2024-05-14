@@ -804,10 +804,10 @@
     mv "~2"
     safe-json-stringify "~1"
 
-"@expo/cli@0.18.11":
-  version "0.18.11"
-  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.18.11.tgz#338215d9aa0d11b0d943814580bf4b9c27f43971"
-  integrity sha512-2xIfvj5RnQbQqZdkYa9a7Roll1ywBER2omCUKdbJazRcJTkkN3HMv/jILztdZ2uKlcfIqPq4VTbKEhV/IkewYg==
+"@expo/cli@0.18.12":
+  version "0.18.12"
+  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.18.12.tgz#86a7a218bba8f868d443a3350e570cd8e7d4c1ee"
+  integrity sha512-rsN8DO3aU3sWFfl1mlIcLOFJUAYxG1U0XalEwQaT7ZkVT+9G70PqEjuraCm/vKc4aOnJ5wsecaHzQOvZywmGmg==
   dependencies:
     "@babel/runtime" "^7.20.0"
     "@expo/code-signing-certificates" "0.0.5"
@@ -4278,13 +4278,13 @@ expo-updates@~0.25.12:
     ignore "^5.3.1"
     resolve-from "^5.0.0"
 
-expo@^51.0.5:
-  version "51.0.5"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-51.0.5.tgz#f39f7dc6d389f893f29c739ad4c8657aa9dea64d"
-  integrity sha512-i+AfkfToYPFCobX0NUT9PmDtsB3L19vhCB/XUE1Ph6FVrBF6GipkHzTADuRLMaVg5u/2sm/fdzGzBcMjXSHqmA==
+expo@~51.0.6:
+  version "51.0.6"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-51.0.6.tgz#d8288dc4653c4b686d34468702955dba9130a7d3"
+  integrity sha512-cl3FBuSZ1gE1UcPqsMinCPmwyqedF1kug7+SK6G4vYSB8JulWmCOwjgpcOIK5lkKgNwU5sQS1nG9hPcXFB79pA==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.18.11"
+    "@expo/cli" "0.18.12"
     "@expo/config" "9.0.1"
     "@expo/config-plugins" "8.0.4"
     "@expo/metro-config" "0.18.3"
@@ -8380,10 +8380,10 @@ typedarray.prototype.slice@^1.0.3:
     typed-array-buffer "^1.0.2"
     typed-array-byte-offset "^1.0.2"
 
-typescript@^5.3.3:
-  version "5.4.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.5.tgz#42ccef2c571fdbd0f6718b1d1f5e6e5ef006f611"
-  integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
+typescript@~5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 ua-parser-js@^1.0.35:
   version "1.0.37"
