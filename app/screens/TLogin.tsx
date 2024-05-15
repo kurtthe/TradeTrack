@@ -1,10 +1,10 @@
 import React from 'react';
 import {
   StyleSheet,
-  Image,
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  Image
 } from 'react-native';
 import { Block, Text, theme } from 'galio-framework';
 import { Button, DismissKeyboard, Input } from '@components';
@@ -12,7 +12,6 @@ import ForgotButton from '@components/ForgotButton';
 import SimpleButton from '@components/SimpleButton';
 import nowTheme from '@constants/Theme';
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from '@expo/vector-icons/MaterialIcons';
@@ -20,13 +19,16 @@ import { GeneralRequestService } from '@core/services/general-request.service';
 import { connect } from 'react-redux';
 import { sign, logout } from '@core/module/store/auth/reducers/login';
 import { clearProducts } from '@core/module/store/cart/cart';
-import { images } from '../../assets/imgs/img';
 import { useNavigation } from '@react-navigation/native';
+import { useAssets } from 'expo-asset';
+import { images } from '@assets/imgs/img';
+import { isAndroid } from '@shared/platform';
 
 const { height, width } = Dimensions.get('screen');
 const generalRequest = GeneralRequestService.getInstance();
 
 const Login = () => {
+  const [assets] = useAssets([images.logo])
   const navigation = useNavigation()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -57,20 +59,24 @@ const Login = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior='padding'
       style={styles.container}
     >
       <DismissKeyboard>
         <Block flex middle style={{ backgroundColor: '#fff' }}>
           <Block flex space="evenly">
             <Block flex middle style={styles.socialConnect}>
+              {assets &&
                 <Image
-                  source={images.logo}
-                  width={300}
-                  height={150}
-                  resizeMode="cover"
-                  style={{backgroundColor: 'gray'}}
-                />
+                  // @ts-ignore
+                  source={assets[0]}
+                  style={{
+                    width: 180,
+                    height: 100,
+                    marginTop: isAndroid ? 20:0
+                  }}
+                  resizeMode='contain'
+              />}
               <Block flex={2} top>
                 <Text
                   style={{
@@ -235,7 +241,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   socialConnect: {
-    backgroundColor: 'green',
     marginHorizontal: 5,
   },
 

@@ -24,11 +24,14 @@ module.exports = {
     ],
     plugins: [
       [
-        "expo-font"
+        "expo-font",
+        "expo-secure-store"
       ],
       [
         "expo-asset",
-        "expo-secure-store"
+        {
+          "assets": ["./assets/**/*"]
+        }
       ],
       [
           "expo-build-properties",
