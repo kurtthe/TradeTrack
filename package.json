@@ -9,6 +9,8 @@
     "ios": "expo run:ios",
     "eject": "expo eject",
     "lint": "eslint *.js **/*.js",
+    "build:android": "eas build --platform android --local --clear-cache\n",
+    "build:ios": "eas build --platform ios --local --clear-cache\n",
     "postinstall": "patch-package"
   },
   "dependencies": {

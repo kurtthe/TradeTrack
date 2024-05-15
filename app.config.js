@@ -7,7 +7,7 @@ module.exports = {
       "ios",
       "android"
     ],
-    version: "1.5.7",
+    version: "1.5.6",
     orientation: "portrait",
     icon: "./assets/icon.png",
     splash: {
@@ -75,7 +75,7 @@ module.exports = {
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.ACCESS_BACKGROUND_LOCATION"
       ],
-      versionCode: 59,
+      versionCode: 58,
       googleServicesFile: "./GoogleAnalytics/google-services.json"
     },
     description: "Coded by Digital Basis",
