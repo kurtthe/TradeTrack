@@ -1,18 +1,37 @@
-import React, {useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Portal } from 'react-native-paper';
 import {Linking, Platform, Text, TouchableOpacity, View, StyleSheet} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import {WebView} from "react-native-webview";
-import Loading from '@custom-elements/Loading'
+import Loading from '@custom-elements/Loading';
+import Restricted from '@custom-elements/Restricted';
+import { GeneralRequestService } from '@core/services/general-request.service';
 
+
+const generalRequestService = GeneralRequestService.getInstance();
 const WebviewComponent = ({url, visible=false, onClose}) => {
   const webViewRef = useRef(null);
+  const [urlView, setUrlView] = useState(null);
+  const [restricted, setRestricted] = useState(false);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
 
-  if(!visible) {
-    return null
-  }
+  useEffect(() => {
+    (
+      async () => {
+        const response = await generalRequestService.get(
+          'https://api.tradetrak.com.au/burdens/dashboard',
+        );
+
+        if(response.restricted) {
+          setRestricted(true)
+        }
+        setUrlView(response.url);
+      }
+    )()
+  }, []);
+
+
 
   const handleNavigationStateChange = (navState) => {
     setCanGoBack(navState.canGoBack);
@@ -40,6 +59,16 @@ const WebviewComponent = ({url, visible=false, onClose}) => {
       webViewRef.current.reload();
     }
   };
+
+  if(!urlView) return <Loading />
+
+  if (restricted) {
+    return (
+      <View style={styles.restrictedContainer}>
+        <Restricted />
+      </View>
+    )
+  }
 
   const loadingView = () => {
     return (
@@ -78,7 +107,7 @@ const WebviewComponent = ({url, visible=false, onClose}) => {
           onNavigationStateChange={handleNavigationStateChange}
           renderLoading={loadingView}
           startInLoadingState={true}
-          source={{ uri: url }}
+          source={{ uri: urlView }}
           containerStyle={{ flex: 1 }}
         />
         <View style={[styles.menuRow, { borderTopWidth: 1 }]}>
@@ -118,6 +147,11 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingHorizontal: 15,
     backgroundColor: '#F8F8F8',
+  },
+  restrictedContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 })
 
