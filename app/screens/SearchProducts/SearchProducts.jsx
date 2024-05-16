@@ -10,6 +10,7 @@ import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
 import { nowTheme } from '@constants';
+import { Block } from 'galio-framework';
 
 export const SearchProducts = ({route}) => {
   const { text: textSearchHome } = route.params
@@ -126,6 +127,23 @@ export const SearchProducts = ({route}) => {
   }
 
   const renderNotFound = () => {
+
+    const loadingComponent = loadingData || isFetching || isLoading
+
+    if(loadingComponent){
+      return (
+        <Block height={500} row top>
+          <Product
+            product={{}}
+            isLoading={true}
+          />
+          <Product
+            product={{  }}
+            isLoading={true}
+          />
+        </Block>
+      )
+    }
     return (
       <View style={styles.notfound}>
         <Text style={styles.textNotFount}>
