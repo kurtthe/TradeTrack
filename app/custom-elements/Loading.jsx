@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
 const Loading = ({size}) => (
-  <ActivityIndicator color="#009688" size={size} style={styles.ActivityIndicatorStyle} />
+  <ActivityIndicator color="#009688" size={size ?? "small"} style={styles.ActivityIndicatorStyle} />
 );
 
 const styles = StyleSheet.create({
