@@ -23,6 +23,16 @@ export const ListInvoices = ({ data, title, backAccount, restricted }) => {
     <Invoice key={`component-list${index}`} invoice={item} isAccount={backAccount} />
   );
   const renderListData = () => {
+    if(data.length === 0){
+      return (
+        <>
+          <Invoice isLoading={true} invoice={{}}  />
+          <Invoice isLoading={true} invoice={{}}  />
+          <Invoice isLoading={true} invoice={{}}  />
+        </>
+      )
+    }
+
     return data.map(renderItem);
   };
 

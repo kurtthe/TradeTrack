@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Dimensions, Platform, StyleSheet, View } from 'react-native';
-import { GeneralRequestService } from '@core/services/general-request.service';
+import React, { useEffect, useRef, useState } from 'react';
+import { Portal } from 'react-native-paper';
+import {Linking, Platform, Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
+import {WebView} from "react-native-webview";
+import Loading from '@custom-elements/Loading';
 import Restricted from '@custom-elements/Restricted';
-import Loading from '../custom-elements/Loading';
-import RenderHTML from 'react-native-render-html';
-import WebView from 'react-native-webview';
-import IframeRenderer, { iframeModel } from '@native-html/iframe-plugin';
+import { GeneralRequestService } from '@core/services/general-request.service';
+
 
 const generalRequestService = GeneralRequestService.getInstance();
-const renderers = {
-  iframe: IframeRenderer
-};
-
-const customHTMLElementModels = {
-  iframe: iframeModel
-};
-const contentWidth = Dimensions.get("screen").width * 0.9;
-
-const Register = () => {
+const WebviewComponent = ({url, visible=false, onClose}) => {
+  const webViewRef = useRef(null);
   const [urlView, setUrlView] = useState(null);
   const [restricted, setRestricted] = useState(false);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(false);
 
   useEffect(() => {
     (
@@ -36,8 +31,36 @@ const Register = () => {
     )()
   }, []);
 
-  if(!urlView) return <Loading />
 
+
+  const handleNavigationStateChange = (navState) => {
+    setCanGoBack(navState.canGoBack);
+    setCanGoForward(navState.canGoForward);
+  };
+
+  const openInBrowser = () => {
+    url && Linking.openURL(url)
+  };
+
+  const handleGoBack = () => {
+    if (webViewRef.current) {
+      webViewRef.current.goBack();
+    }
+  };
+
+  const handleGoForward = () => {
+    if (webViewRef.current) {
+      webViewRef.current.goForward();
+    }
+  };
+
+  const handleRefresh = () => {
+    if (webViewRef.current) {
+      webViewRef.current.reload();
+    }
+  };
+
+  if(!urlView) return <Loading />
 
   if (restricted) {
     return (
@@ -46,51 +69,90 @@ const Register = () => {
       </View>
     )
   }
-  const contentWidth = Dimensions.get("screen").width * 1;
-  const content = `<iframe src='${urlView}' allowfullscreen></iframe>`;
 
-  return (
-    <View style={styles.item}>
-    <View style={styles.webViewContainer}>
-    <RenderHTML
-              renderers={renderers}
-              WebView={WebView}
-              source={{
-                html: content,
-              }}
-              customHTMLElementModels={customHTMLElementModels}
-              tagsStyles={{
+  const loadingView = () => {
+    return (
+      <View
+        style={[
+          styles.container,
+          {
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          },
+        ]}
+      >
+        <Loading />
+      </View>
+    );
+  };
 
-                iframe: {
+  return  (
+    <Portal>
+      <View style={{flex: 1,  paddingTop: 40, paddingBottom: Platform.OS === 'ios' ? 30 : 0, backgroundColor: '#F8F8F8'}}>
+        <View style={[styles.menuRow, { borderBottomWidth: 1 }]}>
+          <TouchableOpacity onPress={onClose}>
+            <Text style={{ fontSize: 20 }}>Done</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleRefresh}>
+            <Ionicons name='refresh' size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+        <WebView
+          ref={webViewRef}
+          onNavigationStateChange={handleNavigationStateChange}
+          renderLoading={loadingView}
+          startInLoadingState={true}
+          source={{ uri: urlView }}
+          containerStyle={{ flex: 1 }}
+        />
+        <View style={[styles.menuRow, { borderTopWidth: 1 }]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '40%',
+            }}
+          >
+            {
+              canGoBack && <TouchableOpacity onPress={handleGoBack}>
+                <Ionicons name={'arrow-back'} size={24} color="black"/>
+              </TouchableOpacity>
+            }
 
-                  borderRadius: 5,
-                  marginHorizontal: 0,
-                  height:Platform.OS === "android" ? 690 : 690,
-                  width:contentWidth
-                },
+            { canGoForward &&
+              <TouchableOpacity onPress={handleGoForward}>
+                <Ionicons name={'arrow-forward'} size={24} color="black"/>
+              </TouchableOpacity>
+            }
 
-              }}
-            />
-    </View>
-    </View>
-  );
-};
+          </View>
+          <TouchableOpacity onPress={openInBrowser}>
+            <Ionicons name={'compass'} size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Portal>
+  )
+}
 
 const styles = StyleSheet.create({
-  webViewContainer: {
-    flex: 1,
+  menuRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 8,
+    paddingHorizontal: 15,
+    backgroundColor: '#F8F8F8',
   },
   restrictedContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
-  item: {
-    marginTop: 60,
-   // backgroundColor: "red",
-    height:Platform.OS === "android" ? 650 : 650
+})
 
-  },
-});
-
-export default Register;
+export default WebviewComponent;

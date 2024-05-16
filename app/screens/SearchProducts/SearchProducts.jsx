@@ -9,8 +9,8 @@ import { makeStyles } from './SearchProducts.styles'
 import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
-import LoadingComponent from '@custom-elements/Loading';
 import { nowTheme } from '@constants';
+import { Block } from 'galio-framework';
 
 export const SearchProducts = ({route}) => {
   const { text: textSearchHome } = route.params
@@ -19,36 +19,43 @@ export const SearchProducts = ({route}) => {
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [dataProducts, setDataProducts] = useState([])
   const [textSearch, setTextSearch]= useState()
-  const [empty, setEmpty] = useState(true)
   const [keeData, setKeepData] = useState(false)
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
-    search: textSearchHome || '',
+    search: textSearchHome ?? '',
     category_id: categorySelected
   });
 
   const {
     data: products,
-    refetch
+    refetch,
+    isFetching,
+    isLoading
   } = useGetProducts(optionsProducts)
 
 
   const styles = makeStyles()
 
   useEffect(() => {
-    optionsProducts.page === 1 && setLoadingData(true)
-    optionsProducts.page > 1 && setLoadingMore(true)
-    refetch();
-  }, [optionsProducts.page,optionsProducts.search, optionsProducts.category_id ])
-
-  useEffect(() => {
     setLoadingData(true)
     setTextSearch(textSearchHome)
     debouncedOnChange(textSearchHome)
   }, [textSearchHome])
+
+  useEffect(() => {
+    const delay = setTimeout(() =>{
+      optionsProducts.page === 1 && setLoadingData(true)
+      optionsProducts.page > 1 && setLoadingMore(true)
+      refetch();
+    }, 500)
+
+    return () => {
+      clearTimeout(delay)
+    }
+  }, [optionsProducts.page, optionsProducts.search, optionsProducts.category_id ])
 
   useEffect(() => {
     const updateListProducts = (newProducts) => {
@@ -82,7 +89,6 @@ export const SearchProducts = ({route}) => {
       page: 1,
       search: text
     })
-    setEmpty(text === '')
   }
 
   const handleLoadingMore = () => {
@@ -110,15 +116,34 @@ export const SearchProducts = ({route}) => {
   );
 
   const renderItem = ({ item }) => {
-    return (<Product
-      product={item}
-      myPrice={clientFriendly}
-    />
+    const loadingComponent = loadingData || isFetching || isLoading
+    return (
+        <Product
+          product={item}
+          myPrice={clientFriendly}
+          isLoading={loadingComponent}
+        />
     )
   }
-  const memoizedValue = useMemo(() => renderItem, [dataProducts, clientFriendly])
 
   const renderNotFound = () => {
+
+    const loadingComponent = loadingData || isFetching || isLoading
+
+    if(loadingComponent){
+      return (
+        <Block height={500} row top>
+          <Product
+            product={{}}
+            isLoading={true}
+          />
+          <Product
+            product={{  }}
+            isLoading={true}
+          />
+        </Block>
+      )
+    }
     return (
       <View style={styles.notfound}>
         <Text style={styles.textNotFount}>
@@ -127,25 +152,6 @@ export const SearchProducts = ({route}) => {
       </View>
     );
   };
-
-  const putContent = () => {
-    if (loadingData) {
-      return (
-        <View style={{flex: 1}}>
-          <LoadingComponent size='large' />
-        </View>
-      )
-    }
-    return <FlatList
-      data={dataProducts}
-      renderItem={memoizedValue}
-      keyExtractor={(item, index) => `${item.sku}-${index}`}
-      numColumns={2}
-      contentContainerStyle={styles.container}
-      ListFooterComponent={getButtonLoadingMore}
-      ListEmptyComponent={renderNotFound}
-    />
-  }
 
   return (
     <View style={{flex: 1, backgroundColor: nowTheme.COLORS.BACKGROUND}}>
@@ -156,7 +162,15 @@ export const SearchProducts = ({route}) => {
         style={styles.search}
         inputStyle={styles.searchInput}
       />
-      {!empty && putContent()}
+      <FlatList
+        data={dataProducts}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.sku}-${index}`}
+        numColumns={2}
+        contentContainerStyle={styles.container}
+        ListFooterComponent={getButtonLoadingMore}
+        ListEmptyComponent={renderNotFound}
+      />
     </View>
 
   );

@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { Image, TouchableWithoutFeedback, View, TouchableOpacity } from 'react-native';
+import { Image, TouchableWithoutFeedback, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { Button } from '@components';
 import { Block, Text } from 'galio-framework';
@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, sizeConstant } from './Product.styles';
 import FavoriteIcon from '../FavoriteIcon';
 import IconTopSell from '../IconTopSell';
+import { Skeleton } from 'moti/skeleton';
 
 const Product = (props) => {
   const cartProducts = useSelector((state) => state.productsReducer.products);
@@ -70,12 +71,20 @@ const Product = (props) => {
     );
   };
 
+  if(props.isLoading){
+    return (
+      <Block key={`Card-${props.product.name}`} style={StyleSheet.flatten([styles.Card, {padding: 0}])}>
+        <Skeleton show={props.isLoading} colorMode='light' width='100%' height={300}  />
+      </Block>
+    )
+
+  }
+
   return (
     <Block key={`Card-${props.product.name}`} style={styles.Card}>
       <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
         <Image style={styles.image} source={{ uri: props.product.cover_image }} />
       </TouchableWithoutFeedback>
-
       <TouchableWithoutFeedback onPress={() => onProductPressed(props.product)}>
         <Block flex space="between" style={{ paddingBottom: 7 }}>
           <View style={styles.contentSku}>

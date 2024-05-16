@@ -101,9 +101,7 @@ const News = (props) => {
     <>
       {putContent()}
 
-
       <BottomModal show={showModal} close={() => setShowModal(false)} sharedMessage={`Shared All the latest news- ${props.news.preview.title} read more ${props.news.link} `}>
-
         <View style={styles.view_h}>
           <WebView url={props.news.link} />
         </View>
@@ -124,12 +122,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 
-  cardRead: {
-    left: '12%',
-    fontWeight: 'bold',
-    paddingBottom: 10,
-    fontWeight: 'bold',
-  },
+
   cardDescription: {
     padding: theme.SIZES.BASE / 2,
   },
@@ -155,7 +148,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 3,
-    elevation: 1,
     overflow: 'hidden',
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
@@ -173,11 +165,11 @@ const styles = StyleSheet.create({
   },
 //  styles Vertical News
   cardRead: {
-    textAlign: 'right', 
+    left: '12%',
+    textAlign: 'right',
     marginLeft: 8,
     fontWeight:'bold',
     paddingBottom: 10,
-    fontWeight:'bold'
   },
   containerV: {
     backgroundColor: theme.COLORS.WHITE,

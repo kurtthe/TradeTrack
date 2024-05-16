@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ScrollView,Text
+  ScrollView,
 } from 'react-native';
 import { Block, theme } from 'galio-framework';
 
@@ -19,7 +19,7 @@ const ListNews = (props) => {
         </>
       )
     }
-    
+
     return props.news.map((item, index)=>(
       <News key={index} news={item} />
     ))
@@ -27,7 +27,7 @@ const ListNews = (props) => {
 
   return (
     <ScrollView horizontal={true} style={{ bottom: 10 }}>
-      <Block flex row style={{left: theme.SIZES.BASE / 2}}> 
+      <Block flex row style={{left: theme.SIZES.BASE / 2}}>
         {putNews()}
       </Block>
     </ScrollView>
