@@ -60,11 +60,8 @@ class Home extends React.Component {
 
   handleSearch = (text) => {
     if (text !== '') {
-      this.props.navigation.navigate('Products', {
-        screen: 'SearchProducts',
-        params: {
+      this.props.navigation.navigate('SearchProducts', {
           text,
-        },
       });
     }
   };
