@@ -9,11 +9,12 @@ import { validateEmptyField } from '@core/utils/validate-empty-field';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 import { makeStyles } from './Invoice.styles';
+import { Skeleton } from 'moti/skeleton';
 
 export const Invoice = (props) => {
   const navigation = useNavigation();
   const styles = makeStyles()
-  
+
   let dateInvoice = validateEmptyField(props.invoice.invoice_date);
 
   if (dateInvoice !== 'N/A') {
@@ -30,7 +31,7 @@ export const Invoice = (props) => {
   };
 
   return (
-    <>
+    <Skeleton radius="square" show={props.isLoading} colorMode='light' height={105} width='100%' >
     <TouchableOpacity onPress={() => handleShowDetails()} style={styles.container}>
       <Block row>
         <Block flex style={{ paddingRight: 3, paddingLeft: 15 }}>
@@ -99,7 +100,7 @@ export const Invoice = (props) => {
           <Block bottom>
             <Text
               style={{ fontFamily: nowTheme.FONT.primaryBold, marginTop: -22.5, left: -12 }}
-              size={theme.SIZES.BASE * 1}
+              size={theme.SIZES.BASE}
               color={nowTheme.COLORS.HEADER}
             >
               {formatMoney.format(props.invoice.total_amount)}
@@ -109,6 +110,6 @@ export const Invoice = (props) => {
       </Block>
     </TouchableOpacity>
     {Platform.OS === 'ios' && <Block style={styles.line} />}
-    </>
+    </Skeleton>
   );
 };

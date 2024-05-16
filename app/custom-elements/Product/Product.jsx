@@ -74,7 +74,7 @@ const Product = (props) => {
   if(props.isLoading){
     return (
       <Block key={`Card-${props.product.name}`} style={StyleSheet.flatten([styles.Card, {padding: 0}])}>
-        <Skeleton show={true} colorMode='light' width='100%' height={300}  />
+        <Skeleton show={props.isLoading} colorMode='light' width='100%' height={300}  />
       </Block>
     )
 
