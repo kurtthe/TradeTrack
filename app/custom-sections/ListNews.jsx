@@ -10,7 +10,7 @@ import SkeletonNews from '@custom-elements/skeletons/News'
 
 const ListNews = (props) => {
   const putNews = ()=>{
-    if(props.news.length > 0){
+    if(props.news.length === 0){
       return(
         <>
           <SkeletonNews />

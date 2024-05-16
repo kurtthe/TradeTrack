@@ -5,7 +5,7 @@ import { Skeleton } from 'moti/skeleton';
 const News = () => {
   return (
     <Block style={{marginHorizontal: 8}}>
-      <Skeleton show={true} colorMode='light' radius="square" height={250} width={200} />
+      <Skeleton show={true} colorMode='light' radius="square" height={280} width={300} />
     </Block>
     );
 };
