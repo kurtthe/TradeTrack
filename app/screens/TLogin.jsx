@@ -79,7 +79,7 @@ class Login extends React.Component {
   }
 
   handleLogin = async () => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, email: this.state.email, password: this.state.password });
 
     const dataLogin = {
       username: this.state.email,
@@ -93,7 +93,7 @@ class Login extends React.Component {
         ...resLogin.body,
         company: resLogin.headers['tradetrak-company'],
       };
-      this.setState({ email: '', password: '' });
+      this.setState({ email: this.state.email, password: this.state.password });
       this.props.sign(data);
     }
 
