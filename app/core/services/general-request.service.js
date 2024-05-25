@@ -146,6 +146,7 @@ export class GeneralRequestService {
       this.httpCommonService.handleError(err);
       if (err.response.status === 403 && err.response.data.name == 'Forbidden') {
         return {
+          logged: false,
           body: { restricted: true },
           headers: err.response.headers,
         };

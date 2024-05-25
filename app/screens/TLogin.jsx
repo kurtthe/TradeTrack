@@ -61,9 +61,11 @@ class Login extends React.Component {
 
   async componentDidUpdate(prevProps) {
     if (this.props.token_login !== prevProps.token_login) {
+      console.log('diferentes');
       this.redirectLogin();
     }
     if (!this.props.token_login) {
+      console.log('No existe');
       const tokenStorageExist = await SecureStore.getItemAsync('data_user');
       if (!tokenStorageExist) {
         this.props.logout();
@@ -88,6 +90,10 @@ class Login extends React.Component {
 
     const resLogin = await this.generalRequest.auth(dataLogin);
 
+    if (!resLogin.logged) {
+      this.redirectLogin();
+    }
+
     if (!!resLogin) {
       const data = {
         ...resLogin.body,
@@ -95,6 +101,7 @@ class Login extends React.Component {
       };
       this.setState({ email: this.state.email, password: this.state.password });
       this.props.sign(data);
+      this.setState({ loading: false });
     }
 
     this.setState({ loading: false });
