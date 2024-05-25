@@ -60,9 +60,6 @@ class Login extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.token_login !== prevProps.token_login) {
-      this.redirectLogin();
-    }
     if (!this.props.token_login) {
       const tokenStorageExist = await SecureStore.getItemAsync('data_user');
       if (!tokenStorageExist) {
@@ -74,12 +71,13 @@ class Login extends React.Component {
 
   redirectLogin() {
     if (!!this.props.token_login) {
+      this.setState({ email: '', password: '' });
       this.props.navigation.navigate('AppStack');
     }
   }
 
   handleLogin = async () => {
-    this.setState({ loading: true, email: this.state.email, password: this.state.password });
+    this.setState({ loading: true });
 
     const dataLogin = {
       username: this.state.email,
@@ -88,13 +86,14 @@ class Login extends React.Component {
 
     const resLogin = await this.generalRequest.auth(dataLogin);
 
+    console.log("resLogin::", resLogin)
     if (!!resLogin) {
       const data = {
         ...resLogin.body,
         company: resLogin.headers['tradetrak-company'],
       };
-      this.setState({ email: this.state.email, password: this.state.password });
       this.props.sign(data);
+      this.redirectLogin()
     }
 
     this.setState({ loading: false });
