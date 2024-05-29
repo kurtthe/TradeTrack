@@ -75,7 +75,7 @@ module.exports = {
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.ACCESS_BACKGROUND_LOCATION"
       ],
-      versionCode: 58,
+      versionCode: 59,
       googleServicesFile: "./GoogleAnalytics/google-services.json"
     },
     description: "Coded by Digital Basis",
