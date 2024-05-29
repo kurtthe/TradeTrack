@@ -71,7 +71,7 @@ const Store = () => {
         value={notes}
         onChangeText={(t) => setNotes(t)}
         placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
-        textInputStyle={{ flex: 1 }}
+        textInputStyle={{  flex: 1,  height: 80 }}
         multiline
       />
     </Block>
