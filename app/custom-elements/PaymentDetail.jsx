@@ -133,7 +133,7 @@ const PaymentDetail = () => {
       <PaymentBalance
         show={showPaymentBalance}
         balance={balanceLive}
-        close={() => setShowPaymentBalance(false)}
+        onShow={setShowPaymentBalance}
       />
     </>
   );

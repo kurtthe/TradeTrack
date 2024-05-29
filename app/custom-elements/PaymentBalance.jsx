@@ -3,9 +3,6 @@ import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 import { Button } from '@components';
 import { nowTheme } from '@constants';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import BottomModal from '@custom-elements/BottomModal';
-import WebView from '@custom-elements/WebView';
 
 import { GeneralRequestService } from '@core/services/general-request.service';
 import { endPoints } from '@shared/dictionaries/end-points';
@@ -15,14 +12,14 @@ import { FormatMoneyService } from '@core/services/format-money.service';
 import { pickerOptions } from '@shared/dictionaries/options-payment-balance';
 import { TextInputMask } from 'react-native-masked-text';
 import PickerButton from '@custom-elements/PickerButton';
+import ModalBottomPaymentBalance from '../components/BottomModal';
 
 const formatMoney = FormatMoneyService.getInstance();
 const generalRequestService = GeneralRequestService.getInstance();
 const { width } = Dimensions.get('screen');
 
-const PaymentBalance = (props) => {
+const PaymentBalance = ({ show, onShow, ...props }) => {
   const actionSheetRef = useRef(null);
-
   const [showModal, setShowModal] = useState(false);
   const [urlPayment, setUrlPayment] = useState('');
   const [valueAmount, setValueAmount] = useState('');
@@ -34,27 +31,17 @@ const PaymentBalance = (props) => {
   }, [])
 
   useEffect(() => {
-    if (props.show) {
+    if (show) {
       actionSheetRef.current?.show();
-      return
-    }
-    actionSheetRef.current?.hide();
-
-  }, [props.show]);
+    } else actionSheetRef.current?.hide();
+  }, [show]);
 
   const handleShowMethodPayment = async () => {
-
     const getValue = formatMoney.clearFormat(valueAmount);
-
     const { url } = await generalRequestService.get(`${endPoints.payment}?amount=${getValue}`);
     actionSheetRef.current?.hide();
     setUrlPayment(url);
     setShowModal(true);
-  };
-
-  const handlePaymentClose = () => {
-    actionSheetRef.current?.hide();
-    props.close && props.close();
   };
 
   const changeOptionBalancePay = (option) => {
@@ -74,7 +61,7 @@ const PaymentBalance = (props) => {
 
   return (
     <>
-      <BottomSheet height={500} ref={actionSheetRef}>
+      <BottomSheet height={500} ref={actionSheetRef} backdropClosesSheet={false} draggable={false} >
         <Block style={{ height: 'auto', padding: 15, paddingBottom: 30 }}>
           <Text style={{ fontWeight: 'bold', fontSize: 15, paddingBottom: 10 }}>
             Balance to Pay
@@ -87,7 +74,6 @@ const PaymentBalance = (props) => {
           icon={true}
           errorLabel
         />
-
 
           <Text style={{ fontWeight: 'bold', paddingBottom: 3, paddingTop: 10 }}>Amount</Text>
           <TextInputMask
@@ -124,14 +110,14 @@ const PaymentBalance = (props) => {
               Continue
             </Button>
             <Button
-              onPress={() => handlePaymentClose()}
-              color="eeeee4"
+              onPress={()=> onShow(false)}
+              color="#eeeee4"
               textStyle={{
                 color: nowTheme.COLORS.LIGHTGRAY,
                 fontFamily: 'montserrat-bold',
                 fontSize: 16,
               }}
-              style={(styles.buttonGrayAS, styles.buttonAS)}
+              style={styles.buttonAS}
             >
               Cancel
             </Button>
@@ -139,11 +125,11 @@ const PaymentBalance = (props) => {
         </Block>
       </BottomSheet>
 
-      <BottomModal show={showModal} close={() => setShowModal(false)}>
-        <View style={{ height: hp('80%') }}>
-          <WebView url={urlPayment} />
-        </View>
-      </BottomModal>
+      <ModalBottomPaymentBalance
+        setShowModal={setShowModal}
+        showModal={showModal}
+        urlPayment={urlPayment}
+      />
     </>
   );
 };
