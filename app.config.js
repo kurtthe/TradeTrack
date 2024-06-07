@@ -66,16 +66,23 @@ module.exports = {
       },
       package: "com.tradetrak.Burdens",
       permissions: [
-        "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.WRITE_EXTERNAL_STORAGE",
-        "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION",
-        "android.permission.ACCESS_NETWORK_STATE",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.ACCESS_BACKGROUND_LOCATION"
+        {
+          name: "android.permission.ACCESS_FINE_LOCATION",
+          minSdkVersion: 34,
+          reason: "This app collects location data to enable store finder, with the purpose of showing the store closest to your location, even when the app is closed or not in use. This data is also used to provide ads/support advertising/support ads."
+        },
+        {
+          name: "android.permission.ACCESS_COARSE_LOCATION",
+          minSdkVersion: 34,
+          reason: "This app collects location data to enable store finder, with the purpose of showing the store closest to your location, even when the app is closed or not in use. This data is also used to provide ads/support advertising/support ads."
+        },
+        {
+          name: "android.permission.ACCESS_BACKGROUND_LOCATION",
+          minSdkVersion: 34,
+          reason: "This app collects location data to enable store finder, with the purpose of showing the store closest to your location, even when the app is closed or not in use. This data is also used to provide ads/support advertising/support ads."
+        }
       ],
-      versionCode: 59,
+      versionCode: 60,
       googleServicesFile: "./GoogleAnalytics/google-services.json"
     },
     description: "Coded by Digital Basis",
