@@ -9,6 +9,7 @@ import { makeStyles } from './SearchProducts.styles'
 import Product from '@custom-elements/Product';
 import { useSelector } from 'react-redux';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore'
+import FilterButton from '@components/FilterButton';
 import { nowTheme } from '@constants';
 import { Block } from 'galio-framework';
 
@@ -155,13 +156,24 @@ export const SearchProducts = ({route}) => {
 
   return (
     <View style={{flex: 1, backgroundColor: nowTheme.COLORS.BACKGROUND}}>
-      <Search
-        placeholder="What are you looking for?"
-        onChangeText={setTextSearch}
-        value={textSearch}
-        style={styles.search}
-        inputStyle={styles.searchInput}
-      />
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{width: '80%'}}>
+          <Search
+            placeholder="What are you looking for?"
+            onChangeText={setTextSearch}
+            value={textSearch}
+            style={styles.search}
+            inputStyle={styles.searchInput}
+          />
+        </View>
+        <View style={{width: '15%'}}>
+          {dataProducts?.length ? (<FilterButton
+              text={`${dataProducts?.length}`}
+              disabled={true}
+            />) : '' }
+          
+        </View>
+      </View>
       <FlatList
         data={dataProducts}
         renderItem={renderItem}
