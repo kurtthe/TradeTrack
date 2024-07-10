@@ -97,7 +97,7 @@ const Header = ({
               white={white}
               urlDownloadFile={scene.route?.params?.urlDownloadFile}
             />}
-            rightStyle={{ alignItems: 'center' }}
+            rightStyle={{ alignItems: 'center', flex: 0.6, left: 14 }}
             left={renderHome()}
             leftStyle={{ paddingVertical: 25, flex: 1.7 }}
             titleStyle={[
