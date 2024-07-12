@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useEffect } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Text } from 'galio-framework';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import { nowTheme } from '@constants';
@@ -46,13 +46,13 @@ const Tabs = ({optionsTabsRender, tabIndexSelected, changeIndexSelected}) => {
           borderBottomColor: '#D2D2D2',
         }}
         activeTabStyle={{
-          backgroundColor: nowTheme.COLORS.BACKGROUND,
+          backgroundColor: Platform.OS === 'ios' ? nowTheme.COLORS.BACKGROUND : nowTheme.COLORS.INFO,
           marginTop: 2,
           borderBottomWidth: 2,
           borderBottomColor: nowTheme.COLORS.INFO,
         }}
         tabTextStyle={{ color: '#444444', fontWeight: 'bold' }}
-        activeTabTextStyle={{ color: nowTheme.COLORS.INFO }}
+        activeTabTextStyle={{ color: Platform.OS === 'ios' ? nowTheme.COLORS.INFO : '#FFFFFF', }}
       />
       {getComponent}
     </View>

@@ -9,6 +9,7 @@ export const makeStyles = () =>
     searchInput: {
       color: 'black',
       fontSize: 16,
+      width: '90%'
     },
     search: {
       width: width - 32,
