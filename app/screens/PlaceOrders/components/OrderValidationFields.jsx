@@ -14,7 +14,7 @@ const OrderValidationFields = ({ onChanges }) => {
   React.useEffect(() => {
     if (!fields) return;
 
-    const valuesFields = fields.map((item) => ({ index: item.index, value: item.default }));
+    const valuesFields = fields?.map((item) => ({ index: item.index, value: item.default }));
     setFieldsValue(valuesFields);
   }, [fields]);
 
@@ -54,7 +54,7 @@ const OrderValidationFields = ({ onChanges }) => {
           placeholderTextColor={nowTheme.COLORS.PICKERTEXT}
           value={fieldsValue.find((field) => field.index === item.index)?.value}
           textInputStyle={{ flex: 1 }}
-          
+
         />
       </React.Fragment>
     ));
