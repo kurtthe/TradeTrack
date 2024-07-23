@@ -23,6 +23,8 @@ module.exports = {
       "**/*"
     ],
     plugins: [
+      "@config-plugins/react-native-blob-util",
+      "@config-plugins/react-native-pdf",
       [
         "expo-secure-store",
         "expo-font"
