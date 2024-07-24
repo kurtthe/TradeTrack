@@ -23,7 +23,7 @@ const OrderValidationFields = ({ onChanges }) => {
   }
 
   const onChangeValue = (idField, newValue) => {
-    const newValuesField = fieldsValue.map((item) => {
+    const newValuesField = fieldsValue?.map((item) => {
       if (item.index === idField) {
         return {
           ...item,
