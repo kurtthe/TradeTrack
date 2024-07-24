@@ -23,7 +23,7 @@ const OrderValidationFields = ({ onChanges }) => {
   }
 
   const onChangeValue = (idField, newValue) => {
-    const newValuesField = fieldsValue.map((item) => {
+    const newValuesField = fieldsValue?.map((item) => {
       if (item.index === idField) {
         return {
           ...item,
@@ -39,7 +39,7 @@ const OrderValidationFields = ({ onChanges }) => {
   };
 
   const renderInputs = () => {
-    return fields.map((item) => (
+    return fields?.map((item) => (
       <React.Fragment key={`field-validation${item.id}`}>
         <Block row>
           <Text style={styles.text}>{item.prompt}</Text>
