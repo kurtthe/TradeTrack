@@ -7,6 +7,8 @@ import {
   RefreshControl,
   Pressable,
   View,
+  Platform,
+  Linking
 } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
@@ -67,6 +69,13 @@ class Home extends React.Component {
         bottomOffset: 40,
         onPress: () => {
           console.log('Toast clickeado!');
+          if (Platform.OS === "android") {
+            const appStoreUrl = 'https://play.google.com/store/apps/details?id=com.tradetrak.Burdens&hl=es_CR';
+            Linking.openURL(appStoreUrl).catch(err => console.error('An error occurred', err));
+          } else {
+            const appStoreUrl = 'https://apps.apple.com/ca/app/burdens/id1596404701';
+            Linking.openURL(appStoreUrl).catch(err => console.error('An error occurred', err));
+          }
         },
       });
       
