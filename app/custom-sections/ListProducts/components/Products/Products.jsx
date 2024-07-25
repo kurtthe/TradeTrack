@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import LoadingComponent from '@custom-elements/Loading';
 import { useSelector, useDispatch } from 'react-redux';
 import Product from '@custom-elements/Product';
@@ -27,6 +27,7 @@ export const Products = () => {
   const [loadingMoreData, setLoadingMoreData] = useState(false);
   const [showLoadingMore, setShowLoadingMore] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalProducts, setTotalProducts] = useState(0)
 
   const { data: products, refetch } = useGetProducts({
     page,
@@ -45,6 +46,7 @@ export const Products = () => {
     if (products?.headers && products?.headers['x-pagination-page-count']) {
       const currentlyTotal = parseInt(page);
       const newTotalPages = parseInt(products?.headers['x-pagination-page-count']);
+      setTotalProducts(parseInt(products?.headers['x-pagination-total-count']));
 
       setShowLoadingMore(currentlyTotal < newTotalPages);
       if (currentlyTotal !== newTotalPages) {
@@ -106,16 +108,22 @@ export const Products = () => {
           <LoadingComponent size="large" />
         </View>
       ) : (
-        <FlatList
-          onRefresh={() => refetch()}
-          refreshing={isLoading}
-          data={dataProducts}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => `${item.sku}-${index}`}
-          numColumns={2}
-          contentContainerStyle={styles.container}
-          ListFooterComponent={getButtonLoadingMore}
-        />
+        <>
+          <View style={{ padding: 10 }}>
+            <Text style={{ fontSize: 15 }}>{totalProducts + ' products'}</Text>
+          </View>
+          
+          <FlatList
+            onRefresh={() => refetch()}
+            refreshing={isLoading}
+            data={dataProducts}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => `${item.sku}-${index}`}
+            numColumns={2}
+            contentContainerStyle={styles.container}
+            ListFooterComponent={getButtonLoadingMore}
+          />
+        </>
       )}
     </>
   );
