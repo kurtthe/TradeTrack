@@ -6,6 +6,7 @@ import Product from '@custom-elements/Product';
 import { makeStyles } from './Products.styles';
 import { useGetProducts } from '@core/hooks/Products';
 import ButtonLoadingMore from '@custom-elements/ButtonLoadingMore';
+import { nowTheme } from '@constants';
 import {
   getProducts,
   nextPage,
@@ -109,8 +110,8 @@ export const Products = () => {
         </View>
       ) : (
         <>
-          <View style={{ padding: 10 }}>
-            <Text style={{ fontSize: 15 }}>{totalProducts + ' products'}</Text>
+          <View style={{ padding: 10, flexDirection: 'row' }}>
+            <Text style={{ fontSize: 20, color: nowTheme.COLORS.INFO }}>{totalProducts + ' '}</Text><Text style={{ fontSize: 20 }}>Products</Text>
           </View>
           
           <FlatList
