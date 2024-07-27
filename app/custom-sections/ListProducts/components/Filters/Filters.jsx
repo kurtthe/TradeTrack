@@ -198,11 +198,11 @@ export const FilterProducts = () => {
             sizeIcon={15}
             disabled={isLoadingFilter}
           />
-
+{/* 
           <FilterButton
             text={`${productCount}`}
             disabled={true}
-          />
+          /> */}
 
           {categoryActive && (
             <FilterButton

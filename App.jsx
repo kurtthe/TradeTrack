@@ -5,6 +5,7 @@ import { Block, GalioProvider } from 'galio-framework';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import {useFonts} from 'expo-font';
+import Toast from 'react-native-toast-message';
 import { enableScreens } from 'react-native-screens';
 import AppStack from '@navigation/index';
 import { Images, nowTheme } from '@constants/index';
@@ -104,6 +105,7 @@ export default function App() {
           </Provider>
         </QueryClientProvider>
       </NavigationContainer>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   );
 }

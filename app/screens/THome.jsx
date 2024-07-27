@@ -7,6 +7,8 @@ import {
   RefreshControl,
   Pressable,
   View,
+  Platform,
+  Linking
 } from 'react-native';
 import { Block, theme, Text } from 'galio-framework';
 
@@ -16,8 +18,10 @@ import ListNews from '@custom-sections/ListNews';
 import LiveBalance from '@custom-sections/LiveBalance';
 
 import { nowTheme } from '@constants';
+import Toast from 'react-native-toast-message';
 
 import { GetDataPetitionService } from '@core/services/get-data-petition.service';
+import { GeneralRequestService } from '@core/services/general-request.service';
 
 import { endPoints } from '@shared/dictionaries/end-points';
 import { getBalance } from '@core/module/store/balance/liveBalance';
@@ -29,6 +33,7 @@ import { connect } from 'react-redux';
 import Search from '@custom-elements/Search';
 
 const { width } = Dimensions.get('screen');
+const generalRequestService = GeneralRequestService.getInstance();
 
 class Home extends React.Component {
   constructor(props) {
@@ -49,6 +54,32 @@ class Home extends React.Component {
     await this.getDataPetition.getInfoWithHeaders(endPoints.burdensBalance, this.props.getBalance);
     await this.getDataPetition.getInfo(endPoints.invoices, this.props.getInvoices);
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
+    const response = await generalRequestService.get(endPoints.burdensVersion);
+
+    if (response.latestVersion != expo.version) {
+
+      Toast.show({
+        type: 'success',
+        text1: 'An app update is available',
+        text2: 'Please update via the app store (push here)',
+        position: 'bottom',
+        visibilityTime: 10000,
+        autoHide: false,
+        topOffset: 30,
+        bottomOffset: 40,
+        onPress: () => {
+          console.log('Toast clickeado!');
+          if (Platform.OS === "android") {
+            const appStoreUrl = 'https://play.google.com/store/apps/details?id=com.tradetrak.Burdens&hl=es_CR';
+            Linking.openURL(appStoreUrl).catch(err => console.error('An error occurred', err));
+          } else {
+            const appStoreUrl = 'https://apps.apple.com/ca/app/burdens/id1596404701';
+            Linking.openURL(appStoreUrl).catch(err => console.error('An error occurred', err));
+          }
+        },
+      });
+      
+    }
   };
 
   _onRefresh = () => {
