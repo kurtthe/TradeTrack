@@ -24,6 +24,7 @@ export const SearchProducts = ({route}) => {
   const [showLoadingMore, setShowLoadingMore] = useState(false)
   const [loadingData, setLoadingData] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
+  const [totalProducts, setTotalProducts] = useState(0)
   const [optionsProducts, setOptionsProducts] = useState({
     page: 1,
     search: textSearchHome ?? '',
@@ -77,6 +78,11 @@ export const SearchProducts = ({route}) => {
       return
     }
     setShowLoadingMore(optionsProducts.page < products?.headers['x-pagination-page-count'])
+
+    const totalProductsData = parseInt(products?.headers['x-pagination-total-count'], 10);
+    const formattedTotalProducts = totalProductsData.toLocaleString('en-US');
+    setTotalProducts(formattedTotalProducts);
+    
   }, [products?.headers, optionsProducts.page])
 
   useEffect(() => {
@@ -109,6 +115,14 @@ export const SearchProducts = ({route}) => {
       />
     }
     return null
+  }
+
+  const getProductCounter = () => {
+    return (
+      <View style={{ padding: 10, flexDirection: 'row' }}>
+        <Text style={{ fontSize: 20, color: nowTheme.COLORS.INFO }}>{totalProducts + ' '}</Text><Text style={{ fontSize: 20 }}>Products</Text>
+      </View>
+    )
   }
 
   const debouncedOnChange = useCallback(
@@ -166,13 +180,13 @@ export const SearchProducts = ({route}) => {
             inputStyle={styles.searchInput}
           />
         </View>
-        <View style={{width: '15%'}}>
+        {/* <View style={{width: '15%'}}>
           {dataProducts?.length ? (<FilterButton
               text={`${dataProducts?.length}`}
               disabled={true}
             />) : '' }
           
-        </View>
+        </View> */}
       </View>
       <FlatList
         data={dataProducts}
@@ -180,6 +194,7 @@ export const SearchProducts = ({route}) => {
         keyExtractor={(item, index) => `${item.sku}-${index}`}
         numColumns={2}
         contentContainerStyle={styles.container}
+        ListHeaderComponent={getProductCounter}
         ListFooterComponent={getButtonLoadingMore}
         ListEmptyComponent={renderNotFound}
       />

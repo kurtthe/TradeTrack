@@ -60,8 +60,8 @@ class Home extends React.Component {
 
       Toast.show({
         type: 'success',
-        text1: 'An app update is available',
-        text2: 'Please update via the app store (push here)',
+        text1: 'An update to the app is available',
+        text2: 'A new version is available. Tap here to update.',
         position: 'bottom',
         visibilityTime: 10000,
         autoHide: false,
