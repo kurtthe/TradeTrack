@@ -118,11 +118,14 @@ export const SearchProducts = ({route}) => {
   }
 
   const getProductCounter = () => {
-    return (
-      <View style={{ padding: 10, flexDirection: 'row' }}>
-        <Text style={{ fontSize: 20, color: nowTheme.COLORS.INFO }}>{totalProducts + ' '}</Text><Text style={{ fontSize: 20 }}>Products</Text>
-      </View>
-    )
+    if (totalProducts > 0) {
+      return (
+        <View style={{ padding: 10, flexDirection: 'row' }}>
+          <Text style={{ fontSize: 20, color: nowTheme.COLORS.INFO }}>{totalProducts + ' '}</Text><Text style={{ fontSize: 20 }}>Products</Text>
+        </View>
+      )
+    }
+    
   }
 
   const debouncedOnChange = useCallback(
