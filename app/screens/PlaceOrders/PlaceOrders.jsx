@@ -122,6 +122,8 @@ const PlaceOrders = () => {
         'burdens.orders@tradetrak.com.au',
         'matt.celima@burdens.com.au',
         'owenm@tradetrak.com.au',
+        'steveb@trak.co',
+        
         userEmail,
         dataOrder.emailStore,
       ],
