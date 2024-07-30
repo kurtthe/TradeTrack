@@ -50,7 +50,7 @@ module.exports = {
       },
       supportsTablet: true,
       bundleIdentifier: "com.trade.Burdens",
-      buildNumber: "1",
+      buildNumber: "2",
       googleServicesFile: "./GoogleAnalytics/GoogleService-Info.plist",
       userInterfaceStyle: "light",
       infoPlist: {
@@ -76,7 +76,7 @@ module.exports = {
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
       ],
-      versionCode: 63,
+      versionCode: 64,
       googleServicesFile: "./GoogleAnalytics/google-services.json"
     },
     description: "Coded by Digital Basis",
