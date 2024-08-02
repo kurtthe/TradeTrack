@@ -1,0 +1,13 @@
+diff --git a/node_modules/galio-framework/src/Toast.js b/node_modules/galio-framework/src/Toast.js
+index fc3b557..d848ada 100644
+--- a/node_modules/galio-framework/src/Toast.js
++++ b/node_modules/galio-framework/src/Toast.js
+@@ -1,6 +1,7 @@
+ import React, { Component } from 'react';
+-import { Dimensions, StyleSheet, Animated, ViewPropTypes } from 'react-native';
++import { Dimensions, StyleSheet, Animated } from 'react-native';
+ import PropTypes from 'prop-types';
++import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+ // galio components
+ import Text from './atomic/ions/Text';
+ import GalioTheme, { withGalio } from './theme';
