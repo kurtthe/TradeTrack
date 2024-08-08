@@ -7,7 +7,7 @@ module.exports = {
       "ios",
       "android"
     ],
-    version: "1.7",
+    version: "1.9",
     orientation: "portrait",
     icon: "./assets/icon.png",
     splash: {
@@ -56,7 +56,8 @@ module.exports = {
       infoPlist: {
         NSCameraUsageDescription: "Allow Burdens to access your camera to take photos of the products for any requirement in your purchase",
         NSPhotoLibraryUsageDescription: "Allow Burdens to access your photos to select photos and then send a requirement of your  purchase",
-        UIUserInterfaceStyle: "Light"
+        UIUserInterfaceStyle: "Light",
+        UIBackgroundModes: ["fetch", "remote-notification"]
       }
     },
     android: {
