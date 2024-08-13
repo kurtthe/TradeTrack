@@ -76,7 +76,6 @@ const WebApp = ({url, visible=false, onClose}) => {
       }
       const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
       const { uri } = await FileSystem.downloadAsync(url, downloadDest);
-      console.log("uri::", JSON.stringify(uri))
 
       if (Platform.OS === 'ios') {
         await Sharing.shareAsync(uri);
@@ -91,9 +90,9 @@ const WebApp = ({url, visible=false, onClose}) => {
   const onShouldStartLoadWithRequest = (request) => {
     const { url } = request;
 
-    if (url.endsWith('.pdf')) {
-      console.log("====>pdf download::", url)
+    if (url.includes('download')) {
       handleFileDownload(url).catch(()=> console.log("=>::"));
+      handleGoBack()
       return false;
     }
     return true;
@@ -115,10 +114,13 @@ const WebApp = ({url, visible=false, onClose}) => {
           ref={webViewRef}
           onNavigationStateChange={handleNavigationStateChange}
           renderLoading={loadingView}
-          startInLoadingState={true}
           source={{ uri: url }}
           containerStyle={{ flex: 1 }}
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
+          javaScriptEnabled={true}
+          startInLoadingState={true}
+          domStorageEnabled={true}
+          sharedCookiesEnabled={true}
         />
         <View style={[styles.menuRow, { borderTopWidth: 1 }]}>
           <View
