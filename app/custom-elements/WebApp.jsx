@@ -1,9 +1,12 @@
 import React, {useRef, useState} from 'react';
 import { Portal } from 'react-native-paper';
-import { Platform, Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import { Platform, Text, TouchableOpacity, View, StyleSheet, Alert} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import {WebView} from "react-native-webview";
 import Loading from '@custom-elements/Loading';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as Permissions from 'expo-permissions';
 
 
 const WebApp = ({url, visible=false, onClose}) => {
@@ -61,6 +64,40 @@ const WebApp = ({url, visible=false, onClose}) => {
 
   if(!url) return <Loading />
 
+
+  const handleFileDownload = async (url) => {
+    try {
+      if (Platform.OS === 'android') {
+        const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+        if (status !== 'granted') {
+          Alert.alert('Permission Denied', 'Storage permission is required to download files.');
+          return;
+        }
+      }
+      const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
+      const { uri } = await FileSystem.downloadAsync(url, downloadDest);
+
+      if (Platform.OS === 'ios') {
+        await Sharing.shareAsync(uri);
+      } else {
+        Alert.alert('Download Completed', `File saved to: ${uri}`);
+      }
+    } catch (error) {
+      Alert.alert('Download Failed', error.message);
+    }
+  };
+
+  const onShouldStartLoadWithRequest = (request) => {
+    const { url } = request;
+
+    if (url.endsWith('.pdf')) {
+      handleFileDownload(url).catch(()=> console.log("=>::"));
+      return false;
+    }
+    return true;
+  };
+
+
   return  (
     <Portal>
       <View style={{flex: 1,  paddingTop: 40, paddingBottom: Platform.OS === 'ios' ? 30 : 0, backgroundColor: '#F8F8F8'}}>
@@ -79,6 +116,7 @@ const WebApp = ({url, visible=false, onClose}) => {
           startInLoadingState={true}
           source={{ uri: url }}
           containerStyle={{ flex: 1 }}
+          onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         />
         <View style={[styles.menuRow, { borderTopWidth: 1 }]}>
           <View
