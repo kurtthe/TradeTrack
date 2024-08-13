@@ -6,13 +6,21 @@ import {WebView} from "react-native-webview";
 import Loading from '@custom-elements/Loading';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import * as Permissions from 'expo-permissions';
+import { requestStoragePermission } from '@core/utils/aksPermissions';
 
 
 const WebApp = ({url, visible=false, onClose}) => {
   const webViewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
+  const [hasPermission, setHasPermission] = useState(false);
+
+  React.useEffect(() => {
+    (async () => {
+      const granted = await requestStoragePermission();
+      setHasPermission(granted);
+    })();
+  }, []);
 
   if(!visible) {
     return null
@@ -64,14 +72,20 @@ const WebApp = ({url, visible=false, onClose}) => {
 
   if(!url) return <Loading />
 
+  const askPermission = ()=> {
+    (async()=> {
+      const granted = await requestStoragePermission();
+      setHasPermission(granted);
+      handleFileDownload().catch((err)=> console.log(err));
+    })()
+  }
 
   const handleFileDownload = async (url) => {
     try {
       if (Platform.OS === 'android') {
-        const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-        if (status !== 'granted') {
+        if (!hasPermission) {
           Alert.alert('Permission Denied', 'Storage permission is required to download files.');
-          return;
+          askPermission()
         }
       }
       const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
