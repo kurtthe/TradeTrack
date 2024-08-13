@@ -76,6 +76,7 @@ const WebApp = ({url, visible=false, onClose}) => {
       }
       const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
       const { uri } = await FileSystem.downloadAsync(url, downloadDest);
+      console.log("uri::", JSON.stringify(uri))
 
       if (Platform.OS === 'ios') {
         await Sharing.shareAsync(uri);
@@ -91,6 +92,7 @@ const WebApp = ({url, visible=false, onClose}) => {
     const { url } = request;
 
     if (url.endsWith('.pdf')) {
+      console.log("====>pdf download::", url)
       handleFileDownload(url).catch(()=> console.log("=>::"));
       return false;
     }
