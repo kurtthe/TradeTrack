@@ -6,5 +6,5 @@ export const requestStoragePermission = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
     return status === 'granted';
   }
-  return true; // Permissions are automatically granted on iOS
+  return true;
 };

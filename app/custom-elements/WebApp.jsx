@@ -8,7 +8,6 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { requestStoragePermission } from '@core/utils/aksPermissions';
 
-
 const WebApp = ({url, visible=false, onClose}) => {
   const webViewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
@@ -90,12 +89,7 @@ const WebApp = ({url, visible=false, onClose}) => {
       }
       const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
       const { uri } = await FileSystem.downloadAsync(url, downloadDest);
-
-      if (Platform.OS === 'ios') {
-        await Sharing.shareAsync(uri);
-      } else {
-        Alert.alert('Download Completed', `File saved to: ${uri}`);
-      }
+      await Sharing.shareAsync(uri);
     } catch (error) {
       Alert.alert('Download Failed', error.message);
     }

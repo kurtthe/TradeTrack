@@ -27,7 +27,7 @@ module.exports = {
       "@config-plugins/react-native-pdf",
       [
         "expo-secure-store",
-        "expo-font"
+        "expo-font",
       ],
       [
           "expo-build-properties",
@@ -42,7 +42,8 @@ module.exports = {
               deploymentTarget: "14.0"
             }
           }
-      ]
+      ],
+      "expo-media-library"
     ],
     ios: {
       config: {
