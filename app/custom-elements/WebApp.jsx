@@ -1,14 +1,21 @@
 import React, {useRef, useState} from 'react';
-import { Portal } from 'react-native-paper';
-import { Platform, Text, TouchableOpacity, View, StyleSheet, Alert} from "react-native";
-import {Ionicons} from "@expo/vector-icons";
-import {WebView} from "react-native-webview";
+import {Portal} from 'react-native-paper';
+import {
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
+import {WebView} from 'react-native-webview';
 import Loading from '@custom-elements/Loading';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { requestStoragePermission } from '@core/utils/aksPermissions';
+import {requestStoragePermission} from '@core/utils/aksPermissions';
 
-const WebApp = ({url, visible=false, onClose}) => {
+const WebApp = ({url, visible = false, onClose}) => {
   const webViewRef = useRef(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
@@ -21,11 +28,11 @@ const WebApp = ({url, visible=false, onClose}) => {
     })();
   }, []);
 
-  if(!visible) {
-    return null
+  if (!visible) {
+    return null;
   }
 
-  const handleNavigationStateChange = (navState) => {
+  const handleNavigationStateChange = navState => {
     setCanGoBack(navState.canGoBack);
     setCanGoForward(navState.canGoForward);
   };
@@ -62,99 +69,111 @@ const WebApp = ({url, visible=false, onClose}) => {
             top: 0,
             bottom: 0,
           },
-        ]}
-      >
+        ]}>
         <Loading />
       </View>
     );
   };
 
-  if(!url) return <Loading />
+  if (!url) return <Loading />;
 
-  const askPermission = ()=> {
-    (async()=> {
+  const askPermission = () => {
+    (async () => {
       const granted = await requestStoragePermission();
       setHasPermission(granted);
-      handleFileDownload().catch((err)=> console.log(err));
-    })()
-  }
+      handleFileDownload().catch(err => console.log(err));
+    })();
+  };
 
-  const handleFileDownload = async (url) => {
+  const handleFileDownload = async urlDownload => {
+    console.log('urlDownload::', urlDownload);
     try {
       if (Platform.OS === 'android') {
         if (!hasPermission) {
-          Alert.alert('Permission Denied', 'Storage permission is required to download files.');
-          askPermission()
+          Alert.alert(
+            'Permission Denied',
+            'Storage permission is required to download files.',
+          );
+          askPermission();
         }
       }
-      const downloadDest = `${FileSystem.documentDirectory}downloaded.pdf`;
-      const { uri } = await FileSystem.downloadAsync(url, downloadDest);
+
+      const urlParams = new URL(urlDownload).searchParams;
+      const id = urlParams.get('id');
+
+      const downloadDest = `${FileSystem.documentDirectory}${id}.pdf`;
+      const {uri} = await FileSystem.downloadAsync(urlDownload, downloadDest);
       await Sharing.shareAsync(uri);
     } catch (error) {
       Alert.alert('Download Failed', error.message);
     }
   };
 
-  const onShouldStartLoadWithRequest = (request) => {
-    const { url } = request;
-
-    if (url.includes('download')) {
-      handleFileDownload(url).catch(()=> console.log("=>::"));
-      handleGoBack()
+  const onShouldStartLoadWithRequest = request => {
+    const {url: requestUrl} = request;
+    if (requestUrl.includes('download')) {
+      handleFileDownload(requestUrl).catch(() => console.log('=>::'));
+      setTimeout(() => {
+        handleGoBack();
+      }, 500);
       return false;
     }
     return true;
   };
 
-
-  return  (
+  return (
     <Portal>
-      <View style={{flex: 1,  paddingTop: 40, paddingBottom: Platform.OS === 'ios' ? 30 : 0, backgroundColor: '#F8F8F8'}}>
-        <View style={[styles.menuRow, { borderBottomWidth: 1 }]}>
+      <View
+        style={{
+          flex: 1,
+          paddingTop: 40,
+          paddingBottom: Platform.OS === 'ios' ? 30 : 0,
+          backgroundColor: '#F8F8F8',
+        }}>
+        <View style={[styles.menuRow, {borderBottomWidth: 1}]}>
           <TouchableOpacity onPress={onClose}>
-            <Text style={{ fontSize: 20 }}>Done</Text>
+            <Text style={{fontSize: 20}}>Done</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={handleRefresh}>
-            <Ionicons name='refresh' size={24} color="black" />
+            <Ionicons name="refresh" size={24} color="black" />
           </TouchableOpacity>
         </View>
         <WebView
           ref={webViewRef}
           onNavigationStateChange={handleNavigationStateChange}
           renderLoading={loadingView}
-          source={{ uri: url }}
-          containerStyle={{ flex: 1 }}
+          source={{uri: url}}
+          containerStyle={{flex: 1}}
           onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
           javaScriptEnabled={true}
           startInLoadingState={true}
           domStorageEnabled={true}
           sharedCookiesEnabled={true}
         />
-        <View style={[styles.menuRow, { borderTopWidth: 1 }]}>
+        <View style={[styles.menuRow, {borderTopWidth: 1}]}>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '40%',
-            }}
-          >
-            {
-              canGoBack && <TouchableOpacity onPress={handleGoBack}>
-                <Ionicons name={'arrow-back'} size={24} color="black"/>
+            }}>
+            {canGoBack && (
+              <TouchableOpacity onPress={handleGoBack}>
+                <Ionicons name={'arrow-back'} size={24} color="black" />
               </TouchableOpacity>
-            }
+            )}
 
-            { canGoForward &&
+            {canGoForward && (
               <TouchableOpacity onPress={handleGoForward}>
-                <Ionicons name={'arrow-forward'} size={24} color="black"/>
+                <Ionicons name={'arrow-forward'} size={24} color="black" />
               </TouchableOpacity>
-            }
+            )}
           </View>
         </View>
       </View>
     </Portal>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   menuRow: {
@@ -167,8 +186,8 @@ const styles = StyleSheet.create({
   restrictedContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-})
+});
 
 export default WebApp;
