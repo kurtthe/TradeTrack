@@ -113,9 +113,6 @@ const WebApp = ({url, visible = false, onClose}) => {
     const {url: requestUrl} = request;
     if (requestUrl.includes('download')) {
       handleFileDownload(requestUrl).catch(() => console.log('=>::'));
-      //setTimeout(() => {
-      //handleGoBack();
-      //}, 500);
       handleRefresh();
       return false;
     }
