@@ -11,7 +11,6 @@ import EstimatorRoof from '@screens/EstimatorRoof';
 import AppFeedback from '@screens/AppFeedback';
 import App from '@screens/AppFeedback2';
 import BookTrakDemo from '@screens/BookTrakDemo';
-import SearchProducts from '@screens/SearchProducts';
 
 import { screensRoute } from './ConfigRoutes';
 
@@ -105,14 +104,6 @@ function HomeStack() {
         back: true,
       }
     },
-    {
-      name: 'SearchProducts',
-      component: SearchProducts,
-      colorBackground: '#FFFFFF',
-      header:{
-        title: 'Products  ',
-      }
-    }
   ];
 
   return (
