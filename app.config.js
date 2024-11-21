@@ -4,7 +4,7 @@ module.exports = {
     slug: '-Trade-Track-',
     privacy: 'public',
     platforms: ['ios', 'android'],
-    version: '1.7',
+    version: '1.8',
     orientation: 'portrait',
     icon: './assets/icon.png',
     splash: {
@@ -71,7 +71,7 @@ module.exports = {
         'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.FOREGROUND_SERVICE',
       ],
-      versionCode: 65,
+      versionCode: 66,
       googleServicesFile: './GoogleAnalytics/google-services.json',
     },
     description: 'Coded by Digital Basis',
