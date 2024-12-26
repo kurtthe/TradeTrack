@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Dimensions,
+  Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -19,20 +20,31 @@ class Search extends React.Component {
     } = this.props;
     return (
       <Block flex center style={[styles.searchContainer, style]}>
-          <Input
-            {...this.props}
-            right
-            color="black"
-            autoFocus={false}
-            autoCorrect={false}
-            autoCapitalize="none"
-            iconContent={
-                <Icon size={16} color={theme.COLORS.MUTED} name="magnifying-glass" family="entypo" />
-            }
-            style={[styles.search, inputStyle]}
-            placeholder={placeholder}
-            onChangeText={(text) => onChangeText(text)}
-          />
+      <Input
+        {...this.props}
+        right
+        color="black"
+        autoFocus={false}
+        autoCorrect={false}
+        autoCapitalize="none"
+        iconContent={
+        <TouchableWithoutFeedback
+          onPress={() => {
+          Keyboard.dismiss();
+          }}
+          >
+            <Icon
+              size={16}
+              color={theme.COLORS.MUTED}
+              name="magnifying-glass"
+              family="entypo"
+            />
+          </TouchableWithoutFeedback>
+        }
+        style={[styles.search, inputStyle]}
+        placeholder={placeholder}
+        onChangeText={(text) => onChangeText(text)}
+      />
       </Block>
     );
   }

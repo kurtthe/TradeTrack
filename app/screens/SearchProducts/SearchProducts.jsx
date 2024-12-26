@@ -16,7 +16,7 @@ import { Block } from 'galio-framework';
 export const SearchProducts = ({route}) => {
   const { text: textSearchHome } = route.params
 
-  const categorySelected = useSelector((state) => state.filterReducer.categorySelected)
+  const categorySelected = useSelector((state) => textSearchHome ? '' : state.filterReducer.categorySelected)
   const clientFriendly = useSelector((state) => state.productsReducer.clientFriendly)
   const [dataProducts, setDataProducts] = useState([])
   const [textSearch, setTextSearch]= useState()
