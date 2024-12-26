@@ -1,20 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import Pdf from 'react-native-pdf';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import PdfReader from 'rn-pdf-reader-js'; // Import the new library
 
-const PdfViewerNew = ({ uri }) => {
+const PdfViewerNew = ({uri}) => {
   return (
     <View style={styles.container}>
-      <Pdf
-        source={{ uri }}
-        onLoadComplete={(numberOfPages, filePath) => {
-          console.log(`Number of pages: ${numberOfPages}`);
-        }}
-        onPageChanged={(page, numberOfPages) => {
-          console.log(`Current page: ${page}`);
-        }}
-        onError={(error) => {
-          console.log(error);
+      <PdfReader
+        source={{uri}}
+        onError={error => {
+          console.log('Error loading PDF:', error);
         }}
         style={styles.pdf}
       />

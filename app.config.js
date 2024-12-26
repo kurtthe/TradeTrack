@@ -18,8 +18,6 @@ module.exports = {
     },
     assetBundlePatterns: ['**/*'],
     plugins: [
-      '@config-plugins/react-native-blob-util',
-      '@config-plugins/react-native-pdf',
       ['expo-secure-store', 'expo-font'],
       [
         'expo-build-properties',
