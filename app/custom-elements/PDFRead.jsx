@@ -3,12 +3,10 @@ import {StyleSheet, View, Dimensions} from 'react-native';
 import PdfReader from 'rn-pdf-reader-js'; // Import the new library
 
 const PdfRead = ({uri}) => {
-  const source = {uri: uri}; // Use the uri prop directly for the source
-
   return (
     <View style={styles.container}>
       <PdfReader
-        source={source} // Provide the source (URI) to the PdfReader component
+        source={{base64: uri}} // Provide the source (URI) to the PdfReader component
         onError={error => {
           console.log('Error loading PDF:', error); // Error handling
         }}

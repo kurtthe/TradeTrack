@@ -1,19 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Image, SafeAreaView, StyleSheet } from 'react-native';
-import { Asset } from 'expo-asset';
-import { Block, GalioProvider } from 'galio-framework';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, SafeAreaView, StyleSheet} from 'react-native';
+import {Asset} from 'expo-asset';
+import {Block, GalioProvider} from 'galio-framework';
+import {NavigationContainer} from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import {useFonts} from 'expo-font';
 import Toast from 'react-native-toast-message';
-import { enableScreens } from 'react-native-screens';
+import {enableScreens} from 'react-native-screens';
 import AppStack from '@navigation/index';
-import { Images, nowTheme } from '@constants/index';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { store } from '@core/module/store/index';
-import { Provider } from 'react-redux';
-import { QueryClientProvider } from 'react-query';
-import { queryClient } from '@shared/lib'
+import {Images, nowTheme} from '@constants/index';
+import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
+import {store} from '@core/module/store/index';
+import {Provider} from 'react-redux';
+import {QueryClientProvider} from 'react-query';
+import {queryClient} from '@shared/lib';
 
 // cache app images
 const assetImages = [
@@ -31,8 +31,8 @@ const assetImages = [
 ];
 enableScreens();
 
-const cacheImages = (images) =>
-  images?.map((image) => {
+const cacheImages = images =>
+  images?.map(image => {
     if (!image) {
       return;
     }
@@ -67,7 +67,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       try {
         await SplashScreen.preventAutoHideAsync();
         cacheImages(assetImages);
@@ -77,7 +77,7 @@ export default function App() {
       } finally {
         setAppIsReady(true);
       }
-    })()
+    })();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
@@ -99,13 +99,13 @@ export default function App() {
               <PaperProvider theme={theme}>
                 <Block flex>
                   <AppStack />
+                  <Toast />
                 </Block>
               </PaperProvider>
             </GalioProvider>
           </Provider>
         </QueryClientProvider>
       </NavigationContainer>
-      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   );
 }
