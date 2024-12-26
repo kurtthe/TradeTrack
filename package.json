@@ -11,7 +11,8 @@
     "lint": "eslint *.js **/*.js",
     "build:android": "eas build --platform android --local --clear-cache\n",
     "build:ios": "eas build --platform ios --local --clear-cache\n",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "clean:all": "npx rimraf node_modules .expo ios android"
   },
   "dependencies": {
     "@config-plugins/react-native-blob-util": "^8.0.0",
@@ -87,7 +88,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
-    "jshint": "^2.10.3"
+    "jshint": "^2.10.3",
+    "rimraf": "^6.0.1"
   },
   "author": "",
   "homepage": ""
