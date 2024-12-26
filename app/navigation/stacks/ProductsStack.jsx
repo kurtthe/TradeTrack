@@ -5,6 +5,7 @@ import Products from '@screens/TProduts';
 
 import Category from '@screens/Category';
 import Product from "@screens/Product";
+import SearchProducts from '@screens/SearchProducts';
 import {screensRoute} from './ConfigRoutes'
 
 const Stack = createStackNavigator();
@@ -37,6 +38,14 @@ function ProductsStack() {
         title: 'Product',
       }
     },
+    {
+      name: 'SearchProducts',
+      component: SearchProducts,
+      colorBackground: '#FFFFFF',
+      header:{
+        title: 'Products  ',
+      }
+    }
   ];
 
   return (
