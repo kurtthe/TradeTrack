@@ -1,33 +1,39 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View } from 'react-native';
-import { BottomSheet } from 'react-native-sheet';
+import React, {useEffect, useState, useRef} from 'react';
+import {View} from 'react-native';
+import {BottomSheet} from 'react-native-sheet';
 import FilterButton from '@components/FilterButton';
-import { AlertService } from '@core/services/alert.service';
-import { makeStyles } from './Filters.styles';
-import { useGetCategories } from '@core/hooks/Categories';
+import {AlertService} from '@core/services/alert.service';
+import {makeStyles} from './Filters.styles';
+import {useGetCategories} from '@core/hooks/Categories';
 import ListRadioButton from '../ListRadioButton';
-import { nowTheme } from '@constants';
+import {nowTheme} from '@constants';
 import {
   selectedCategory,
   toggleFavorites,
   reset,
   toggleLoading,
 } from '@core/module/store/filter/filter';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 export const FilterProducts = () => {
   const dispatch = useDispatch();
-  const categoryParentSelected = useSelector((state) => state.filterReducer.categorySelected);
-  const favoriteFilter = useSelector((state) => state.filterReducer.onlyFavourites);
-  const dataProducts = useSelector((state) => state.filterReducer.products);
-  const isLoadingFilter = useSelector((state) => state.filterReducer.isLoading);
-  const restricted = useSelector((state) => state.filterReducer.restricted);
-  const productCount = useSelector((state) => state.filterReducer.productCount);
+  const categoryParentSelected = useSelector(
+    state => state.filterReducer.categorySelected,
+  );
+  const favoriteFilter = useSelector(
+    state => state.filterReducer.onlyFavourites,
+  );
+  const dataProducts = useSelector(state => state.filterReducer.products);
+  const isLoadingFilter = useSelector(state => state.filterReducer.isLoading);
+  const restricted = useSelector(state => state.filterReducer.restricted);
+  const productCount = useSelector(state => state.filterReducer.productCount);
 
   const alertService = new AlertService();
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
-  const [categoryActive, setCategoryActive] = useState(categoryParentSelected !== '');
+  const [categoryActive, setCategoryActive] = useState(
+    categoryParentSelected !== '',
+  );
   const [subCategoryActive, setSubCategoryActive] = useState(false);
   const [noSubCategoriesFound, setNoSubCategoriesFound] = useState(false);
 
@@ -36,13 +42,15 @@ export const FilterProducts = () => {
 
   const styles = makeStyles();
 
-  const { data: listCategories, isLoading } = useGetCategories();
+  const {data: listCategories, isLoading} = useGetCategories();
 
-  const validateIfSelected = (category) => {
+  const validateIfSelected = category => {
     if (categoryParentSelected === category.id) {
       setCategoryActive(true);
       setNoSubCategoriesFound(category?.sub_categories?.length === 0);
-      const subCategoriesSerialized = categoriesToRadioButton(category?.sub_categories);
+      const subCategoriesSerialized = categoriesToRadioButton(
+        category?.sub_categories,
+      );
       setSubCategories(subCategoriesSerialized);
       return true;
     }
@@ -63,20 +71,18 @@ export const FilterProducts = () => {
   };
 
   const categoriesToRadioButton = (categoriesList = []) => {
-    return categoriesList
-      ?.sort(sortNameCategories)
-      ?.map((category) => ({
-        ...category,
-        color: nowTheme.COLORS.INFO,
-        labelStyle: { fontWeight: 'bold' },
-        label: category.name,
-        value: category.name,
-        containerStyle: styles.styleRadio,
-        selected: categoryParentSelected ? validateIfSelected(category) : false,
-      }));
+    return categoriesList?.sort(sortNameCategories)?.map(category => ({
+      ...category,
+      color: nowTheme.COLORS.INFO,
+      labelStyle: {fontWeight: 'bold'},
+      label: category.name,
+      value: category.name,
+      containerStyle: styles.styleRadio,
+      selected: categoryParentSelected ? validateIfSelected(category) : false,
+    }));
   };
 
-  const initialCategories = (categoriesGet) => {
+  const initialCategories = categoriesGet => {
     const categoriesSerialized = categoriesToRadioButton(categoriesGet);
     setCategories(categoriesSerialized);
   };
@@ -96,17 +102,17 @@ export const FilterProducts = () => {
       alertService.show('Alert!', 'No sub categories found');
       return;
     }
-    bottomSheet.current?.show();
+    bottomSheet2.current?.show();
   };
 
-  const categorySelected = (options) => {
+  const categorySelected = options => {
     dispatch(reset());
-    const optionSelected = options.find((option) => option.selected);
+    const optionSelected = options.find(option => option.selected);
     dispatch(selectedCategory(optionSelected.id));
     return optionSelected;
   };
 
-  const onPressRadioButtonCategory = (options) => {
+  const onPressRadioButtonCategory = options => {
     const optionSelected = categorySelected(options);
 
     if (optionSelected.sub_categories?.length === 0) {
@@ -117,7 +123,9 @@ export const FilterProducts = () => {
       );
       return;
     }
-    const subCategoriesSerialized = categoriesToRadioButton(optionSelected?.sub_categories);
+    const subCategoriesSerialized = categoriesToRadioButton(
+      optionSelected?.sub_categories,
+    );
     setSubCategories(subCategoriesSerialized);
 
     dispatch(toggleLoading(true));
@@ -126,7 +134,7 @@ export const FilterProducts = () => {
     bottomSheet.current?.hide();
   };
 
-  const onPressRadioButtonSubCategory = (options) => {
+  const onPressRadioButtonSubCategory = options => {
     categorySelected(options);
     bottomSheet2.current?.hide();
     setSubCategoryActive(true);
@@ -134,7 +142,7 @@ export const FilterProducts = () => {
   };
 
   const clearFilterSelected = (listData = []) => {
-    return listData.map((item) => ({
+    return listData.map(item => ({
       ...item,
       selected: false,
     }));
@@ -155,7 +163,12 @@ export const FilterProducts = () => {
     dispatch(toggleLoading(true));
   };
 
-  if (favoriteFilter && dataProducts.length === 0 && !isLoadingFilter && categoryParentSelected !== '') {
+  if (
+    favoriteFilter &&
+    dataProducts.length === 0 &&
+    !isLoadingFilter &&
+    categoryParentSelected !== ''
+  ) {
     alertService.show(
       'Alert!',
       `There are not favorite products for this category`,
@@ -165,9 +178,7 @@ export const FilterProducts = () => {
   if (categoryParentSelected === 'Pools') return null;
 
   if (restricted) {
-    return (
-      <View style={styles.container}></View>
-    );
+    return <View style={styles.container}></View>;
   }
 
   return (
@@ -184,7 +195,7 @@ export const FilterProducts = () => {
 
           {categoryActive && (
             <FilterButton
-              text='Sub Category'
+              text="Sub Category"
               onPress={() => handleShowSubCategories()}
               isActive={subCategoryActive}
               disabled={isLoadingFilter}
@@ -198,7 +209,7 @@ export const FilterProducts = () => {
             sizeIcon={15}
             disabled={isLoadingFilter}
           />
-{/* 
+          {/* 
           <FilterButton
             text={`${productCount}`}
             disabled={true}
@@ -206,7 +217,7 @@ export const FilterProducts = () => {
 
           {categoryActive && (
             <FilterButton
-              text=''
+              text=""
               onPress={() => handleResetFilter()}
               icon={require('@assets/nuk-icons/png/2x/clear.png')}
               disabled={isLoadingFilter}
@@ -217,14 +228,14 @@ export const FilterProducts = () => {
 
       <BottomSheet height={500} ref={bottomSheet}>
         <ListRadioButton
-          onChange={(option) => onPressRadioButtonCategory(option)}
+          onChange={option => onPressRadioButtonCategory(option)}
           options={categories}
         />
       </BottomSheet>
 
       <BottomSheet height={500} ref={bottomSheet2}>
         <ListRadioButton
-          onChange={(option) => onPressRadioButtonSubCategory(option)}
+          onChange={option => onPressRadioButtonSubCategory(option)}
           options={subCategories}
         />
       </BottomSheet>
