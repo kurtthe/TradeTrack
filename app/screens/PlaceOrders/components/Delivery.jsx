@@ -51,22 +51,30 @@ const Delivery = () => {
   },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected, contactName, contactPhone])
 
   useEffect(() => {
-    filterHours();
-  }, []);
-
+    if (dateSelected) {
+      filterHours();
+    }
+  }, [dateSelected]);
+  
   const filterHours = () => {
-    const currentHour = new Date().getHours();
-    console.log(currentHour)
-
-    const filteredHours = radioButtonsHour.filter((hour) => {
-      const hourValue = parseInt(hour.label.split(' ')[0], 10);
-      const isPM = hour.label.includes('PM');
-      const hourIn24Format = isPM && hourValue !== 12 ? hourValue + 12 : hourValue;
-
-      return hourIn24Format >= currentHour;
-    });
-
-    setOptionsHours(filteredHours);
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const selectedDate = dateSelected?.value;
+  
+    if (selectedDate === currentDate) {
+      const currentHour = new Date().getHours();
+  
+      const filteredHours = radioButtonsHour.filter((hour) => {
+        const hourValue = parseInt(hour.label.split(' ')[0], 10);
+        const isPM = hour.label.includes('PM');
+        const hourIn24Format = isPM && hourValue !== 12 ? hourValue + 12 : hourValue;
+  
+        return hourIn24Format >= currentHour;
+      });
+  
+      setOptionsHours(filteredHours);
+    } else {
+      setOptionsHours(radioButtonsHour);
+    }
   };
 
   const handleChangeDelivery = (optionSelected) => {
@@ -140,13 +148,18 @@ const Delivery = () => {
       </>
       <PickerButton
         text={`${deliveryText || ''} Time`}
-        placeholder={!optionHourSelected? 'Select time': optionHourSelected?.label}
+        placeholder={
+          dateSelected
+            ? (!optionHourSelected ? 'Select time' : optionHourSelected?.label)
+            : 'Select a date first' // Mensaje cuando está deshabilitado
+        }
         icon
         error
         iconName={'lock-clock'}
         size={25}
         renderOptions={optionHours}
         onChangeOption={(option) => setOptionHourSelected(option)}
+        disabled={!dateSelected} // Deshabilitar si no hay fecha seleccionada
       />
       {optionDeliverySelected?.value === 'delivery' && (
         <>
