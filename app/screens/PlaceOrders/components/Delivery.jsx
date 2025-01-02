@@ -50,6 +50,25 @@ const Delivery = () => {
     dispatch(setUpDelivery(dataDelivery))
   },[optionHourSelected, locationSelected, optionHourSelected, optionDeliverySelected, dateSelected, contactName, contactPhone])
 
+  useEffect(() => {
+    filterHours();
+  }, []);
+
+  const filterHours = () => {
+    const currentHour = new Date().getHours();
+    console.log(currentHour)
+
+    const filteredHours = radioButtonsHour.filter((hour) => {
+      const hourValue = parseInt(hour.label.split(' ')[0], 10);
+      const isPM = hour.label.includes('PM');
+      const hourIn24Format = isPM && hourValue !== 12 ? hourValue + 12 : hourValue;
+
+      return hourIn24Format >= currentHour;
+    });
+
+    setOptionsHours(filteredHours);
+  };
+
   const handleChangeDelivery = (optionSelected) => {
     setOptionDeliverySelected(optionSelected)
     setDeliveryText(optionSelected?.label)
@@ -116,6 +135,7 @@ const Delivery = () => {
           isVisible={isDatePickerVisible}
           onConfirm={handleDatePicked}
           onCancel={()=>setIsDatePickerVisible(false)}
+          minimumDate={new Date()}
         />
       </>
       <PickerButton
