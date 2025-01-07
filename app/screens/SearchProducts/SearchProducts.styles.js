@@ -39,7 +39,7 @@ export const makeStyles = () =>
     contentFilters: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-around',
+      justifyContent: 'center',
       flexWrap: 'nowrap',
     },
     styleRadio: {
