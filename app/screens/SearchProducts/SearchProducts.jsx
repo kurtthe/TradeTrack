@@ -182,9 +182,9 @@ export const SearchProducts = ({ route }) => {
     setTotalProducts(formattedTotalProducts);
   }, [products?.headers, optionsProducts.page]);
 
-  useEffect(() => {
-    debouncedOnChange(textSearch);
-  }, [textSearch]);
+  // useEffect(() => {
+  //   debouncedOnChange(textSearch);
+  // }, [textSearch]);
 
   const changeText = (text) => {
     setKeepData(false);
@@ -257,6 +257,7 @@ export const SearchProducts = ({ route }) => {
           value={textSearch}
           style={styles.search}
           inputStyle={styles.searchInput}
+          onSubmitEditing={handleSearch}
         />
         <Pressable
           style={{
