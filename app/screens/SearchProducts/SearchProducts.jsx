@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, Pressable } from 'react-native';
 import debounce from "lodash.debounce";
 
 import Search from '@custom-elements/Search';
@@ -90,6 +90,16 @@ export const SearchProducts = ({ route }) => {
     });
 
     dispatch(reset());
+  };
+
+  const handleSearch = () => {
+
+    setOptionsProducts({
+      ...optionsProducts,
+      page: 1,
+      search: textSearch,
+    });
+    setKeepData(false);
   };
 
   const sortNameCategories = (x, y) => {
@@ -241,13 +251,22 @@ export const SearchProducts = ({ route }) => {
     <View style={{ flex: 1, backgroundColor: nowTheme.COLORS.BACKGROUND }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ width: '80%' }}>
-          <Search
-            placeholder="What are you looking for?"
-            onChangeText={setTextSearch}
-            value={textSearch}
-            style={styles.search}
-            inputStyle={styles.searchInput}
-          />
+        <Search
+          placeholder="What are you looking for?"
+          onChangeText={setTextSearch}
+          value={textSearch}
+          style={styles.search}
+          inputStyle={styles.searchInput}
+        />
+        <Pressable
+          style={{
+            height: 40,
+            width: 40,
+            position: 'absolute',
+            right: 25,
+          }}
+          onPress={handleSearch}
+        />
         </View>
       </View>
 
