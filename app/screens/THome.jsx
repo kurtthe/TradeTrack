@@ -56,7 +56,7 @@ class Home extends React.Component {
     await this.getDataPetition.getInfo(endPoints.news, this.props.getNews);
     const response = await generalRequestService.get(endPoints.burdensVersion);
 
-    if (response.latestVersion != expo.version) {
+    if (parseFloat(response.latestVersion) > parseFloat(expo.version)) {
 
       Toast.show({
         type: 'success',
