@@ -79,16 +79,21 @@ export const SearchProducts = ({ route }) => {
   };
 
   const handleResetFilter = () => {
-
     setTextSearch('');
-  
+    
     setOptionsProducts({
       ...optionsProducts,
       page: 1,
       search: '',
       category_id: null,
     });
-
+  
+    const resetCategories = categories.map((category) => ({
+      ...category,
+      selected: false,
+    }));
+    setCategories(resetCategories);
+  
     dispatch(reset());
   };
 
