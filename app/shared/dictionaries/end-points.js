@@ -1,11 +1,11 @@
-import { environment } from '@env';
+import {environment} from '@env';
 
 const apiService =
   environment.env === 'test'
     ? environment.apiTest
     : environment.env === 'staging'
-    ? environment.apiStaging
-    : environment.api;
+      ? environment.apiStaging
+      : environment.api;
 
 export const endPoints = {
   auth: `${apiService}login`,
@@ -30,6 +30,8 @@ export const endPoints = {
   suppliers: `${apiService}burdens/supplier`,
 
   categories: `${apiService}products/categories`,
+  templates: `${apiService}order-templates`,
+
   productsCategories: `${apiService}products/categories`,
   newPrice: `${apiService}products/:id/price`,
   preferredStore: `${apiService}burdens/stores/preferred`,
@@ -39,6 +41,6 @@ export const endPoints = {
     'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
   forgotPassword: `${apiService}reset-password`,
   getValidationRules: `${apiService}burdens/validation-rules`,
-  
-  burdensVersion: `${apiService}app-version/burdens-app`
+
+  burdensVersion: `${apiService}app-version/burdens-app`,
 };
