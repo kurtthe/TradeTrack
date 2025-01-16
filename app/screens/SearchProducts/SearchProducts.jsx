@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, Pressable } from 'react-native';
 import debounce from "lodash.debounce";
 
 import Search from '@custom-elements/Search';
@@ -76,6 +76,35 @@ export const SearchProducts = ({ route }) => {
       return true;
     }
     return false;
+  };
+
+  const handleResetFilter = () => {
+    setTextSearch('');
+    
+    setOptionsProducts({
+      ...optionsProducts,
+      page: 1,
+      search: '',
+      category_id: null,
+    });
+  
+    const resetCategories = categories.map((category) => ({
+      ...category,
+      selected: false,
+    }));
+    setCategories(resetCategories);
+  
+    dispatch(reset());
+  };
+
+  const handleSearch = () => {
+
+    setOptionsProducts({
+      ...optionsProducts,
+      page: 1,
+      search: textSearch,
+    });
+    setKeepData(false);
   };
 
   const sortNameCategories = (x, y) => {
@@ -158,9 +187,9 @@ export const SearchProducts = ({ route }) => {
     setTotalProducts(formattedTotalProducts);
   }, [products?.headers, optionsProducts.page]);
 
-  useEffect(() => {
-    debouncedOnChange(textSearch);
-  }, [textSearch]);
+  // useEffect(() => {
+  //   debouncedOnChange(textSearch);
+  // }, [textSearch]);
 
   const changeText = (text) => {
     setKeepData(false);
@@ -227,13 +256,23 @@ export const SearchProducts = ({ route }) => {
     <View style={{ flex: 1, backgroundColor: nowTheme.COLORS.BACKGROUND }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ width: '80%' }}>
-          <Search
-            placeholder="What are you looking for?"
-            onChangeText={setTextSearch}
-            value={textSearch}
-            style={styles.search}
-            inputStyle={styles.searchInput}
-          />
+        <Search
+          placeholder="What are you looking for?"
+          onChangeText={setTextSearch}
+          value={textSearch}
+          style={styles.search}
+          inputStyle={styles.searchInput}
+          onSubmitEditing={handleSearch}
+        />
+        <Pressable
+          style={{
+            height: 40,
+            width: 40,
+            position: 'absolute',
+            right: 25,
+          }}
+          onPress={handleSearch}
+        />
         </View>
       </View>
 
@@ -244,6 +283,12 @@ export const SearchProducts = ({ route }) => {
             onPress={handleShowCategories}
             isLoading={loadingCategories}
             isActive={!!categorySelected}
+          />
+          <FilterButton
+            text=""
+            onPress={() => handleResetFilter()}
+            icon={require('@assets/nuk-icons/png/2x/clear.png')}
+            disabled={isLoading}
           />
         </View>
       </View>
