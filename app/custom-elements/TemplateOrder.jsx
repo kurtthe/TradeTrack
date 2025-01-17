@@ -2,11 +2,10 @@ import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Block, Text} from 'galio-framework';
 import {nowTheme} from '@constants';
-import {validateEmptyField} from '@core/utils/validate-empty-field';
 import Icon from '@components/Icon';
 import {useNavigation} from '@react-navigation/native';
 
-const Order = ({item}) => {
+const TemplateOrder = ({item}) => {
   const {navigate} = useNavigation();
 
   const handleShowDetails = () => {
@@ -30,7 +29,7 @@ const Order = ({item}) => {
                 </Text>
                 <Text
                   color={nowTheme.COLORS.INFO}
-                  style={{fontFamily: nowTheme.FONT.primaryBold, left: 10}}
+                  style={{fontFamily: nowTheme.FONT.primaryBold, left: 5}}
                   size={14}>
                   {item.order_name}
                 </Text>
@@ -41,7 +40,7 @@ const Order = ({item}) => {
                 color={nowTheme.COLORS.HEADER}
                 size={13}
                 style={{fontFamily: nowTheme.FONT.primaryRegular}}>
-                {validateEmptyField(item.name)}
+                {item.notes}
               </Text>
               <Icon
                 style={{left: -20}}
@@ -70,4 +69,4 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
 });
-export default Order;
+export default TemplateOrder;

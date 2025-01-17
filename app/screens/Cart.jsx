@@ -8,6 +8,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Tabs from '@custom-elements/Tabs';
 import {AlertService} from '@core/services/alert.service';
 import Order from '@custom-elements/Order';
+import TemplateOrder from '@custom-elements/TemplateOrder';
 import ListCart from '@custom-sections/ListCart';
 import {getOrders} from '@core/module/store/orders/orders';
 import {GetDataPetitionService} from '@core/services/get-data-petition.service';
@@ -76,7 +77,7 @@ const Cart = ({navigation}) => {
 
   const renderItemsPrevious = ({item}) => <Order item={item} />;
 
-  const renderItemsTemplates = ({item}) => <Order item={item} />;
+  const renderItemsTemplates = ({item}) => <TemplateOrder item={item} />;
 
   const renderPreviousOrder = () => (
     <Block style={{height: Platform.OS === 'ios' ? hp('59%') : hp('76%')}}>
