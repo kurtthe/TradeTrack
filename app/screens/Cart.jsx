@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {Block} from 'galio-framework';
 import {useSelector, useDispatch} from 'react-redux';
@@ -29,35 +29,23 @@ const Cart = ({navigation}) => {
 
   const alertService = new AlertService();
   const formatMoney = FormatMoneyService.getInstance();
-  let productCartService = ProductCartService.getInstance(cartProducts);
   const getDataPetition = GetDataPetitionService.getInstance();
 
-  useEffect(() => {
-    const initialize = async () => {
-      if (cartProducts[0]?.myPrice) {
-        setMyPrice(cartProducts[0]?.myPrice);
-      }
+  const productCartService = ProductCartService.getInstance(cartProducts);
 
-      const response = await getDataPetition.getInfo(endPoints.orders, () =>
-        dispatch(getOrders()),
-      );
-      if (response.restricted) {
-        setRestricted(true);
-      } else {
-        setRestricted(false);
-      }
-    };
-
-    initialize();
-  }, [cartProducts, dispatch]);
+  const fetchOrdersData = useCallback(async () => {
+    const response = await getDataPetition.getInfo(endPoints.orders, () =>
+      dispatch(getOrders()),
+    );
+    setRestricted(response.restricted || false);
+  }, [dispatch, getDataPetition]);
 
   useEffect(() => {
-    productCartService = ProductCartService.getInstance(cartProducts);
-
-    if (cartProducts[0]?.myPrice) {
+    if (cartProducts[0]?.myPrice !== undefined) {
       setMyPrice(cartProducts[0]?.myPrice);
     }
-  }, [cartProducts]);
+    fetchOrdersData();
+  }, [cartProducts, fetchOrdersData]);
 
   const onCheckoutPressed = () => {
     if (myPrice) {
@@ -70,66 +58,59 @@ const Cart = ({navigation}) => {
     navigation.navigate('PlaceOrders', {nameRouteGoing: 'Cart'});
   };
 
-  const orderTotal = () => {
+  const orderTotal = useCallback(() => {
     const total = productCartService.totalOrder();
-    return `${formatMoney.format(total)}`;
-  };
+    return formatMoney.format(total);
+  }, [productCartService, formatMoney]);
 
   const renderItemsPrevious = ({item}) => <Order item={item} />;
-
   const renderItemsTemplates = ({item}) => (
-    <TemplateOrder key={`template-${Math.random()}`} item={item} />
+    <TemplateOrder key={`template-${item.id}`} item={item} />
   );
 
-  const renderPreviousOrder = () => (
-    <Block style={{height: Platform.OS === 'ios' ? hp('59%') : hp('76%')}}>
-      {restricted ? (
-        <Restricted />
-      ) : (
-        <ListData
-          endpoint={endPoints.orders}
-          renderItems={renderItemsPrevious}
-          typeData={ORDERS}
-        />
-      )}
-    </Block>
-  );
+  const renderDataList = useCallback(() => {
+    if (restricted) return <Restricted />;
 
-  const renderTemplatesForProducts = () => (
-    <Block style={{height: Platform.OS === 'ios' ? hp('59%') : hp('76%')}}>
-      {restricted ? (
-        <Restricted />
-      ) : (
-        <ListData
-          endpoint={endPoints.templates}
-          renderItems={renderItemsTemplates}
-          typeData={ORDERS}
-        />
-      )}
-    </Block>
-  );
+    const listHeight = Platform.OS === 'ios' ? hp('59%') : hp('76%');
+
+    switch (customStyleIndex) {
+      case 1:
+        return (
+          <Block style={{height: listHeight}}>
+            <ListData
+              endpoint={endPoints.orders}
+              renderItems={renderItemsPrevious}
+              typeData={ORDERS}
+            />
+          </Block>
+        );
+      case 2:
+        return (
+          <Block style={{height: listHeight}}>
+            <ListData
+              endpoint={endPoints.templates}
+              renderItems={renderItemsTemplates}
+              typeData={ORDERS}
+            />
+          </Block>
+        );
+      default:
+        return (
+          <ListCart
+            onCheckoutPressed={onCheckoutPressed}
+            orderTotal={orderTotal}
+          />
+        );
+    }
+  }, [customStyleIndex, restricted, onCheckoutPressed, orderTotal]);
 
   return (
     <Block style={styles.container}>
       <Tabs
         optionsTabsRender={[
-          {
-            labelTab: 'Cart',
-            component: (
-              <ListCart
-                onCheckoutPressed={onCheckoutPressed}
-                orderTotal={orderTotal}
-              />
-            ),
-          },
-          {
-            labelTab: 'Online Orders',
-            component: renderPreviousOrder(),
-          },
-          {
-            labelTab: 'Templates',
-            component: renderTemplatesForProducts(),
-          },
+          {labelTab: 'Cart', component: renderDataList()},
+          {labelTab: 'Online Orders', component: renderDataList()},
+          {labelTab: 'Templates', component: renderDataList()},
         ]}
         tabIndexSelected={customStyleIndex}
         changeIndexSelected={setCustomStyleIndex}

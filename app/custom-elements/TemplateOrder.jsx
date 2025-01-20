@@ -25,13 +25,7 @@ const TemplateOrder = ({item}) => {
                   color={nowTheme.COLORS.DEFAULT}
                   style={{fontFamily: nowTheme.FONT.primaryBold}}
                   size={14}>
-                  Template
-                </Text>
-                <Text
-                  color={nowTheme.COLORS.INFO}
-                  style={{fontFamily: nowTheme.FONT.primaryBold, left: 5}}
-                  size={14}>
-                  {item.order_name}
+                  {item.order_name?.slice(0, 40)}
                 </Text>
               </Block>
             </Block>
@@ -40,7 +34,7 @@ const TemplateOrder = ({item}) => {
                 color={nowTheme.COLORS.HEADER}
                 size={13}
                 style={{fontFamily: nowTheme.FONT.primaryRegular}}>
-                {item.notes}
+                {item.template_name}
               </Text>
               <Icon
                 style={{left: -20}}
