@@ -123,12 +123,12 @@ const Cart = ({navigation}) => {
             ),
           },
           {
-            labelTab: 'Templates',
-            component: renderTemplatesForProducts(),
+            labelTab: 'Online Orders',
+            component: renderPreviousOrder(),
           },
           {
-            labelTab: 'History',
-            component: renderPreviousOrder(),
+            labelTab: 'Templates',
+            component: renderTemplatesForProducts(),
           },
         ]}
         tabIndexSelected={customStyleIndex}
