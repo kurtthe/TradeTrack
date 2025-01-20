@@ -77,7 +77,9 @@ const Cart = ({navigation}) => {
 
   const renderItemsPrevious = ({item}) => <Order item={item} />;
 
-  const renderItemsTemplates = ({item}) => <TemplateOrder item={item} />;
+  const renderItemsTemplates = ({item}) => (
+    <TemplateOrder key={`template-${Math.random()}`} item={item} />
+  );
 
   const renderPreviousOrder = () => (
     <Block style={{height: Platform.OS === 'ios' ? hp('59%') : hp('76%')}}>
