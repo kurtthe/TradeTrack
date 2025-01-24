@@ -23,7 +23,6 @@ export const getTemplatesService = async page => {
     templates: response.body.filter(item => item.supplier_id === supplierId),
     loadMore: page < totalPages,
   };
-  console.log('TEMPLATES===>supplierId::', supplierId);
 
   return Promise.resolve(dataToResponse);
 };

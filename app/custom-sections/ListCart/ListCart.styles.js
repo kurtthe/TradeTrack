@@ -5,7 +5,7 @@ const {width} = Dimensions.get('screen');
 export const makeStyles = () =>
   StyleSheet.create({
     detailOrders: {
-      backgroundColor: 'red',
+      backgroundColor: 'white',
       paddingHorizontal: 20,
       alignItems: 'center',
       justifyContent: 'space-between',
