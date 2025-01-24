@@ -36,7 +36,7 @@ export const endPoints = {
   newPrice: `${apiService}products/:id/price`,
   preferredStore: `${apiService}burdens/stores/preferred`,
   shareOrder: `${apiService}material-orders/:id/share`,
-  orders: `${apiService}material-orders?sort=id_desc&include_products=true`,
+  orders: `${apiService}material-orders`,
   estimatorRoofing:
     'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
   forgotPassword: `${apiService}reset-password`,

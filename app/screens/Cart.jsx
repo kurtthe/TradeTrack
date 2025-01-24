@@ -7,14 +7,12 @@ import {ProductCart as ProductCartService} from '@core/services/product-cart.ser
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Tabs from '@custom-elements/Tabs';
 import {AlertService} from '@core/services/alert.service';
-import Order from '@custom-elements/Order';
 import ListCart from '@custom-sections/ListCart';
+import ListOrders from '@custom-sections/ListOrders';
 import ListTemplates from '@custom-sections/ListTemplates';
 import {getOrders} from '@core/module/store/orders/orders';
 import {GetDataPetitionService} from '@core/services/get-data-petition.service';
 import {endPoints} from '@shared/dictionaries/end-points';
-import ListData from '@custom-sections/ListData';
-import {ORDERS} from '@shared/dictionaries/typeDataSerialize';
 import Restricted from '@custom-elements/Restricted';
 
 const {width} = Dimensions.get('screen');
@@ -63,8 +61,6 @@ const Cart = ({navigation}) => {
     return formatMoney.format(total);
   }, [productCartService, formatMoney]);
 
-  const renderItemsPrevious = ({item}) => <Order item={item} />;
-
   const renderDataList = useCallback(() => {
     if (restricted) return <Restricted />;
 
@@ -74,11 +70,7 @@ const Cart = ({navigation}) => {
       case 1:
         return (
           <Block style={{height: listHeight}}>
-            <ListData
-              endpoint={endPoints.orders}
-              renderItems={renderItemsPrevious}
-              typeData={ORDERS}
-            />
+            <ListOrders />
           </Block>
         );
       case 2:
