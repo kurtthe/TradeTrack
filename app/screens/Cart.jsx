@@ -14,6 +14,7 @@ import {getOrders} from '@core/module/store/orders/orders';
 import {GetDataPetitionService} from '@core/services/get-data-petition.service';
 import {endPoints} from '@shared/dictionaries/end-points';
 import Restricted from '@custom-elements/Restricted';
+import {useRoute} from '@react-navigation/native';
 
 const {width} = Dimensions.get('screen');
 
@@ -24,12 +25,19 @@ const Cart = ({navigation}) => {
 
   const cartProducts = useSelector(state => state.productsReducer.products);
   const dispatch = useDispatch();
+  const route = useRoute();
 
   const alertService = new AlertService();
   const formatMoney = FormatMoneyService.getInstance();
   const getDataPetition = GetDataPetitionService.getInstance();
 
   const productCartService = ProductCartService.getInstance(cartProducts);
+
+  useEffect(() => {
+    (async () => {
+      setCustomStyleIndex(route.params?.indexSelectedTap ?? 0);
+    })();
+  }, [route.params?.indexSelectedTap]);
 
   const fetchOrdersData = useCallback(async () => {
     const response = await getDataPetition.getInfo(endPoints.orders, () =>
