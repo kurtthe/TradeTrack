@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {nowTheme} from '@constants/index';
 import {theme} from 'galio-framework';
+import {Text} from 'galio-framework';
 
 const NotFound = () => {
   return (

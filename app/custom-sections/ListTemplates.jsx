@@ -43,7 +43,7 @@ const ListTemplates = () => {
   }
 
   const putLoadingMore = () => {
-    if (!loadingMoreData) {
+    if (!loadingMoreData || dataPetition.length === 0) {
       return null;
     }
 
@@ -58,7 +58,6 @@ const ListTemplates = () => {
           textStyle={{fontFamily: 'montserrat-bold', fontSize: 16}}
           style={styles.button}
           loading={isFetching}
-          ListEmptyComponent={<NotFound />}
           disabled={!loadingMoreData}>
           Load More...
         </Button>
@@ -70,11 +69,14 @@ const ListTemplates = () => {
     <View style={styles.container}>
       <FlatList
         data={dataPetition}
+        refreshing={isFetching}
+        onRefresh={() => refetch()}
         renderItem={({item}) => <TemplateOrder item={item} />}
         keyExtractor={({item, index}) =>
           `templates-${item ? item.id : Math.random()}_${index}`
         }
         ListFooterComponent={putLoadingMore}
+        ListEmptyComponent={<NotFound />}
       />
     </View>
   );

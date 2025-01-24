@@ -43,7 +43,7 @@ const ListOrders = () => {
   }
 
   const putLoadingMore = () => {
-    if (!loadingMoreData) {
+    if (!loadingMoreData || dataPetition.length === 0) {
       return null;
     }
 
@@ -58,7 +58,6 @@ const ListOrders = () => {
           textStyle={{fontFamily: 'montserrat-bold', fontSize: 16}}
           style={styles.button}
           loading={isFetching}
-          ListEmptyComponent={<NotFound />}
           disabled={!loadingMoreData}>
           Load More...
         </Button>
@@ -69,11 +68,14 @@ const ListOrders = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshing={isFetching}
+        onRefresh={() => refetch()}
         data={dataPetition}
         renderItem={({item}) => <Order item={item} />}
         keyExtractor={({item, index}) =>
           `order-${item ? item.id : Math.random()}_${index}`
         }
+        ListEmptyComponent={<NotFound />}
         ListFooterComponent={putLoadingMore}
       />
     </View>
