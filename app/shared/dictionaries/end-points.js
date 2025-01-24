@@ -30,7 +30,7 @@ export const endPoints = {
   suppliers: `${apiService}burdens/supplier`,
 
   categories: `${apiService}products/categories`,
-  templates: `${apiService}order-templates?include_products=true&sort=id_desc`,
+  templates: `${apiService}order-templates`,
 
   productsCategories: `${apiService}products/categories`,
   newPrice: `${apiService}products/:id/price`,

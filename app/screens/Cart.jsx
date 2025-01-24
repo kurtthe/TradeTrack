@@ -8,8 +8,8 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Tabs from '@custom-elements/Tabs';
 import {AlertService} from '@core/services/alert.service';
 import Order from '@custom-elements/Order';
-import TemplateOrder from '@custom-elements/TemplateOrder';
 import ListCart from '@custom-sections/ListCart';
+import ListTemplates from '@custom-sections/ListTemplates';
 import {getOrders} from '@core/module/store/orders/orders';
 import {GetDataPetitionService} from '@core/services/get-data-petition.service';
 import {endPoints} from '@shared/dictionaries/end-points';
@@ -64,9 +64,6 @@ const Cart = ({navigation}) => {
   }, [productCartService, formatMoney]);
 
   const renderItemsPrevious = ({item}) => <Order item={item} />;
-  const renderItemsTemplates = ({item}) => (
-    <TemplateOrder key={`template-${item.id}`} item={item} />
-  );
 
   const renderDataList = useCallback(() => {
     if (restricted) return <Restricted />;
@@ -87,11 +84,7 @@ const Cart = ({navigation}) => {
       case 2:
         return (
           <Block style={{height: listHeight}}>
-            <ListData
-              endpoint={endPoints.templates}
-              renderItems={renderItemsTemplates}
-              typeData={ORDERS}
-            />
+            <ListTemplates />
           </Block>
         );
       default:
