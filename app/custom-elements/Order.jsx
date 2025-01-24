@@ -12,7 +12,7 @@ const Order = ({item}) => {
   const dispatch = useDispatch();
 
   const handleShowDetails = () => {
-    dispatch(changeTitleHeader(`Order ${item.order_name?.slice(0, 12)}`));
+    dispatch(changeTitleHeader(`Order ${item.order_number?.slice(0, 12)}`));
 
     navigate('OrderBought', {
       products: item.structure?.sections[0] || [],
