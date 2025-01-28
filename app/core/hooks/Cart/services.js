@@ -20,7 +20,7 @@ export const getTemplatesService = async page => {
   );
   const totalPages = parseInt(response.headers['x-pagination-page-count']) || 2;
   const dataToResponse = {
-    templates: response.body.filter(item => item.supplier_id === supplierId),
+    templates: response.body.filter(item => item.supplier_id == supplierId),
     loadMore: page < totalPages,
   };
 
@@ -41,15 +41,15 @@ export const getOrdersService = async page => {
       },
     },
   );
-  const totalPages = parseInt(response.headers['x-pagination-page-count']) || 2;
+  console.log('===>supplierId::', supplierId);
+  const totalPages =
+    parseInt(responseOrders.headers['x-pagination-page-count']) || 2;
   const dataToResponse = {
     templates: responseOrders.body.filter(
-      item => item.supplier_id === supplierId,
+      item => item.supplier_id == supplierId,
     ),
     loadMore: page < totalPages,
   };
-
-  console.log('ORDERS===>supplierId::', supplierId);
 
   return Promise.resolve(dataToResponse);
 };
