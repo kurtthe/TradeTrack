@@ -6,6 +6,7 @@ import {validateEmptyField} from '@core/utils/validate-empty-field';
 import Icon from '@components/Icon';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
+import {changeTitleHeader} from '@core/module/store/cart/cart';
 
 const Order = ({item}) => {
   const {navigate} = useNavigation();
