@@ -34,9 +34,7 @@ const Cart = ({navigation}) => {
   const productCartService = ProductCartService.getInstance(cartProducts);
 
   useEffect(() => {
-    (async () => {
-      setCustomStyleIndex(route.params?.indexSelectedTap ?? 0);
-    })();
+    setCustomStyleIndex(route.params?.indexSelectedTap ?? 0);
   }, [route.params?.indexSelectedTap]);
 
   const fetchOrdersData = useCallback(async () => {
