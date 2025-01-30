@@ -5,4 +5,5 @@ export const useGetTemplates = page =>
   useQuery({
     queryKey: ['getting-templates'],
     queryFn: () => getTemplatesService(page),
+    cacheTime: 30 * 60 * 1000,
   });

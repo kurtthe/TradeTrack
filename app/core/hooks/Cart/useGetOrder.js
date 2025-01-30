@@ -5,4 +5,5 @@ export const useGetOrders = page =>
   useQuery({
     queryKey: ['getting-orders'],
     queryFn: () => getOrdersService(page),
+    cacheTime: 30 * 60 * 1000,
   });
