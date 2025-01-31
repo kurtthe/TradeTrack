@@ -4,11 +4,16 @@ import {Block, Text} from 'galio-framework';
 import {nowTheme} from '@constants';
 import Icon from '@components/Icon';
 import {useNavigation} from '@react-navigation/native';
+import {changeTitleHeader} from '@core/module/store/cart/cart';
+import {useDispatch} from 'react-redux';
 
 const TemplateOrder = ({item}) => {
   const {navigate} = useNavigation();
+  const dispatch = useDispatch();
 
   const handleShowDetails = () => {
+    dispatch(changeTitleHeader(`${item.template_name?.slice(0, 15)}`));
+
     navigate('OrderBought', {
       products: item.structure?.sections[0] || [],
     });

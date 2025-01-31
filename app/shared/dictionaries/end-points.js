@@ -30,13 +30,13 @@ export const endPoints = {
   suppliers: `${apiService}burdens/supplier`,
 
   categories: `${apiService}products/categories`,
-  templates: `${apiService}order-templates?include_products=true&sort=id_desc`,
+  templates: `${apiService}order-templates`,
 
   productsCategories: `${apiService}products/categories`,
   newPrice: `${apiService}products/:id/price`,
   preferredStore: `${apiService}burdens/stores/preferred`,
   shareOrder: `${apiService}material-orders/:id/share`,
-  orders: `${apiService}material-orders?sort=id_desc&include_products=true`,
+  orders: `${apiService}material-orders`,
   estimatorRoofing:
     'https://burdenstradetrakroofestimator.paperform.co/?email=:emailUser&name=:fullName&company=:companyName&burdens_account=:accountNumber',
   forgotPassword: `${apiService}reset-password`,

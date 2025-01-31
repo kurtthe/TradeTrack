@@ -7,15 +7,14 @@ import {ProductCart as ProductCartService} from '@core/services/product-cart.ser
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Tabs from '@custom-elements/Tabs';
 import {AlertService} from '@core/services/alert.service';
-import Order from '@custom-elements/Order';
-import TemplateOrder from '@custom-elements/TemplateOrder';
 import ListCart from '@custom-sections/ListCart';
+import ListOrders from '@custom-sections/ListOrders';
+import ListTemplates from '@custom-sections/ListTemplates';
 import {getOrders} from '@core/module/store/orders/orders';
 import {GetDataPetitionService} from '@core/services/get-data-petition.service';
 import {endPoints} from '@shared/dictionaries/end-points';
-import ListData from '@custom-sections/ListData';
-import {ORDERS} from '@shared/dictionaries/typeDataSerialize';
 import Restricted from '@custom-elements/Restricted';
+import {useRoute} from '@react-navigation/native';
 
 const {width} = Dimensions.get('screen');
 
@@ -26,12 +25,19 @@ const Cart = ({navigation}) => {
 
   const cartProducts = useSelector(state => state.productsReducer.products);
   const dispatch = useDispatch();
+  const route = useRoute();
 
   const alertService = new AlertService();
   const formatMoney = FormatMoneyService.getInstance();
   const getDataPetition = GetDataPetitionService.getInstance();
 
   const productCartService = ProductCartService.getInstance(cartProducts);
+
+  useEffect(() => {
+    if (customStyleIndex != 0) {
+      setCustomStyleIndex(route.params?.indexSelectedTap ?? 0);
+    }
+  }, [route.params]);
 
   const fetchOrdersData = useCallback(async () => {
     const response = await getDataPetition.getInfo(endPoints.orders, () =>
@@ -63,11 +69,6 @@ const Cart = ({navigation}) => {
     return formatMoney.format(total);
   }, [productCartService, formatMoney]);
 
-  const renderItemsPrevious = ({item}) => <Order item={item} />;
-  const renderItemsTemplates = ({item}) => (
-    <TemplateOrder key={`template-${item.id}`} item={item} />
-  );
-
   const renderDataList = useCallback(() => {
     if (restricted) return <Restricted />;
 
@@ -77,21 +78,13 @@ const Cart = ({navigation}) => {
       case 1:
         return (
           <Block style={{height: listHeight}}>
-            <ListData
-              endpoint={endPoints.orders}
-              renderItems={renderItemsPrevious}
-              typeData={ORDERS}
-            />
+            <ListOrders />
           </Block>
         );
       case 2:
         return (
           <Block style={{height: listHeight}}>
-            <ListData
-              endpoint={endPoints.templates}
-              renderItems={renderItemsTemplates}
-              typeData={ORDERS}
-            />
+            <ListTemplates />
           </Block>
         );
       default:
