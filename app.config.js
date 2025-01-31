@@ -4,7 +4,7 @@ module.exports = {
     slug: '-Trade-Track-',
     privacy: 'public',
     platforms: ['ios', 'android'],
-    version: '1.9',
+    version: '2.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     splash: {
@@ -41,7 +41,7 @@ module.exports = {
       },
       supportsTablet: true,
       bundleIdentifier: 'com.trade.Burdens',
-      buildNumber: '2',
+      buildNumber: '1',
       googleServicesFile: './GoogleAnalytics/GoogleService-Info.plist',
       userInterfaceStyle: 'light',
       infoPlist: {
