@@ -4,7 +4,7 @@ module.exports = {
     slug: '-Trade-Track-',
     privacy: 'public',
     platforms: ['ios', 'android'],
-    version: '2.',
+    version: '2.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     splash: {
